@@ -29,6 +29,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
   /// i.e. you may have passed a zero size of populus group, the server may respond with this error
   /// to indicate the principal error in request
   /// </summary>
+  [Serializable]
   public class InvalidSubscriptionRequestException : CRUDException
   {
     public InvalidSubscriptionRequestException(string message, Exception inner) : base(message, inner) {}

@@ -15,68 +15,31 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace NFX.Security
 {
-      /// <summary>
-      /// Base exception thrown by the Security framework
-      /// </summary>
-      [Serializable]
-      public class SecurityException : NFXException, ISecurityException
-      {
-        public SecurityException()
-        {
-        }
+  /// <summary>
+  /// Base exception thrown by the Security framework
+  /// </summary>
+  [Serializable]
+  public class SecurityException : NFXException, ISecurityException
+  {
+    public SecurityException() { }
+    public SecurityException(string message) : base(message) { }
+    public SecurityException(string message, Exception inner) : base(message, inner) { }
+    protected SecurityException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-        public SecurityException(string message)
-          : base(message)
-        {
-        }
-
-        public SecurityException(string message, Exception inner)
-          : base(message, inner)
-        {
-        }
-
-        protected SecurityException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-        {
-
-        }
-
-      }
-
-
-
-      /// <summary>
-      /// Base exception thrown by the security framework
-      /// </summary>
-      [Serializable]
-      public class AuthorizationException : SecurityException
-      {
-        public AuthorizationException()
-        {
-        }
-
-        public AuthorizationException(string message)
-          : base(message)
-        {
-        }
-
-        public AuthorizationException(string message, Exception inner)
-          : base(message, inner)
-        {
-        }
-
-        protected AuthorizationException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-        {
-
-        }
-
-      }
+  /// <summary>
+  /// Base exception thrown by the security framework
+  /// </summary>
+  [Serializable]
+  public class AuthorizationException : SecurityException
+  {
+    public AuthorizationException() { }
+    public AuthorizationException(string message) : base(message) { }
+    public AuthorizationException(string message, Exception inner) : base(message, inner) { }
+    protected AuthorizationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 }

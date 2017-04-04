@@ -39,6 +39,7 @@ namespace NFX.ApplicationModel.Pile
   /// </summary>
   public sealed class DefaultPile : ServiceWithInstrumentationBase<object>, IPileImplementation
   {
+      private static int CPU_COUNT = System.Environment.ProcessorCount;
       private static readonly TimeSpan INSTR_INTERVAL = TimeSpan.FromMilliseconds(3700);
 
       public const string CONFIG_PILE_SECTION = "pile";
@@ -820,6 +821,10 @@ namespace NFX.ApplicationModel.Pile
         return total;
       }
 
+
+      [ThreadStatic]
+      private int ts_PutStartSegIdx;
+
       /// <summary>
       /// Puts a CLR object into the pile and returns a newly-allocated pointer.
       /// Throws out-of-space if there is not enough space in the pile and limits are set.
@@ -851,8 +856,27 @@ namespace NFX.ApplicationModel.Pile
 
             var segs = m_Segments;
 
-            for(var idxSegment=0; idxSegment<segs.Count; idxSegment++)
+            int si = 0;
+            if (segs.Count > 2 * CPU_COUNT)//20170325 DKh
             {
+              si = ts_PutStartSegIdx++;
+              if (si>=segs.Count-CPU_COUNT)
+              {
+                si = 0;
+                ts_PutStartSegIdx = 0;
+              }
+            }
+
+            var oldSegWindow = m_AllocMode==AllocationMode.ReuseSpace ? 8 : 2;
+
+            for(int cnt=0, idxSegment=si; idxSegment<segs.Count; idxSegment++, cnt++)
+            {
+              if (cnt==oldSegWindow && idxSegment < segs.Count-CPU_COUNT-1)//20170325 DKh
+              {
+                idxSegment = segs.Count - CPU_COUNT - 1;
+                continue;
+              }
+
               var seg = segs[idxSegment];
               if (seg==null) continue;
               if (seg.DELETED!=0) continue;
@@ -860,7 +884,7 @@ namespace NFX.ApplicationModel.Pile
               var sused = seg.UsedBytes;
               if (seg.FreeCapacity > chunkSize)
               {
-                 if (!getWriteLock(seg)) return PilePointer.Invalid;
+                 if (!tryGetWriteLock(seg)) continue;//20170325 DKh if (!getWriteLock(seg)) return PilePointer.Invalid;
                  try
                  {
                    if (Thread.VolatileRead(ref seg.DELETED)==0 && seg.FreeCapacity > chunkSize)
@@ -1129,6 +1153,8 @@ namespace NFX.ApplicationModel.Pile
 
       public void Purge()
       {
+        if (!Running) return;
+
         lock(m_SegmentsLock)
         {
           foreach(var seg in m_Segments)
@@ -1142,6 +1168,8 @@ namespace NFX.ApplicationModel.Pile
 
       public long Compact()
       {
+        if (!Running) return 0;
+
         long total = 0;
 
         lock(m_SegmentsLock)
@@ -1283,9 +1311,17 @@ namespace NFX.ApplicationModel.Pile
         }
 
         //the writer lock allows only 1 writer at a time that conflicts with a single reader
+        //contrast with tryGetWriteLock: this returns false on shutdown
         private bool getWriteLock(_segment segment)
         {
           return segment.RWSynchronizer.GetWriteLock((_) => !this.Running);
+        }
+
+        //the writer lock allows only 1 writer at a time that conflicts with a single reader
+        //true if taken, false if someone else locked (contrast with getWriteLock which returns false on shutdown)
+        private bool tryGetWriteLock(_segment segment)
+        {
+          return segment.RWSynchronizer.TryGetWriteLock();
         }
 
         private void releaseWriteLock(_segment segment)

@@ -22,36 +22,18 @@
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace NFX.Inventorization
 {
-
   /// <summary>
   /// Base exception thrown by inventorization operations
   /// </summary>
   [Serializable]
   public class InventorizationException : NFXException
   {
-    public InventorizationException()
-    {
-    }
-
-    public InventorizationException(string message)
-      : base(message)
-    {
-    }
-
-    public InventorizationException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected InventorizationException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public InventorizationException() { }
+    public InventorizationException(string message) : base(message) { }
+    public InventorizationException(string message, Exception inner) : base(message, inner) { }
+    protected InventorizationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

@@ -188,6 +188,13 @@ namespace NFX.ApplicationModel.Pile
           get; set;
         }
 
+        /// <summary>
+        /// Defines how table handles collisions.
+        /// Note: this property can only be supplied to table ctor, the changes are ignored after the table has created
+        /// </summary>
+        [Config(Default = CollisionMode.Speculative)]
+        public CollisionMode CollisionMode{ get; set; }
+
 
 
         /// <summary>

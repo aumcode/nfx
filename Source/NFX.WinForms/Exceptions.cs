@@ -15,43 +15,24 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 
-
 /* NFX by ITAdapter
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace NFX.WinForms
 {
-
   /// <summary>
   /// Base exception thrown by NFX.WinForms assembly
   /// </summary>
   [Serializable]
   public class WFormsException : NFXException
   {
-    public WFormsException()
-    {
-    }
-
-    public WFormsException(string message)
-      : base(message)
-    {
-    }
-
-    public WFormsException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected WFormsException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public WFormsException() { }
+    public WFormsException(string message) : base(message) { }
+    public WFormsException(string message, Exception inner) : base(message, inner) { }
+    protected WFormsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

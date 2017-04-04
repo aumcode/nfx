@@ -23,14 +23,12 @@ namespace NFX.Web.Social
   /// <summary>
   /// General NFX social network specific exception
   /// </summary>
+  [Serializable]
   public class NFXSocialException: NFXException
   {
-    public NFXSocialException() {}
-
-    public NFXSocialException(string message) : base(message) {}
-
-    public NFXSocialException(string message, Exception inner) : base(message, inner) {}
-
-    protected NFXSocialException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+    public NFXSocialException() { }
+    public NFXSocialException(string message) : base(message) { }
+    public NFXSocialException(string message, Exception inner) : base(message, inner) { }
+    protected NFXSocialException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

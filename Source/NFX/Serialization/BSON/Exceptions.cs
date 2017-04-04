@@ -25,23 +25,9 @@ namespace NFX.Serialization.BSON
   [Serializable]
   public class BSONException : NFXException
   {
-    public BSONException()
-    {
-    }
-
-    public BSONException(string message)
-      : base(message)
-    {
-    }
-
-    public BSONException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected BSONException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-    }
+    public BSONException() { }
+    public BSONException(string message) : base(message) { }
+    public BSONException(string message, Exception inner) : base(message, inner) { }
+    protected BSONException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

@@ -87,6 +87,25 @@ namespace NFX.ApplicationModel.Pile
     void PurgeAll();
   }
 
+
+  /// <summary>
+  /// Defines table collision modes: Speculative (prabability-based - ignores collisions) vs Durable (works slower but handles collisions)
+  /// </summary>
+  public enum CollisionMode
+  {
+    /// <summary>
+    /// Does not do chaining/rehashing, works faster for caches but may overwrite data with lower priority
+    /// </summary>
+    Speculative = 0,
+
+    /// <summary>
+    /// Guarantees to store all the data and handles all collisions at the expense of more operations time.
+    /// Ignores priorities as they are irrelevant
+    /// </summary>
+    Durable
+  }
+
+
   public interface ICacheTable : INamed
   {
     /// <summary>
@@ -116,6 +135,13 @@ namespace NFX.ApplicationModel.Pile
     /// </summary>
     TableOptions Options { get;}
 
+
+    /// <summary>
+    /// Determines how this instance handles collisions.
+    /// This property can not be changed after the table was created from TableOptions.
+    /// Changing CollisionMode in TableOptions has no effect on this property after creation
+    /// </summary>
+    CollisionMode CollisionMode{ get;}
 
     /// <summary>
     /// Removes all data from table
@@ -150,14 +176,38 @@ namespace NFX.ApplicationModel.Pile
     Overwritten
   }
 
+
+  /// <summary>
+  /// Provides information about the item stored in cache
+  /// </summary>
+  public interface ICacheEntry<TKey>
+  {
+    TKey         Key           { get; }
+    int          AgeSec        { get; }
+    int          Priority      { get; }
+    int          MaxAgeSec     { get; }
+    DateTime?    ExpirationUTC { get; }
+
+    /// <summary>
+    /// Returns value only if enumerator is in materializing mode, obtained by a call to AsEnumerable(withValues: true)
+    /// </summary>
+    object  Value   { get; }
+  }
+
+
   public interface ICacheTable<TKey> : ICacheTable
   {
-     /// <summary>
+    /// <summary>
     /// Returns equality comparer for keys, or null to use default Equals
     /// </summary>
     IEqualityComparer<TKey> KeyComparer{ get ;}
 
-
+    /// <summary>
+    /// Returns the table as enumerable of entries with optional materialization
+    /// of values (which is slower). Materialization is guaranteed to be consistent with the key
+    /// </summary>
+    /// <param name="withValues">True, to materialize internal PilePointers into CLR objects</param>
+    IEnumerable<ICacheEntry<TKey>> AsEnumerable(bool withValues);
 
     /// <summary>
     /// Returns true if cache has object with the key, optionally filtering-out objects older than ageSec param if it is &gt; zero.

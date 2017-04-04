@@ -109,7 +109,7 @@ namespace NFX.NUnit.Glue
                 }
                 catch(ClientCallException err)
                 {
-                  Assert.AreEqual(CallStatus.Timeout, err.CallStatus);
+                  Assert.AreEqual(CallStatus.Timeout, err.Status);
                   return;
                 }
                 catch(System.IO.IOException err) //sync binding throws IO exception
@@ -141,7 +141,7 @@ namespace NFX.NUnit.Glue
                 }
                 catch(ClientCallException err)
                 {
-                  Assert.AreEqual(CallStatus.Timeout, err.CallStatus);
+                  Assert.AreEqual(CallStatus.Timeout, err.Status);
                   return;
                 }
                 catch(System.IO.IOException err) //sync binding throws IO exception

@@ -31,20 +31,11 @@ namespace NFX.DataAccess.MsSQL
   [Serializable]
   public class MsSQLDataAccessException : DataAccessException
   {
-    public MsSQLDataAccessException() {}
-
-    public MsSQLDataAccessException(string message) : base(message){}
-
-    public MsSQLDataAccessException(string message, Exception inner) : base(message, inner){}
-
-    public MsSQLDataAccessException(string message, KeyViolationKind kvKind, string keyViolation)
-      : base(message, kvKind, keyViolation){}
-
-    public MsSQLDataAccessException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation)
-      : base(message, inner, kvKind, keyViolation){}
-
-    protected MsSQLDataAccessException(SerializationInfo info, StreamingContext context)
-      : base(info, context) {}
+    public MsSQLDataAccessException() { }
+    public MsSQLDataAccessException(string message) : base(message) { }
+    public MsSQLDataAccessException(string message, Exception inner) : base(message, inner) { }
+    public MsSQLDataAccessException(string message, KeyViolationKind kvKind, string keyViolation) : base(message, kvKind, keyViolation) { }
+    public MsSQLDataAccessException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation) : base(message, inner, kvKind, keyViolation) { }
+    protected MsSQLDataAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

@@ -16,39 +16,20 @@
 </FILE_LICENSE>*/
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace NFX.Serialization.JSON
 {
-
   /// <summary>
   /// Base exception thrown by the JSON serialization format
   /// </summary>
   [Serializable]
   public class JSONException : NFXSerializationException
   {
-    public JSONException()
-    {
-    }
-
-    public JSONException(string message)
-      : base(message)
-    {
-    }
-
-    public JSONException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected JSONException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public JSONException() { }
+    public JSONException(string message) : base(message) { }
+    public JSONException(string message, Exception inner) : base(message, inner) { }
+    protected JSONException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Base exception thrown by the JSON when serializing objects
@@ -56,28 +37,11 @@ namespace NFX.Serialization.JSON
   [Serializable]
   public class JSONSerializationException : JSONException
   {
-    public JSONSerializationException()
-    {
-    }
-
-    public JSONSerializationException(string message)
-      : base(message)
-    {
-    }
-
-    public JSONSerializationException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected JSONSerializationException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public JSONSerializationException() { }
+    public JSONSerializationException(string message) : base(message) { }
+    public JSONSerializationException(string message, Exception inner) : base(message, inner) { }
+    protected JSONSerializationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Base exception thrown by the JSON when deserializing objects
@@ -85,26 +49,9 @@ namespace NFX.Serialization.JSON
   [Serializable]
   public class JSONDeserializationException : JSONException
   {
-    public JSONDeserializationException()
-    {
-    }
-
-    public JSONDeserializationException(string message)
-      : base(message)
-    {
-    }
-
-    public JSONDeserializationException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected JSONDeserializationException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public JSONDeserializationException() { }
+    public JSONDeserializationException(string message) : base(message) { }
+    public JSONDeserializationException(string message, Exception inner) : base(message, inner) { }
+    protected JSONDeserializationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

@@ -26,32 +26,15 @@ using System.Collections.Generic;
 
 namespace NFX.IO.Net.Gate
 {
-
   /// <summary>
   /// Throw by NetGate
   /// </summary>
   [Serializable]
   public class NetGateException : NFXException
   {
-    public NetGateException()
-    {
-    }
-
-    public NetGateException(string message)
-      : base(message)
-    {
-    }
-
-    public NetGateException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected NetGateException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
+    public NetGateException() { }
+    public NetGateException(string message) : base(message) { }
+    public NetGateException(string message, Exception inner) : base(message, inner) { }
+    protected NetGateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

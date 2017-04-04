@@ -31,25 +31,9 @@ namespace NFX.Media.PDF
   [Serializable]
   public class PdfException : NFXException
   {
-    public PdfException()
-    {
-    }
-
-    public PdfException(string message)
-      : base(message)
-    {
-    }
-
-    public PdfException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected PdfException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
+    public PdfException() { }
+    public PdfException(string message) : base(message) { }
+    public PdfException(string message, Exception inner) : base(message, inner) { }
+    protected PdfException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

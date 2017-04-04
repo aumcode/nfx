@@ -101,6 +101,16 @@ namespace NFX.OS
 
 
       /// <summary>
+      /// Tries to obtain the write lock returning true on success, false if lock could not be taken -
+      /// either someone reads or writes. Only one thread may hold a write lock at a time
+      /// </summary>
+      public bool TryGetWriteLock()
+      {
+        long current = Interlocked.CompareExchange(ref m_Readers, long.MinValue, 0);
+        return current==0;//the lock succeeded
+      }
+
+      /// <summary>
       /// Obtains a write lock returning true on success. Only one thread may hold a write lock at a time,
       /// and noone else can obtain a read lock until the write lock is released.
       /// False is returned if cancel func was supplied and returned true to cancel-out the waiting

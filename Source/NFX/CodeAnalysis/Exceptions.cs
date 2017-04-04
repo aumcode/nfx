@@ -15,83 +15,62 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace NFX.CodeAnalysis
 {
-      /// <summary>
-      /// Base exception thrown by the framework
-      /// </summary>
-      [Serializable]
-      public class CodeAnalysisException : NFXException
-      {
-        public CodeAnalysisException()
-        {
-        }
+  /// <summary>
+  /// Base exception thrown by the framework
+  /// </summary>
+  [Serializable]
+  public class CodeAnalysisException : NFXException
+  {
+    public CodeAnalysisException() { }
+    public CodeAnalysisException(string message) : base(message) { }
+    public CodeAnalysisException(string message, Exception inner) : base(message, inner) { }
+    protected CodeAnalysisException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-        public CodeAnalysisException(string message)
-          : base(message)
-        {
-        }
+  /// <summary>
+  /// Thrown by code processors such as lexers, parsers ,  symantic analyzers, compilers etc...
+  /// </summary>
+  [Serializable]
+  public class CodeProcessorException : CodeAnalysisException, IWrappedDataSource
+  {
+    public CodeProcessorException(ICodeProcessor codeProcessor) { CodeProcessor = codeProcessor; }
+    public CodeProcessorException(ICodeProcessor codeProcessor, string message) : base(message) { CodeProcessor = codeProcessor; }
+    public CodeProcessorException(ICodeProcessor codeProcessor, string message, Exception inner) : base(message, inner) { CodeProcessor = codeProcessor; }
 
-        public CodeAnalysisException(string message, Exception inner)
-          : base(message, inner)
-        {
-        }
+    [NonSerialized]
+    public readonly ICodeProcessor CodeProcessor;
 
-        protected CodeAnalysisException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-        {
+    public string GetWrappedData()
+    {
+#warning TODO
+      throw new NotImplementedException();
+    }
+  }
 
-        }
+  [Serializable]
+  public class StringEscapeErrorException : CodeAnalysisException
+  {
+    public const string ERRORED_ESCAPE_FLD_NAME = "SEEE-EE";
 
-      }
+    private StringEscapeErrorException() { }
+    public StringEscapeErrorException(string escape) { ErroredEscape = escape; }
+    protected StringEscapeErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      ErroredEscape = info.GetString(ERRORED_ESCAPE_FLD_NAME);
+    }
 
+    public readonly string ErroredEscape;
 
-      /// <summary>
-      /// Thrown by code processors such as lexers, parsers ,  symantic analyzers, compilers etc...
-      /// </summary>
-      public class CodeProcessorException : CodeAnalysisException
-      {
-        public readonly ICodeProcessor CodeProcessor;
-
-        public CodeProcessorException(ICodeProcessor codeProcessor)
-        {
-            CodeProcessor = codeProcessor;
-        }
-
-        public CodeProcessorException(ICodeProcessor codeProcessor, string message) : base(message)
-        {
-            CodeProcessor = codeProcessor;
-        }
-
-        public CodeProcessorException(ICodeProcessor codeProcessor, string message, Exception inner)
-          : base(message, inner)
-        {
-            CodeProcessor = codeProcessor;
-        }
-
-      }
-
-
-      public class StringEscapeErrorException : CodeAnalysisException
-      {
-        public readonly string ErroredEscape;
-
-
-        private StringEscapeErrorException()
-        {
-        }
-
-        public StringEscapeErrorException(string escape)
-        {
-          ErroredEscape = escape;
-        }
-
-      }
-
-
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(ERRORED_ESCAPE_FLD_NAME, ErroredEscape);
+      base.GetObjectData(info, context);
+    }
+  }
 }

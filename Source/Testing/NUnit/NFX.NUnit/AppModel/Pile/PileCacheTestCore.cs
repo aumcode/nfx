@@ -554,11 +554,21 @@ namespace NFX.NUnit.AppModel.Pile
 
         public static LocalCache MakeCache(IConfigSectionNode conf = null)
         {
-            var cache = new LocalCache();
-            cache.Pile = new DefaultPile(cache);
-            cache.Configure(conf);
-            cache.Start();
-            return cache;
+          var cache = new LocalCache();
+          cache.Pile = new DefaultPile(cache);
+          cache.Configure(conf);
+          cache.Start();
+          return cache;
+        }
+
+        public static LocalCache MakeDurableCache(IConfigSectionNode conf = null)
+        {
+          var result = MakeCache(conf);
+          result.DefaultTableOptions = new TableOptions("*")
+          {
+            CollisionMode = CollisionMode.Durable
+          };
+          return result;
         }
     }
 }

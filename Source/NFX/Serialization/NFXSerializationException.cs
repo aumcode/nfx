@@ -20,32 +20,15 @@ using System.Collections.Generic;
 
 namespace NFX.Serialization
 {
-
   /// <summary>
   /// Base exception thrown by the serialization-related classes
   /// </summary>
   [Serializable]
   public class NFXSerializationException : NFXException
   {
-    public NFXSerializationException()
-    {
-    }
-
-    public NFXSerializationException(string message)
-      : base(message)
-    {
-    }
-
-    public NFXSerializationException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected NFXSerializationException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public NFXSerializationException() { }
+    public NFXSerializationException(string message) : base(message) { }
+    public NFXSerializationException(string message, Exception inner) : base(message, inner) { }
+    protected NFXSerializationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

@@ -15,14 +15,8 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 
 using NFX;
-using NFX.Environment;
 using NFX.Serialization.JSON;
 using System.Runtime.Serialization;
 using System.Net;
@@ -32,6 +26,7 @@ namespace NFX.Web.Pay.Stripe
   /// <summary>
   /// Represents stripe specific payment exception
   /// </summary>
+  [Serializable]
   public class PaymentStripeException: PaymentException
   {
     /// <summary>
@@ -91,12 +86,8 @@ namespace NFX.Web.Pay.Stripe
       return ex;
     }
 
-    public PaymentStripeException(string message) : base(message) {}
-
-    public PaymentStripeException(string message, Exception inner) : base(message, inner) {}
-
-    protected PaymentStripeException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-
-  } //PaymentStripeException
-
+    public PaymentStripeException(string message) : base(message) { }
+    public PaymentStripeException(string message, Exception inner) : base(message, inner) { }
+    protected PaymentStripeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 }

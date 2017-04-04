@@ -57,9 +57,7 @@ namespace NFX.Log.Destinations
 
       #region Properties
         /// <summary>
-        /// File name may include environment variables (e.g. ~home),
-        /// and use macros to specify time "$(~home)$(@::now fmt=yyyyMMdd utc=false)-$($name).log".
-        /// Pass "utc=true" argument to use UTC
+        /// The name of the file without path may use {0} for date: {0:yyyyMMdd}-$($name).csv.log
         /// </summary>
         [Config]
         public virtual string FileName
@@ -73,6 +71,9 @@ namespace NFX.Log.Destinations
             }
         }
 
+        /// <summary>
+        /// Directory where file should be created. Will create the directory chane if it doesn't exist
+        /// </summary>
         [Config]
         public virtual string Path
         {
@@ -118,7 +119,10 @@ namespace NFX.Log.Destinations
           m_PrevDate = utcNow;
 
           if (m_Stream.Name != GetDestinationFileName())
+          {
             m_Recreate = true;
+            ensureStream();
+          }
         }
 
 
@@ -151,6 +155,17 @@ namespace NFX.Log.Destinations
 
         protected virtual string GetDestinationFileName()
         {
+          var path = m_Path;
+          if (path.IsNotNullOrWhiteSpace())
+            try
+            {
+              path = path.Args( this.Service.LocalizedTime );
+            }
+            catch(Exception error)
+            {
+              throw new NFXException(StringConsts.LOGSVC_FILE_DESTINATION_PATH_ERROR.Args(Name, path, error.ToMessageWithType()), error);
+            }
+
           var fn = m_FileName;
 
           if (fn.IsNullOrWhiteSpace())
@@ -168,10 +183,10 @@ namespace NFX.Log.Destinations
             throw new NFXException(StringConsts.LOGSVC_FILE_DESTINATION_FILENAME_ERROR.Args(Name, fn, error.ToMessageWithType()), error);
           }
 
-          if (m_Path.IsNotNullOrWhiteSpace() && !Directory.Exists(m_Path))
-             IOMiscUtils.EnsureAccessibleDirectory(m_Path);
+          if (path.IsNotNullOrWhiteSpace() && !Directory.Exists(path))
+             IOMiscUtils.EnsureAccessibleDirectory(path);
 
-          var result = m_Path.IsNullOrWhiteSpace() ?  fn : System.IO.Path.Combine(m_Path, fn);
+          var result = path.IsNullOrWhiteSpace() ? fn : System.IO.Path.Combine(path, fn);
           return result;
         }
 
@@ -185,7 +200,7 @@ namespace NFX.Log.Destinations
           if (m_Stream!=null && !m_Recreate) return;
           closeStream();
           m_Recreate = false;
-          var fn = GetDestinationFileName();
+          var fn     = GetDestinationFileName();
 
           m_Stream = new FileStream(fn, FileMode.Append, FileAccess.Write, FileShare.Read);
           DoOpenStream();

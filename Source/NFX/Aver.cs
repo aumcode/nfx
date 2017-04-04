@@ -71,7 +71,6 @@ namespace NFX
         if (string.Equals(expect, got, comparison)) Fail("AreNotEqual({0}, {1}, {2})".args(expect, got, comparison), from);
       }
 
-
       public static void AreEqual   <T>(T expect, T got, string from = null) where T : IEquatable<T>
       { if (!expect.Equals(got)) Fail("AreEqual({0}, {1})"   .args(expect, got), from); }
 

@@ -15,49 +15,26 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 
-
 /* NFX by ITAdapter
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
-
-
-using NFX.Glue.Protocol;
 
 namespace NFX.Glue
 {
-
   /// <summary>
   /// Base exception thrown by the Glue framework
   /// </summary>
   [Serializable]
   public class GlueException : NFXException
   {
-    public GlueException()
-    {
-    }
-
-    public GlueException(string message)
-      : base(message)
-    {
-    }
-
-    public GlueException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected GlueException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public GlueException() { }
+    public GlueException(string message) : base(message) { }
+    public GlueException(string message, Exception inner) : base(message, inner) { }
+    protected GlueException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Base exception thrown by the Glue framework when some operations are invoked that do not apply
@@ -65,28 +42,11 @@ namespace NFX.Glue
   [Serializable]
   public class InvalidGlueOperationException : GlueException
   {
-    public InvalidGlueOperationException()
-    {
-    }
-
-    public InvalidGlueOperationException(string message)
-      : base(message)
-    {
-    }
-
-    public InvalidGlueOperationException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected InvalidGlueOperationException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public InvalidGlueOperationException() { }
+    public InvalidGlueOperationException(string message) : base(message) { }
+    public InvalidGlueOperationException(string message, Exception inner) : base(message, inner) { }
+    protected InvalidGlueOperationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Thrown by the Glue framework when clients try to perfom a call but that action fails
@@ -94,66 +54,53 @@ namespace NFX.Glue
   [Serializable]
   public class ClientCallException : GlueException
   {
-        private CallStatus m_Status;
+    public const string STATUS_FLD_NAME = "CCE-S";
 
-        /// <summary>
-        /// Returns call status enum
-        /// </summary>
-        public CallStatus CallStatus
-        {
-          get { return m_Status; }
-        }
+    public ClientCallException(CallStatus status) : base(StringConsts.GLUE_CLIENT_CALL_ERROR + status.ToString()) { Status = status; }
+    public ClientCallException(CallStatus status, string message) : base(message) { Status = status; }
+    public ClientCallException(CallStatus status, string message, Exception inner) : base(message, inner) { Status = status; }
+    protected ClientCallException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      Status = (CallStatus)info.GetInt32(STATUS_FLD_NAME);
+    }
 
+    /// <summary>
+    /// Returns call status enum
+    /// </summary>
+    public readonly CallStatus Status;
 
-        public ClientCallException(CallStatus status) : base(StringConsts.GLUE_CLIENT_CALL_ERROR + status.ToString())
-        {
-          m_Status = status;
-        }
-
-        public ClientCallException(CallStatus status, string message) : base(message)
-        {
-          m_Status = status;
-        }
-
-        public ClientCallException(CallStatus status, string message, Exception inner) : base(message, inner)
-        {
-          m_Status = status;
-        }
-
-        protected ClientCallException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-
-        }
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(STATUS_FLD_NAME, Status);
+      base.GetObjectData(info, context);
+    }
   }
 
   /// <summary>
   /// Thrown by the Glue framework when client message inspector fails with exception
   /// </summary>
   [Serializable]
-  public class ClientMsgInspectionException : GlueException
+  public class ClientMsgInspectionException : GlueException, IWrappedDataSource
   {
-        private IClientMsgInspector m_Inspector;
+    public ClientMsgInspectionException(IClientMsgInspector inspector, Exception error)
+      : base(StringConsts.GLUE_CLIENT_INSPECTORS_THREW_ERROR + error.Message, error) { m_Inspector = inspector; }
+    protected ClientMsgInspectionException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-        /// <summary>
-        /// Returns inspector that threw exception
-        /// </summary>
-        public IClientMsgInspector Inspector
-        {
-          get { return m_Inspector; }
-        }
+    [NonSerialized]
+    private IClientMsgInspector m_Inspector;
 
+    /// <summary>
+    /// Returns inspector that threw exception
+    /// </summary>
+    public IClientMsgInspector Inspector { get { return m_Inspector; } }
 
-
-        public ClientMsgInspectionException(IClientMsgInspector inspector, Exception error) :
-                                base(StringConsts.GLUE_CLIENT_INSPECTORS_THREW_ERROR + error.Message, error)
-        {
-          m_Inspector = inspector;
-        }
-
-        protected ClientMsgInspectionException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-
-        }
+    public string GetWrappedData()
+    {
+#warning TODO
+      throw new NotImplementedException();
+    }
   }
 
 
@@ -163,39 +110,30 @@ namespace NFX.Glue
   [Serializable]
   public class RemoteException : GlueException
   {
-        private WrappedExceptionData m_Remote;
+    public const string REMOTE_FLD_NAME = "RE-R";
 
-        /// <summary>
-        /// Returns remote exception data
-        /// </summary>
-        public WrappedExceptionData Remote
-        {
-          get { return m_Remote; }
-        }
+    public RemoteException(WrappedExceptionData data) : base(data.ToString()) { m_Remote = data; }
+    public RemoteException(string message, WrappedExceptionData data) : base(message) { m_Remote = data; }
+    public RemoteException(string message, WrappedExceptionData data, Exception inner) : base(message, inner) { m_Remote = data; }
+    protected RemoteException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      m_Remote = (WrappedExceptionData)info.GetValue(REMOTE_FLD_NAME, typeof(WrappedExceptionData));
+    }
 
+    private WrappedExceptionData m_Remote;
 
-        public RemoteException(WrappedExceptionData data) : base(data.ToString())
-        {
-          m_Remote = data;
-        }
+    /// <summary>
+    /// Returns remote exception data
+    /// </summary>
+    public WrappedExceptionData Remote { get { return m_Remote; } }
 
-        public RemoteException(string message, WrappedExceptionData data)
-          : base(message)
-        {
-          m_Remote = data;
-        }
-
-        public RemoteException(string message, WrappedExceptionData data, Exception inner)
-          : base(message, inner)
-        {
-          m_Remote = data;
-        }
-
-        protected RemoteException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-        {
-
-        }
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(REMOTE_FLD_NAME, m_Remote);
+      base.GetObjectData(info, context);
+    }
   }
 
 
@@ -206,37 +144,30 @@ namespace NFX.Glue
   [Serializable]
   public class ProtocolException : GlueException
   {
+    public const string CLOSE_CHANNEL_FLD_NAME = "PE-CC";
 
-      private bool m_CloseChannel;
+    public ProtocolException(bool closeChannel = false) { m_CloseChannel = closeChannel; }
+    public ProtocolException(string message, bool closeChannel = false) : base(message) { m_CloseChannel = closeChannel; }
+    public ProtocolException(string message, Exception inner, bool closeChannel = false) : base(message, inner) { m_CloseChannel = closeChannel; }
+    protected ProtocolException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      m_CloseChannel = info.GetBoolean(CLOSE_CHANNEL_FLD_NAME);
+    }
 
-      /// <summary>
-      /// Returns true when error is not recoverable on the existing channel and it needs to be closed
-      /// </summary>
-      public bool CloseChannel
-      {
-        get { return m_CloseChannel; }
-      }
+    private bool m_CloseChannel;
 
-      public ProtocolException(bool closeChannel = false)
-      {
-        m_CloseChannel = closeChannel;
-      }
+    /// <summary>
+    /// Returns true when error is not recoverable on the existing channel and it needs to be closed
+    /// </summary>
+    public bool CloseChannel { get { return m_CloseChannel; } }
 
-      public ProtocolException(string message, bool closeChannel = false) : base(message)
-      {
-        m_CloseChannel = closeChannel;
-      }
-
-      public ProtocolException(string message, Exception inner, bool closeChannel = false)
-          : base(message, inner)
-      {
-        m_CloseChannel = closeChannel;
-      }
-
-      protected ProtocolException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-      {
-      }
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(CLOSE_CHANNEL_FLD_NAME, m_CloseChannel);
+      base.GetObjectData(info, context);
+    }
   }
 
   /// <summary>
@@ -245,17 +176,11 @@ namespace NFX.Glue
   [Serializable]
   public class MessageSizeException : ProtocolException
   {
-      public MessageSizeException(int size, int limit, string operation, bool closeChannel = false)
-          : base(StringConsts.GLUE_MAX_MSG_SIZE_EXCEEDED_ERROR.Args(size, limit, operation), closeChannel)
-      {
-      }
+    public MessageSizeException(int size, int limit, string operation, bool closeChannel = false)
+      : base(StringConsts.GLUE_MAX_MSG_SIZE_EXCEEDED_ERROR.Args(size, limit, operation), closeChannel) { }
 
-      protected MessageSizeException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-      {
-      }
+    protected MessageSizeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Exception thrown in Glue server
@@ -263,26 +188,11 @@ namespace NFX.Glue
   [Serializable]
   public abstract class ServerException : GlueException
   {
-      public ServerException()
-      {
-      }
-
-      public ServerException(string message)
-          : base(message)
-      {
-      }
-
-      public ServerException(string message, Exception inner)
-          : base(message, inner)
-      {
-      }
-
-      protected ServerException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-      {
-      }
+    public ServerException() { }
+    public ServerException(string message) : base(message) { }
+    public ServerException(string message, Exception inner) : base(message, inner) { }
+    protected ServerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Exception thrown in Glue server when it shuts down/not running
@@ -290,27 +200,11 @@ namespace NFX.Glue
   [Serializable]
   public class ServerNotRunningException : ServerException
   {
-      public ServerNotRunningException()
-      {
-      }
-
-      public ServerNotRunningException(string message)
-          : base(message)
-      {
-      }
-
-      public ServerNotRunningException(string message, Exception inner)
-          : base(message, inner)
-      {
-      }
-
-      protected ServerNotRunningException(SerializationInfo info, StreamingContext context)
-          : base(info, context)
-      {
-      }
+    public ServerNotRunningException() { }
+    public ServerNotRunningException(string message) : base(message) { }
+    public ServerNotRunningException(string message, Exception inner) : base(message, inner) { }
+    protected ServerNotRunningException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
 
   /// <summary>
   /// Exception thrown when server could not get contract
@@ -318,23 +212,11 @@ namespace NFX.Glue
   [Serializable]
   public class ServerContractException : ServerException
   {
-      public ServerContractException()
-      {
-      }
-
-      public ServerContractException(string message) : base(message)
-      {
-      }
-
-      public ServerContractException(string message, Exception inner) : base(message, inner)
-      {
-      }
-
-      protected ServerContractException(SerializationInfo info, StreamingContext context) : base(info, context)
-      {
-      }
+    public ServerContractException() { }
+    public ServerContractException(string message) : base(message) { }
+    public ServerContractException(string message, Exception inner) : base(message, inner) { }
+    protected ServerContractException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Exception thrown when server instance can not be created
@@ -342,23 +224,11 @@ namespace NFX.Glue
   [Serializable]
   public class ServerInstanceActivationException : ServerException
   {
-      public ServerInstanceActivationException()
-      {
-      }
-
-      public ServerInstanceActivationException(string message) : base(message)
-      {
-      }
-
-      public ServerInstanceActivationException(string message, Exception inner) : base(message, inner)
-      {
-      }
-
-      protected ServerInstanceActivationException(SerializationInfo info, StreamingContext context) : base(info, context)
-      {
-      }
+    public ServerInstanceActivationException() { }
+    public ServerInstanceActivationException(string message) : base(message) { }
+    public ServerInstanceActivationException(string message, Exception inner) : base(message, inner) { }
+    protected ServerInstanceActivationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Exception thrown when statful server identified is not found/has expired/timed-out
@@ -366,23 +236,11 @@ namespace NFX.Glue
   [Serializable]
   public class StatefulServerInstanceDoesNotExistException : ServerInstanceActivationException
   {
-      public StatefulServerInstanceDoesNotExistException()
-      {
-      }
-
-      public StatefulServerInstanceDoesNotExistException(string message) : base(message)
-      {
-      }
-
-      public StatefulServerInstanceDoesNotExistException(string message, Exception inner) : base(message, inner)
-      {
-      }
-
-      protected StatefulServerInstanceDoesNotExistException(SerializationInfo info, StreamingContext context) : base(info, context)
-      {
-      }
+    public StatefulServerInstanceDoesNotExistException() { }
+    public StatefulServerInstanceDoesNotExistException(string message) : base(message) { }
+    public StatefulServerInstanceDoesNotExistException(string message, Exception inner) : base(message, inner) { }
+    protected StatefulServerInstanceDoesNotExistException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Exception thrown when statful server instance is not thread safe and could not be locked before set timeout expired
@@ -390,21 +248,10 @@ namespace NFX.Glue
   [Serializable]
   public class StatefulServerInstanceLockTimeoutException : ServerInstanceActivationException
   {
-      public StatefulServerInstanceLockTimeoutException()
-      {
-      }
-
-      public StatefulServerInstanceLockTimeoutException(string message) : base(message)
-      {
-      }
-
-      public StatefulServerInstanceLockTimeoutException(string message, Exception inner) : base(message, inner)
-      {
-      }
-
-      protected StatefulServerInstanceLockTimeoutException(SerializationInfo info, StreamingContext context) : base(info, context)
-      {
-      }
+    public StatefulServerInstanceLockTimeoutException() { }
+    public StatefulServerInstanceLockTimeoutException(string message) : base(message) { }
+    public StatefulServerInstanceLockTimeoutException(string message, Exception inner) : base(message, inner) { }
+    protected StatefulServerInstanceLockTimeoutException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 
 
@@ -414,24 +261,9 @@ namespace NFX.Glue
   [Serializable]
   public class ServerMethodInvocationException : ServerException
   {
-      public ServerMethodInvocationException()
-      {
-      }
-
-      public ServerMethodInvocationException(string message) : base(message)
-      {
-      }
-
-      public ServerMethodInvocationException(string message, Exception inner) : base(message, inner)
-      {
-      }
-
-      protected ServerMethodInvocationException(SerializationInfo info, StreamingContext context) : base(info, context)
-      {
-      }
+    public ServerMethodInvocationException() { }
+    public ServerMethodInvocationException(string message) : base(message) { }
+    public ServerMethodInvocationException(string message, Exception inner) : base(message, inner) { }
+    protected ServerMethodInvocationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
-
-
 }

@@ -47,7 +47,7 @@ namespace WinFormsTest
     }
 
 
-    
+
     #region PERZON
 
       private static ulong _id;
@@ -67,7 +67,7 @@ namespace WinFormsTest
           };
         }
 
-        
+
         [Field]public GDID ID { get; set;}               //4+8 = 12
         [Field]public string FirstName { get; set;}      //16 hdr + 4 + (11*2) = 42
         [Field]public string LastName { get; set;}       //16 hdr + 4 + (18*2) = 56
@@ -103,7 +103,7 @@ namespace WinFormsTest
 
             Flag1 = true,
             Flag2 = true,
-           
+
             Int1 = (int)_id,
             Int2 = (int)_id,
             Int3 = (int)_id,
@@ -170,7 +170,7 @@ namespace WinFormsTest
       btnCompact.Enabled = m_Pile.Status==ControlStatus.Active;
       chkSpeed.Enabled = m_Pile.Status==ControlStatus.Active;
 
-      btnPersonPut.Enabled = btnPersonParaPut.Enabled = btnPersonParaGet.Enabled = 
+      btnPersonPut.Enabled = btnPersonParaPut.Enabled = btnPersonParaGet.Enabled =
       btnStruct.Enabled = btnPersonGet.Enabled = btnPersonDelete.Enabled = m_Pile.Status==ControlStatus.Active;
 
       sbTraxDeletes.Enabled = sbTraxWrites.Enabled = m_Pile.Status==ControlStatus.Active;
@@ -179,7 +179,7 @@ namespace WinFormsTest
       var count = m_Pile.ObjectCount;
       var utilized = m_Pile.UtilizedBytes;
       var overhead = m_Pile.OverheadBytes;
-      
+
       stbMemBytes.Text = m_Pile.AllocatedMemoryBytes.ToString("n0");
       stbObjectCount.Text = count.ToString("n0");
       stbOverheadBytes.Text = overhead.ToString("n0");
@@ -211,14 +211,14 @@ namespace WinFormsTest
       lbErrors.Items.Clear();
 
       var sz = tbSegmentSize.Text.AsInt(0);
-      if (sz > 0) 
+      if (sz > 0)
       {
         sz = sz * 1024 * 1024;
         m_Pile.SegmentSize = sz;
       }
 
       var mm = tbMaxMemoryMb.Text.AsLong(0);
-      if (mm > 0) 
+      if (mm > 0)
       {
         mm = mm * 1024 * 1024;
         m_Pile.MaxMemoryLimit = mm;
@@ -247,14 +247,14 @@ namespace WinFormsTest
       for(var i=0; i<cnt;i++)
       {
         var obj = i%5==0? Person2.MakeFake2() : Person.MakeFake();
-//m_Crap.Add( obj );   
+//m_Crap.Add( obj );
         if (pv>0) obj.BinData = new byte[pv];
-         
+
         var pp = m_Pile.Put( obj );
-        
+
         if (i<25)
          lbPerson.Items.Add( pp );
-      } 
+      }
 
       var elps = w.ElapsedMilliseconds;
       Text = "Added {0:n0} in {1:n0}ms at {2:n0}/sec".Args(cnt, elps, cnt /(elps/1000d));
@@ -266,7 +266,7 @@ namespace WinFormsTest
     {
       if (lbPerson.SelectedItem==null) return;
       var pp = (PilePointer)lbPerson.SelectedItem;
-      
+
       m_Pile.Delete( pp );
       lbPerson.Items.Remove( pp );
     }
@@ -275,7 +275,7 @@ namespace WinFormsTest
     {
       if (lbPerson.SelectedItem==null) return;
       var pp = (PilePointer)lbPerson.SelectedItem;
-      
+
       var raw = chkRaw.Checked;
       var cnt = tbPersonCount.Text.AsInt(10);
       var w = Stopwatch.StartNew();
@@ -294,7 +294,7 @@ namespace WinFormsTest
     {
          if (lbPerson.SelectedItem==null) return;
           var pp = (PilePointer)lbPerson.SelectedItem;
-      
+
          Text = "Size of {0} is {1:n} bytes".Args(pp,  m_Pile.SizeOf(pp));
     }
 
@@ -343,7 +343,7 @@ namespace WinFormsTest
             var obj = Person.MakeFake();
             var pp = m_Pile.Put( obj );
           }
-        })); 
+        }));
 
       Task.WaitAll( tasks.ToArray());
 
@@ -399,8 +399,8 @@ namespace WinFormsTest
         while (chkTraxer.Checked &&  m_Traxers.Count < __threadCount)
         {
           var context = new tcontext();
-          var thread = new Thread( 
-          (ctx) => 
+          var thread = new Thread(
+          (ctx) =>
           {
             try
             {
@@ -416,18 +416,18 @@ namespace WinFormsTest
 
                 var wc = __writesSec / tc;
                 var dc = __delSec / tc;
-                
+
                 var w=0;
                 var d=0;
                 while(w<wc || d<dc)
                 {
-                  if (w<wc) 
+                  if (w<wc)
                   {
                     var obj = Person.MakeFake();
 
                     if (__payloadVariance>0)
                      obj.BinData = new byte[__payloadVariance];
-                     
+
                     var pp = m_Pile.Put( obj );
                     pps[ppi] = pp;
                     ppi++;
@@ -435,7 +435,7 @@ namespace WinFormsTest
                     w++;
                   }
 
-                  if (d<dc) 
+                  if (d<dc)
                   {
                       if (di==pps.Length) di = 0;
                       var pp = pps[di];
@@ -487,12 +487,12 @@ namespace WinFormsTest
       var w = Stopwatch.StartNew();
       var pv = tbPersonVariance.Text.AsInt(0);
       for(var i=0; i<cnt;i++)
-      {                               
+      {
         var pp = m_Pile.Put( new PilePointer(2,1,2) );
-                             
+
         if (i<25)
          lbPerson.Items.Add( pp );
-      } 
+      }
 
       var elps = w.ElapsedMilliseconds;
       Text = "Added structs {0:n0} in {1:n0}ms at {2:n0}/sec".Args(cnt, elps, cnt /(elps/1000d));
@@ -502,8 +502,8 @@ namespace WinFormsTest
       {
         if (lbPerson.SelectedItem==null) return;
         var pp = (PilePointer)lbPerson.SelectedItem;
-      
-        
+
+
         var cnt = tbPersonCount.Text.AsInt(10);
         var threads = tbPersonThreads.Text.AsInt(1);
 
@@ -518,7 +518,7 @@ namespace WinFormsTest
             {
               var obj = m_Pile.Get( pp );
             }
-          }, TaskCreationOptions.LongRunning)); 
+          }, TaskCreationOptions.LongRunning));
 
         Task.WaitAll( tasks.ToArray());
 
@@ -528,11 +528,11 @@ namespace WinFormsTest
         Text = "Got {0:n0} in {1:n0}ms at {2:n0}/sec".Args(total, elps, total /(elps/1000d));
       }
 
-      
 
-     
 
-     
+
+
+
 
 
 

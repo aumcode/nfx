@@ -22,6 +22,6 @@
  Examples:
 <f color=yellow>
   phash -pp -st 90 -lvl Normal<f color=gray>
- Pretty print with score threshold 90% hasing strength Normal
+ Pretty print with score threshold 90% hashing strength Normal
 
 <pop>

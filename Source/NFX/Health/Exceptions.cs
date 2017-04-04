@@ -21,61 +21,27 @@ using System.Runtime.Serialization;
 
 namespace NFX.Health
 {
+  /// <summary>
+  /// Represents general ancestor for exceptions thrown by health checks
+  /// </summary>
+  [Serializable]
+  public class HealthException : NFXException
+  {
+    public HealthException() { }
+    public HealthException(string message) : base(message) { }
+    public HealthException(string message, Exception inner) : base(message, inner) { }
+    protected HealthException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-    /// <summary>
-    /// Represents general ancestor for exceptions thrown by health checks
-    /// </summary>
-    [Serializable]
-    public class HealthException : NFXException
-    {
-        public HealthException()
-        {
-        }
-
-        public HealthException(string message)
-            : base(message)
-        {
-        }
-
-        public HealthException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-
-        protected HealthException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-
-        }
-
-    }
-
-
-    /// <summary>
-    /// Thrown by Health.CheckList
-    /// </summary>
-    [Serializable]
-    public class HealthCheckListException : NFXException
-    {
-        public HealthCheckListException()
-        {
-        }
-
-        public HealthCheckListException(string message)
-            : base(message)
-        {
-        }
-
-        public HealthCheckListException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-
-        protected HealthCheckListException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-
-        }
-
-    }
+  /// <summary>
+  /// Thrown by Health.CheckList
+  /// </summary>
+  [Serializable]
+  public class HealthCheckListException : NFXException
+  {
+    public HealthCheckListException() { }
+    public HealthCheckListException(string message) : base(message) { }
+    public HealthCheckListException(string message, Exception inner) : base(message, inner) { }
+    protected HealthCheckListException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 }

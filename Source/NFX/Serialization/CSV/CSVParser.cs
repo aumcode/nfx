@@ -251,13 +251,28 @@ namespace NFX.Serialization.CSV
   [Serializable]
   public class CSVParserException : NFXException
   {
-    public readonly int Line;
-    public readonly int Column;
+    public const string LINE_FLD_NAME = "CSVPE-L";
+    public const string COLUMN_FLD_NAME = "CSVPE-C";
 
     public CSVParserException(int line = -1, int column = -1) { Line = line; Column = column; }
     public CSVParserException(string message, int line = -1, int column = -1) : base(message) { Line = line; Column = column; }
     public CSVParserException(string message, Exception inner, int line = -1, int column = -1) : base(message, inner) { Line = line; Column = column; }
-    protected CSVParserException(SerializationInfo info, StreamingContext context, int line = -1, int column = -1) : base(info, context) { Line = line; Column = column; }
-  }
+    protected CSVParserException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      Line = info.GetInt32(LINE_FLD_NAME);
+      Column = info.GetInt32(COLUMN_FLD_NAME);
+    }
 
+    public readonly int Line;
+    public readonly int Column;
+
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(LINE_FLD_NAME, Line);
+      info.AddValue(COLUMN_FLD_NAME, Column);
+      base.GetObjectData(info, context);
+    }
+  }
 }

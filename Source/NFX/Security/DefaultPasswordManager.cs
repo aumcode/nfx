@@ -444,27 +444,27 @@ namespace NFX.Security
         }
       }
 
-      private int getMaxLengthForLevel(PasswordFamily family, PasswordStrengthLevel level)
-      {
-        switch (level)
-        {              //todo:  OGEE - what does this code do?
-          case PasswordStrengthLevel.Minimum:     return 4 - family == PasswordFamily.Text ? 0 : 1;
-          case PasswordStrengthLevel.BelowNormal: return 5 - family == PasswordFamily.Text ? 0 : 1;
-          default:                                return 6 - family == PasswordFamily.Text ? 0 : 1; // Normal
-          case PasswordStrengthLevel.AboveNormal: return 8 - family == PasswordFamily.Text ? 0 : 2;
-          case PasswordStrengthLevel.Maximum:     return 10 - family == PasswordFamily.Text ? 0 : 3;
-        }
-      }
-
       private int getMinLengthForLevel(PasswordFamily family, PasswordStrengthLevel level)
       {
         switch (level)
         {              //todo:  OGEE - what does this code do?
-          case PasswordStrengthLevel.Minimum:     return 5 - family == PasswordFamily.Text ? 0 : 1;
-          case PasswordStrengthLevel.BelowNormal: return 6 - family == PasswordFamily.Text ? 0 : 1;
-          default:                                return 8 - family == PasswordFamily.Text ? 0 : 2; // Normal
-          case PasswordStrengthLevel.AboveNormal: return 10 - family == PasswordFamily.Text ? 0 : 3;
-          case PasswordStrengthLevel.Maximum:     return 13 - family == PasswordFamily.Text ? 0 : 4;
+          case PasswordStrengthLevel.Minimum:     return 4 -  (family == PasswordFamily.Text ? 0 : 1);
+          case PasswordStrengthLevel.BelowNormal: return 5 -  (family == PasswordFamily.Text ? 0 : 1);
+          default:                                return 6 -  (family == PasswordFamily.Text ? 0 : 1); // Normal
+          case PasswordStrengthLevel.AboveNormal: return 8 -  (family == PasswordFamily.Text ? 0 : 2);
+          case PasswordStrengthLevel.Maximum:     return 10 - (family == PasswordFamily.Text ? 0 : 3);
+        }
+      }
+
+      private int getMaxLengthForLevel(PasswordFamily family, PasswordStrengthLevel level)
+      {
+        switch (level)
+        {              //todo:  OGEE - what does this code do?
+          case PasswordStrengthLevel.Minimum:     return 5 -  (family == PasswordFamily.Text ? 0 : 1);
+          case PasswordStrengthLevel.BelowNormal: return 6 -  (family == PasswordFamily.Text ? 0 : 1);
+          default:                                return 8 -  (family == PasswordFamily.Text ? 0 : 2); // Normal
+          case PasswordStrengthLevel.AboveNormal: return 10 - (family == PasswordFamily.Text ? 0 : 3);
+          case PasswordStrengthLevel.Maximum:     return 13 - (family == PasswordFamily.Text ? 0 : 4);
         }
       }
 

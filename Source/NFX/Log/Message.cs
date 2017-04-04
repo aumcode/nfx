@@ -41,126 +41,125 @@ namespace NFX.Log
   [Serializable]
   public sealed class Message
   {
-
     public static string DefaultHostName;
 
     #region Private Fields
-      private Guid m_Guid;
-      private Guid m_RelatedTo;
-      private MessageType m_Type;
-      private int m_Source;
-      private DateTime m_TimeStamp;
-      private string m_Host;
-      private string m_From;
-      private string m_Topic;
-      private string m_Text;
-      private string m_Parameters;
-      private Exception m_Exception;
+    private Guid m_Guid;
+    private Guid m_RelatedTo;
+    private MessageType m_Type;
+    private int m_Source;
+    private DateTime m_TimeStamp;
+    private string m_Host;
+    private string m_From;
+    private string m_Topic;
+    private string m_Text;
+    private string m_Parameters;
+    private Exception m_Exception;
     #endregion
 
     #region Properties
-        /// <summary>
-        /// Returns global unique identifier for this particular message
-        /// </summary>
-        public Guid Guid
-        {
-          get { return m_Guid; }
-        }
+    /// <summary>
+    /// Returns global unique identifier for this particular message
+    /// </summary>
+    public Guid Guid
+    {
+      get { return m_Guid; }
+    }
 
-        /// <summary>
-        /// Gets/Sets global unique identifier of a message that this message is related to.
-        /// No referential integrity check is performed
-        /// </summary>
-        public Guid RelatedTo
-        {
-          get { return m_RelatedTo; }
-          set { m_RelatedTo = value; }
-        }
+    /// <summary>
+    /// Gets/Sets global unique identifier of a message that this message is related to.
+    /// No referential integrity check is performed
+    /// </summary>
+    public Guid RelatedTo
+    {
+      get { return m_RelatedTo; }
+      set { m_RelatedTo = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets message type, such as: Info/Warning/Error etc...
-        /// </summary>
-        public MessageType Type
-        {
-          get { return m_Type; }
-          set { m_Type = value; }
-        }
+    /// <summary>
+    /// Gets/Sets message type, such as: Info/Warning/Error etc...
+    /// </summary>
+    public MessageType Type
+    {
+      get { return m_Type; }
+      set { m_Type = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets message source line number/tracepoint#, this is used in conjunction with From
-        /// </summary>
-        public int Source
-        {
-          get { return m_Source; }
-          set { m_Source = value; }
-        }
+    /// <summary>
+    /// Gets/Sets message source line number/tracepoint#, this is used in conjunction with From
+    /// </summary>
+    public int Source
+    {
+      get { return m_Source; }
+      set { m_Source = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets timestamp when message was generated
-        /// </summary>
-        public DateTime TimeStamp
-        {
-          get { return m_TimeStamp; }
-          set { m_TimeStamp = value; }
-        }
+    /// <summary>
+    /// Gets/Sets timestamp when message was generated
+    /// </summary>
+    public DateTime TimeStamp
+    {
+      get { return m_TimeStamp; }
+      set { m_TimeStamp = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets host name that generated the message
-        /// </summary>
-        public string Host
-        {
-          get { return m_Host ?? string.Empty; }
-          set { m_Host = value; }
-        }
+    /// <summary>
+    /// Gets/Sets host name that generated the message
+    /// </summary>
+    public string Host
+    {
+      get { return m_Host ?? string.Empty; }
+      set { m_Host = value; }
+    }
 
 
-        /// <summary>
-        /// Gets/Sets logical component ID, such as: class name, method name, process instance, that generated the message.
-        /// This field is used in the scope of Topic
-        /// </summary>
-        public string From
-        {
-          get { return m_From ?? string.Empty; }
-          set { m_From = value; }
-        }
+    /// <summary>
+    /// Gets/Sets logical component ID, such as: class name, method name, process instance, that generated the message.
+    /// This field is used in the scope of Topic
+    /// </summary>
+    public string From
+    {
+      get { return m_From ?? string.Empty; }
+      set { m_From = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets a message topic/relation - the name of software concern within the big app, i.e. "Database" or "Security"
-        /// </summary>
-        public string Topic
-        {
-          get { return m_Topic ?? string.Empty; }
-          set { m_Topic = value; }
-        }
+    /// <summary>
+    /// Gets/Sets a message topic/relation - the name of software concern within the big app, i.e. "Database" or "Security"
+    /// </summary>
+    public string Topic
+    {
+      get { return m_Topic ?? string.Empty; }
+      set { m_Topic = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets an unstructured message text, the emitting component name must be in From field, not in text.
-        /// Note about logging errors. Use caught exception.ToMessageWithType() method, then attach the caught exception as Exception property
-        /// </summary>
-        public string Text
-        {
-          get { return m_Text ?? string.Empty; }
-          set { m_Text = value; }
-        }
+    /// <summary>
+    /// Gets/Sets an unstructured message text, the emitting component name must be in From field, not in text.
+    /// Note about logging errors. Use caught exception.ToMessageWithType() method, then attach the caught exception as Exception property
+    /// </summary>
+    public string Text
+    {
+      get { return m_Text ?? string.Empty; }
+      set { m_Text = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets a structured parameter bag, this may be used for additional debug info like source file name, additional context etc.
-        /// </summary>
-        public string Parameters
-        {
-          get { return m_Parameters ?? string.Empty; }
-          set { m_Parameters = value; }
-        }
+    /// <summary>
+    /// Gets/Sets a structured parameter bag, this may be used for additional debug info like source file name, additional context etc.
+    /// </summary>
+    public string Parameters
+    {
+      get { return m_Parameters ?? string.Empty; }
+      set { m_Parameters = value; }
+    }
 
-        /// <summary>
-        /// Gets/Sets exception associated with message.
-        /// Set this property EVEN IF the name/text of exception is already included in Text as log destinations may elect to dump the whole stack trace
-        /// </summary>
-        public Exception Exception
-        {
-          get { return m_Exception; }
-          set { m_Exception = value; }
-        }
+    /// <summary>
+    /// Gets/Sets exception associated with message.
+    /// Set this property EVEN IF the name/text of exception is already included in Text as log destinations may elect to dump the whole stack trace
+    /// </summary>
+    public Exception Exception
+    {
+      get { return m_Exception; }
+      set { m_Exception = value; }
+    }
     #endregion
 
     public Message()
@@ -175,7 +174,7 @@ namespace NFX.Log
     /// </summary>
     public Message(object pars, [CallerFilePath] string file = null, [CallerLineNumber] int line = 0) : this()
     {
-      SetParamsAsObject( FormatCallerParams(pars, file, line) );
+      SetParamsAsObject(FormatCallerParams(pars, file, line));
       Source = line;
     }
 
@@ -189,7 +188,7 @@ namespace NFX.Log
                            From,
                            Topic,
                            Text,
-                           Exception!=null ? Exception.ToString() : string.Empty);
+                           Exception != null ? Exception.ToString() : string.Empty);
     }
 
     /// <summary>
@@ -199,24 +198,24 @@ namespace NFX.Log
                                             [CallerFilePath]  string file = null,
                                             [CallerLineNumber]int line = 0)
     {
-      if (pars==null)
+      if (pars == null)
         return new
-          {
-            clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
-            clrL = line,
-          };
+        {
+          clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
+          clrL = line,
+        };
       else
         return new
-          {
-            clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
-            clrL = line,
-            p = pars
-          };
+        {
+          clrF = file.IsNotNullOrWhiteSpace() ? Path.GetFileName(file) : null,
+          clrL = line,
+          p = pars
+        };
     }
 
     public Message SetParamsAsObject(object p)
     {
-      if (p==null)
+      if (p == null)
         m_Parameters = null;
       else
         m_Parameters = p.ToJSON(JSONWritingOptions.CompactASCII);
@@ -240,6 +239,18 @@ namespace NFX.Log
         m_Parameters = m_Parameters,
         m_Exception = m_Exception
       };
+    }
+  }
+
+  public static class MessageExtensions
+  {
+    public static Message ThisOrNewSafeWrappedException(this Message msg, bool captureStack = true)
+    {
+      if (msg == null || msg.Exception == null || msg.Exception is WrappedException) return msg;
+
+      var clone = msg.Clone();
+      clone.Exception = new WrappedException(new WrappedExceptionData(msg.Exception, captureStack));
+      return clone;
     }
   }
 

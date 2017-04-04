@@ -27,134 +27,123 @@ using NFX;
 
 namespace NFX.DataAccess.CRUD
 {
-      /// <summary>
-      /// Thrown by CRUD data access classes
-      /// </summary>
-      [Serializable]
-      public class CRUDException : DataAccessException
-      {
-            public CRUDException() {}
+  /// <summary>
+  /// Thrown by CRUD data access classes
+  /// </summary>
+  [Serializable]
+  public class CRUDException : DataAccessException
+  {
+    public CRUDException() { }
+    public CRUDException(string message) : base(message) { }
+    public CRUDException(string message, Exception inner) : base(message, inner) { }
+    public CRUDException(string message, KeyViolationKind kvKind, string keyViolation) : base(message, kvKind, keyViolation) { }
+    public CRUDException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation) : base(message, inner, kvKind, keyViolation) { }
+    protected CRUDException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-            public CRUDException(string message) : base(message){}
+  /// <summary>
+  /// Thrown by CRUD data access classes when validation does not pass
+  /// </summary>
+  [Serializable]
+  public class CRUDValidationException : CRUDException
+  {
+    public CRUDValidationException() { }
+    public CRUDValidationException(string message) : base(message) { }
+    public CRUDValidationException(string message, Exception inner) : base(message, inner) { }
+    public CRUDValidationException(string message, KeyViolationKind kvKind, string keyViolation) : base(message, kvKind, keyViolation) { }
+    public CRUDValidationException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation) : base(message, inner, kvKind, keyViolation) { }
+    protected CRUDValidationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-            public CRUDException(string message, Exception inner) : base(message, inner){}
+  /// <summary>
+  /// Thrown by CRUD data access classes when field validation does not pass
+  /// </summary>
+  [Serializable]
+  public class CRUDRowValidationException : CRUDValidationException
+  {
+    public const string SCHEMA_NAME_FLD_NAME = "CRUDRVE-SN";
 
-            public CRUDException(string message, KeyViolationKind kvKind, string keyViolation)
-              : base(message, kvKind, keyViolation){}
+    public const string WHAT = "Schema: '{0}'; ";
 
-            public CRUDException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation)
-              : base(message, inner, kvKind, keyViolation){}
+    public CRUDRowValidationException(string schemaName) : base(WHAT.Args(schemaName)) { SchemaName = schemaName; }
+    public CRUDRowValidationException(string schemaName, string message) : base(WHAT.Args(schemaName) + message) { SchemaName = schemaName; }
+    public CRUDRowValidationException(string schemaName, string message, Exception inner) : base(WHAT.Args(schemaName) + message, inner) { SchemaName = schemaName; }
+    protected CRUDRowValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      SchemaName = info.GetString(SCHEMA_NAME_FLD_NAME);
+    }
 
-            protected CRUDException(SerializationInfo info, StreamingContext context)
-              : base(info, context) {}
-      }
+    public readonly string SchemaName;
 
-      /// <summary>
-      /// Thrown by CRUD data access classes when validation does not pass
-      /// </summary>
-      [Serializable]
-      public class CRUDValidationException : CRUDException
-      {
-            public CRUDValidationException() {}
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(SCHEMA_NAME_FLD_NAME, SchemaName);
+      base.GetObjectData(info, context);
+    }
+  }
 
-            public CRUDValidationException(string message) : base(message){}
+  /// <summary>
+  /// Thrown by CRUD data access classes when field validation does not pass
+  /// </summary>
+  [Serializable]
+  public class CRUDFieldValidationException : CRUDValidationException
+  {
+    public const string SCHEMA_NAME_FLD_NAME = "CRUDRVE-SN";
+    public const string FIELD_NAME_FLD_NAME = "CRUDRVE-FN";
+    public const string CLIENT_MESSAGE_FLD_NAME = "CRUDRVE-CM";
 
-            public CRUDValidationException(string message, Exception inner) : base(message, inner){}
+    public const string WHAT = "Schema field: '{0}'.{1}; ";
 
-            public CRUDValidationException(string message, KeyViolationKind kvKind, string keyViolation)
-              : base(message, kvKind, keyViolation){}
+    public CRUDFieldValidationException(Row row, string fieldName, string message)
+      : this(row.NonNull(text: "row").Schema.Name,
+             row.Schema[fieldName].NonNull(text: "field {0} not found in schema".Args(fieldName)).Name, message) { }
 
-            public CRUDValidationException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation)
-              : base(message, inner, kvKind, keyViolation){}
+    public CRUDFieldValidationException(string schemaName, string fieldName)
+      : base(WHAT.Args(schemaName, fieldName))
+    {
+      SchemaName = schemaName;
+      FieldName = fieldName;
+      ClientMessage = "Validation error";
+    }
 
-            protected CRUDValidationException(SerializationInfo info, StreamingContext context)
-              : base(info, context) {}
-      }
+    public CRUDFieldValidationException(string schemaName, string fieldName, string message)
+      : base(WHAT.Args(schemaName, fieldName) + message)
+    {
+      SchemaName = schemaName;
+      FieldName = fieldName;
+      ClientMessage = message;
+    }
 
-      /// <summary>
-      /// Thrown by CRUD data access classes when field validation does not pass
-      /// </summary>
-      [Serializable]
-      public class CRUDRowValidationException : CRUDValidationException
-      {
-            public const string WHAT = "Schema: '{0}'; ";
+    public CRUDFieldValidationException(string schemaName, string fieldName, string message, Exception inner)
+      : base(WHAT.Args(schemaName, fieldName) + message, inner)
+    {
+      SchemaName = schemaName;
+      FieldName = fieldName;
+      ClientMessage = message;
+    }
 
-            public readonly string SchemaName;
+    protected CRUDFieldValidationException(SerializationInfo info, StreamingContext context)
+      : base(info, context)
+    {
+      SchemaName = info.GetString(SCHEMA_NAME_FLD_NAME);
+      FieldName = info.GetString(FIELD_NAME_FLD_NAME);
+      ClientMessage = info.GetString(CLIENT_MESSAGE_FLD_NAME);
+    }
 
-            public CRUDRowValidationException(string schemaName)
-              : base(WHAT.Args(schemaName))
-            {
-                SchemaName = schemaName;
-            }
+    public readonly string SchemaName;
+    public readonly string FieldName;
+    public readonly string ClientMessage;
 
-            public CRUDRowValidationException(string schemaName, string message)
-              : base(WHAT.Args(schemaName) + message)
-            {
-                SchemaName = schemaName;
-            }
-
-            public CRUDRowValidationException(string schemaName, string message, Exception inner)
-              : base(WHAT.Args(schemaName) + message, inner)
-            {
-                SchemaName = schemaName;
-            }
-
-            protected CRUDRowValidationException(SerializationInfo info, StreamingContext context)
-              : base(info, context)
-            {
-            }
-
-      }
-
-
-      /// <summary>
-      /// Thrown by CRUD data access classes when field validation does not pass
-      /// </summary>
-      [Serializable]
-      public class CRUDFieldValidationException : CRUDValidationException
-      {
-            public const string WHAT = "Schema field: '{0}'.{1}; ";
-
-            public readonly string SchemaName;
-            public readonly string FieldName;
-            public readonly string ClientMessage;
-
-
-            public CRUDFieldValidationException(Row row, string fieldName, string message)
-              : this(row.NonNull(text: "row").Schema.Name,
-                     row.Schema[fieldName].NonNull(text: "field {0} not found in schema".Args(fieldName)).Name, message)
-            {
-            }
-
-            public CRUDFieldValidationException(string schemaName, string fieldName)
-              : base(WHAT.Args(schemaName, fieldName))
-            {
-                SchemaName = schemaName;
-                FieldName = fieldName;
-                ClientMessage = "Validation error";
-            }
-
-            public CRUDFieldValidationException(string schemaName, string fieldName, string message)
-              : base(WHAT.Args(schemaName, fieldName) + message)
-            {
-                SchemaName = schemaName;
-                FieldName = fieldName;
-                ClientMessage = message;
-            }
-
-            public CRUDFieldValidationException(string schemaName, string fieldName, string message, Exception inner)
-              : base(WHAT.Args(schemaName, fieldName) + message, inner)
-            {
-                SchemaName = schemaName;
-                FieldName = fieldName;
-                ClientMessage = message;
-            }
-
-            protected CRUDFieldValidationException(SerializationInfo info, StreamingContext context)
-              : base(info, context)
-            {
-            }
-
-      }
-
- }
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(SCHEMA_NAME_FLD_NAME, SchemaName);
+      info.AddValue(FIELD_NAME_FLD_NAME, FieldName);
+      info.AddValue(CLIENT_MESSAGE_FLD_NAME, ClientMessage);
+      base.GetObjectData(info, context);
+    }
+  }
+}

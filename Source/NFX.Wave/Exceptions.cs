@@ -28,32 +28,17 @@ using NFX.Web;
 
 namespace NFX.Wave
 {
-
   /// <summary>
   /// Base exception thrown by the WAVE framework
   /// </summary>
   [Serializable]
   public class WaveException : NFXException
   {
-    public WaveException()
-    {
-    }
-
-    public WaveException(string message) : base(message)
-    {
-    }
-
-    public WaveException(string message, Exception inner) : base(message, inner)
-    {
-    }
-
-    protected WaveException(SerializationInfo info, StreamingContext context): base(info, context)
-    {
-
-    }
-
+    public WaveException() { }
+    public WaveException(string message) : base(message) { }
+    public WaveException(string message, Exception inner) : base(message, inner) { }
+    protected WaveException(SerializationInfo info, StreamingContext context): base(info, context) { }
   }
-
 
   /// <summary>
   /// Wraps inner exceptions capturing stack trace in inner implementing blocks
@@ -61,10 +46,8 @@ namespace NFX.Wave
   [Serializable]
   public class MVCActionException : WaveException
   {
-
-    public readonly string Controller;
-    public readonly string Action;
-
+    public const string CONTROLLER_FLD_NAME = "MVCAE-C";
+    public const string ACTION_FLD_NAME = "MVCAE-A";
 
     public static MVCActionException WrapActionBodyError(string controller, string action, Exception src)
     {
@@ -100,9 +83,21 @@ namespace NFX.Wave
 
     protected MVCActionException(SerializationInfo info, StreamingContext context): base(info, context)
     {
-
+      Controller = info.GetString(CONTROLLER_FLD_NAME);
+      Action = info.GetString(ACTION_FLD_NAME);
     }
 
+    public readonly string Controller;
+    public readonly string Action;
+
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(CONTROLLER_FLD_NAME, Controller);
+      info.AddValue(ACTION_FLD_NAME, Action);
+      base.GetObjectData(info, context);
+    }
   }
 
   /// <summary>
@@ -111,17 +106,9 @@ namespace NFX.Wave
   [Serializable]
   public class WaveTemplateRenderingException : WaveException
   {
-
-    public WaveTemplateRenderingException(string message, Exception inner): base(message, inner)
-    {
-    }
-
-    protected WaveTemplateRenderingException(SerializationInfo info, StreamingContext context): base(info, context)
-    {
-
-    }
+    public WaveTemplateRenderingException(string message, Exception inner): base(message, inner) { }
+    protected WaveTemplateRenderingException(SerializationInfo info, StreamingContext context): base(info, context) { }
   }
-
 
   /// <summary>
   /// Thrown by filter pipeline
@@ -129,11 +116,12 @@ namespace NFX.Wave
   [Serializable]
   public class FilterPipelineException : WaveException
   {
-    public readonly Type FilterType;
-    public readonly string FilterName;
-    public readonly int FilterOrder;
-    public readonly Type HandlerType;
-    public readonly string HandlerName;
+    public const string FILTER_TYPE_FLD_NAME = "FPE-FT";
+    public const string FILTER_NAME_FLD_NAME = "FPE-FN";
+    public const string FILTER_ORDER_FLD_NAME = "FPE-FO";
+    public const string HANDLER_TYPE_FLD_NAME = "FPE-HT";
+    public const string HANDLER_NAME_FLD_NAME = "FPE-HN";
+
     public FilterPipelineException(WorkFilter filter, Exception inner) : base(inner.Message, inner)
     {
       FilterType = filter.GetType();
@@ -146,6 +134,20 @@ namespace NFX.Wave
       }
     }
 
+    protected FilterPipelineException(SerializationInfo info, StreamingContext context): base(info, context)
+    {
+      FilterType = (Type)info.GetValue(FILTER_TYPE_FLD_NAME, typeof(Type));
+      FilterName = info.GetString(FILTER_NAME_FLD_NAME);
+      FilterOrder = info.GetInt32(FILTER_ORDER_FLD_NAME);
+      HandlerType = (Type)info.GetValue(HANDLER_TYPE_FLD_NAME, typeof(Type));
+      HandlerName = info.GetString(HANDLER_NAME_FLD_NAME);
+    }
+
+    public readonly Type FilterType;
+    public readonly string FilterName;
+    public readonly int FilterOrder;
+    public readonly Type HandlerType;
+    public readonly string HandlerName;
 
     /// <summary>
     /// Returns a mnemonic filter sequence where the root exception originated from
@@ -189,8 +191,13 @@ namespace NFX.Wave
       }
     }
 
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      base.GetObjectData(info, context);
+    }
   }
-
 
   /// <summary>
   /// Thrown to indicate various Http status conditions
@@ -198,6 +205,8 @@ namespace NFX.Wave
   [Serializable]
   public class HTTPStatusException : WaveException
   {
+    public const string STATUS_CODE_FLD_NAME = "HTTPSE-SC";
+    public const string STATUS_DESCRIPTION_FLD_NAME = "HTTPSE-SD";
 
     public static HTTPStatusException BadRequest_400(string descr = null)
     {
@@ -263,6 +272,29 @@ namespace NFX.Wave
       return new HTTPStatusException(WebConsts.STATUS_500, d);
     }
 
+    public HTTPStatusException(int statusCode, string statusDescription) : base("{0} - {1}".Args(statusCode, statusDescription))
+    {
+      StatusCode = statusCode;
+      StatusDescription = statusDescription;
+    }
+
+    public HTTPStatusException(int statusCode, string statusDescription, string message) : base("{0} - {1} : {2}".Args(statusCode, statusDescription, message))
+    {
+      StatusCode = statusCode;
+      StatusDescription = statusDescription;
+    }
+
+    public HTTPStatusException(int statusCode, string statusDescription, string message, Exception inner) : base("{0} - {1} : {2}".Args(statusCode, statusDescription, message), inner)
+    {
+      StatusCode = statusCode;
+      StatusDescription = statusDescription;
+    }
+
+    protected HTTPStatusException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+      StatusCode = info.GetInt32(STATUS_CODE_FLD_NAME);
+      StatusDescription = info.GetString(STATUS_DESCRIPTION_FLD_NAME);
+    }
 
     /// <summary>
     /// Http status code
@@ -274,30 +306,14 @@ namespace NFX.Wave
     /// </summary>
     public readonly string StatusDescription;
 
-    public HTTPStatusException(int statusCode, string statusDescription) : base()
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-      StatusCode = statusCode;
-      StatusDescription = statusDescription;
+      if (info == null)
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(STATUS_CODE_FLD_NAME, StatusCode);
+      info.AddValue(STATUS_DESCRIPTION_FLD_NAME, StatusDescription);
+      base.GetObjectData(info, context);
     }
-
-    public HTTPStatusException(int statusCode, string statusDescription, string message) : base(message)
-    {
-      StatusCode = statusCode;
-      StatusDescription = statusDescription;
-    }
-
-    public HTTPStatusException(int statusCode, string statusDescription, string message, Exception inner) : base(message, inner)
-    {
-      StatusCode = statusCode;
-      StatusDescription = statusDescription;
-    }
-
-
-    protected HTTPStatusException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-
-    }
-
   }
 
   /// <summary>
@@ -337,6 +353,4 @@ namespace NFX.Wave
        return result;
     }
   }
-
-
 }

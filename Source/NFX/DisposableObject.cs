@@ -149,31 +149,9 @@ namespace NFX
   [Serializable]
   public class DisposedObjectException : NFXException
   {
-    public DisposedObjectException()
-    {
-    }
-
-    public DisposedObjectException(string message)
-      : base(message)
-    {
-    }
-
-    public DisposedObjectException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected DisposedObjectException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-    }
+    public DisposedObjectException() { }
+    public DisposedObjectException(string message) : base(message) { }
+    public DisposedObjectException(string message, Exception inner) : base(message, inner) { }
+    protected DisposedObjectException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
-
-
-
-
-
-
 }

@@ -27,114 +27,61 @@ using System.Runtime.Serialization;
 
 namespace NFX.DataAccess.Distributed
 {
-      /// <summary>
-      /// Thrown by distributed data access classes
-      /// </summary>
-      [Serializable]
-      public class DistributedDataAccessException : DataAccessException
-      {
-            public DistributedDataAccessException():base()
-            {
-            }
+  /// <summary>
+  /// Thrown by distributed data access classes
+  /// </summary>
+  [Serializable]
+  public class DistributedDataAccessException : DataAccessException
+  {
+    public DistributedDataAccessException() : base() { }
+    public DistributedDataAccessException(string message) : base(message) { }
+    public DistributedDataAccessException(string message, Exception inner) : base(message, inner) { }
+    protected DistributedDataAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-            public DistributedDataAccessException(string message)
-              : base(message)
-            {
-            }
+  /// <summary>
+  /// Thrown by distributed data access classes when parcel serialization problems happen
+  /// </summary>
+  [Serializable]
+  public class DistributedDataParcelSerializationException : DistributedDataAccessException
+  {
+    public DistributedDataParcelSerializationException() { }
+    public DistributedDataParcelSerializationException(string message) : base(message) { }
+    public DistributedDataParcelSerializationException(string message, Exception inner) : base(message, inner) { }
+    protected DistributedDataParcelSerializationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-            public DistributedDataAccessException(string message, Exception inner)
-              : base(message, inner)
-            {
-            }
+  /// <summary>
+  /// Thrown by distributed data access classes  to indicate some data validation error
+  /// </summary>
+  [Serializable]
+  public class ParcelValidationException : DistributedDataAccessException
+  {
+    public ParcelValidationException() { }
+    public ParcelValidationException(string message) : base(message) { }
+    public ParcelValidationException(string message, Exception inner) : base(message, inner) { }
+    protected ParcelValidationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 
-            protected DistributedDataAccessException(SerializationInfo info, StreamingContext context)
-              : base(info, context)
-            {
-            }
-      }
+  /// <summary>
+  /// Thrown by Parcel.Seal() method trying to ensure parcel consistency before it gets sealed
+  /// </summary>
+  [Serializable]
+  public class ParcelSealValidationException : ParcelValidationException
+  {
+    private ParcelSealValidationException(string msg) : base(msg) { }
 
-      /// <summary>
-      /// Thrown by distributed data access classes when parcel serialization problems happen
-      /// </summary>
-      [Serializable]
-      public class DistributedDataParcelSerializationException : DistributedDataAccessException
-      {
-            public DistributedDataParcelSerializationException()
-            {
-            }
+    public static ParcelSealValidationException ForErrors(string parcelName, IEnumerable<Exception> errors)
+    {
+      var sb = new StringBuilder();
 
-            public DistributedDataParcelSerializationException(string message)
-              : base(message)
-            {
-            }
+      sb.AppendLine(StringConsts.DISTRIBUTED_DATA_PARCEL_SEAL_VALIDATION_ERROR.Args(parcelName));
+      foreach (var error in errors)
+        sb.AppendLine(" * " + error.ToMessageWithType());
 
-            public DistributedDataParcelSerializationException(string message, Exception inner)
-              : base(message, inner)
-            {
-            }
+      return new ParcelSealValidationException(sb.ToString());
+    }
 
-            protected DistributedDataParcelSerializationException(SerializationInfo info, StreamingContext context)
-              : base(info, context)
-            {
-            }
-      }
-
-
-      /// <summary>
-      /// Thrown by distributed data access classes  to indicate some data validation error
-      /// </summary>
-      [Serializable]
-      public class ParcelValidationException : DistributedDataAccessException
-      {
-            public ParcelValidationException()
-            {
-            }
-
-            public ParcelValidationException(string message)
-              : base(message)
-            {
-            }
-
-            public ParcelValidationException(string message, Exception inner)
-              : base(message, inner)
-            {
-            }
-
-            protected ParcelValidationException(SerializationInfo info, StreamingContext context)
-              : base(info, context)
-            {
-            }
-      }
-
-      /// <summary>
-      /// Thrown by Parcel.Seal() method trying to ensure parcel consistency before it gets sealed
-      /// </summary>
-      [Serializable]
-      public class ParcelSealValidationException : ParcelValidationException
-      {
-            private ParcelSealValidationException(string msg) : base(msg) { }
-
-            public static ParcelSealValidationException ForErrors(string parcelName, IEnumerable<Exception> errors)
-            {
-                var sb = new StringBuilder();
-
-                sb.AppendLine( StringConsts.DISTRIBUTED_DATA_PARCEL_SEAL_VALIDATION_ERROR.Args(parcelName) );
-                foreach(var error in errors)
-                 sb.AppendLine( " * " + error.ToMessageWithType() );
-
-                return new ParcelSealValidationException( sb.ToString() );
-            }
-
-
-
-            protected ParcelSealValidationException(SerializationInfo info, StreamingContext context)
-              : base(info, context)
-            {
-            }
-      }
-
-
-
-
-
- }
+    protected ParcelSealValidationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
+}

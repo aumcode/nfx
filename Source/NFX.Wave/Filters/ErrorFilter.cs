@@ -268,12 +268,9 @@ namespace NFX.Wave.Filters
                 }
 
               if (errorPage==null)
-              {
                 errorPage =  new ErrorPage(work, error, showDump);
-                errorPage.Render(work, error);
-              }
-              else
-                errorPage.Render(work, actual);
+
+              errorPage.Render(work, error);
             }
           }
 
@@ -282,7 +279,7 @@ namespace NFX.Wave.Filters
             JSONDataMap matched = null;
             foreach(var match in logMatches.OrderedValues)
             {
-              matched = match.Make(work, actual);
+              matched = match.Make(work, error);
               if (matched!=null) break;
             }
             if (matched!=null)
@@ -306,7 +303,7 @@ namespace NFX.Wave.Filters
           foreach(var cn in confNode[CONFIG_SHOW_DUMP_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
             if(!showDumpMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
               throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}.ShowDump".Args(from)));
-        
+
         if (logMatches != null)
           foreach(var cn in confNode[CONFIG_LOG_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
             if(!logMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )

@@ -153,7 +153,7 @@ namespace NFX.NUnit
             var ms = new MemoryStream();
             ms.WriteLEShort(789);
             Assert.AreEqual(2, ms.Position);
-            Assert.AreEqual(new byte[] { 15, 3 }, ms.ToArray());
+            Assert.AreEqual(new byte[] { 21, 3 }, ms.ToArray());
 
             ms.Position = 0;
             Assert.AreEqual(789, ms.ReadLEShort());
@@ -161,7 +161,7 @@ namespace NFX.NUnit
             ms.Position = 0;
             ms.WriteLEUShort(789);
             Assert.AreEqual(2, ms.Position);
-            Assert.AreEqual(new byte[] { 15, 3 }, ms.ToArray());
+            Assert.AreEqual(new byte[] { 21, 3 }, ms.ToArray());
             ms.Position = 0;
             Assert.AreEqual(789, ms.ReadLEUShort());
         }
@@ -175,6 +175,18 @@ namespace NFX.NUnit
 
             var idx = 0;
             Assert.AreEqual(789, buf.ReadBEShort(ref idx));
+            Assert.AreEqual(2, idx);
+        }
+
+        [TestCase]
+        public void ReadWriteLEShortTestArray()
+        {
+            var buf = new byte[2];
+            buf.WriteLEShort(0, 770);
+            Assert.AreEqual(new byte[] { 2, 3 }, buf);
+
+            var idx = 0;
+            Assert.AreEqual(770, buf.ReadLEShort(ref idx));
             Assert.AreEqual(2, idx);
         }
 
@@ -218,6 +230,21 @@ namespace NFX.NUnit
         }
 
         [TestCase]
+        public void ReadWriteLEInt32TestArray()
+        {
+            var buf = new byte[4];
+            buf.WriteLEInt32(67305985);
+
+            Assert.AreEqual(new byte[] { 1, 2, 3, 4 }, buf);
+
+            Assert.AreEqual(67305985, buf.ReadLEInt32());
+
+            var idx = 0;
+            Assert.AreEqual(67305985, buf.ReadLEInt32(ref idx));
+            Assert.AreEqual(4, idx);
+        }
+
+        [TestCase]
         public void ReadWriteBEInt64TestStream()
         {
             var ms = new MemoryStream();
@@ -253,6 +280,19 @@ namespace NFX.NUnit
             Assert.AreEqual(0xFACACA07EBEDDAFE, buf.ReadBEUInt64());
             var idx = 0;
             Assert.AreEqual(0xFACACA07EBEDDAFE, buf.ReadBEUInt64(ref idx));
+            Assert.AreEqual(8,idx);
+        }
+
+        [TestCase]
+        public void ReadWriteLEInt64TestArray()
+        {
+            var buf = new byte[8];
+            buf.WriteLEUInt64(72057615580070401);
+
+            Assert.AreEqual(new byte[] { 1, 2, 3, 4, 5, 0, 0, 1 }, buf);
+            Assert.AreEqual(72057615580070401, buf.ReadLEUInt64());
+            var idx = 0;
+            Assert.AreEqual(72057615580070401, buf.ReadLEUInt64(ref idx));
             Assert.AreEqual(8,idx);
         }
 

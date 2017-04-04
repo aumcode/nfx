@@ -31,20 +31,11 @@ namespace NFX.DataAccess.MongoDB
   [Serializable]
   public class MongoDBDataAccessException : DataAccessException
   {
-    public MongoDBDataAccessException() {}
-
-    public MongoDBDataAccessException(string message) : base(message){}
-
-    public MongoDBDataAccessException(string message, Exception inner) : base(message, inner){}
-
-    public MongoDBDataAccessException(string message, KeyViolationKind kvKind, string keyViolation)
-      : base(message, kvKind, keyViolation){}
-
-    public MongoDBDataAccessException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation)
-      : base(message, inner, kvKind, keyViolation){}
-
-    protected MongoDBDataAccessException(SerializationInfo info, StreamingContext context)
-      : base(info, context) {}
+    public MongoDBDataAccessException() { }
+    public MongoDBDataAccessException(string message) : base(message) { }
+    public MongoDBDataAccessException(string message, Exception inner) : base(message, inner) { }
+    public MongoDBDataAccessException(string message, KeyViolationKind kvKind, string keyViolation) : base(message, kvKind, keyViolation) { }
+    public MongoDBDataAccessException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation) : base(message, inner, kvKind, keyViolation) { }
+    protected MongoDBDataAccessException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

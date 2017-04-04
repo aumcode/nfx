@@ -22,41 +22,21 @@
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 using System.CodeDom.Compiler;
 
 namespace NFX.Templatization
 {
-
   /// <summary>
   /// Base exception thrown by the templatization-related functionality
   /// </summary>
   [Serializable]
   public class TemplatizationException : NFXException
   {
-    public TemplatizationException()
-    {
-    }
-
-    public TemplatizationException(string message)
-      : base(message)
-    {
-    }
-
-    public TemplatizationException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected TemplatizationException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public TemplatizationException() { }
+    public TemplatizationException(string message) : base(message) { }
+    public TemplatizationException(string message, Exception inner) : base(message, inner) { }
+    protected TemplatizationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
 
   /// <summary>
   /// Base exception thrown by the template compilers
@@ -64,28 +44,11 @@ namespace NFX.Templatization
   [Serializable]
   public class TemplateCompilerException : TemplatizationException
   {
-    public TemplateCompilerException()
-    {
-    }
-
-    public TemplateCompilerException(string message)
-      : base(message)
-    {
-    }
-
-    public TemplateCompilerException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected TemplateCompilerException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public TemplateCompilerException() { }
+    public TemplateCompilerException(string message) : base(message) { }
+    public TemplateCompilerException(string message, Exception inner) : base(message, inner) { }
+    protected TemplateCompilerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Indicates template source parsing exception
@@ -93,56 +56,39 @@ namespace NFX.Templatization
   [Serializable]
   public class TemplateParseException : TemplateCompilerException
   {
-    public TemplateParseException()
-    {
-    }
-
-    public TemplateParseException(string message)
-      : base(message)
-    {
-    }
-
-    public TemplateParseException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected TemplateParseException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public TemplateParseException() { }
+    public TemplateParseException(string message) : base(message) { }
+    public TemplateParseException(string message, Exception inner) : base(message, inner) { }
+    protected TemplateParseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Thrown by  template code compilers
   /// </summary>
   [Serializable]
-  public class TemplateCodeCompilerException : TemplateCompilerException
+  public class TemplateCodeCompilerException : TemplateCompilerException, IWrappedDataSource
   {
-    public readonly CompilerError Error;
+    public TemplateCodeCompilerException(CompilerError err) : base(err.ErrorText) { Error = err; }
+    protected TemplateCodeCompilerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
-    public TemplateCodeCompilerException(CompilerError err) : base(err.ErrorText)
-    {
-      Error = err;
-    }
+    [NonSerialized]
+    public readonly CompilerError Error;
 
     public override string ToString()
     {
-        return string.Format("#{0} {1} Warn: {2} Line: {3} Column: {4} File: \"{5}\"",
-                             Error.ErrorNumber,
-                             Error.ErrorText,
-                             Error.IsWarning,
-                             Error.Line,
-                             Error.Column,
-                             Error.FileName);
+      return string.Format("#{0} {1} Warn: {2} Line: {3} Column: {4} File: \"{5}\"",
+                           Error.ErrorNumber,
+                           Error.ErrorText,
+                           Error.IsWarning,
+                           Error.Line,
+                           Error.Column,
+                           Error.FileName);
     }
 
+    public string GetWrappedData()
+    {
+#warning TODO
+      throw new NotImplementedException();
+    }
   }
-
-
-
-
 }

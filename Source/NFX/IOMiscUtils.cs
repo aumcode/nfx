@@ -26,6 +26,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using NFX.Security;
+using System.Security.Principal;
 
 namespace NFX
 {
@@ -99,6 +100,7 @@ namespace NFX
                 to.Write(copyBuffer, 0, read);
         }
 
+
         /// <summary>
         /// Reads an integer encoded as big endian from buffer at index 0
         /// </summary>
@@ -106,6 +108,15 @@ namespace NFX
         {
             int n = 0;
             return ReadBEInt32(buf, ref n);
+        }
+
+        /// <summary>
+        /// Reads an integer encoded as little endian from buffer at index 0
+        /// </summary>
+        public static int ReadLEInt32(this byte[] buf)
+        {
+            int n = 0;
+            return ReadLEInt32(buf, ref n);
         }
 
         /// <summary>
@@ -118,6 +129,15 @@ namespace NFX
         }
 
         /// <summary>
+        /// Reads an unsigned integer encoded as little endian from buffer at index 0
+        /// </summary>
+        public static uint ReadLEUInt32(this byte[] buf)
+        {
+            int n = 0;
+            return ReadLEUInt32(buf, ref n);
+        }
+
+        /// <summary>
         /// Reads an integer encoded as big endian from buffer at the specified index
         /// and increments the idx by the number of bytes read
         /// </summary>
@@ -125,6 +145,18 @@ namespace NFX
         {
             int n = (int)idx;
             int result = ReadBEInt32(buf, ref n);
+            idx = n;
+            return result;
+        }
+
+        /// <summary>
+        /// Reads an integer encoded as little endian from buffer at the specified index
+        /// and increments the idx by the number of bytes read
+        /// </summary>
+        public static int ReadLEInt32(this byte[] buf, ref long idx)
+        {
+            int n = (int)idx;
+            int result = ReadLEInt32(buf, ref n);
             idx = n;
             return result;
         }
@@ -142,6 +174,18 @@ namespace NFX
         }
 
         /// <summary>
+        /// Reads an integer encoded as little endian from buffer at the specified index
+        /// and increments the idx by the number of bytes read
+        /// </summary>
+        public static int ReadLEInt32(this byte[] buf, ref int idx)
+        {
+            return   (int)buf[idx++] +
+                    ((int)buf[idx++] << 8) +
+                    ((int)buf[idx++] << 16) +
+                    ((int)buf[idx++] << 24);
+        }
+
+        /// <summary>
         /// Reads an unsigned integer encoded as big endian from buffer at the specified index
         /// and increments the idx by the number of bytes read
         /// </summary>
@@ -151,6 +195,18 @@ namespace NFX
                     ((uint)buf[idx++] << 16) +
                     ((uint)buf[idx++] << 8) +
                      (uint)buf[idx++];
+        }
+
+        /// <summary>
+        /// Reads an unsigned integer encoded as little endian from buffer at the specified index
+        /// and increments the idx by the number of bytes read
+        /// </summary>
+        public static uint ReadLEUInt32(this byte[] buf, ref int idx)
+        {
+            return   (uint)buf[idx++] +
+                    ((uint)buf[idx++] << 8) +
+                    ((uint)buf[idx++] << 16) +
+                    ((uint)buf[idx++] << 24);
         }
 
         /// <summary>
@@ -165,6 +221,17 @@ namespace NFX
                      (uint)buf[idx++];
         }
 
+        /// <summary>
+        /// Reads an unsigned integer encoded as little endian from buffer at the specified index
+        /// and increments the idx by the number of bytes read
+        /// </summary>
+        public static uint ReadLEUInt32(this byte[] buf, ref long idx)
+        {
+            return   (uint)buf[idx++] +
+                    ((uint)buf[idx++] << 8) +
+                    ((uint)buf[idx++] << 16) +
+                    ((uint)buf[idx++] << 24);
+        }
 
         /// <summary>
         /// Reads an integer encoded as big endian from buffer at the specified index
@@ -183,6 +250,22 @@ namespace NFX
         }
 
         /// <summary>
+        /// Reads an integer encoded as little endian from buffer at the specified index
+        /// and increments the idx by the number of bytes read
+        /// </summary>
+        public static UInt64 ReadLEUInt64(this byte[] buf, ref int idx)
+        {
+            return ((ulong)buf[idx++]      ) +
+                   ((ulong)buf[idx++] << 8 ) +
+                   ((ulong)buf[idx++] << 16) +
+                   ((ulong)buf[idx++] << 24) +
+                   ((ulong)buf[idx++] << 32) +
+                   ((ulong)buf[idx++] << 40) +
+                   ((ulong)buf[idx++] << 48) +
+                   ((ulong)buf[idx++] << 56);
+        }
+
+        /// <summary>
         /// Reads an integer encoded as big endian from buffer at the specified index
         /// and increments the idx by the number of bytes read
         /// </summary>
@@ -198,6 +281,21 @@ namespace NFX
                    ((ulong)buf[idx++]      );
         }
 
+        /// <summary>
+        /// Reads an integer encoded as little endian from buffer at the specified index
+        /// and increments the idx by the number of bytes read
+        /// </summary>
+        public static UInt64 ReadLEUInt64(this byte[] buf, int idx = 0)
+        {
+            return ((ulong)buf[idx++]      ) +
+                   ((ulong)buf[idx++] << 8 ) +
+                   ((ulong)buf[idx++] << 16) +
+                   ((ulong)buf[idx++] << 24) +
+                   ((ulong)buf[idx++] << 32) +
+                   ((ulong)buf[idx++] << 40) +
+                   ((ulong)buf[idx++] << 48) +
+                   ((ulong)buf[idx++] << 56);
+        }
 
         /// <summary>
         /// Reads a short encoded as big endian from buffer at the specified index
@@ -209,6 +307,18 @@ namespace NFX
                          (((int)buf[idx++]      ) & 0xff)
                         );
         }
+
+        /// <summary>
+        /// Reads a short encoded as little endian from buffer at the specified index
+        /// </summary>
+        public static short ReadLEShort(this byte[] buf, ref int idx)
+        {
+            return (short)(
+                         (((int)buf[idx++]      ) & 0xff) +
+                         (((int)buf[idx++] << 8 ) & 0xff00)
+                        );
+        }
+
 
         /// <summary>
         /// Reads a short encoded as big endian from stream
@@ -233,8 +343,10 @@ namespace NFX
         public static short ReadLEShort(this Stream s)
         {
             var b1 = s.ReadByte();
+            if (b1<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEShort()");
+
             var b2 = s.ReadByte();
-            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEShort()");
+            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEShort()");
 
             return (short)((b2 << 8) + b1);
         }
@@ -262,8 +374,10 @@ namespace NFX
         public static ushort ReadLEUShort(this Stream s)
         {
             var b1 = s.ReadByte();
+            if (b1<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUShort()");
+
             var b2 = s.ReadByte();
-            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEUShort()");
+            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUShort()");
 
             return (ushort)((b2 << 8) + b1);
         }
@@ -297,10 +411,16 @@ namespace NFX
         public static int ReadLEInt32(this Stream s)
         {
             var b1 = s.ReadByte();
+            if (b1<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEInt32()");
+
             var b2 = s.ReadByte();
+            if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEInt32()");
+
             var b3 = s.ReadByte();
+            if (b3<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEInt32()");
+
             var b4 = s.ReadByte();
-            if (b4<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadBEInt32()");
+            if (b4<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEInt32()");
 
             return (b4 << 24) +
                    (b3 << 16) +
@@ -355,12 +475,26 @@ namespace NFX
         public static ulong ReadLEUInt64(this Stream s)
         {
            var b1 = s.ReadByte();
+           if (b1<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b2 = s.ReadByte();
+           if (b2<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b3 = s.ReadByte();
+           if (b3<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b4 = s.ReadByte();
+           if (b4<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b5 = s.ReadByte();
+           if (b5<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b6 = s.ReadByte();
+           if (b6<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b7 = s.ReadByte();
+           if (b7<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
+
            var b8 = s.ReadByte();
            if (b8<0) throw new IO.NFXIOException(StringConsts.STREAM_READ_EOF_ERROR+"ReadLEUInt64()");
 
@@ -374,12 +508,21 @@ namespace NFX
                  ((ulong)b1) ;
         }
 
+
         /// <summary>
         /// Writes an integer encoded as big endian to buffer at index 0
         /// </summary>
         public static void WriteBEInt32(this byte[] buf, Int32 value)
         {
            WriteBEInt32(buf, 0, value);
+        }
+
+        /// <summary>
+        /// Writes an integer encoded as little endian to buffer at index 0
+        /// </summary>
+        public static void WriteLEInt32(this byte[] buf, Int32 value)
+        {
+           WriteLEInt32(buf, 0, value);
         }
 
         /// <summary>
@@ -394,6 +537,17 @@ namespace NFX
         }
 
         /// <summary>
+        /// Writes an integer encoded as little endian to buffer at the specified index
+        /// </summary>
+        public static void WriteLEInt32(this byte[] buf, int idx, Int32 value)
+        {
+            buf[idx+0] = (byte)(value);
+            buf[idx+1] = (byte)(value >> 8);
+            buf[idx+2] = (byte)(value >> 16);
+            buf[idx+3] = (byte)(value >> 24 );
+        }
+
+        /// <summary>
         /// Writes an unsigned integer encoded as big endian to buffer at index 0
         /// </summary>
         public static void WriteBEUInt32(this byte[] buf, UInt32 value)
@@ -401,6 +555,13 @@ namespace NFX
            WriteBEUInt32(buf, 0, value);
         }
 
+        /// <summary>
+        /// Writes an unsigned integer encoded as little endian to buffer at index 0
+        /// </summary>
+        public static void WriteLEUInt32(this byte[] buf, UInt32 value)
+        {
+           WriteLEUInt32(buf, 0, value);
+        }
 
         /// <summary>
         /// Writes an unsigned integer encoded as big endian to buffer at the specified index
@@ -413,9 +574,16 @@ namespace NFX
             buf[idx+3] = (byte)(value );
         }
 
-
-
-
+        /// <summary>
+        /// Writes an unsigned integer encoded as little endian to buffer at the specified index
+        /// </summary>
+        public static void WriteLEUInt32(this byte[] buf, int idx, UInt32 value)
+        {
+            buf[idx+0] = (byte)(value);
+            buf[idx+1] = (byte)(value >> 8);
+            buf[idx+2] = (byte)(value >> 16);
+            buf[idx+3] = (byte)(value >> 24);
+        }
 
         /// <summary>
         /// Writes an unsigned long integer encoded as big endian to buffer at the beginning
@@ -423,6 +591,14 @@ namespace NFX
         public static void WriteBEUInt64(this byte[] buf, UInt64 value)
         {
           buf.WriteBEUInt64(0, value);
+        }
+
+        /// <summary>
+        /// Writes an unsigned long integer encoded as little endian to buffer at the beginning
+        /// </summary>
+        public static void WriteLEUInt64(this byte[] buf, UInt64 value)
+        {
+          buf.WriteLEUInt64(0, value);
         }
 
         /// <summary>
@@ -441,6 +617,21 @@ namespace NFX
         }
 
         /// <summary>
+        /// Writes an unsigned long integer encoded as little endian to buffer at the specified index
+        /// </summary>
+        public static void WriteLEUInt64(this byte[] buf, int idx, UInt64 value)
+        {
+          buf[idx+0] = (byte)(value);
+          buf[idx+1] = (byte)(value >> 8 );
+          buf[idx+2] = (byte)(value >> 16);
+          buf[idx+3] = (byte)(value >> 24);
+          buf[idx+4] = (byte)(value >> 32);
+          buf[idx+5] = (byte)(value >> 40);
+          buf[idx+6] = (byte)(value >> 48);
+          buf[idx+7] = (byte)(value >> 56);
+        }
+
+        /// <summary>
         /// Writes a short encoded as big endian to buffer at the specified index
         /// </summary>
         public static void WriteBEShort(this byte[] buf, int idx, short value)
@@ -448,6 +639,16 @@ namespace NFX
             buf[idx+0] = (byte)(value >> 8);
             buf[idx+1] = (byte)(value );
         }
+
+        /// <summary>
+        /// Writes a short encoded as little endian to buffer at the specified index
+        /// </summary>
+        public static void WriteLEShort(this byte[] buf, int idx, short value)
+        {
+            buf[idx+0] = (byte)(value);
+            buf[idx+1] = (byte)(value >> 8);
+        }
+
 
         /// <summary>
         /// Writes a short encoded as big endian to the given stream
@@ -537,6 +738,7 @@ namespace NFX
           s.WriteByte((byte)(value >> 56));
         }
 
+
         public static IEnumerable<char> AsCharEnumerable(this Stream stream)
         {
           using (var reader = new StreamReader(stream))
@@ -558,7 +760,7 @@ namespace NFX
               yield return chars[i];
         }
 
-      /// <summary>
+        /// <summary>
         /// Deleted file if it exists - does not block until file is deleted, the behavior is up to the OS
         /// </summary>
         /// <param name="fileName">Full file name with path</param>
@@ -604,33 +806,32 @@ namespace NFX
         public static DirectoryInfo EnsureAccessibleDirectory(string path)
         {
           FileSystemAccessRule ausersRule = new FileSystemAccessRule(
-                      "Authenticated Users",
+                      new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null), //  "Authenticated Users",
                       FileSystemRights.FullControl,
                       InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                       PropagationFlags.None,
                       AccessControlType.Allow);
 
           FileSystemAccessRule usersRule = new FileSystemAccessRule(
-                      "Users",
+                      new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), // "Users",
                       FileSystemRights.FullControl,
                       InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                       PropagationFlags.None,
                       AccessControlType.Allow);
 
           FileSystemAccessRule adminsRule = new FileSystemAccessRule(
-                      "Administrators",
+                      new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null), // "Administrators",
                       FileSystemRights.FullControl,
                       InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                       PropagationFlags.None,
                       AccessControlType.Allow);
 
           FileSystemAccessRule sysRule = new FileSystemAccessRule(
-                     "SYSTEM",
+                     new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null), // "SYSTEM",
                      FileSystemRights.FullControl,
                      InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                      PropagationFlags.None,
                      AccessControlType.Allow);
-
 
           DirectorySecurity dirSec = new DirectorySecurity();
           dirSec.AddAccessRule(ausersRule);

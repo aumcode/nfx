@@ -28,22 +28,13 @@ namespace NFX.DataAccess.MongoDB.Connector
   [Serializable]
   public class MongoDBConnectorException : MongoDBDataAccessException
   {
-    public MongoDBConnectorException() {}
-
-    public MongoDBConnectorException(string message) : base(message){}
-
-    public MongoDBConnectorException(string message, Exception inner) : base(message, inner){}
-
-    public MongoDBConnectorException(string message, KeyViolationKind kvKind, string keyViolation)
-      : base(message, kvKind, keyViolation){}
-
-    public MongoDBConnectorException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation)
-      : base(message, inner, kvKind, keyViolation){}
-
-    protected MongoDBConnectorException(SerializationInfo info, StreamingContext context)
-      : base(info, context) {}
+    public MongoDBConnectorException() { }
+    public MongoDBConnectorException(string message) : base(message) { }
+    public MongoDBConnectorException(string message, Exception inner) : base(message, inner) { }
+    public MongoDBConnectorException(string message, KeyViolationKind kvKind, string keyViolation) : base(message, kvKind, keyViolation) { }
+    public MongoDBConnectorException(string message, Exception inner, KeyViolationKind kvKind, string keyViolation) : base(message, inner, kvKind, keyViolation) { }
+    protected MongoDBConnectorException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 
   /// <summary>
   /// Thrown by MongoDB data access classes related to protocol
@@ -51,14 +42,10 @@ namespace NFX.DataAccess.MongoDB.Connector
   [Serializable]
   public class MongoDBConnectorProtocolException : MongoDBConnectorException
   {
-    public MongoDBConnectorProtocolException() {}
-
-    public MongoDBConnectorProtocolException(string message) : base(message){}
-
-    public MongoDBConnectorProtocolException(string message, Exception inner) : base(message, inner){}
-
-    protected MongoDBConnectorProtocolException(SerializationInfo info, StreamingContext context)
-      : base(info, context) {}
+    public MongoDBConnectorProtocolException() { }
+    public MongoDBConnectorProtocolException(string message) : base(message) { }
+    public MongoDBConnectorProtocolException(string message, Exception inner) : base(message, inner) { }
+    protected MongoDBConnectorProtocolException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 
   /// <summary>
@@ -67,14 +54,10 @@ namespace NFX.DataAccess.MongoDB.Connector
   [Serializable]
   public class MongoDBConnectorServerException : MongoDBConnectorException
   {
-    public MongoDBConnectorServerException() {}
-
-    public MongoDBConnectorServerException(string message) : base(message){}
-
-    public MongoDBConnectorServerException(string message, Exception inner) : base(message, inner){}
-
-    protected MongoDBConnectorServerException(SerializationInfo info, StreamingContext context)
-      : base(info, context) {}
+    public MongoDBConnectorServerException() { }
+    public MongoDBConnectorServerException(string message) : base(message) { }
+    public MongoDBConnectorServerException(string message, Exception inner) : base(message, inner) { }
+    protected MongoDBConnectorServerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 
   /// <summary>
@@ -83,14 +66,9 @@ namespace NFX.DataAccess.MongoDB.Connector
   [Serializable]
   public class MongoDBQueryException : MongoDBConnectorException
   {
-    public MongoDBQueryException() {}
-
-    public MongoDBQueryException(string message) : base(message){}
-
-    public MongoDBQueryException(string message, Exception inner) : base(message, inner){}
-
-    protected MongoDBQueryException(SerializationInfo info, StreamingContext context)
-      : base(info, context) {}
+    public MongoDBQueryException() { }
+    public MongoDBQueryException(string message) : base(message) { }
+    public MongoDBQueryException(string message, Exception inner) : base(message, inner) { }
+    protected MongoDBQueryException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

@@ -31,18 +31,12 @@ namespace NFX.Web.Pay
   /// <summary>
   /// General NFX payment system specific exception
   /// </summary>
+  [Serializable]
   public class PaymentException: NFXException
   {
-    public PaymentException()
-    {}
-
-    public PaymentException(string message) : base(message)
-    {}
-
-    public PaymentException(string message, Exception inner) : base(message, inner)
-    {}
-
-    protected PaymentException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {}
+    public PaymentException() { }
+    public PaymentException(string message) : base(message) { }
+    public PaymentException(string message, Exception inner) : base(message, inner) { }
+    protected PaymentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

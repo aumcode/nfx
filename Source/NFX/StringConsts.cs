@@ -71,6 +71,8 @@ namespace NFX
         public const string LOGSVC_FILE_DESTINATION_FILENAME_ERROR =
             "Destination '{0}'.'file-name' pattern '{1}' is incorrect: {2}";
 
+        public const string LOGSVC_FILE_DESTINATION_PATH_ERROR =
+            "Destination '{0}'.'path' pattern '{1}' is incorrect: {2}";
 
         public const string LOGSVC_DESTINATION_IS_OFFLINE_ERROR =
             "Destination '{0}' is offline due to prior failure and RestartProcessingAfterMs timespan has not expired yet";

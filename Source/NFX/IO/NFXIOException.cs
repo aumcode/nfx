@@ -20,32 +20,15 @@ using System.Collections.Generic;
 
 namespace NFX.IO
 {
-
   /// <summary>
   /// Base exception thrown by the IO-related classes
   /// </summary>
   [Serializable]
   public class NFXIOException : NFXException
   {
-    public NFXIOException()
-    {
-    }
-
-    public NFXIOException(string message)
-      : base(message)
-    {
-    }
-
-    public NFXIOException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected NFXIOException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public NFXIOException() { }
+    public NFXIOException(string message) : base(message) { }
+    public NFXIOException(string message, Exception inner) : base(message, inner) { }
+    protected NFXIOException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 }

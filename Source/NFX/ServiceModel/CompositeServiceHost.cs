@@ -239,27 +239,9 @@ namespace NFX.ServiceModel
   [Serializable]
   public class SvcHostException : NFXException
   {
-    public SvcHostException()
-    {
-    }
-
-    public SvcHostException(string message)
-      : base(message)
-    {
-    }
-
-    public SvcHostException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected SvcHostException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
+    public SvcHostException() { }
+    public SvcHostException(string message) : base(message) { }
+    public SvcHostException(string message, Exception inner) : base(message, inner) { }
+    protected SvcHostException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
-
 }
