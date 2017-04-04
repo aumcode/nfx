@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -85,13 +85,16 @@
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
                 <div>
+                  <a class="xref" href="NFX.NFXException.html#NFX_NFXException_CODE_FLD_NAME">NFXException.CODE_FLD_NAME</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.NFXException.html#NFX_NFXException_Code">NFXException.Code</a>
                 </div>
                 <div>
-                  <span class="xref">System.Exception.GetBaseException()</span>
+                  <a class="xref" href="NFX.NFXException.html#NFX_NFXException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_">NFXException.GetObjectData(SerializationInfo, StreamingContext)</a>
                 </div>
                 <div>
-                  <span class="xref">System.Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span>
+                  <span class="xref">System.Exception.GetBaseException()</span>
                 </div>
                 <div>
                   <span class="xref">System.Exception.GetType()</span>
@@ -144,7 +147,7 @@
               <h5 id="NFX_Templatization_TemplateCodeCompilerException_syntax">Syntax</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Serializable]
-public class TemplateCodeCompilerException : TemplateCompilerException, ISerializable, _Exception</code></pre>
+public class TemplateCodeCompilerException : TemplateCompilerException, ISerializable, _Exception, IWrappedDataSource</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -175,6 +178,38 @@ public class TemplateCodeCompilerException : TemplateCompilerException, ISeriali
                   </tr>
                 </tbody>
               </table>
+              
+              
+              <a id="NFX_Templatization_TemplateCodeCompilerException__ctor_" data-uid="NFX.Templatization.TemplateCodeCompilerException.#ctor*"></a>
+              <h4 id="NFX_Templatization_TemplateCodeCompilerException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="NFX.Templatization.TemplateCodeCompilerException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">TemplateCodeCompilerException(SerializationInfo, StreamingContext)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected TemplateCodeCompilerException(SerializationInfo info, StreamingContext context)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+                    <td><span class="parametername">info</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               <h3 id="fields">Fields
               </h3>
               
@@ -184,7 +219,8 @@ public class TemplateCodeCompilerException : TemplateCompilerException, ISeriali
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public readonly CompilerError Error</code></pre>
+                <pre><code class="lang-csharp hljs">[NonSerialized]
+public readonly CompilerError Error</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -203,6 +239,33 @@ public class TemplateCodeCompilerException : TemplateCompilerException, ISeriali
               </table>
               <h3 id="methods">Methods
               </h3>
+              
+              
+              <a id="NFX_Templatization_TemplateCodeCompilerException_GetWrappedData_" data-uid="NFX.Templatization.TemplateCodeCompilerException.GetWrappedData*"></a>
+              <h4 id="NFX_Templatization_TemplateCodeCompilerException_GetWrappedData" data-uid="NFX.Templatization.TemplateCodeCompilerException.GetWrappedData">GetWrappedData()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string GetWrappedData()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.IWrappedDataSource.html#NFX_IWrappedDataSource_GetWrappedData">IWrappedDataSource.GetWrappedData()</a></div>
               
               
               <a id="NFX_Templatization_TemplateCodeCompilerException_ToString_" data-uid="NFX.Templatization.TemplateCodeCompilerException.ToString*"></a>

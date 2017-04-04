@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -453,9 +453,7 @@
               
               <a id="NFX_Log_Destinations_FileDestination_FileName_" data-uid="NFX.Log.Destinations.FileDestination.FileName*"></a>
               <h4 id="NFX_Log_Destinations_FileDestination_FileName" data-uid="NFX.Log.Destinations.FileDestination.FileName">FileName</h4>
-              <div class="markdown level1 summary"><p>File name may include environment variables (e.g. ~home),
-and use macros to specify time &quot;$(~home)$(@::now fmt=yyyyMMdd utc=false)-$($name).log&quot;.
-Pass &quot;utc=true&quot; argument to use UTC</p>
+              <div class="markdown level1 summary"><p>The name of the file without path may use {0} for date: {0:yyyyMMdd}-$($name).csv.log</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -482,7 +480,8 @@ public virtual string FileName { get; set; }</code></pre>
               
               <a id="NFX_Log_Destinations_FileDestination_Path_" data-uid="NFX.Log.Destinations.FileDestination.Path*"></a>
               <h4 id="NFX_Log_Destinations_FileDestination_Path" data-uid="NFX.Log.Destinations.FileDestination.Path">Path</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Directory where file should be created. Will create the directory chane if it doesn&#39;t exist</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">

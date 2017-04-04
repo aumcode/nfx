@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -86,6 +86,10 @@ Use TemplateCompiler.IncludeTemplateSource() method or pass sources to .ctor</p>
                   <h4><a class="xref" href="NFX.Templatization.FileTemplateStringContentSource.html">FileTemplateStringContentSource</a></h4>
                   <section><p>Represents a string template source that comes from a file</p>
 </section>
+                  <h4><a class="xref" href="NFX.Templatization.NHTCompiler.html">NHTCompiler</a></h4>
+                  <section><p>Compiles templates based of text files that use C# language syntax,
+First compiles by the TextJSTemplateCompiler then by the TextCSTemplateCompiler</p>
+</section>
                   <h4><a class="xref" href="NFX.Templatization.StringRenderingTarget.html">StringRenderingTarget</a></h4>
                   <section><p>Renders templates into string</p>
 </section>
@@ -116,7 +120,9 @@ Templates are not necessarily text-based, i.e. they can be image-based or based 
                   <section><p>Compiles templates based of text files that use C# language syntax</p>
 </section>
                   <h4><a class="xref" href="NFX.Templatization.TextJSTemplateCompiler.html">TextJSTemplateCompiler</a></h4>
-                  <section></section>
+                  <section><p>Compiles templates based of text files that use js language syntax,
+compiles config to inline function</p>
+</section>
                 <h3 id="interfaces">Interfaces
               </h3>
                   <h4><a class="xref" href="NFX.Templatization.IRenderingTarget.html">IRenderingTarget</a></h4>

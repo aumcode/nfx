@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -90,6 +90,9 @@
                   <a class="xref" href="NFX.ApplicationModel.Pile.ICacheTable.html#NFX_ApplicationModel_Pile_ICacheTable_Options">ICacheTable.Options</a>
                 </div>
                 <div>
+                  <a class="xref" href="NFX.ApplicationModel.Pile.ICacheTable.html#NFX_ApplicationModel_Pile_ICacheTable_CollisionMode">ICacheTable.CollisionMode</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.ApplicationModel.Pile.ICacheTable.html#NFX_ApplicationModel_Pile_ICacheTable_Purge">ICacheTable.Purge()</a>
                 </div>
                 <div>
@@ -147,6 +150,51 @@
               </table>
               <h3 id="methods">Methods
               </h3>
+              
+              
+              <a id="NFX_ApplicationModel_Pile_ICacheTable_1_AsEnumerable_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.AsEnumerable*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_ICacheTable_1_AsEnumerable_System_Boolean_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.AsEnumerable(System.Boolean)">AsEnumerable(Boolean)</h4>
+              <div class="markdown level1 summary"><p>Returns the table as enumerable of entries with optional materialization
+of values (which is slower). Materialization is guaranteed to be consistent with the key</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IEnumerable&lt;ICacheEntry&lt;TKey&gt;&gt; AsEnumerable(bool withValues)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">withValues</span></td>
+                    <td><p>True, to materialize internal PilePointers into CLR objects</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.ApplicationModel.Pile.ICacheEntry-1.html">ICacheEntry</a>&lt;TKey&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="NFX_ApplicationModel_Pile_ICacheTable_1_ContainsKey_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.ContainsKey*"></a>

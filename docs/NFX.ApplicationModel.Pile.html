@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -147,6 +147,9 @@ The ISO code is case-insensitive</p>
 Pile allows to store hundreds of millions of objects without overloading the managed GC.
 The cache may be local or distributed</p>
 </section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICacheEntry-1.html">ICacheEntry&lt;TKey&gt;</a></h4>
+                  <section><p>Provides information about the item stored in cache</p>
+</section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICacheImplementation.html">ICacheImplementation</a></h4>
                   <section></section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.ICacheTable.html">ICacheTable</a></h4>
@@ -173,6 +176,9 @@ a Get does not impose a lock on ALL concurrent writes throught the pile (a write
               </h3>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.AllocationMode.html">AllocationMode</a></h4>
                   <section><p>Defines modes of allocation: space/time tradeoff</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.CollisionMode.html">CollisionMode</a></h4>
+                  <section><p>Defines table collision modes: Speculative (prabability-based - ignores collisions) vs Durable (works slower but handles collisions)</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.LocalityKind.html">LocalityKind</a></h4>
                   <section><p>Indicates where pile implementation stores data: local vs distributed</p>

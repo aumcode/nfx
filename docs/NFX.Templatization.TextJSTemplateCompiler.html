@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -70,7 +70,9 @@
               
               <h1 id="NFX_Templatization_TextJSTemplateCompiler" data-uid="NFX.Templatization.TextJSTemplateCompiler">Class TextJSTemplateCompiler
               </h1>
-              <div class="markdown level0 summary"></div>
+              <div class="markdown level0 summary"><p>Compiles templates based of text files that use js language syntax,
+compiles config to inline function</p>
+</div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
@@ -175,6 +177,12 @@
                   <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_System_Collections_IEnumerable_GetEnumerator">TemplateCompiler.IEnumerable.GetEnumerator()</a>
                 </div>
                 <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoBeforeCompileTemplateSources">TemplateCompiler.DoBeforeCompileTemplateSources()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoConfigure_NFX_Environment_IConfigSectionNode_">TemplateCompiler.DoConfigure(IConfigSectionNode)</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_RegisterDefaultUsings_System_Collections_Generic_HashSet_System_String__">TemplateCompiler.RegisterDefaultUsings(HashSet&lt;String&gt;)</a>
                 </div>
                 <div>
@@ -220,6 +228,21 @@
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">public class TextJSTemplateCompiler : TemplateCompiler, IDisposable, IConfigurable, IEnumerable&lt;CompileUnit&gt;, IEnumerable</code></pre>
               </div>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_examples"><strong>Examples</strong></h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               <h3 id="constructors">Constructors
               </h3>
               
@@ -232,6 +255,21 @@
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">public TextJSTemplateCompiler()</code></pre>
               </div>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler__ctor_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               
               
               <a id="NFX_Templatization_TextJSTemplateCompiler__ctor_" data-uid="NFX.Templatization.TextJSTemplateCompiler.#ctor*"></a>
@@ -259,6 +297,21 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler__ctor_NFX_Templatization_ITemplateSource_System_String_____examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               
               
               <a id="NFX_Templatization_TextJSTemplateCompiler__ctor_" data-uid="NFX.Templatization.TextJSTemplateCompiler.#ctor*"></a>
@@ -286,6 +339,21 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler__ctor_System_Collections_Generic_IEnumerable_NFX_Templatization_ITemplateSource_System_String____examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               <h3 id="fields">Fields
               </h3>
               
@@ -312,8 +380,64 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_CONFIG_DOM_GENERATOR_SECT_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               <h3 id="properties">Properties
               </h3>
+              
+              
+              <a id="NFX_Templatization_TextJSTemplateCompiler_DomGenConfig_" data-uid="NFX.Templatization.TextJSTemplateCompiler.DomGenConfig*"></a>
+              <h4 id="NFX_Templatization_TextJSTemplateCompiler_DomGenConfig" data-uid="NFX.Templatization.TextJSTemplateCompiler.DomGenConfig">DomGenConfig</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$dom-gen&quot;)]
+public string DomGenConfig { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_DomGenConfig_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               
               
               <a id="NFX_Templatization_TextJSTemplateCompiler_DOMGenerator_" data-uid="NFX.Templatization.TextJSTemplateCompiler.DOMGenerator*"></a>
@@ -322,7 +446,8 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public DOMGenerator DOMGenerator { get; set; }</code></pre>
+                <pre><code class="lang-csharp hljs">[Config(&quot;dom-gen&quot;)]
+public DOMGenerator DOMGenerator { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -339,6 +464,21 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_DOMGenerator_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               
               
               <a id="NFX_Templatization_TextJSTemplateCompiler_LanguageName_" data-uid="NFX.Templatization.TextJSTemplateCompiler.LanguageName*"></a>
@@ -366,6 +506,21 @@
               </table>
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_LanguageName">TemplateCompiler.LanguageName</a></div>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_LanguageName_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               
               
               <a id="NFX_Templatization_TextJSTemplateCompiler_LanguageSourceFileExtension_" data-uid="NFX.Templatization.TextJSTemplateCompiler.LanguageSourceFileExtension*"></a>
@@ -393,6 +548,21 @@
               </table>
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_LanguageSourceFileExtension">TemplateCompiler.LanguageSourceFileExtension</a></div>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_LanguageSourceFileExtension_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               <h3 id="methods">Methods
               </h3>
               
@@ -407,6 +577,21 @@
               </div>
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoCompileCode">TemplateCompiler.DoCompileCode()</a></div>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_DoCompileCode_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               
               
               <a id="NFX_Templatization_TextJSTemplateCompiler_DoCompileTemplateSource_" data-uid="NFX.Templatization.TextJSTemplateCompiler.DoCompileTemplateSource*"></a>
@@ -436,35 +621,21 @@
               </table>
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit_">TemplateCompiler.DoCompileTemplateSource(CompileUnit)</a></div>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit__examples">Examples</h5>
               
-              
-              <a id="NFX_Templatization_TextJSTemplateCompiler_DoConfigure_" data-uid="NFX.Templatization.TextJSTemplateCompiler.DoConfigure*"></a>
-              <h4 id="NFX_Templatization_TextJSTemplateCompiler_DoConfigure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Templatization.TextJSTemplateCompiler.DoConfigure(NFX.Environment.IConfigSectionNode)">DoConfigure(IConfigSectionNode)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected override void DoConfigure(IConfigSectionNode node)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
-                    <td><span class="parametername">node</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="overrides">Overrides</h5>
-              <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoConfigure_NFX_Environment_IConfigSectionNode_">TemplateCompiler.DoConfigure(IConfigSectionNode)</a></div>
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /***
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
                   <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>

@@ -1,7 +1,14 @@
-/* Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information. */
+@font-face 
+{
+  font-family: 'Roboto-Light';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Roboto-Light.ttf') format('truetype');
+}
+
 html,
 body {
-  font-family: 'Verdana', Tahoma, Helvetica, sans-serif;
+  font-family: 'Roboto-Light', Tahoma, Helvetica, sans-serif;
   height: 100%;
 }
 button,
@@ -514,12 +521,12 @@ body .toc{
   font-weight: bold;
   margin-top: 4px;
   position: relative;
-  font-size: 13px;
+  font-size: 15px;
 }
 .toc .level2 {
   font-weight: normal;
   margin: 0 0 0 10px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .toc-toggle {
   display: none;
@@ -579,7 +586,7 @@ body .toc{
 }
 .sideaffix {
   margin-top: 50px;
-  font-size: 12px;
+  font-size: 16px;
   max-height: 100%;
   overflow: hidden;
   top: 100px;
@@ -611,7 +618,7 @@ body .toc{
   font-weight: bold;
   text-transform: uppercase;
   padding-left: 10px;
-  font-size: 12px;
+  font-size: 16px;
 }
 .affix > ul.level1 {
   overflow: hidden;

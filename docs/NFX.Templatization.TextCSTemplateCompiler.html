@@ -12,7 +12,7 @@
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
-    <link rel="shortcut icon" href="../images/NFX.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -79,6 +79,7 @@
                   <div class="level1"><a class="xref" href="NFX.DisposableObject.html">DisposableObject</a></div>
                   <div class="level2"><a class="xref" href="NFX.Templatization.TemplateCompiler.html">TemplateCompiler</a></div>
                   <div class="level3"><span class="xref">TextCSTemplateCompiler</span></div>
+                  <div class="level4"><a class="xref" href="NFX.Templatization.NHTCompiler.html">NHTCompiler</a></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
@@ -174,6 +175,9 @@
                 </div>
                 <div>
                   <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_System_Collections_IEnumerable_GetEnumerator">TemplateCompiler.IEnumerable.GetEnumerator()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoBeforeCompileTemplateSources">TemplateCompiler.DoBeforeCompileTemplateSources()</a>
                 </div>
                 <div>
                   <a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoConfigure_NFX_Environment_IConfigSectionNode_">TemplateCompiler.DoConfigure(IConfigSectionNode)</a>
@@ -2744,6 +2748,92 @@
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="NFX.Templatization.TemplateCompiler.html#NFX_Templatization_TemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit_">TemplateCompiler.DoCompileTemplateSource(CompileUnit)</a></div>
               <h5 id="NFX_Templatization_TextCSTemplateCompiler_DoCompileTemplateSource_NFX_Templatization_CompileUnit__examples">Examples</h5>
+              
+<pre><code> #&lt;conf&gt;
+  &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
+            namespace="TestWebApp.Templates"
+            abstract="true"
+            summary="Test master page"
+   /&gt;
+#&lt;/conf&gt;
+#[class]
+
+    public string Title { get {return "aaaaa"; } }
+
+
+    protected abstract void renderHeader();
+    protected abstract void renderBody(bool showDetails);
+    protected abstract void renderFooter();
+
+
+#[render]
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;title&gt;?[Title]&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+
+  &lt;h1&gt;This is Header&lt;/h1&gt;
+   @[renderHeader();]
+
+  &lt;h1&gt;This is Body&lt;/h1&gt;
+   @[renderBody(true);]
+  &lt;p&gt;This is in master page&lt;/p&gt;
+
+  &lt;h1&gt;This is Footer&lt;/h1&gt;
+   @[renderFooter();]
+
+ &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              
+              
+              <a id="NFX_Templatization_TextCSTemplateCompiler_GetCompileUnitSourceContent_" data-uid="NFX.Templatization.TextCSTemplateCompiler.GetCompileUnitSourceContent*"></a>
+              <h4 id="NFX_Templatization_TextCSTemplateCompiler_GetCompileUnitSourceContent_NFX_Templatization_CompileUnit_System_String__" data-uid="NFX.Templatization.TextCSTemplateCompiler.GetCompileUnitSourceContent(NFX.Templatization.CompileUnit,System.String@)">GetCompileUnitSourceContent(CompileUnit, out String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual string GetCompileUnitSourceContent(CompileUnit unit, out string className)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Templatization.CompileUnit.html">CompileUnit</a></td>
+                    <td><span class="parametername">unit</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">className</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextCSTemplateCompiler_GetCompileUnitSourceContent_NFX_Templatization_CompileUnit_System_String___examples">Examples</h5>
               
 <pre><code> #&lt;conf&gt;
   &lt;compiler base-class-name="NFX.Web.Templatization.SimpleWebTemplate"
