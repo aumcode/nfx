@@ -1922,34 +1922,34 @@ var WAVE = (function(){
 
     var platform =
     {
-        iPhone: navigator.userAgent.match(/iPhone/i),
-		iPod: navigator.userAgent.match(/iPod/i),
-		iPad: navigator.userAgent.match(/iPad/i),
-		Android: navigator.userAgent.match(/Android/i),
-		IE: navigator.appName.indexOf("Microsoft") !== -1,
-		IEMobile: navigator.userAgent.match(/IEMobile/i),
-		WinPhone: /windows phone/i.test(navigator.userAgent),
-        Chrome: !!window.chrome, // navigator.userAgent.match(/Chrome/i),
-		Safari: navigator.userAgent.match(/Safari/i) && !window.chrome,
-		FireFox: navigator.userAgent.indexOf("Firefox") > -1,
-		BlackBerry: navigator.userAgent.match(/BlackBerry/i),
-		WebOS: navigator.userAgent.match(/webOS/i),
-		Opera: window.opera, // navigator.userAgent.indexOf("Presto") > -1
-		OperaMini: navigator.userAgent.match(/Opera Mini/i),
-		OperaMobi: navigator.userAgent.match(/Opera Mobi/i),
-        Silk: /silk/i.test(navigator.userAgent)
+      iPhone: navigator.userAgent.match(/iPhone/i),
+      iPod: navigator.userAgent.match(/iPod/i),
+      iPad: navigator.userAgent.match(/iPad/i),
+      Android: navigator.userAgent.match(/Android/i),
+      IE: navigator.appName.indexOf("Microsoft") !== -1,
+      IEMobile: navigator.userAgent.match(/IEMobile/i),
+      WinPhone: /windows phone/i.test(navigator.userAgent),
+      Chrome: !!window.chrome, // navigator.userAgent.match(/Chrome/i),
+      Safari: navigator.userAgent.match(/Safari/i) && !window.chrome,
+      FireFox: navigator.userAgent.indexOf("Firefox") > -1,
+      BlackBerry: navigator.userAgent.match(/BlackBerry/i),
+      WebOS: navigator.userAgent.match(/webOS/i),
+      Opera: window.opera, // navigator.userAgent.indexOf("Presto") > -1
+      OperaMini: navigator.userAgent.match(/Opera Mini/i),
+      OperaMobi: navigator.userAgent.match(/Opera Mobi/i),
+      Silk: /silk/i.test(navigator.userAgent)
     };
 
     platform.iOS    = platform.iPhone || platform.iPod || platform.iPad;
 
-	platform.Mobile = platform.iOS || platform.Android ||
+    platform.Mobile = platform.iOS || platform.Android ||
                       platform.OperaMini || platform.OperaMobi ||
                       platform.BlackBerry ||
                       platform.WebOS ||
                       platform.IEMobile || platform.WinPhone ||
                       platform.Silk;
 
-	platform.WebKit = platform.Chrome || platform.Safari;
+    platform.WebKit = platform.Chrome || platform.Safari;
 
     published.Platform = platform;
 
@@ -1959,34 +1959,34 @@ var WAVE = (function(){
                    };
 
     var pi = 3.14159265;
-	var pi2 = 6.28318531;
+  var pi2 = 6.28318531;
 
-	geometry.PI = pi;
-	geometry.PI2 = pi2;
+  geometry.PI = pi;
+  geometry.PI2 = pi2;
 
-    geometry.MapDirection = {
-		North:     {Name: "North"},
-		NorthEast: {Name: "NorthEast"},
-		East:      {Name: "East"},
-		SouthEast: {Name: "SouthEast"},
-		South:     {Name: "South"},
-		SouthWest: {Name: "SouthWest"},
-		West:      {Name: "West"},
-		NorthWest: {Name: "NorthWest"}
-	};
-
-    // Returns pixel distance between two points
-	geometry.distance = function(x1, y1, x2, y2) { return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)); };
+  geometry.MapDirection = {
+    North:     {Name: "North"},
+    NorthEast: {Name: "NorthEast"},
+    East:      {Name: "East"},
+    SouthEast: {Name: "SouthEast"},
+    South:     {Name: "South"},
+    SouthWest: {Name: "SouthWest"},
+    West:      {Name: "West"},
+    NorthWest: {Name: "NorthWest"}
+  };
 
     // Returns pixel distance between two points
-	geometry.distancePoints = function(p1, p2) {  return geometry.distance(p1.x(), p1.y(),  p2.x(), p2.y()); };
+  geometry.distance = function(x1, y1, x2, y2) { return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)); };
+
+    // Returns pixel distance between two points
+  geometry.distancePoints = function(p1, p2) {  return geometry.distance(p1.x(), p1.y(),  p2.x(), p2.y()); };
 
 
-    // Converts radians to degrees
-    geometry.radToDeg = function(rad){ return (rad / pi) * 180; };
+  // Converts radians to degrees
+  geometry.radToDeg = function(rad){ return (rad / pi) * 180; };
 
-    // Converts defrees to rads
-    geometry.degToRad = function(deg){ return (deg / 180) * pi; };
+  // Converts defrees to rads
+  geometry.degToRad = function(deg){ return (deg / 180) * pi; };
 
 
     // Returns azimuth angle (theta) in radians

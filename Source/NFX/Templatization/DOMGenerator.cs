@@ -15,15 +15,16 @@ namespace NFX.Templatization
     public const string CONFIG_ESCAPE_ATTR = "__";
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
     public const string CONFIG_JS_PREFIX_ATTR = "?";
+    public const string CONFIG_LJS_ID_ATTR = "ljsid";
     private readonly string[] CONFIG_BOOL_ATTRS = new string[] {"readonly", "disabled", "checked", "required", "selected"};
 
     public const string JS_ROOT_VAR = "Ør";
+    public const string JS_CURRENT_ELEMENT = "?this";
     private readonly string[] JS_CODE_BLOCK_STARTS_WTIH = new string[] {"?for(", "?while(", "?do{", "?if("};
     #endregion
 
     #region Static
     private static DOMGenerator s_Default;
-
     public static DOMGenerator Default
     {
       get
@@ -40,12 +41,13 @@ namespace NFX.Templatization
     private int m_IndexInSource;
     private string m_JsRootVar;
     private bool m_Pretty;
+    private Dictionary<string, string> m_MapLjsIdsToJsIds;
     #endregion
 
     #region Properties
     public string LineEnding
     {
-      get { return m_LineEnding ?? (m_LineEnding = m_Pretty ? "\n" : ""); }
+      get { return m_LineEnding ?? (m_LineEnding = m_Pretty ? "\n" : string.Empty); }
     }
 
     public string Space
@@ -64,14 +66,31 @@ namespace NFX.Templatization
       m_Pretty = attr != null && attr.Exists && attr.ValueAsBool(false);
     }
 
-    public string Generate(IConfigSectionNode node, int indent, ref int indexInSource)
+    public string Generate(IConfigSectionNode node, int indent, ref int indexInSource, ref Dictionary<string, string> dictIds)
     {
       m_IndexInSource = indexInSource;
       m_Indent = indent;
       m_JsRootVar = JS_ROOT_VAR.Args(m_IndexInSource);
+      m_MapLjsIdsToJsIds = dictIds;
+
       var counter = 0;
       string id;
       return createElement(node, true, null, ref counter, 0, out id);
+    }
+
+    public string GenerateAnonymousFunction(IConfigSectionNode node, int indent, ref int indexInSource, ref Dictionary<string, string> dictIds)
+    {
+      m_IndexInSource = indexInSource;
+      m_Indent = indent;
+      m_JsRootVar = JS_ROOT_VAR.Args(m_IndexInSource);
+      m_MapLjsIdsToJsIds = dictIds;
+
+      m_Pretty = false;
+      m_LineEnding = string.Empty;
+
+      var counter = 0;
+      string id;
+      return "(function(){{{0}}})()".Args(createElement(node, true, null, ref counter, 0, out id));
     }
 
     #endregion
@@ -92,12 +111,12 @@ namespace NFX.Templatization
       }
 
       if (isJsNode)
-        sb.AppendFormat("{0}{1}{4}{2}{3}", getIndent(extraSpaces), node.Name.Remove(0,1), hasChildren ? "{" : string.Empty, LineEnding, Space);
+        sb.AppendFormat("{0}{1}{4}{2}{3}", getIndent(extraSpaces), jsWrap(node.Name, elemId), hasChildren ? "{" : string.Empty, LineEnding, Space);
       else
       {
         sb.AppendFormat("{0}var {1}{4}={4}WAVE.ce('{2}');{3}", getIndent(extraSpaces), elemId, MiscUtils.EscapeJSLiteral(nName), LineEnding, Space);
         if (node.Value.IsNotNullOrWhiteSpace())
-          sb.AppendFormat("{3}{0}.innerText{4}={4}{1};{2}", elemId, wrapValue(node.Value), LineEnding, getIndent(extraSpaces), Space);
+          sb.AppendFormat("{3}{0}.innerText{4}={4}{1};{2}", elemId, wrapValue(node.Value, elemId), LineEnding, getIndent(extraSpaces), Space);
 
         foreach(var attr in node.Attributes)
         {
@@ -107,12 +126,20 @@ namespace NFX.Templatization
           var name = MiscUtils.EscapeJSLiteral(attr.Name);
           if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
             sb.AppendFormat("{4}{0}.addEventListener('{1}',{5}{2},{5}false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, LineEnding, getIndent(extraSpaces), Space);
+
+          else if (name.EqualsOrdSenseCase(CONFIG_LJS_ID_ATTR))
+          {
+            if (m_MapLjsIdsToJsIds.ContainsKey(name))
+              throw new TemplatizationException(StringConsts.TEMPLATE_JS_COMPILER_DUPLICATION_ID.Args(name));
+
+            m_MapLjsIdsToJsIds.Add(value, elemId);
+          }
           else
           {
             if (CONFIG_BOOL_ATTRS.Any(s => s.EqualsSenseCase(name)) || name.StartsWith(CONFIG_ESCAPE_ATTR))
-              sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, name, wrapValue(value), LineEnding, Space));
+              sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, name, wrapValue(value, elemId), LineEnding, Space));
             else
-              sb.AppendFormat("{4}{0}.setAttribute('{1}',{5}{2});{3}", elemId, name, wrapValue(value), LineEnding, getIndent(extraSpaces), Space);
+              sb.AppendFormat("{4}{0}.setAttribute('{1}',{5}{2});{3}", elemId, name, wrapValue(value, elemId), LineEnding, getIndent(extraSpaces), Space);
           }
         }
       }
@@ -141,9 +168,14 @@ namespace NFX.Templatization
       return sb.ToString();
     }
 
-    private string wrapValue(string value)
+    private string wrapValue(string value, string currentElemId)
     {
-      return value.StartsWith("?") ? value.Remove(0,1) : "'{0}'".Args(MiscUtils.EscapeJSLiteral(value));
+      return value.StartsWith(CONFIG_JS_PREFIX_ATTR) ? jsWrap(value, currentElemId) : "'{0}'".Args(MiscUtils.EscapeJSLiteral(value));
+    }
+
+    private string jsWrap(string value, string currentElemId)
+    {
+      return value.Remove(0, 1).Replace(JS_CURRENT_ELEMENT, currentElemId);
     }
 
     public string getIndent(int extraSpaces = 0)

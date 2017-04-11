@@ -58,6 +58,7 @@ namespace NFX.Templatization
     #region Private/Prot Fields
     private DOMGenerator m_DOMGenerator;
     private string m_DomGenConfig;
+    private Dictionary<string, string> m_MapLjsIdsToJsIds = new Dictionary<string, string>();
     #endregion
 
     #region Properties
@@ -101,32 +102,64 @@ namespace NFX.Templatization
       var text = unit.TemplateSource.GetSourceContent().ToString().Trim();
       var icname = unit.TemplateSource.InferClassName();
 
-      var r = new Regex(@"\/\*{3}(.*?)\*{3}\/", RegexOptions.Singleline);
-
-      var counter = 0;
-      unit.CompiledSource = r.Replace(text, (m) => {
-        counter++;
-
-        var spacesCount = 0;
-        var idx = m.Index -1;
-        while(true)
-        {
-          var i = idx - spacesCount;
-          if (i < 0) break;
-
-          var c = text[i];
-          if (c != ' ') break;
-          spacesCount++;
-        }
-
-        var conf = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
-        return DOMGenerator.Generate(conf, spacesCount, ref counter);
-      });
+      var blockCount = 0;
+      var result = transpile(text, @"\/\*{3}(.*?)\*{3}\/", false, ref blockCount);
+      result = transpile(result, "\"\\*\\#\\*(.*?)\\*\\#\\*\"", true, ref blockCount);
+      unit.CompiledSource = evaluateIds(result);
     }
 
     protected override void DoCompileCode()
     {
       throw new NotSupportedException("TextJSTemplateCompiler does not support compilation");
+    }
+    #endregion
+
+    #region .pvt
+
+    private string transpile(string source, string regex, bool wrapWithFunction, ref int blockCount)
+    {
+      var r = new Regex(regex, RegexOptions.Singleline);
+      try
+      {
+        var bc = blockCount;
+        var result = r.Replace(source, (m) =>
+        {
+          bc++;
+
+          var spacesCount = 0;
+          var idx = m.Index - 1;
+          while (true)
+          {
+            var i = idx - spacesCount;
+            if (i < 0) break;
+
+            var c = source[i];
+            if (c != ' ') break;
+            spacesCount++;
+          }
+
+          var conf = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          if (!wrapWithFunction)
+            return DOMGenerator.Generate(conf, spacesCount, ref bc, ref m_MapLjsIdsToJsIds);
+          else
+            return DOMGenerator.GenerateAnonymousFunction(conf, spacesCount, ref bc, ref m_MapLjsIdsToJsIds);
+        });
+        blockCount = bc;
+        return result;
+      }
+      catch (Exception error)
+      {
+        throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_ERROR + error.Message, error);
+      }
+    }
+
+    private string evaluateIds(string value)
+    {
+      foreach (var pair in m_MapLjsIdsToJsIds)
+      {
+        value = value.Replace(pair.Key, pair.Value);
+      }
+      return value;
     }
     #endregion
   }

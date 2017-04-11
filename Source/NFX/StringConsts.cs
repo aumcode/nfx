@@ -517,6 +517,11 @@ namespace NFX
     public const string TEMPLATE_CS_COMPILER_CONFIG_ERROR =
         "Configuration segment error: ";
 
+    public const string TEMPLATE_JS_COMPILER_CONFIG_ERROR =
+        "Configuration error: ";
+
+    public const string TEMPLATE_JS_COMPILER_DUPLICATION_ID =
+      "Duplication of id: {0}";
 
     public const string PARAMETER_MAY_NOT_BE_NULL_ERROR =
         "Parameter '{0}' may not be null";
@@ -1021,7 +1026,7 @@ namespace NFX
 
     public const string PILE_OUT_OF_SPACE_ERROR =  "Pile is out of allowed space of {0:n} max bytes, {1} max segments @ {2:n} bytes/segment";
 
-    public const string PILE_OBJECT_LARGER_SEGMENT_ERROR =  "Pile could not put object of {0} bytes as this size exceeds the size of a segment";
+    public const string PILE_OBJECT_LARGER_SEGMENT_ERROR =  "Pile could not put object of {0:n0} bytes as this size exceeds the size of a segment of {1:n0} bytes";
 
 
     public const string IO_STREAM_POSITION_ERROR =  "Stream position of {0} is beyond the length of stream {1}";

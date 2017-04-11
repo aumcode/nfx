@@ -396,7 +396,6 @@
             value: field.value(),
             disabled: field.isEnabled() ? "" : "disabled",
             readonly: field.readonly() ? "readonly" : "",
-            value: field.value(),
             placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
             required: field.required() ? "required" : "",
             wrapCls: published.CLS_COMBO_WRAP,

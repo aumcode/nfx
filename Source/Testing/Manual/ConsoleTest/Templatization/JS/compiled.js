@@ -2,6 +2,10 @@ function hello(text) {
   alert(WAVE.strDefault(text, "Hello"));
 }
 
+function inline() {
+  return (function(){var Ør=arguments[0];if(WAVE.isString(Ør))Ør=WAVE.id(Ør);var Ø1=WAVE.ce('div');Ø1.setAttribute('id','someText');if(WAVE.isObject(Ør))Ør.appendChild(Ø1);return Ø1;})();
+}
+
 
 function ex1(root, ctx) {
   var Ør = arguments[0];
@@ -12,7 +16,7 @@ function ex1(root, ctx) {
   Ø1.setAttribute('id', 'sect');
   Ø1.setAttribute('class', 'sect');
   var a = "pupkin"; 
-  if(ctx.pzd) {
+  if(ctx.pzd || Ø1 || Ø1) {
     var Ø2 = WAVE.ce('div');
     Ø2.innerText = ctx.error;
     Ø2.setAttribute('class', ctx.ec);
@@ -20,7 +24,6 @@ function ex1(root, ctx) {
   }
   if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
   return Ø1;
-
 }
 
 function ex2(root) {
@@ -37,7 +40,6 @@ function ex2(root) {
     }
   }
   return Ø1;
-
 }
 
 function ex3(root, ctx){
@@ -164,5 +166,4 @@ function ex3(root, ctx){
   Ø1.appendChild(Ø33);
   if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
   return Ø1;
-
 }

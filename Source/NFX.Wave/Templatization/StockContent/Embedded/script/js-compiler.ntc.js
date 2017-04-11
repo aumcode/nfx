@@ -1,9 +1,10 @@
 ﻿function hello(text) {
-  alert(WAVE.strDefault(text, "Hello"));
+    alert(WAVE.strDefault(text, "Hello"));
 }
 
 function render(root, ctx){
 /***
+
 div{
   on-click = "function() { console.log('kaka') }"
   div{ class=title data-alert="alert('just data')" data-alert-script='<script>alert("script")</script>' }

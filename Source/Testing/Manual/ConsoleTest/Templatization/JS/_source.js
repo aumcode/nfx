@@ -2,6 +2,10 @@
   alert(WAVE.strDefault(text, "Hello"));
 }
 
+function inline() {
+  return "*#* div{ id=someText } *#*";
+}
+
 
 function ex1(root, ctx) {
   /***
@@ -11,10 +15,11 @@ function ex1(root, ctx) {
       "
     {
       id=sect
+      ljsid=rootNode
       class=sect
       $"?var a = ""pupkin"";"{}
 
-      "?if(ctx.pzd)" {
+      "?if(ctx.pzd || ?this || rootNode)" {
         div="?ctx.error" {
           class="?ctx.ec"
         }

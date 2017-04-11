@@ -1,5 +1,5 @@
 function hello(text) {
-  alert(WAVE.strDefault(text, "Hello"));
+    alert(WAVE.strDefault(text, "Hello"));
 }
 
 function render(root, ctx){
