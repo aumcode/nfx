@@ -427,7 +427,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static readonly Dictionary&lt;string, string&gt; CARRIERS</code></pre>
+                <pre><code class="lang-csharp hljs">public static readonly Dictionary&lt;CarrierType, string&gt; CARRIERS</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -439,7 +439,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+                    <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<a class="xref" href="NFX.Web.Shipping.CarrierType.html">CarrierType</a>, <span class="xref">System.String</span>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -1161,7 +1161,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public override Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)</code></pre>
+                <pre><code class="lang-csharp hljs">public override ShippingRate EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1200,7 +1200,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Financial.Amount.html">Amount</a>&gt;</td>
+                    <td><a class="xref" href="NFX.Web.Shipping.ShippingRate.html">ShippingRate</a></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -1215,7 +1215,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Amount? EstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment)</code></pre>
+                <pre><code class="lang-csharp hljs">public ShippingRate EstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1254,7 +1254,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Financial.Amount.html">Amount</a>&gt;</td>
+                    <td><a class="xref" href="NFX.Web.Shipping.ShippingRate.html">ShippingRate</a></td>
                     <td></td>
                   </tr>
                 </tbody>

@@ -1383,6 +1383,49 @@ preserving their existing order. Attributes of other node get merged into parent
               </table>
               
               
+              <a id="NFX_Environment_Configuration_IsSupportedFormat_" data-uid="NFX.Environment.Configuration.IsSupportedFormat*"></a>
+              <h4 id="NFX_Environment_Configuration_IsSupportedFormat_System_String_" data-uid="NFX.Environment.Configuration.IsSupportedFormat(System.String)">IsSupportedFormat(String)</h4>
+              <div class="markdown level1 summary"><p>True when format is supported</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static bool IsSupportedFormat(string format)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">format</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_Environment_Configuration_NewEmptyRoot_" data-uid="NFX.Environment.Configuration.NewEmptyRoot*"></a>
               <h4 id="NFX_Environment_Configuration_NewEmptyRoot_System_String_" data-uid="NFX.Environment.Configuration.NewEmptyRoot(System.String)">NewEmptyRoot(String)</h4>
               <div class="markdown level1 summary"><p>Creates a new empty config root based on laconic format</p>
@@ -1522,13 +1565,13 @@ and so on... for the rest of supported formats
               
               
               <a id="NFX_Environment_Configuration_ProviderLoadFromString_" data-uid="NFX.Environment.Configuration.ProviderLoadFromString*"></a>
-              <h4 id="NFX_Environment_Configuration_ProviderLoadFromString_System_String_System_String_" data-uid="NFX.Environment.Configuration.ProviderLoadFromString(System.String,System.String)">ProviderLoadFromString(String, String)</h4>
+              <h4 id="NFX_Environment_Configuration_ProviderLoadFromString_System_String_System_String_System_String_" data-uid="NFX.Environment.Configuration.ProviderLoadFromString(System.String,System.String,System.String)">ProviderLoadFromString(String, String, String)</h4>
               <div class="markdown level1 summary"><p>Loads the supplied string content in the specified format, which may be format name like &quot;xml&quot; or &quot;laconfig&quot; with or without extension period</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Configuration ProviderLoadFromString(string content, string format)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Configuration ProviderLoadFromString(string content, string format, string fallbackFormat = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1548,6 +1591,11 @@ and so on... for the rest of supported formats
                   <tr>
                     <td><span class="xref">System.String</span></td>
                     <td><span class="parametername">format</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">fallbackFormat</span></td>
                     <td></td>
                   </tr>
                 </tbody>

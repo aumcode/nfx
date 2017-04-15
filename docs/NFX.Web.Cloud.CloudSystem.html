@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ShippingSystem
+    <title>Class CloudSystem
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ShippingSystem
+    <meta name="title" content="Class CloudSystem
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
@@ -68,7 +68,7 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="NFX_Web_Shipping_ShippingSystem" data-uid="NFX.Web.Shipping.ShippingSystem">Class ShippingSystem
+              <h1 id="NFX_Web_Cloud_CloudSystem" data-uid="NFX.Web.Cloud.CloudSystem">Class CloudSystem
               </h1>
               <div class="markdown level0 summary"></div>
               <div class="markdown level0 conceptual"></div>
@@ -80,9 +80,7 @@
                   <div class="level3"><a class="xref" href="NFX.ServiceModel.Service.html">Service</a></div>
                   <div class="level4"><a class="xref" href="NFX.ServiceModel.Service-1.html">Service</a>&lt;<span class="xref">System.Object</span>&gt;</div>
                   <div class="level5"><a class="xref" href="NFX.ServiceModel.ServiceWithInstrumentationBase-1.html">ServiceWithInstrumentationBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
-                  <div class="level6"><span class="xref">ShippingSystem</span></div>
-                  <div class="level7"><a class="xref" href="NFX.Web.Shipping.Manual.ManualSystem.html">ManualSystem</a></div>
-                  <div class="level7"><a class="xref" href="NFX.Web.Shipping.Shippo.ShippoSystem.html">ShippoSystem</a></div>
+                  <div class="level6"><span class="xref">CloudSystem</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
@@ -165,6 +163,9 @@
                   <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_CheckServiceActiveOrStarting">Service.CheckServiceActiveOrStarting()</a>
                 </div>
                 <div>
+                  <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoAcceptManagerVisit_System_Object_System_DateTime_">Service.DoAcceptManagerVisit(Object, DateTime)</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_____ObtainPrivateServiceStatusLockObject">Service.____ObtainPrivateServiceStatusLockObject()</a>
                 </div>
                 <div>
@@ -222,23 +223,23 @@
                   <span class="xref">System.Object.MemberwiseClone()</span>
                 </div>
               </div>
-              <h6><strong>Namespace</strong>:NFX.Web.Shipping</h6>
+              <h6><strong>Namespace</strong>:NFX.Web.Cloud</h6>
               <h6><strong>Assembly</strong>:NFX.Web.dll</h6>
-              <h5 id="NFX_Web_Shipping_ShippingSystem_syntax">Syntax</h5>
+              <h5 id="NFX_Web_Cloud_CloudSystem_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract class ShippingSystem : ServiceWithInstrumentationBase&lt;object&gt;, IApplicationComponent, IDisposable, IService, INamed, ILocalizedTimeProvider, IWebClientCaller, IShippingSystemImplementation, IShippingSystem, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
+                <pre><code class="lang-csharp hljs">public abstract class CloudSystem : ServiceWithInstrumentationBase&lt;object&gt;, IApplicationComponent, IDisposable, IService, ILocalizedTimeProvider, IWebClientCaller, ICloudSystemImplementation, ICloudSystem, INamed, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem__ctor_" data-uid="NFX.Web.Shipping.ShippingSystem.#ctor*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem__ctor_System_String_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Shipping.ShippingSystem.#ctor(System.String,NFX.Environment.IConfigSectionNode)">ShippingSystem(String, IConfigSectionNode)</h4>
+              <a id="NFX_Web_Cloud_CloudSystem__ctor_" data-uid="NFX.Web.Cloud.CloudSystem.#ctor*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem__ctor_System_String_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.#ctor(System.String,NFX.Environment.IConfigSectionNode)">CloudSystem(String, IConfigSectionNode)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public ShippingSystem(string name, IConfigSectionNode node)</code></pre>
+                <pre><code class="lang-csharp hljs">protected CloudSystem(string name, IConfigSectionNode node)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -264,13 +265,13 @@
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem__ctor_" data-uid="NFX.Web.Shipping.ShippingSystem.#ctor*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem__ctor_System_String_NFX_Environment_IConfigSectionNode_System_Object_" data-uid="NFX.Web.Shipping.ShippingSystem.#ctor(System.String,NFX.Environment.IConfigSectionNode,System.Object)">ShippingSystem(String, IConfigSectionNode, Object)</h4>
+              <a id="NFX_Web_Cloud_CloudSystem__ctor_" data-uid="NFX.Web.Cloud.CloudSystem.#ctor*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem__ctor_System_String_NFX_Environment_IConfigSectionNode_System_Object_" data-uid="NFX.Web.Cloud.CloudSystem.#ctor(System.String,NFX.Environment.IConfigSectionNode,System.Object)">CloudSystem(String, IConfigSectionNode, Object)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public ShippingSystem(string name, IConfigSectionNode node, object director)</code></pre>
+                <pre><code class="lang-csharp hljs">protected CloudSystem(string name, IConfigSectionNode node, object director)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -303,7 +304,7 @@
               </h3>
               
               
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CONFIG_AUTO_START_ATTR" data-uid="NFX.Web.Shipping.ShippingSystem.CONFIG_AUTO_START_ATTR">CONFIG_AUTO_START_ATTR</h4>
+              <h4 id="NFX_Web_Cloud_CloudSystem_CONFIG_AUTO_START_ATTR" data-uid="NFX.Web.Cloud.CloudSystem.CONFIG_AUTO_START_ATTR">CONFIG_AUTO_START_ATTR</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -327,12 +328,12 @@
               </table>
               
               
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CONFIG_CARRIER_SECTION" data-uid="NFX.Web.Shipping.ShippingSystem.CONFIG_CARRIER_SECTION">CONFIG_CARRIER_SECTION</h4>
+              <h4 id="NFX_Web_Cloud_CloudSystem_CONFIG_CLOUD_SECTION" data-uid="NFX.Web.Cloud.CloudSystem.CONFIG_CLOUD_SECTION">CONFIG_CLOUD_SECTION</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string CONFIG_CARRIER_SECTION = &quot;carrier&quot;</code></pre>
+                <pre><code class="lang-csharp hljs">public const string CONFIG_CLOUD_SECTION = &quot;cloud&quot;</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -351,12 +352,12 @@
               </table>
               
               
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CONFIG_CARRIERS_SECTION" data-uid="NFX.Web.Shipping.ShippingSystem.CONFIG_CARRIERS_SECTION">CONFIG_CARRIERS_SECTION</h4>
+              <h4 id="NFX_Web_Cloud_CloudSystem_CONFIG_HOST_TEMPLATE_SECTION" data-uid="NFX.Web.Cloud.CloudSystem.CONFIG_HOST_TEMPLATE_SECTION">CONFIG_HOST_TEMPLATE_SECTION</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string CONFIG_CARRIERS_SECTION = &quot;carriers&quot;</code></pre>
+                <pre><code class="lang-csharp hljs">public const string CONFIG_HOST_TEMPLATE_SECTION = &quot;host-template&quot;</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -375,12 +376,12 @@
               </table>
               
               
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CONFIG_SHIPPING_PROCESSING_SECTION" data-uid="NFX.Web.Shipping.ShippingSystem.CONFIG_SHIPPING_PROCESSING_SECTION">CONFIG_SHIPPING_PROCESSING_SECTION</h4>
+              <h4 id="NFX_Web_Cloud_CloudSystem_CONFIG_SYSTEM_SECTION" data-uid="NFX.Web.Cloud.CloudSystem.CONFIG_SYSTEM_SECTION">CONFIG_SYSTEM_SECTION</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string CONFIG_SHIPPING_PROCESSING_SECTION = &quot;shipping-processing&quot;</code></pre>
+                <pre><code class="lang-csharp hljs">public const string CONFIG_SYSTEM_SECTION = &quot;system&quot;</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -399,12 +400,12 @@
               </table>
               
               
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CONFIG_SHIPPING_SYSTEM_HOST_SECTION" data-uid="NFX.Web.Shipping.ShippingSystem.CONFIG_SHIPPING_SYSTEM_HOST_SECTION">CONFIG_SHIPPING_SYSTEM_HOST_SECTION</h4>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Sessions" data-uid="NFX.Web.Cloud.CloudSystem.Sessions">Sessions</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string CONFIG_SHIPPING_SYSTEM_HOST_SECTION = &quot;shipping-system-host&quot;</code></pre>
+                <pre><code class="lang-csharp hljs">protected readonly List&lt;CloudSession&gt; Sessions</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -416,151 +417,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CONFIG_SHIPPING_SYSTEM_SECTION" data-uid="NFX.Web.Shipping.ShippingSystem.CONFIG_SHIPPING_SYSTEM_SECTION">CONFIG_SHIPPING_SYSTEM_SECTION</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string CONFIG_SHIPPING_SYSTEM_SECTION = &quot;shipping-system&quot;</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DEFAULT_LOG_LEVEL" data-uid="NFX.Web.Shipping.ShippingSystem.DEFAULT_LOG_LEVEL">DEFAULT_LOG_LEVEL</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const MessageType DEFAULT_LOG_LEVEL = MessageType.Warning</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DHL_EXPRESS_CARRIER_ID" data-uid="NFX.Web.Shipping.ShippingSystem.DHL_EXPRESS_CARRIER_ID">DHL_EXPRESS_CARRIER_ID</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string DHL_EXPRESS_CARRIER_ID = &quot;DHL_EXPRESS&quot;</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_Web_Shipping_ShippingSystem_FEDEX_CARRIER_ID" data-uid="NFX.Web.Shipping.ShippingSystem.FEDEX_CARRIER_ID">FEDEX_CARRIER_ID</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string FEDEX_CARRIER_ID = &quot;FEDEX&quot;</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_Web_Shipping_ShippingSystem_UPS_CARRIER_ID" data-uid="NFX.Web.Shipping.ShippingSystem.UPS_CARRIER_ID">UPS_CARRIER_ID</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string UPS_CARRIER_ID = &quot;UPS&quot;</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_Web_Shipping_ShippingSystem_USPS_CARRIER_ID" data-uid="NFX.Web.Shipping.ShippingSystem.USPS_CARRIER_ID">USPS_CARRIER_ID</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const string USPS_CARRIER_ID = &quot;USPS&quot;</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
+                    <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="NFX.Web.Cloud.CloudSession.html">CloudSession</a>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -569,13 +426,13 @@
               </h3>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_Capabilities_" data-uid="NFX.Web.Shipping.ShippingSystem.Capabilities*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_Capabilities" data-uid="NFX.Web.Shipping.ShippingSystem.Capabilities">Capabilities</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_DefaultSessionConnectParams_" data-uid="NFX.Web.Cloud.CloudSystem.DefaultSessionConnectParams*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DefaultSessionConnectParams" data-uid="NFX.Web.Cloud.CloudSystem.DefaultSessionConnectParams">DefaultSessionConnectParams</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract IShippingSystemCapabilities Capabilities { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">protected CloudConnectionParameters DefaultSessionConnectParams { get; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -587,42 +444,15 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingSystemCapabilities.html">IShippingSystemCapabilities</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_Capabilities">IShippingSystem.Capabilities</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_DefaultSessionConnectParams_" data-uid="NFX.Web.Shipping.ShippingSystem.DefaultSessionConnectParams*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DefaultSessionConnectParams" data-uid="NFX.Web.Shipping.ShippingSystem.DefaultSessionConnectParams">DefaultSessionConnectParams</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected ShippingConnectionParameters DefaultSessionConnectParams { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingConnectionParameters.html">ShippingConnectionParameters</a></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudConnectionParameters.html">CloudConnectionParameters</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_DefaultSessionConnectParamsCfg_" data-uid="NFX.Web.Shipping.ShippingSystem.DefaultSessionConnectParamsCfg*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DefaultSessionConnectParamsCfg" data-uid="NFX.Web.Shipping.ShippingSystem.DefaultSessionConnectParamsCfg">DefaultSessionConnectParamsCfg</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_DefaultSessionConnectParamsCfg_" data-uid="NFX.Web.Cloud.CloudSystem.DefaultSessionConnectParamsCfg*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DefaultSessionConnectParamsCfg" data-uid="NFX.Web.Cloud.CloudSystem.DefaultSessionConnectParamsCfg">DefaultSessionConnectParamsCfg</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -645,15 +475,17 @@ public IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }</code></p
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Web.Cloud.ICloudSystem.html#NFX_Web_Cloud_ICloudSystem_DefaultSessionConnectParamsCfg">ICloudSystem.DefaultSessionConnectParamsCfg</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_Instances_" data-uid="NFX.Web.Shipping.ShippingSystem.Instances*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_Instances" data-uid="NFX.Web.Shipping.ShippingSystem.Instances">Instances</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_Instances_" data-uid="NFX.Web.Cloud.CloudSystem.Instances*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Instances" data-uid="NFX.Web.Cloud.CloudSystem.Instances">Instances</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Registry&lt;ShippingSystem&gt; Instances { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">public static IRegistry&lt;ICloudSystem&gt; Instances { get; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -665,21 +497,21 @@ public IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }</code></p
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Registry-1.html">Registry</a>&lt;<a class="xref" href="NFX.Web.Shipping.ShippingSystem.html">ShippingSystem</a>&gt;</td>
+                    <td><a class="xref" href="NFX.IRegistry-1.html">IRegistry</a>&lt;<a class="xref" href="NFX.Web.Cloud.ICloudSystem.html">ICloudSystem</a>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_InstrumentationEnabled_" data-uid="NFX.Web.Shipping.ShippingSystem.InstrumentationEnabled*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_InstrumentationEnabled" data-uid="NFX.Web.Shipping.ShippingSystem.InstrumentationEnabled">InstrumentationEnabled</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_InstrumentationEnabled_" data-uid="NFX.Web.Cloud.CloudSystem.InstrumentationEnabled*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_InstrumentationEnabled" data-uid="NFX.Web.Cloud.CloudSystem.InstrumentationEnabled">InstrumentationEnabled</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Config(Default = false)]
-[ExternalParameter(new string[]{&quot;instrumentation&quot;, &quot;shipping&quot;})]
+[ExternalParameter(new string[]{&quot;instrumentation&quot;, &quot;pay&quot;})]
 public override bool InstrumentationEnabled { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
@@ -703,33 +535,8 @@ public override bool InstrumentationEnabled { get; set; }</code></pre>
                   <div><a class="xref" href="NFX.Instrumentation.IInstrumentable.html#NFX_Instrumentation_IInstrumentable_InstrumentationEnabled">IInstrumentable.InstrumentationEnabled</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_IsShippingSystemHost_" data-uid="NFX.Web.Shipping.ShippingSystem.IsShippingSystemHost*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_IsShippingSystemHost" data-uid="NFX.Web.Shipping.ShippingSystem.IsShippingSystemHost">IsShippingSystemHost</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static bool IsShippingSystemHost { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Boolean</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_KeepAlive_" data-uid="NFX.Web.Shipping.ShippingSystem.KeepAlive*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_KeepAlive" data-uid="NFX.Web.Shipping.ShippingSystem.KeepAlive">KeepAlive</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_KeepAlive_" data-uid="NFX.Web.Cloud.CloudSystem.KeepAlive*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_KeepAlive" data-uid="NFX.Web.Cloud.CloudSystem.KeepAlive">KeepAlive</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -756,14 +563,15 @@ public bool KeepAlive { get; set; }</code></pre>
                   <div><a class="xref" href="NFX.Web.IWebClientCaller.html#NFX_Web_IWebClientCaller_KeepAlive">IWebClientCaller.KeepAlive</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_LogLevel_" data-uid="NFX.Web.Shipping.ShippingSystem.LogLevel*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_LogLevel" data-uid="NFX.Web.Shipping.ShippingSystem.LogLevel">LogLevel</h4>
-              <div class="markdown level1 summary"></div>
+              <a id="NFX_Web_Cloud_CloudSystem_LogLevel_" data-uid="NFX.Web.Cloud.CloudSystem.LogLevel*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_LogLevel" data-uid="NFX.Web.Cloud.CloudSystem.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"><p>Specifies the log level for operations performed by Pay System.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Config(Default = MessageType.Warning)]
-[ExternalParameter(new string[]{&quot;shipping&quot;})]
+[ExternalParameter(new string[]{&quot;pay&quot;})]
 public MessageType LogLevel { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
@@ -782,11 +590,11 @@ public MessageType LogLevel { get; set; }</code></pre>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystemImplementation.html#NFX_Web_Shipping_IShippingSystemImplementation_LogLevel">IShippingSystemImplementation.LogLevel</a></div>
+                  <div><a class="xref" href="NFX.Web.Cloud.ICloudSystemImplementation.html#NFX_Web_Cloud_ICloudSystemImplementation_LogLevel">ICloudSystemImplementation.LogLevel</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_Pipelined_" data-uid="NFX.Web.Shipping.ShippingSystem.Pipelined*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_Pipelined" data-uid="NFX.Web.Shipping.ShippingSystem.Pipelined">Pipelined</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_Pipelined_" data-uid="NFX.Web.Cloud.CloudSystem.Pipelined*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Pipelined" data-uid="NFX.Web.Cloud.CloudSystem.Pipelined">Pipelined</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -813,13 +621,13 @@ public bool Pipelined { get; set; }</code></pre>
                   <div><a class="xref" href="NFX.Web.IWebClientCaller.html#NFX_Web_IWebClientCaller_Pipelined">IWebClientCaller.Pipelined</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_PreconfiguredShippingCarriers_" data-uid="NFX.Web.Shipping.ShippingSystem.PreconfiguredShippingCarriers*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_PreconfiguredShippingCarriers" data-uid="NFX.Web.Shipping.ShippingSystem.PreconfiguredShippingCarriers">PreconfiguredShippingCarriers</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_Templates_" data-uid="NFX.Web.Cloud.CloudSystem.Templates*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Templates" data-uid="NFX.Web.Cloud.CloudSystem.Templates">Templates</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public IRegistry&lt;ShippingCarrier&gt; PreconfiguredShippingCarriers { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">public IRegistry&lt;CloudTemplate&gt; Templates { get; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -831,41 +639,15 @@ public bool Pipelined { get; set; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.IRegistry-1.html">IRegistry</a>&lt;<a class="xref" href="NFX.Web.Shipping.ShippingCarrier.html">ShippingCarrier</a>&gt;</td>
+                    <td><a class="xref" href="NFX.IRegistry-1.html">IRegistry</a>&lt;<a class="xref" href="NFX.Web.Cloud.CloudTemplate.html">CloudTemplate</a>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_ShippingSystemHost_" data-uid="NFX.Web.Shipping.ShippingSystem.ShippingSystemHost*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_ShippingSystemHost" data-uid="NFX.Web.Shipping.ShippingSystem.ShippingSystemHost">ShippingSystemHost</h4>
-              <div class="markdown level1 summary"><p>Returns process-global shipping system host</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static IShippingSystemHost ShippingSystemHost { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingSystemHost.html">IShippingSystemHost</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_WebServiceCallTimeoutMs_" data-uid="NFX.Web.Shipping.ShippingSystem.WebServiceCallTimeoutMs*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_WebServiceCallTimeoutMs" data-uid="NFX.Web.Shipping.ShippingSystem.WebServiceCallTimeoutMs">WebServiceCallTimeoutMs</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_WebServiceCallTimeoutMs_" data-uid="NFX.Web.Cloud.CloudSystem.WebServiceCallTimeoutMs*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_WebServiceCallTimeoutMs" data-uid="NFX.Web.Cloud.CloudSystem.WebServiceCallTimeoutMs">WebServiceCallTimeoutMs</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -894,16 +676,23 @@ public int WebServiceCallTimeoutMs { get; set; }</code></pre>
               </h3>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem____SetShippingSystemHost_" data-uid="NFX.Web.Shipping.ShippingSystem.___SetShippingSystemHost*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem____SetShippingSystemHost_NFX_Web_Shipping_IShippingSystemHostImplementation_" data-uid="NFX.Web.Shipping.ShippingSystem.___SetShippingSystemHost(NFX.Web.Shipping.IShippingSystemHostImplementation)">___SetShippingSystemHost(IShippingSystemHostImplementation)</h4>
-              <div class="markdown level1 summary"><p>Sets process-global shipping system host.
-If ShippingSystemStarter is used then the host may be auto-injected from configuration if it is there.
-Developers: Do not call this method as it is used for dependency injection from system code</p>
-</div>
+              <a id="NFX_Web_Cloud_CloudSystem_AutoStart_" data-uid="NFX.Web.Cloud.CloudSystem.AutoStart*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_AutoStart" data-uid="NFX.Web.Cloud.CloudSystem.AutoStart">AutoStart()</h4>
+              <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static void ___SetShippingSystemHost(IShippingSystemHostImplementation host)</code></pre>
+                <pre><code class="lang-csharp hljs">public static void AutoStart()</code></pre>
+              </div>
+              
+              
+              <a id="NFX_Web_Cloud_CloudSystem_Deploy_" data-uid="NFX.Web.Cloud.CloudSystem.Deploy*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Deploy_NFX_Web_Cloud_CloudSession_System_String_NFX_Web_Cloud_CloudTemplate_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.Deploy(NFX.Web.Cloud.CloudSession,System.String,NFX.Web.Cloud.CloudTemplate,NFX.Environment.IConfigSectionNode)">Deploy(CloudSession, String, CloudTemplate, IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Deploy(CloudSession session, string id, CloudTemplate template, IConfigSectionNode customData)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -916,80 +705,33 @@ Developers: Do not call this method as it is used for dependency injection from 
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingSystemHostImplementation.html">IShippingSystemHostImplementation</a></td>
-                    <td><span class="parametername">host</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_AutoStartSystems_" data-uid="NFX.Web.Shipping.ShippingSystem.AutoStartSystems*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_AutoStartSystems" data-uid="NFX.Web.Shipping.ShippingSystem.AutoStartSystems">AutoStartSystems()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static void AutoStartSystems()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_CreateLabel_" data-uid="NFX.Web.Shipping.ShippingSystem.CreateLabel*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_CreateLabel_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_NFX_Web_Shipping_Shipment_" data-uid="NFX.Web.Shipping.ShippingSystem.CreateLabel(NFX.Web.Shipping.ShippingSession,NFX.Web.Shipping.IShippingContext,NFX.Web.Shipping.Shipment)">CreateLabel(ShippingSession, IShippingContext, Shipment)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract Label CreateLabel(ShippingSession session, IShippingContext context, Shipment shipment)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudSession.html">CloudSession</a></td>
                     <td><span class="parametername">session</span></td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingContext.html">IShippingContext</a></td>
-                    <td><span class="parametername">context</span></td>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">id</span></td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.Shipment.html">Shipment</a></td>
-                    <td><span class="parametername">shipment</span></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudTemplate.html">CloudTemplate</a></td>
+                    <td><span class="parametername">template</span></td>
                     <td></td>
                   </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
                   <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.Label.html">Label</a></td>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">customData</span></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_CreateLabel_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_NFX_Web_Shipping_Shipment_">IShippingSystem.CreateLabel(ShippingSession, IShippingContext, Shipment)</a></div>
+                  <div><a class="xref" href="NFX.Web.Cloud.ICloudSystem.html#NFX_Web_Cloud_ICloudSystem_Deploy_NFX_Web_Cloud_CloudSession_System_String_NFX_Web_Cloud_CloudTemplate_NFX_Environment_IConfigSectionNode_">ICloudSystem.Deploy(CloudSession, String, CloudTemplate, IConfigSectionNode)</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_Destructor_" data-uid="NFX.Web.Shipping.ShippingSystem.Destructor*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_Destructor" data-uid="NFX.Web.Shipping.ShippingSystem.Destructor">Destructor()</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_Destructor_" data-uid="NFX.Web.Cloud.CloudSystem.Destructor*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Destructor" data-uid="NFX.Web.Cloud.CloudSystem.Destructor">Destructor()</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -1000,42 +742,8 @@ Developers: Do not call this method as it is used for dependency injection from 
               <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_Destructor">Service.Destructor()</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_DoAcceptManagerVisit_" data-uid="NFX.Web.Shipping.ShippingSystem.DoAcceptManagerVisit*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DoAcceptManagerVisit_System_Object_System_DateTime_" data-uid="NFX.Web.Shipping.ShippingSystem.DoAcceptManagerVisit(System.Object,System.DateTime)">DoAcceptManagerVisit(Object, DateTime)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected override void DoAcceptManagerVisit(object manager, DateTime managerNow)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Object</span></td>
-                    <td><span class="parametername">manager</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.DateTime</span></td>
-                    <td><span class="parametername">managerNow</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="overrides">Overrides</h5>
-              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoAcceptManagerVisit_System_Object_System_DateTime_">Service.DoAcceptManagerVisit(Object, DateTime)</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_DoConfigure_" data-uid="NFX.Web.Shipping.ShippingSystem.DoConfigure*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DoConfigure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Shipping.ShippingSystem.DoConfigure(NFX.Environment.IConfigSectionNode)">DoConfigure(IConfigSectionNode)</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_DoConfigure_" data-uid="NFX.Web.Cloud.CloudSystem.DoConfigure*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DoConfigure_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.DoConfigure(NFX.Environment.IConfigSectionNode)">DoConfigure(IConfigSectionNode)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -1063,25 +771,13 @@ Developers: Do not call this method as it is used for dependency injection from 
               <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoConfigure_NFX_Environment_IConfigSectionNode_">Service.DoConfigure(IConfigSectionNode)</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_DoStart_" data-uid="NFX.Web.Shipping.ShippingSystem.DoStart*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DoStart" data-uid="NFX.Web.Shipping.ShippingSystem.DoStart">DoStart()</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_DoDeploy_" data-uid="NFX.Web.Cloud.CloudSystem.DoDeploy*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DoDeploy_NFX_Web_Cloud_CloudSession_System_String_NFX_Web_Cloud_CloudTemplate_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.DoDeploy(NFX.Web.Cloud.CloudSession,System.String,NFX.Web.Cloud.CloudTemplate,NFX.Environment.IConfigSectionNode)">DoDeploy(CloudSession, String, CloudTemplate, IConfigSectionNode)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected override void DoStart()</code></pre>
-              </div>
-              <h5 class="overrides">Overrides</h5>
-              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoStart">Service.DoStart()</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_DoStartSession_" data-uid="NFX.Web.Shipping.ShippingSystem.DoStartSession*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DoStartSession_NFX_Web_Shipping_ShippingConnectionParameters_" data-uid="NFX.Web.Shipping.ShippingSystem.DoStartSession(NFX.Web.Shipping.ShippingConnectionParameters)">DoStartSession(ShippingConnectionParameters)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract ShippingSession DoStartSession(ShippingConnectionParameters cParams = null)</code></pre>
+                <pre><code class="lang-csharp hljs">protected abstract void DoDeploy(CloudSession session, string id, CloudTemplate template, IConfigSectionNode customData)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1094,7 +790,61 @@ Developers: Do not call this method as it is used for dependency injection from 
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingConnectionParameters.html">ShippingConnectionParameters</a></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudSession.html">CloudSession</a></td>
+                    <td><span class="parametername">session</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">id</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudTemplate.html">CloudTemplate</a></td>
+                    <td><span class="parametername">template</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">customData</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Cloud_CloudSystem_DoStart_" data-uid="NFX.Web.Cloud.CloudSystem.DoStart*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DoStart" data-uid="NFX.Web.Cloud.CloudSystem.DoStart">DoStart()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected override void DoStart()</code></pre>
+              </div>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoStart">Service.DoStart()</a></div>
+              
+              
+              <a id="NFX_Web_Cloud_CloudSystem_DoStartSession_" data-uid="NFX.Web.Cloud.CloudSystem.DoStartSession*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DoStartSession_NFX_Web_Cloud_CloudConnectionParameters_" data-uid="NFX.Web.Cloud.CloudSystem.DoStartSession(NFX.Web.Cloud.CloudConnectionParameters)">DoStartSession(CloudConnectionParameters)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract CloudSession DoStartSession(CloudConnectionParameters cParams)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudConnectionParameters.html">CloudConnectionParameters</a></td>
                     <td><span class="parametername">cParams</span></td>
                     <td></td>
                   </tr>
@@ -1110,15 +860,15 @@ Developers: Do not call this method as it is used for dependency injection from 
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudSession.html">CloudSession</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_DoWaitForCompleteStop_" data-uid="NFX.Web.Shipping.ShippingSystem.DoWaitForCompleteStop*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_DoWaitForCompleteStop" data-uid="NFX.Web.Shipping.ShippingSystem.DoWaitForCompleteStop">DoWaitForCompleteStop()</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_DoWaitForCompleteStop_" data-uid="NFX.Web.Cloud.CloudSystem.DoWaitForCompleteStop*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_DoWaitForCompleteStop" data-uid="NFX.Web.Cloud.CloudSystem.DoWaitForCompleteStop">DoWaitForCompleteStop()</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -1129,170 +879,8 @@ Developers: Do not call this method as it is used for dependency injection from 
               <div><a class="xref" href="NFX.ServiceModel.Service.html#NFX_ServiceModel_Service_DoWaitForCompleteStop">Service.DoWaitForCompleteStop()</a></div>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_EstimateShippingCost_" data-uid="NFX.Web.Shipping.ShippingSystem.EstimateShippingCost*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_EstimateShippingCost_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_NFX_Web_Shipping_Shipment_" data-uid="NFX.Web.Shipping.ShippingSystem.EstimateShippingCost(NFX.Web.Shipping.ShippingSession,NFX.Web.Shipping.IShippingContext,NFX.Web.Shipping.Shipment)">EstimateShippingCost(ShippingSession, IShippingContext, Shipment)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract ShippingRate EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
-                    <td><span class="parametername">session</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingContext.html">IShippingContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.Shipment.html">Shipment</a></td>
-                    <td><span class="parametername">shipment</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingRate.html">ShippingRate</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_EstimateShippingCost_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_NFX_Web_Shipping_Shipment_">IShippingSystem.EstimateShippingCost(ShippingSession, IShippingContext, Shipment)</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_GetShippingCarriers_" data-uid="NFX.Web.Shipping.ShippingSystem.GetShippingCarriers*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_GetShippingCarriers_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_" data-uid="NFX.Web.Shipping.ShippingSystem.GetShippingCarriers(NFX.Web.Shipping.ShippingSession,NFX.Web.Shipping.IShippingContext)">GetShippingCarriers(ShippingSession, IShippingContext)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;ShippingCarrier&gt; GetShippingCarriers(ShippingSession session, IShippingContext context)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
-                    <td><span class="parametername">session</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingContext.html">IShippingContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="NFX.Web.Shipping.ShippingCarrier.html">ShippingCarrier</a>&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_GetShippingCarriers_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_">IShippingSystem.GetShippingCarriers(ShippingSession, IShippingContext)</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_GetTrackingURL_" data-uid="NFX.Web.Shipping.ShippingSystem.GetTrackingURL*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_GetTrackingURL_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_System_String_System_String_" data-uid="NFX.Web.Shipping.ShippingSystem.GetTrackingURL(NFX.Web.Shipping.ShippingSession,NFX.Web.Shipping.IShippingContext,System.String,System.String)">GetTrackingURL(ShippingSession, IShippingContext, String, String)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public virtual string GetTrackingURL(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
-                    <td><span class="parametername">session</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingContext.html">IShippingContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">carrierID</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">trackingNumber</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_GetTrackingURL_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_System_String_System_String_">IShippingSystem.GetTrackingURL(ShippingSession, IShippingContext, String, String)</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_Log_" data-uid="NFX.Web.Shipping.ShippingSystem.Log*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_Log_NFX_Log_MessageType_System_String_System_String_System_Exception_System_Nullable_System_Guid__System_String_" data-uid="NFX.Web.Shipping.ShippingSystem.Log(NFX.Log.MessageType,System.String,System.String,System.Exception,System.Nullable{System.Guid},System.String)">Log(MessageType, String, String, Exception, Nullable&lt;Guid&gt;, String)</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_Log_" data-uid="NFX.Web.Cloud.CloudSystem.Log*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Log_NFX_Log_MessageType_System_String_System_String_System_Exception_System_Nullable_System_Guid__System_String_" data-uid="NFX.Web.Cloud.CloudSystem.Log(NFX.Log.MessageType,System.String,System.String,System.Exception,System.Nullable{System.Guid},System.String)">Log(MessageType, String, String, Exception, Nullable&lt;Guid&gt;, String)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -1358,13 +946,142 @@ Developers: Do not call this method as it is used for dependency injection from 
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_MakeDefaultSessionConnectParams_" data-uid="NFX.Web.Shipping.ShippingSystem.MakeDefaultSessionConnectParams*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_MakeDefaultSessionConnectParams_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Shipping.ShippingSystem.MakeDefaultSessionConnectParams(NFX.Environment.IConfigSectionNode)">MakeDefaultSessionConnectParams(IConfigSectionNode)</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_Make_" data-uid="NFX.Web.Cloud.CloudSystem.Make*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Make__1_System_String_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.Make``1(System.String,NFX.Environment.IConfigSectionNode)">Make&lt;TSystem&gt;(String, IConfigSectionNode)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract ShippingConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)</code></pre>
+                <pre><code class="lang-csharp hljs">public static TSystem Make&lt;TSystem&gt;(string name, IConfigSectionNode node)where TSystem : CloudSystem</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TSystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TSystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Cloud_CloudSystem_Make_" data-uid="NFX.Web.Cloud.CloudSystem.Make*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_Make__1_System_String_System_String_System_String_" data-uid="NFX.Web.Cloud.CloudSystem.Make``1(System.String,System.String,System.String)">Make&lt;TSystem&gt;(String, String, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static TSystem Make&lt;TSystem&gt;(string name, string cfgStr, string format = &quot;laconf&quot;)where TSystem : CloudSystem</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">cfgStr</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">format</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TSystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="typeParameters">Type Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="parametername">TSystem</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Cloud_CloudSystem_MakeDefaultSessionConnectParams_" data-uid="NFX.Web.Cloud.CloudSystem.MakeDefaultSessionConnectParams*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_MakeDefaultSessionConnectParams_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.MakeDefaultSessionConnectParams(NFX.Environment.IConfigSectionNode)">MakeDefaultSessionConnectParams(IConfigSectionNode)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected abstract CloudConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1393,20 +1110,20 @@ Developers: Do not call this method as it is used for dependency injection from 
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingConnectionParameters.html">ShippingConnectionParameters</a></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudConnectionParameters.html">CloudConnectionParameters</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               
               
-              <a id="NFX_Web_Shipping_ShippingSystem_StartSession_" data-uid="NFX.Web.Shipping.ShippingSystem.StartSession*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StartSession_NFX_Web_Shipping_ShippingConnectionParameters_" data-uid="NFX.Web.Shipping.ShippingSystem.StartSession(NFX.Web.Shipping.ShippingConnectionParameters)">StartSession(ShippingConnectionParameters)</h4>
+              <a id="NFX_Web_Cloud_CloudSystem_MakeTemplate_" data-uid="NFX.Web.Cloud.CloudSystem.MakeTemplate*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_MakeTemplate_NFX_Environment_IConfigSectionNode_" data-uid="NFX.Web.Cloud.CloudSystem.MakeTemplate(NFX.Environment.IConfigSectionNode)">MakeTemplate(IConfigSectionNode)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public ShippingSession StartSession(ShippingConnectionParameters cParams = null)</code></pre>
+                <pre><code class="lang-csharp hljs">protected abstract CloudTemplate MakeTemplate(IConfigSectionNode node)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1419,7 +1136,49 @@ Developers: Do not call this method as it is used for dependency injection from 
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingConnectionParameters.html">ShippingConnectionParameters</a></td>
+                    <td><a class="xref" href="NFX.Environment.IConfigSectionNode.html">IConfigSectionNode</a></td>
+                    <td><span class="parametername">node</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudTemplate.html">CloudTemplate</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Cloud_CloudSystem_StartSession_" data-uid="NFX.Web.Cloud.CloudSystem.StartSession*"></a>
+              <h4 id="NFX_Web_Cloud_CloudSystem_StartSession_NFX_Web_Cloud_CloudConnectionParameters_" data-uid="NFX.Web.Cloud.CloudSystem.StartSession(NFX.Web.Cloud.CloudConnectionParameters)">StartSession(CloudConnectionParameters)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public CloudSession StartSession(CloudConnectionParameters cParams = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudConnectionParameters.html">CloudConnectionParameters</a></td>
                     <td><span class="parametername">cParams</span></td>
                     <td></td>
                   </tr>
@@ -1435,211 +1194,13 @@ Developers: Do not call this method as it is used for dependency injection from 
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
+                    <td><a class="xref" href="NFX.Web.Cloud.CloudSession.html">CloudSession</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_StartSession_NFX_Web_Shipping_ShippingConnectionParameters_">IShippingSystem.StartSession(ShippingConnectionParameters)</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatCreateLabel_" data-uid="NFX.Web.Shipping.ShippingSystem.StatCreateLabel*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatCreateLabel" data-uid="NFX.Web.Shipping.ShippingSystem.StatCreateLabel">StatCreateLabel()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatCreateLabel()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatCreateLabelError_" data-uid="NFX.Web.Shipping.ShippingSystem.StatCreateLabelError*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatCreateLabelError" data-uid="NFX.Web.Shipping.ShippingSystem.StatCreateLabelError">StatCreateLabelError()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatCreateLabelError()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatEstimateShippingCostCount_" data-uid="NFX.Web.Shipping.ShippingSystem.StatEstimateShippingCostCount*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatEstimateShippingCostCount" data-uid="NFX.Web.Shipping.ShippingSystem.StatEstimateShippingCostCount">StatEstimateShippingCostCount()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatEstimateShippingCostCount()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatEstimateShippingCostErrorCount_" data-uid="NFX.Web.Shipping.ShippingSystem.StatEstimateShippingCostErrorCount*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatEstimateShippingCostErrorCount" data-uid="NFX.Web.Shipping.ShippingSystem.StatEstimateShippingCostErrorCount">StatEstimateShippingCostErrorCount()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatEstimateShippingCostErrorCount()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatTrackShipmentCount_" data-uid="NFX.Web.Shipping.ShippingSystem.StatTrackShipmentCount*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatTrackShipmentCount" data-uid="NFX.Web.Shipping.ShippingSystem.StatTrackShipmentCount">StatTrackShipmentCount()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatTrackShipmentCount()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatTrackShipmentErrorCount_" data-uid="NFX.Web.Shipping.ShippingSystem.StatTrackShipmentErrorCount*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatTrackShipmentErrorCount" data-uid="NFX.Web.Shipping.ShippingSystem.StatTrackShipmentErrorCount">StatTrackShipmentErrorCount()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatTrackShipmentErrorCount()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatValidateAddressCount_" data-uid="NFX.Web.Shipping.ShippingSystem.StatValidateAddressCount*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatValidateAddressCount" data-uid="NFX.Web.Shipping.ShippingSystem.StatValidateAddressCount">StatValidateAddressCount()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatValidateAddressCount()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_StatValidateAddressErrorCount_" data-uid="NFX.Web.Shipping.ShippingSystem.StatValidateAddressErrorCount*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_StatValidateAddressErrorCount" data-uid="NFX.Web.Shipping.ShippingSystem.StatValidateAddressErrorCount">StatValidateAddressErrorCount()</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected void StatValidateAddressErrorCount()</code></pre>
-              </div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_TrackShipment_" data-uid="NFX.Web.Shipping.ShippingSystem.TrackShipment*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_TrackShipment_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_System_String_System_String_" data-uid="NFX.Web.Shipping.ShippingSystem.TrackShipment(NFX.Web.Shipping.ShippingSession,NFX.Web.Shipping.IShippingContext,System.String,System.String)">TrackShipment(ShippingSession, IShippingContext, String, String)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public virtual TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
-                    <td><span class="parametername">session</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingContext.html">IShippingContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">carrierID</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">trackingNumber</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.TrackInfo.html">TrackInfo</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_TrackShipment_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_System_String_System_String_">IShippingSystem.TrackShipment(ShippingSession, IShippingContext, String, String)</a></div>
-              
-              
-              <a id="NFX_Web_Shipping_ShippingSystem_ValidateAddress_" data-uid="NFX.Web.Shipping.ShippingSystem.ValidateAddress*"></a>
-              <h4 id="NFX_Web_Shipping_ShippingSystem_ValidateAddress_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_NFX_Web_Shipping_Address_NFX_Web_Shipping_ValidateShippingAddressException__" data-uid="NFX.Web.Shipping.ShippingSystem.ValidateAddress(NFX.Web.Shipping.ShippingSession,NFX.Web.Shipping.IShippingContext,NFX.Web.Shipping.Address,NFX.Web.Shipping.ValidateShippingAddressException@)">ValidateAddress(ShippingSession, IShippingContext, Address, out ValidateShippingAddressException)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ShippingSession.html">ShippingSession</a></td>
-                    <td><span class="parametername">session</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.IShippingContext.html">IShippingContext</a></td>
-                    <td><span class="parametername">context</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.Address.html">Address</a></td>
-                    <td><span class="parametername">address</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.ValidateShippingAddressException.html">ValidateShippingAddressException</a></td>
-                    <td><span class="parametername">error</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Shipping.Address.html">Address</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Web.Shipping.IShippingSystem.html#NFX_Web_Shipping_IShippingSystem_ValidateAddress_NFX_Web_Shipping_ShippingSession_NFX_Web_Shipping_IShippingContext_NFX_Web_Shipping_Address_NFX_Web_Shipping_ValidateShippingAddressException__">IShippingSystem.ValidateAddress(ShippingSession, IShippingContext, Address, out ValidateShippingAddressException)</a></div>
+                  <div><a class="xref" href="NFX.Web.Cloud.ICloudSystem.html#NFX_Web_Cloud_ICloudSystem_StartSession_NFX_Web_Cloud_CloudConnectionParameters_">ICloudSystem.StartSession(CloudConnectionParameters)</a></div>
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>

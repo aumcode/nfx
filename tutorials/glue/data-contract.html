@@ -156,7 +156,7 @@ public interface IPersonService
   }
 }
 </code></pre><p>This class is singleton by contract and it maintains global state: <code>m_Persons</code>.</p>
-<p>5. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
+<p>6. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
 <pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
 {
   Console.WriteLine(&quot;server is running...&quot;);
@@ -166,7 +166,7 @@ public interface IPersonService
 
   Console.ReadLine();
 }
-</code></pre><p>6. Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
+</code></pre><p>7. Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
 Add DemoClient.laconf laconic configuration file:</p>
 <pre><code class="lang-js">application
 {
@@ -183,10 +183,10 @@ Add DemoClient.laconf laconic configuration file:</p>
   }
 }
 </code></pre><p>Again, be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
-<p>7. Create client proxy class that will operate with the service above:</p>
+<p>8. Create client proxy class that will operate with the service above:</p>
 <p>gluec &quot;$(SolutionDir)DemoContracts/bin/Debug/DemoContracts.dll&quot; /o out=&quot;$(SolutionDir)DemoClient&quot; cl-suffix=&quot;AutoClient&quot;</p>
 <p>Rebuild <code>DemoContracts</code> project and add the file PersonServiceAutoClient.cs to the <code>DemoClient</code> project (the file will appear in the root of the project).</p>
-<p>8. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
+<p>9. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
 <pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
 {
   using (var client = new PersonServiceAutoClient(&quot;sync://localhost:8080&quot;))
@@ -236,12 +236,12 @@ Add DemoClient.laconf laconic configuration file:</p>
 <pre><code class="lang-cs">using NFX;
 using NFX.ApplicationModel;
 using DemoContracts.GluedClients;
-</code></pre><p>15. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application. 
+</code></pre><p>10. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application. 
 Execute the following commands sequentially: &quot;add John 12&quot;, &quot;add Anna 23&quot;, &quot;find John&quot;, &quot;find Ivan&quot;. The output will be</p>
-<p>Name: John, Age: 20, Citizenship: Argentina, Locations: 1</p>
-<p>Name: Anna, Age: 23, Citizenship: Argentina, Locations: 1</p>
-<p>Not found</p>
-
+<pre><code>Name: John, Age: 20, Citizenship: Argentina, Locations: 1
+Name: Anna, Age: 23, Citizenship: Argentina, Locations: 1
+Not found
+</code></pre>
             </article>
           </div>
           

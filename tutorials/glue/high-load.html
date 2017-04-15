@@ -66,7 +66,150 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="high-load-server">High Load Server</h1>
               
-<p>...</p>
+<p>One of the main benefit of <strong>Glue</strong> technology is speed, which is achieved by fast and effectiove <strong>Slim</strong> technology.
+Below is step-by-step guide to of high-load server. You can also choose between parallel and syncronous version of the test.
+The guide is quite brief in some places. For details, please check the <a href="echo.html">demo</a>.</p>
+<p>1. Create new blank C# solution and add Class Library project <code>DemoContracts</code>
+with the reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>)</p>
+<p>2. Add IHighLoadService.cs file with the following contents:</p>
+<pre><code class="lang-cs">[Glued]
+public interface IHighLoadService
+{
+  /// &lt;summary&gt;
+  /// Does not generate call receipt (one-way call)
+  /// &lt;/summary&gt;
+  [OneWay]
+  void Ping1();
+
+  /// &lt;summary&gt;
+  /// Generates call receipt (two-way call)
+  /// &lt;/summary&gt;
+  void Ping2();
+}
+</code></pre><p>3. Add new C# Console Application project <code>DemoServer</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project. Add DemoServer.laconf laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+
+    servers
+    {
+      server
+      {
+        node=&quot;sync://localhost:8080&quot;
+        contract-servers=$&quot;DemoServer.HighLoadService, DemoServer&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Be sure to set Build Action : None and Copy to Output Directory: Always in the config file properties.</p>
+<p>4. Add HighLoadService.cs file with the contents:</p>
+<pre><code class="lang-cs">public class HighLoadService : IHighLoadService
+{
+  public void Ping1()
+  {
+  }
+
+  public void Ping2()
+  {
+  }
+}
+</code></pre><p>5. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  Console.WriteLine(&quot;server is running...&quot;);
+  Console.WriteLine(&quot;Glue servers:&quot;);
+  foreach (var service in App.Glue.Servers)
+    Console.WriteLine(&quot;   &quot; + service);
+
+  Console.ReadLine();
+}
+</code></pre><p>6. Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
+Add DemoClient.laconf laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Again, be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
+<p>7. Create client proxy class that will operate with the service above:</p>
+<p>gluec &quot;$(SolutionDir)DemoContracts/bin/Debug/DemoContracts.dll&quot; /o out=&quot;$(SolutionDir)DemoClient&quot; cl-suffix=&quot;AutoClient&quot;</p>
+<p>Rebuild <code>DemoContracts</code> project and add the file HighLoadServiceAutoClient.cs to the <code>DemoClient</code> project (the file will appear in the root of the project).</p>
+<p>8. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  using (var client = new HighLoadServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  {
+    while (true)
+    {
+      var input = Console.ReadLine();
+      var cmd = input.Split(new char[] { &#39; &#39; }, StringSplitOptions.RemoveEmptyEntries);
+      exeCommand(client, cmd);
+    }
+  }
+}
+</code></pre><p>Add the following method:</p>
+<pre><code class="lang-cs">private static void exeCommand(HighLoadServiceAutoClient client, string[] cmd)
+{
+  var ops = cmd[0].AsInt();
+  var isOneWay = cmd[1].AsBool();
+  var isParallel = cmd[2].AsBool();
+
+  var timer = new Stopwatch();
+  timer.Start();
+
+  if (isOneWay)
+  {
+    if (isParallel)
+      Parallel.For(0, ops, i =&gt; client.Ping1());
+    else
+      for (int i=0; i&lt;ops; i++)
+        client.Ping1();
+  }
+  else
+  {
+    if (isParallel)
+      Parallel.For(0, ops, i =&gt; client.Ping2());
+    else
+      for (int i = 0; i &lt; ops; i++)
+        client.Ping2();
+  }
+
+  timer.Stop();
+
+  Console.WriteLine(&quot;Executed: {0} ops {1} {2}&quot;, ops, isOneWay ? &quot;one-way&quot; : &quot;&quot;, isParallel ? &quot;parallel&quot; : &quot;&quot;);
+  Console.WriteLine(&quot;Total time:  {0} ms&quot;, timer.Elapsed.TotalMilliseconds);
+  Console.WriteLine(&quot;Performance: {0} ops/sec&quot;, (ops / timer.Elapsed.TotalSeconds).AsInt());
+}
+</code></pre><p>You will also need to add usings</p>
+<pre><code class="lang-cs">using System.Diagnostics;
+using NFX;
+using NFX.ApplicationModel;
+using DemoContracts.GluedClients;
+</code></pre><p>9. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application.
+Execute the following commands sequentially: &quot;1000000 true false&quot;, &quot;1000000 true true&quot;, &quot;1000000 false true&quot;, &quot;1000000 false false&quot;. 
+The output will be like</p>
+<pre><code>Executed: 1000000 ops one-way
+Total time: 1256 ms
+Performance: 796 ops/sec
+</code></pre><p>...</p>
 
             </article>
           </div>

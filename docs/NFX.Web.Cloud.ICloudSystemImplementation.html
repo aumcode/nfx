@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IPileStatus
+    <title>Interface ICloudSystemImplementation
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IPileStatus
+    <meta name="title" content="Interface ICloudSystemImplementation
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
@@ -68,29 +68,60 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="NFX_ApplicationModel_Pile_IPileStatus" data-uid="NFX.ApplicationModel.Pile.IPileStatus">Interface IPileStatus
+              <h1 id="NFX_Web_Cloud_ICloudSystemImplementation" data-uid="NFX.Web.Cloud.ICloudSystemImplementation">Interface ICloudSystemImplementation
               </h1>
-              <div class="markdown level0 summary"><p>Provides information about the pile - number of objects, allocated bytes, etc.</p>
-</div>
+              <div class="markdown level0 summary"></div>
               <div class="markdown level0 conceptual"></div>
-              <h6><strong>Namespace</strong>:NFX.ApplicationModel.Pile</h6>
-              <h6><strong>Assembly</strong>:NFX.dll</h6>
-              <h5 id="NFX_ApplicationModel_Pile_IPileStatus_syntax">Syntax</h5>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.Web.Cloud.ICloudSystem.html#NFX_Web_Cloud_ICloudSystem_DefaultSessionConnectParamsCfg">ICloudSystem.DefaultSessionConnectParamsCfg</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Web.Cloud.ICloudSystem.html#NFX_Web_Cloud_ICloudSystem_StartSession_NFX_Web_Cloud_CloudConnectionParameters_">ICloudSystem.StartSession(CloudConnectionParameters)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Web.Cloud.ICloudSystem.html#NFX_Web_Cloud_ICloudSystem_Deploy_NFX_Web_Cloud_CloudSession_System_String_NFX_Web_Cloud_CloudTemplate_NFX_Environment_IConfigSectionNode_">ICloudSystem.Deploy(CloudSession, String, CloudTemplate, IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.INamed.html#NFX_INamed_Name">INamed.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Environment.IConfigurable.html#NFX_Environment_IConfigurable_Configure_NFX_Environment_IConfigSectionNode_">IConfigurable.Configure(IConfigSectionNode)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Instrumentation.IInstrumentable.html#NFX_Instrumentation_IInstrumentable_InstrumentationEnabled">IInstrumentable.InstrumentationEnabled</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IExternallyParameterized.html#NFX_IExternallyParameterized_ExternalParameters">IExternallyParameterized.ExternalParameters</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IExternallyParameterized.html#NFX_IExternallyParameterized_ExternalParametersForGroups_System_String___">IExternallyParameterized.ExternalParametersForGroups(String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IExternallyParameterized.html#NFX_IExternallyParameterized_ExternalGetParameter_System_String_System_Object__System_String___">IExternallyParameterized.ExternalGetParameter(String, Object, String[])</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.IExternallyParameterized.html#NFX_IExternallyParameterized_ExternalSetParameter_System_String_System_Object_System_String___">IExternallyParameterized.ExternalSetParameter(String, Object, String[])</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:NFX.Web.Cloud</h6>
+              <h6><strong>Assembly</strong>:NFX.Web.dll</h6>
+              <h5 id="NFX_Web_Cloud_ICloudSystemImplementation_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public interface IPileStatus</code></pre>
+                <pre><code class="lang-csharp hljs">public interface ICloudSystemImplementation : ICloudSystem, INamed, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
               </div>
               <h3 id="properties">Properties
               </h3>
               
               
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_AllocatedMemoryBytes_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.AllocatedMemoryBytes*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_AllocatedMemoryBytes" data-uid="NFX.ApplicationModel.Pile.IPileStatus.AllocatedMemoryBytes">AllocatedMemoryBytes</h4>
-              <div class="markdown level1 summary"><p>Returns the number of bytes allocated by this pile from system memory</p>
-</div>
+              <a id="NFX_Web_Cloud_ICloudSystemImplementation_LogLevel_" data-uid="NFX.Web.Cloud.ICloudSystemImplementation.LogLevel*"></a>
+              <h4 id="NFX_Web_Cloud_ICloudSystemImplementation_LogLevel" data-uid="NFX.Web.Cloud.ICloudSystemImplementation.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long AllocatedMemoryBytes { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">MessageType LogLevel { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -102,270 +133,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.Int64</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_Locality_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.Locality*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_Locality" data-uid="NFX.ApplicationModel.Pile.IPileStatus.Locality">Locality</h4>
-              <div class="markdown level1 summary"><p>Returns whether pile is local or distributed</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">LocalityKind Locality { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.ApplicationModel.Pile.LocalityKind.html">LocalityKind</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_MemoryCapacityBytes_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.MemoryCapacityBytes*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_MemoryCapacityBytes" data-uid="NFX.ApplicationModel.Pile.IPileStatus.MemoryCapacityBytes">MemoryCapacityBytes</h4>
-              <div class="markdown level1 summary"><p>Returns an approximate capacity of free memory that the system has left</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long MemoryCapacityBytes { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int64</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_NodeCount_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.NodeCount*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_NodeCount" data-uid="NFX.ApplicationModel.Pile.IPileStatus.NodeCount">NodeCount</h4>
-              <div class="markdown level1 summary"><p>Returns the number of nodes(servers) that service this distributed pile.
-If this pile locality is local then returns 1</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">int NodeCount { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int32</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_ObjectCount_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.ObjectCount*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_ObjectCount" data-uid="NFX.ApplicationModel.Pile.IPileStatus.ObjectCount">ObjectCount</h4>
-              <div class="markdown level1 summary"><p>Returns the number of allocated objects in this pile</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long ObjectCount { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int64</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_ObjectLinkCount_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.ObjectLinkCount*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_ObjectLinkCount" data-uid="NFX.ApplicationModel.Pile.IPileStatus.ObjectLinkCount">ObjectLinkCount</h4>
-              <div class="markdown level1 summary"><p>Returns the number of allocated object links in this pile.
-Links are used to chain existing location to another one when larger payload does not fit
-at the progonal location</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long ObjectLinkCount { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int64</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_OverheadBytes_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.OverheadBytes*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_OverheadBytes" data-uid="NFX.ApplicationModel.Pile.IPileStatus.OverheadBytes">OverheadBytes</h4>
-              <div class="markdown level1 summary"><p>Returns the number of extra bytes used by pile metadata currently occupied by object stored in this pile</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long OverheadBytes { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int64</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_Persistence_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.Persistence*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_Persistence" data-uid="NFX.ApplicationModel.Pile.IPileStatus.Persistence">Persistence</h4>
-              <div class="markdown level1 summary"><p>Returns the model of object persistence that this pile supports</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">ObjectPersistence Persistence { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.ApplicationModel.Pile.ObjectPersistence.html">ObjectPersistence</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_SegmentCount_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.SegmentCount*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_SegmentCount" data-uid="NFX.ApplicationModel.Pile.IPileStatus.SegmentCount">SegmentCount</h4>
-              <div class="markdown level1 summary"><p>Returns the number of segments allocated</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long SegmentCount { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int64</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_SupportsObjectExpiration_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.SupportsObjectExpiration*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_SupportsObjectExpiration" data-uid="NFX.ApplicationModel.Pile.IPileStatus.SupportsObjectExpiration">SupportsObjectExpiration</h4>
-              <div class="markdown level1 summary"><p>Returns whether this instance supports object expiration</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">bool SupportsObjectExpiration { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Boolean</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_IPileStatus_UtilizedBytes_" data-uid="NFX.ApplicationModel.Pile.IPileStatus.UtilizedBytes*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_IPileStatus_UtilizedBytes" data-uid="NFX.ApplicationModel.Pile.IPileStatus.UtilizedBytes">UtilizedBytes</h4>
-              <div class="markdown level1 summary"><p>Returns the number of bytes allocated for object storage within AllocatedMemoryBytes</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">long UtilizedBytes { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int64</span></td>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
                     <td></td>
                   </tr>
                 </tbody>
