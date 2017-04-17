@@ -1574,6 +1574,9 @@ namespace NFX.Environment
           {
             var root = getIncludedNodeRoot(pragma);
 
+            if (root == null)
+              return null;
+
             //name section wrap
             var asname = pragma.AttrByName(Configuration.CONFIG_NAME_ATTR).ValueAsString();
             if (asname.IsNotNullOrWhiteSpace())
@@ -1654,9 +1657,7 @@ namespace NFX.Environment
               var j = fileName.LastIndexOf('.');
               if (j>0&&j<fileName.Length-1) fmt = fileName.Substring(j+1);
 
-              if (fmt.IsNullOrWhiteSpace()) fmt = Configuration.CONFIG_LACONIC_FORMAT;
-
-              var root = Configuration.ProviderLoadFromString(source, fmt).Root;
+              var root = Configuration.ProviderLoadFromString(source, fmt, Configuration.CONFIG_LACONIC_FORMAT).Root;
 
               return root;
             }
@@ -1827,7 +1828,7 @@ namespace NFX.Environment
 
 
         private string getValueFromMacroOrEnvVarOrNavigationWithCheck(string name)
-		    {
+        {
                try
                {
                     return getValueFromMacroOrEnvVarOrNavigation(name);
@@ -1862,20 +1863,20 @@ namespace NFX.Environment
                 return value;
             }
 
-        private string getValueFromEnvVarOrNavigation(string name)
-		    {
-			    if (string.IsNullOrWhiteSpace(name)) return string.Empty;
+            private string getValueFromEnvVarOrNavigation(string name)
+            {
+              if (string.IsNullOrWhiteSpace(name)) return string.Empty;
 
-                var ENV_MOD = m_Configuration.Variable_ENV_MOD;
+                    var ENV_MOD = m_Configuration.Variable_ENV_MOD;
 
-                if (name.StartsWith(ENV_MOD))
-                {
-                  name = name.Replace(ENV_MOD, string.Empty);
-                  return m_Configuration.ResolveEnvironmentVar(name) ?? string.Empty;
-                }
-                else
- 			     return  Navigate(name).Value ?? string.Empty;
-		    }
+                    if (name.StartsWith(ENV_MOD))
+                    {
+                      name = name.Replace(ENV_MOD, string.Empty);
+                      return m_Configuration.ResolveEnvironmentVar(name) ?? string.Empty;
+                    }
+                    else
+               return  Navigate(name).Value ?? string.Empty;
+            }
 
 
             private string runMacro(string value, TokenParser.Token macro)

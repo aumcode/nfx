@@ -1060,6 +1060,26 @@ namespace NFX
       }
       return sb.ToString();
     }
+
+    public static string ApproximateTimeDistance(this DateTime fromDate, DateTime toDate)
+    {
+      var diff = fromDate - toDate;
+      var totalDays = Math.Abs(diff.TotalDays);
+      var totalHours = Math.Abs(diff.TotalHours);
+      var totalMinutes = Math.Abs(diff.TotalMinutes);
+      var years = totalDays / 365.25;
+      var months = totalDays / 30.5;
+      string result;
+
+      if (years > 1) result = "{0:n0} years".Args(years);
+      else if (months > 1) result = "{0:n0} months".Args(months); 
+        else if (totalDays > 1) result = "{0:n0} days".Args(totalDays);
+          else if (totalHours > 1) result = "{0:n0} hours".Args(totalHours);
+            else if (totalMinutes > 1) result = "{0:n0} minutes".Args(totalMinutes);
+              else result = "{0:n0} seconds".Args(Math.Abs(diff.TotalSeconds));
+
+      return fromDate < toDate ? ("in " + result) : (result + " ago");
+    }
   }
 
 
@@ -1190,6 +1210,5 @@ namespace NFX
 
       return sb.ToString();
     }
-
   }
 }

@@ -36,6 +36,10 @@ namespace NFX.ApplicationModel.Pile
   /// </summary>
   public struct PilePointer : IEquatable<PilePointer>
   {
+    /// <summary>
+    /// The size of the pointer when directly written to byte[]
+    /// </summary>
+    public const int RAW_BYTE_SIZE = sizeof(int) + sizeof(int) + sizeof(int);//node seg+addr
 
     /// <summary>
     /// Returns a -1:-1 non-valid pointer (either local or distributed)
@@ -60,6 +64,16 @@ namespace NFX.ApplicationModel.Pile
       NodeID = -1;
       Segment = seg;
       Address = addr;
+    }
+
+    /// <summary>
+    /// Reads the pointer from the byte[] written to by RawWrite() at the specified address
+    /// </summary>
+    public PilePointer(byte[] buf, int addr)
+    {
+      NodeID  = buf.ReadBEInt32(ref addr);
+      Segment = buf.ReadBEInt32(ref addr);
+      Address = buf.ReadBEInt32(ref addr);
     }
 
     /// <summary>
@@ -112,6 +126,18 @@ namespace NFX.ApplicationModel.Pile
        return "L:"+Segment.ToString("X4")+":"+Address.ToString("X8");
       else
        return NodeID.ToString("X4")+":"+Segment.ToString("X4")+":"+Address.ToString("X8");
+    }
+
+    /// <summary>
+    /// Writes this this instance directly to byte[] without any headers
+    /// </summary>
+    public void RawWrite(byte[] buf, int addr)
+    {
+      buf.WriteBEInt32(addr, NodeID);
+      addr += sizeof(int);
+      buf.WriteBEInt32(addr, Segment);
+      addr += sizeof(int);
+      buf.WriteBEInt32(addr, Address);
     }
 
     public static bool operator ==(PilePointer l, PilePointer r)

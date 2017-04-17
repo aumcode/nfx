@@ -352,7 +352,7 @@ namespace NFX.NUnit.AppModel.Pile
             else
             {
               var ch = ipile.Get(ppp[i].Item1);
-              Assert.AreEqual(ch, ppp[i].Item2);
+              Assert.AreEqual(ppp[i].Item2, ch);
             }
           }
 

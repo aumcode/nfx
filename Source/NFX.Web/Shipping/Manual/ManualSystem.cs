@@ -68,27 +68,12 @@ namespace NFX.Web.Shipping.Manual
         throw new ShippingException("Not supported");
       }
 
-      public override TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)
-      {
-        return TrackShipment((ManualSession)session, context, carrierID, trackingNumber);
-      }
-
-      public TrackInfo TrackShipment(ManualSession session, IShippingContext context, string carrierID, string trackingNumber)
-      {
-        return new TrackInfo
-              {
-                TrackingURL = GetTrackingURL(session, context, carrierID, trackingNumber),
-                TrackingNumber = trackingNumber,
-                CarrierID = carrierID
-              };
-      }
-
       public override Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error)
       {
         throw new ShippingException("Not supported");
       }
 
-      public override Financial.Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)
+      public override ShippingRate EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)
       {
         throw new ShippingException("Not supported");
       }

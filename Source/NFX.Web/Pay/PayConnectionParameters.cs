@@ -59,7 +59,7 @@ namespace NFX.Web.Pay
 
     #region ctor
 
-		  public ConnectionParameters() {}
+      public ConnectionParameters() {}
 
       public ConnectionParameters(IConfigSectionNode node) { Configure(node); }
 
@@ -68,24 +68,24 @@ namespace NFX.Web.Pay
         var conf = Configuration.ProviderLoadFromString(connStr, format).Root;
       }
 
-	  #endregion
+    #endregion
 
     #region Properties
 
-		  [Config] public string Name { get; set; }
+      [Config] public string Name { get; set; }
 
       public User User {get; set;}
 
-	  #endregion
+    #endregion
 
     #region Protected
 
-		  public virtual void Configure(IConfigSectionNode node)
+      public virtual void Configure(IConfigSectionNode node)
       {
         ConfigAttribute.Apply(this, node);
       }
 
-	  #endregion
+    #endregion
   } //PayConnectionParameters
 
 }

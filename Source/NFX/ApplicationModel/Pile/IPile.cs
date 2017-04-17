@@ -56,6 +56,13 @@ namespace NFX.ApplicationModel.Pile
     long ObjectCount{ get;}
 
     /// <summary>
+    /// Returns the number of allocated object links in this pile.
+    /// Links are used to chain existing location to another one when larger payload does not fit
+    /// at the progonal location
+    /// </summary>
+    long ObjectLinkCount{ get;}
+
+    /// <summary>
     /// Returns the number of bytes allocated by this pile from system memory
     /// </summary>
     long AllocatedMemoryBytes{ get;}
@@ -104,10 +111,37 @@ namespace NFX.ApplicationModel.Pile
     /// <summary>
     /// Puts a CLR object into the pile and returns a newly-allocated pointer.
     /// Throws out-of-space if there is not enough space in the pile and limits are set.
-    /// Optional lifeSpanSec will auto-delete object after the interval elapses if
-    ///  the pile SupportsObjectExpiration and SweepExpireObjects is set to true
+    /// Optionally takes lifeSpan (if Pile supports it) and extra preallocation bytes
     /// </summary>
-    PilePointer Put(object obj, uint lifeSpanSec = 0);
+    /// <param name="obj">CLR object to put into the Pile</param>
+    /// <param name="lifeSpanSec">
+    ///  Optional lifeSpanSec will auto-delete object after the interval elapses if
+    ///  the pile SupportsObjectExpiration and SweepExpiredObjects is set to true
+    /// </param>
+    /// <param name="preallocateBlockSize">
+    /// When specified, adds extra space to the allocated block so that the object can be changed in-place
+    /// without creating the link. Specifies the total size of the block in bytes. If this size is less than
+    /// actual object payload then allocates the block of the payload size
+    /// </param>
+    // <returns>a new PilePointer pointing at the stored payload</returns>
+    PilePointer Put(object obj, uint lifeSpanSec = 0, int preallocateBlockSize = 0);
+
+    /// <summary>
+    /// Tries to put the new object over an existing one at the pre-define position.
+    /// The pointer has to reference a valid allocated block.
+    /// If object fits in the allocated block returns true, otherwise tries to create an internal link
+    /// to the new pointer which is completely transparent to the caller. The linking may be explicitly disabled
+    /// in which case the method returns false when the new object does not fit into the existing block
+    /// </summary>
+    /// <param name="obj">A new/modified CLR object to put into the Pile over an existing one</param>
+    /// <param name="lifeSpanSec">
+    ///  Optional lifeSpanSec will auto-delete object after the interval elapses if
+    ///  the pile SupportsObjectExpiration and SweepExpiredObjects is set to true
+    /// </param>
+    /// <param name="ptr">The pointer to the existing valid allocated block</param>
+    /// <param name="link">False to prohibit internal pointer linking</param>
+    /// <returns>True if object was inserted, false otherwise (i.e. when linking is false)</returns>
+    bool Put(PilePointer ptr, object obj, uint lifeSpanSec = 0, bool link = true);
 
     /// <summary>
     /// Returns a CLR object by its pointer or throws access violation if pointer is invalid

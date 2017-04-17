@@ -30,15 +30,15 @@ namespace NFX.NUnit.Config
     [Test]
     public void ConfigSectionNode_2_JSONDataMap()
     {
-      var node = @"opt 
-                  { 
-                    detailed-instrumentation=true 
-                    tables 
-                    { 
-                      master { name='tfactory' fields-qty=14} 
-                      slave { name='tdoor' fields-qty=20 important=true} 
+      var node = @"opt
+                  {
+                    detailed-instrumentation=true
+                    tables
+                    {
+                      master { name='tfactory' fields-qty=14}
+                      slave { name='tdoor' fields-qty=20 important=true}
                     }
-                  }".AsLaconicConfig();  
+                  }".AsLaconicConfig();
       var map = node.ToJSONDataMap();
 
       Assert.AreEqual(2, map.Count);
@@ -59,12 +59,12 @@ namespace NFX.NUnit.Config
     [Test]
     public void JSONDataMap_2_ConfigSectionNode()
     {
-      var map = (JSONDataMap)@" { 
-                                  'detailed-instrumentation': true, 
+      var map = (JSONDataMap)@" {
+                                  'detailed-instrumentation': true,
                                   tables:
-                                  { 
-                                    master: { name: 'tfactory', 'fields-qty': 14}, 
-                                    slave: { name: 'tdoor', 'fields-qty': 20, important: true} 
+                                  {
+                                    master: { name: 'tfactory', 'fields-qty': 14},
+                                    slave: { name: 'tdoor', 'fields-qty': 20, important: true}
                                   }
                                 }".JSONToDataObject();
 
@@ -87,6 +87,16 @@ namespace NFX.NUnit.Config
       Assert.IsTrue(slave.AttrByName("name").ValueAsString() == "tdoor");
       Assert.IsTrue(slave.AttrByName("fields-qty").ValueAsInt() == 20);
       Assert.IsTrue(slave.AttrByName("important").ValueAsBool());
+    }
+
+    [Test]
+    public void JSONtoLaconicToJSON()//20170414
+    {
+       var config = "{r:{}}".AsJSONConfig();
+       Console.WriteLine(config.ToLaconicString());
+       var json = config.ToJSONString();
+       Console.WriteLine(json);
+       Aver.AreEqual("{\"r\":{}}", json);
     }
   }
 }

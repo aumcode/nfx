@@ -277,11 +277,11 @@ namespace NFX.NUnit.Integration.Web.Shipping
         var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
 
         var shipment = getDefaultShipment(usps, method, template);
-        var amount = session.EstimateShippingCost(null, shipment);
+        var estShipment = session.EstimateShippingCost(null, shipment);
 
-        Assert.IsNotNull(amount);
-        Assert.AreEqual(amount.Value.CurrencyISO, "USD");
-        Assert.AreEqual(amount.Value.Value, 5.60M);
+        Assert.IsNotNull(estShipment);
+        Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
+        Assert.AreEqual(estShipment.Cost.Value.Value, 5.60M);
       }
     }
 
@@ -294,35 +294,35 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         var method = usps.Services["USPS_PRIORITY"];
         var shipment = getDefaultShipment(usps, method);
-        var amount = session.EstimateShippingCost(null, shipment);
+        var estShipment = session.EstimateShippingCost(null, shipment);
 
-        Assert.IsNotNull(amount);
-        Assert.AreEqual(amount.Value.CurrencyISO, "USD");
-        Assert.AreEqual(amount.Value.Value, 6.95M);
+        Assert.IsNotNull(estShipment.Cost);
+        Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
+        Assert.AreEqual(estShipment.Cost.Value.Value, 6.95M);
 
         method = usps.Services["USPS_PRIORITY_EXPRESS"];
         shipment = getDefaultShipment(usps, method);
-        amount = session.EstimateShippingCost(null, shipment);
+        estShipment = session.EstimateShippingCost(null, shipment);
 
-        Assert.IsNotNull(amount);
-        Assert.AreEqual(amount.Value.CurrencyISO, "USD");
-        Assert.AreEqual(amount.Value.Value, 28.08M);
+        Assert.IsNotNull(estShipment.Cost);
+        Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
+        Assert.AreEqual(estShipment.Cost.Value.Value, 28.08M);
 
         method = usps.Services["USPS_PARCEL_SELECT"];
         shipment = getDefaultShipment(usps, method);
-        amount = session.EstimateShippingCost(null, shipment);
+        estShipment = session.EstimateShippingCost(null, shipment);
 
-        Assert.IsNotNull(amount);
-        Assert.AreEqual(amount.Value.CurrencyISO, "USD");
-        Assert.AreEqual(amount.Value.Value, 7.11M);
+        Assert.IsNotNull(estShipment.Cost);
+        Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
+        Assert.AreEqual(estShipment.Cost.Value.Value, 7.11M);
 
         method = usps.Services["USPS_FIRST"];
         shipment = getDefaultShipment(usps, method);
-        amount = session.EstimateShippingCost(null, shipment);
+        estShipment = session.EstimateShippingCost(null, shipment);
 
-        Assert.IsNotNull(amount);
-        Assert.AreEqual(amount.Value.CurrencyISO, "USD");
-        Assert.AreEqual(amount.Value.Value, 2.60M);
+        Assert.IsNotNull(estShipment.Cost);
+        Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
+        Assert.AreEqual(estShipment.Cost.Value.Value, 2.60M);
       }
     }
 

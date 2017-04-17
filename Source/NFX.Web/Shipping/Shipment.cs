@@ -163,6 +163,24 @@ namespace NFX.Web.Shipping
   }
 
   /// <summary>
+  /// Represents shipping rate data
+  /// </summary>
+  public class ShippingRate
+  {
+    public string CarrierID { get; set; }
+    public string ServiceID { get; set; }
+    public string PackageID { get; set; }
+
+    /// <summary>
+    /// If true indicates that there is no available rate was found for initial shipping data,
+    /// so shipping system changed carrier/service to most appropriate one
+    /// </summary>
+    public bool IsAlternative { get; set; }
+
+    public Financial.Amount? Cost { get; set; }
+  }
+
+  /// <summary>
   /// Represents abstraction of shipment - a package (i.e. Envelope) along with its shipping service (i.e. USPS Ground)
   /// </summary>
   public class Shipment

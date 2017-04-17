@@ -80,6 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\PointerCacheTest.cs" />
+    <Compile Include="AppModel\Pile\PilePrimitivesTest.cs" />
+    <Compile Include="AppModel\Pile\PileMutableTests.cs" />
     <Compile Include="AppModel\Pile\DurableCacheTest.cs" />
     <Compile Include="AppModel\Pile\PileTests3.cs" />
     <Compile Include="AppModel\Pile\PileTests2.cs" />

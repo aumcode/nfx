@@ -99,7 +99,7 @@ namespace NFX.ApplicationModel.Pile
     Speculative = 0,
 
     /// <summary>
-    /// Guarantees to store all the data and handles all collisions at the expense of more operations time.
+    /// Guarantees to store all the data and handles all key collisions at the expense of extra processing.
     /// Ignores priorities as they are irrelevant
     /// </summary>
     Durable
@@ -228,6 +228,12 @@ namespace NFX.ApplicationModel.Pile
     object Get(TKey key, int ageSec = 0);
 
     /// <summary>
+    /// Gets cache object pointer by key, optionally filtering-out objects older than ageSec param if it is &gt; zero.
+    /// Returns invalid pointer if there is no object with the specified key or it is older than ageSec limit.
+    /// </summary>
+    PilePointer GetPointer(TKey key, int ageSec = 0);
+
+    /// <summary>
     /// Puts an object identified by a key into cache returning the result of the put.
     /// For example, put may have added nothing if the table is capped and the space is occupied with data of higher priority
     /// </summary>
@@ -241,12 +247,26 @@ namespace NFX.ApplicationModel.Pile
 
 
     /// <summary>
+    /// Puts a pointer identified by a key into cache returning the result of the put.
+    /// For example, put may have added nothing if the table is capped and the space is occupied with data of higher priority
+    /// </summary>
+    /// <param name="key">A table-wide unique obvject key</param>
+    /// <param name="ptr">A valid pointer to put</param>
+    /// <param name="maxAgeSec">If null then the default maxAgeSec is taken from Options property, otherwise specifies the length of items life in seconds</param>
+    /// <param name="priority">The priority of this item. If there is no space in future the items with lower priorities will not evict existing data with highr priorities</param>
+    /// <param name="absoluteExpirationUTC">Optional UTC timestamp of object eviction from cache</param>
+    /// <returns>The status of put - whether item was inserted/replaced(if key exists)/overwritten or collided with higher-prioritized existing data</returns>
+    PutResult PutPointer(TKey key, PilePointer ptr, int? maxAgeSec = null, int priority = 0, DateTime? absoluteExpirationUTC = null);
+
+
+
+    /// <summary>
     /// Removes data by key returning true if found and removed
     /// </summary>
     bool Remove(TKey key);
 
     /// <summary>
-    /// Resets inetrnal object age returning true of object was found and rejuvenated
+    /// Resets internal object age returning true of object was found and rejuvenated
     /// </summary>
     bool Rejuvenate(TKey key);
 

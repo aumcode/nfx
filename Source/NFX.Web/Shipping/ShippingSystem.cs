@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Text;
 
 using NFX.ApplicationModel;
 using NFX.Environment;
@@ -264,7 +263,15 @@ namespace NFX.Web.Shipping
 
       public abstract Label CreateLabel(ShippingSession session, IShippingContext context, Shipment shipment);
 
-      public abstract TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber);
+      public virtual TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)
+      {
+        return new TrackInfo
+               {
+                 TrackingURL = GetTrackingURL(session, context, carrierID, trackingNumber),
+                 TrackingNumber = trackingNumber,
+                 CarrierID = carrierID
+               };
+      }
 
       public virtual string GetTrackingURL(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)
       {
@@ -284,7 +291,7 @@ namespace NFX.Web.Shipping
         return m_PreconfiguredShippingCarriers;
       }
 
-      public abstract Financial.Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment);
+      public abstract ShippingRate EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment);
 
     #endregion
 

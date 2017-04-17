@@ -283,7 +283,7 @@ namespace NFX.ApplicationModel.Pile
                            if (entry.IsChain)
                            {
                              var chain = pile.Get( entry.DataPointer ) as _chain;
-                             pile.Delete( entry.DataPointer);//delete old _chain
+                             pile.Delete( entry.DataPointer, throwInvalid: false);//delete old _chain
                              foreach(var clentry in chain.Links)
                              {
                                hcode = comparer.GetHashCode( clentry.Key );
@@ -340,7 +340,7 @@ namespace NFX.ApplicationModel.Pile
                                           null);
 
                            if (putResult==PutResult.Collision)//could not put the item in the new array, so it is lost, need to free pile memory
-                             pile.Delete( entry.DataPointer, false);
+                             pile.Delete( entry.DataPointer, throwInvalid: false);
                           else
                            if (putResult==PutResult.Inserted)
                              this.COUNT++;
@@ -412,7 +412,7 @@ namespace NFX.ApplicationModel.Pile
 
                                   if (expired || (clentry.ExpirationUTC.Ticks!=0 && now >= clentry.ExpirationUTC))
                                   {
-                                    pile.Delete( clentry.DataPointer );
+                                    pile.Delete( clentry.DataPointer, throwInvalid: false );
                                     chain.Links.RemoveAt(j);
                                     deleted++;
                                     mutated = true;
@@ -422,7 +422,7 @@ namespace NFX.ApplicationModel.Pile
 
                                 if (mutated || chain.Links.Count==0)
                                 {
-                                  pile.Delete( entry.DataPointer );
+                                  pile.Delete( entry.DataPointer, throwInvalid: false );
                                   if (chain.Links.Count>0)
                                   {
                                     entry.DataPointer = Table.m_Cache.m_Pile.Put( chain );
@@ -449,7 +449,7 @@ namespace NFX.ApplicationModel.Pile
 
                          if (expired || (entry.ExpirationUTC.Ticks!=0 && now >= entry.ExpirationUTC))
                          {
-                           pile.Delete( entry.DataPointer );
+                           pile.Delete( entry.DataPointer, throwInvalid: false );
                            Entries[i] = _entry.Empty;
                            deleted++;
                          }
@@ -483,9 +483,9 @@ namespace NFX.ApplicationModel.Pile
                            {
                              var chain = pile.Get( entry.DataPointer ) as _chain;
                              foreach(var clentry in chain.Links)
-                               pile.Delete( clentry.DataPointer );
+                               pile.Delete( clentry.DataPointer, throwInvalid: false );
                            }
-                           pile.Delete( entry.DataPointer );
+                           pile.Delete( entry.DataPointer, throwInvalid: false );
                            Entries[i] = _entry.Empty;
                          }
                        }
@@ -734,6 +734,38 @@ namespace NFX.ApplicationModel.Pile
       return null;
     }
 
+
+    public PilePointer GetPointer(TKey key, int ageSec = 0)
+    {
+      if (!m_Cache.Running) return PilePointer.Invalid;
+      int hashCode;
+      var bucket = getBucket(key, out hashCode);
+
+      if (!getReadLock(bucket)) return PilePointer.Invalid;//Service shutting down
+      try
+      {
+        var entry = fetchExistingEntry(bucket, key, hashCode);
+        var ptr = entry.DataPointer;
+        if (ptr.Valid)
+        {
+           if (ageSec==0 || entry.AgeSec < ageSec)
+           {
+             Interlocked.Increment(ref m_stat_GetHit);
+             return ptr;
+           }
+        }
+      }
+      finally
+      {
+        releaseReadLock(bucket);
+      }
+
+      Interlocked.Increment(ref m_stat_GetMiss);
+      return PilePointer.Invalid;
+    }
+
+
+
     public PutResult Put(TKey key, object obj, int? maxAgeSec = null, int priority = 0, DateTime? absoluteExpirationUTC = null)
     {
       if (obj==null) throw new PileException(StringConsts.ARGUMENT_ERROR+GetType().Name+".Put(obj==null)");
@@ -759,6 +791,12 @@ namespace NFX.ApplicationModel.Pile
         releaseWriteLock(bucket);
       }
 
+      updatePutStat(result);
+      return result;
+    }
+
+    private void updatePutStat(PutResult result)
+    {
       switch(result)
       {
         case PutResult.Inserted:    {Interlocked.Increment(ref m_stat_Put); break;}
@@ -768,6 +806,35 @@ namespace NFX.ApplicationModel.Pile
          Interlocked.Increment(ref m_stat_PutCollision);
          break;
       }
+    }
+
+
+    public PutResult PutPointer(TKey key, PilePointer ptr, int? maxAgeSec = null, int priority = 0, DateTime? absoluteExpirationUTC = null)
+    {
+      if (!ptr.Valid) throw new PileException(StringConsts.ARGUMENT_ERROR+GetType().Name+".PutPointer(!ptr.Valid)");
+      if (!m_Cache.Running) return PutResult.Collision;
+
+      int hashCode;
+      var bucket = getBucket(key, out hashCode);
+
+      var result = PutResult.Collision;
+      if (!getWriteLock(bucket)) return PutResult.Collision;//Service shutting down
+      try
+      {
+        var age = maxAgeSec ?? m_Options.DefaultMaxAgeSec;
+        result = putEntry(bucket.Entries, key, hashCode, null, ptr, 0, age, priority, absoluteExpirationUTC, null);
+        if (result!=PutResult.Collision)
+        {
+          if (result==PutResult.Inserted) bucket.COUNT++;
+          bucket.growIfNeeded(); //the grow is done on calling thread, remove is deferred to sweep
+        }
+      }
+      finally
+      {
+        releaseWriteLock(bucket);
+      }
+
+      updatePutStat(result);
       return result;
     }
 
@@ -947,7 +1014,7 @@ namespace NFX.ApplicationModel.Pile
 
       private PutResult putEntry(_bucket bucket, TKey key, int hashCode, object data, int maxAgeSec,int priority, DateTime? absoluteExpirationUTC)
       {
-        return putEntry(bucket.Entries, key, hashCode, data, PilePointer.Invalid,  0, maxAgeSec, priority, absoluteExpirationUTC, (o) => m_Cache.m_Pile.Put(o));
+        return putEntry(bucket.Entries, key, hashCode, data, PilePointer.Invalid, 0, maxAgeSec, priority, absoluteExpirationUTC, (o) => m_Cache.m_Pile.Put(o));
       }
 
       private PutResult putEntry(_entry[] entries, TKey key, int hashCode, object data, PilePointer ptrData, int existingAgeSec, int  maxAgeSec,int priority, DateTime? absoluteExpirationUTC, Func<object, PilePointer> fPilePut)
@@ -993,7 +1060,7 @@ namespace NFX.ApplicationModel.Pile
               clentry = chain.Links[i];
               if (m_Comparer.Equals(clentry.Key, key))
               {
-                m_Cache.m_Pile.Delete(clentry.DataPointer);
+                m_Cache.m_Pile.Delete(clentry.DataPointer, throwInvalid: false);
                 clentry.DataPointer = ptrData;
                 chain.Links[i] = clentry;
                 found = true;
@@ -1013,7 +1080,7 @@ namespace NFX.ApplicationModel.Pile
             }
 
             var ptr = m_Cache.m_Pile.Put( chain );//put new
-            m_Cache.m_Pile.Delete( entry.DataPointer, false );//delete old, lastly we dont want to corrupt existing
+            m_Cache.m_Pile.Delete( entry.DataPointer, throwInvalid: false );//delete old, lastly we dont want to corrupt existing
             entry.DataPointer = ptr;
             entries[entryIdx] = entry;
             return found ? PutResult.Replaced : PutResult.Inserted;
@@ -1021,7 +1088,7 @@ namespace NFX.ApplicationModel.Pile
 
           if (m_Comparer.Equals(entry.Key, key))//replace with the same key
           {
-            m_Cache.m_Pile.Delete( entry.DataPointer );
+            m_Cache.m_Pile.Delete( entry.DataPointer, throwInvalid: false );
             entry.DataPointer = ptrData;
             entry.MaxAgeSec = maxAgeSec;
             entry.AgeSec = existingAgeSec;
@@ -1082,7 +1149,7 @@ namespace NFX.ApplicationModel.Pile
 
                   entry.Key = key;
                   if (entry.DataPointer.Valid)
-                    m_Cache.m_Pile.Delete( entry.DataPointer, false );//delete previous pointed-to data
+                    m_Cache.m_Pile.Delete( entry.DataPointer, throwInvalid: false );//delete previous pointed-to data
 
                   entry.DataPointer = ptrData;
                   entry.MaxAgeSec = maxAgeSec;
@@ -1130,10 +1197,10 @@ namespace NFX.ApplicationModel.Pile
                 var clentry = chain.Links[i];
                 if (m_Comparer.Equals(clentry.Key, key))
                 {
-                  pile.Delete( clentry.DataPointer );
+                  pile.Delete( clentry.DataPointer, throwInvalid: false );
                   bucket.COUNT--;
                   chain.Links.RemoveAt(i);
-                  pile.Delete( entry.DataPointer );
+                  pile.Delete( entry.DataPointer, throwInvalid: false );
                   if (chain.Links.Count>0)
                   {
                     var ptr = pile.Put(chain);
@@ -1150,7 +1217,7 @@ namespace NFX.ApplicationModel.Pile
             {
               if (m_Comparer.Equals(entry.Key, key))
               {
-                pile.Delete(entry.DataPointer);
+                pile.Delete(entry.DataPointer, throwInvalid: false);
                 bucket.COUNT--;
                 bucket.Entries[entryIdx] = _entry.Empty;
                 return true;
@@ -1185,7 +1252,7 @@ namespace NFX.ApplicationModel.Pile
                 {
                    clentry.AgeSec = 0;
                    chain.Links[i] = clentry;
-                   pile.Delete( entry.DataPointer );
+                   pile.Delete( entry.DataPointer, throwInvalid: false );
                    entry.DataPointer = pile.Put(chain);
                    bucket.Entries[entryIdx] = entry;
                   return true;

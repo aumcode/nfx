@@ -252,5 +252,9 @@ namespace NFX.Web
     public const string DELETE_MODIFY_ERROR = "Can not modify field value while in deleting operation. Field <{0}>";
 
     public const string HTTP_OPERATION_ERROR = "HTTP[S] error: ";
+
+    public const string CLOUD_SYSTEM_DUPLICATE_NAME_ERROR = "Can not have cloud system instance of type '{0}' with the name '{1}' as this name is already registered.";
+
+    public const string CLOUD_SYSTEM_DUPLICATE_HOST_ERROR = "Can not add instance of type '{0}' with the name '{1}' as this name is already registered in cloud system {2}.";
   }
 }

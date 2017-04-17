@@ -145,25 +145,44 @@ namespace NFX.Environment
         /// <summary>
         /// Loads the supplied string content in the specified format, which may be format name like "xml" or "laconfig" with or without extension period
         /// </summary>
-        public static Configuration ProviderLoadFromString(string content, string format)
+        public static Configuration ProviderLoadFromString(string content, string format, string fallbackFormat = null)
         {
-            if (format.StartsWith(".")) format=format.Remove(0, 1);
+          if (format.IsNullOrWhiteSpace()) { format = fallbackFormat; fallbackFormat = null; }
+
+          if (format != null)
+          {
+            if (format.StartsWith(".")) format = format.Remove(0, 1);
 
             //since C# does not support first-class types, these if statements below must handle what AllSupportedFormat returns
             //in future Aum conversion replace with Dictionary<format, configType> lookup
 
-            if (NFX.CodeAnalysis.Laconfig.LaconfigLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase) ))
+            if (NFX.CodeAnalysis.Laconfig.LaconfigLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase)))
               return LaconicConfiguration.CreateFromString(content);
 
-            if (NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase) ))
+            if (NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase)))
               return XMLConfiguration.CreateFromXML(content);
 
-            if (NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase) ))
+            if (NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase)))
               return JSONConfiguration.CreateFromJSON(content);
 
-            throw new ConfigException(StringConsts.CONFIG_NO_PROVIDER_LOAD_FORMAT_ERROR + format);
+            if (fallbackFormat.IsNotNullOrWhiteSpace())
+              return ProviderLoadFromString(content, fallbackFormat);
+          }
+
+          throw new ConfigException(StringConsts.CONFIG_NO_PROVIDER_LOAD_FORMAT_ERROR + format);
         }
 
+        /// <summary>
+        /// True when format is supported
+        /// </summary>
+        public static bool IsSupportedFormat(string format)
+        {
+          if (format.StartsWith(".")) format=format.Remove(0, 1);
+
+          return NFX.CodeAnalysis.Laconfig.LaconfigLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase)) ||
+                 NFX.CodeAnalysis.XML.XMLLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase)) ||
+                 NFX.CodeAnalysis.JSON.JSONLanguage.Instance.FileExtensions.Any(e => string.Equals(e, format, StringComparison.InvariantCultureIgnoreCase));
+        }
 
         /// <summary>
         /// Gets/sets global Environment variable resolver that is used by all configurations in this process instance

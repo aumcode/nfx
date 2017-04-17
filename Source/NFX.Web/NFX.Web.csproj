@@ -75,6 +75,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheControl.cs" />
+    <Compile Include="Cloud\CloudConnectionParameters.cs" />
+    <Compile Include="Cloud\CloudSystemStarter.cs" />
+    <Compile Include="Cloud\CloudTemplate.cs" />
+    <Compile Include="Cloud\Exceptions.cs" />
+    <Compile Include="Cloud\Intfs.cs" />
+    <Compile Include="Cloud\CloudSystem.cs" />
+    <Compile Include="Cloud\CloudSession.cs" />
     <Compile Include="ContentType.cs" />
     <Compile Include="Messaging\Instrumentation\Gauges.cs" />
     <Compile Include="Messaging\MailSink\MailgunMailSink.cs" />

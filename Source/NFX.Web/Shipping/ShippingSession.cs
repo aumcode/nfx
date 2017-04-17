@@ -132,7 +132,7 @@ namespace NFX.Web.Shipping
     /// <summary>
     /// Estimates shipping label cost
     /// </summary>
-    public Financial.Amount? EstimateShippingCost(IShippingContext context, Shipment shipment)
+    public ShippingRate EstimateShippingCost(IShippingContext context, Shipment shipment)
     {
       if (!m_ShippingSystem.Capabilities.SupportsShippingCostEstimation)
         throw new ShippingException(StringConsts.SHIPPING_SYSTEM_UNSUPPORTED_ACTION.Args("EstimateShippingCost"));

@@ -42,7 +42,8 @@ namespace WinFormsTest
        // Application.SetCompatibleTextRenderingDefault(false);
 
         Application.Run(new MenuForm());
-     //   Application.Run( new ChartFormDemo());
+   //  Application.Run( new ChartForm());
+   //    Application.Run( new ChartFormDemo());
 
       // Application.Run(new Form2());
       //    Application.Run(new MongoDBForm());

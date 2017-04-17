@@ -65,13 +65,18 @@ namespace NFX.ApplicationModel.Pile
        *     payload size is ALWAYS extended to
        *     the last 3 bits=0, so it is always 8-aligned
        *
-       *  3. Serializer version: byte 0..255                [1 bytes] <--- not used for now
+       *  3. Serializer version: byte 0..255                [1 bytes] <--- string, byte[], link, slim, or other...
        *
        *                                               --------------
        *                                                     8 bytes  <--- CHUNK_HDR_SZ
        *  4. ..... chunk data .....
        *     payload bytes as stated in (2)               [(2) bytes]
       */
+
+      public const byte SVER_SLIM =  0;//Slim Serializer
+      public const byte SVER_BUFF =  1;//byte[] - byte buffer
+      public const byte SVER_UTF8 =  2;//string UTF8
+      public const byte SVER_LINK =  3;//link to  another PilePointer
 
 
       private const int CHUNK_HDER_SZ = 8;
@@ -184,13 +189,16 @@ namespace NFX.ApplicationModel.Pile
                public int DELETED;
 
                public int ObjectCount; //allocated objects
+               public int ObjectLinkCount; //allocated object links
                public int UsedBytes;//object-allocated bytes WITHOUT headers
+
+               public int AllObjectCount{ get{ return ObjectCount + ObjectLinkCount;}}
 
                public long OverheadBytes
                {
                  get
                  {
-                   var chunkOverhead = (long)ObjectCount * CHUNK_HDER_SZ;
+                   var chunkOverhead = (long)AllObjectCount * CHUNK_HDER_SZ;
                    var listsOverhead = FreeChunks.LongLength * Pile.m_FreeListSize * sizeof(int);
                    return chunkOverhead + listsOverhead;
                  }
@@ -201,7 +209,7 @@ namespace NFX.ApplicationModel.Pile
                  get
                  {
                    var freePayload = Data.Length - UsedBytes;
-                   var chunkOverhead = (ObjectCount * CHUNK_HDER_SZ) + CHUNK_HDER_SZ;//+1 extra chunk for 1 free space
+                   var chunkOverhead = (AllObjectCount * CHUNK_HDER_SZ) + CHUNK_HDER_SZ;//+1 extra chunk for 1 free space
                    return freePayload - chunkOverhead;
                  }
                }
@@ -223,7 +231,7 @@ namespace NFX.ApplicationModel.Pile
                //must be under lock
                //tries to allocate the payload size in this segment ant put payload bytes in.
                // returns -1 when could not find spot. does not do crawl
-               public int Allocate(byte[] payloadBuffer, int allocPayloadSize, byte serVer)
+               public int Allocate(byte[] payloadBuffer, int serializedSize, int allocPayloadSize, byte serVer, bool isLink)
                {
                   allocPayloadSize = IntMath.Align8(allocPayloadSize);
                   var allocSize = allocPayloadSize + CHUNK_HDER_SZ;
@@ -235,7 +243,7 @@ namespace NFX.ApplicationModel.Pile
                   {
                     var address = scanForFreeLarge(allocPayloadSize);
                     if (address<0) return -1;//no space in this segment to fit large payload
-                    allocChunk(address, payloadBuffer, allocPayloadSize, serVer);
+                    allocChunk(address, payloadBuffer, serializedSize, allocPayloadSize, serVer, isLink);
                     return address;
                   }
 
@@ -249,7 +257,7 @@ namespace NFX.ApplicationModel.Pile
                       {
                         var address = freeList.Addresses[freeList.CurrentIndex];
                         freeList.CurrentIndex--;
-                        allocChunk(address, payloadBuffer, allocPayloadSize, serVer);
+                        allocChunk(address, payloadBuffer, serializedSize, allocPayloadSize, serVer, isLink);
                         return address;
                       }//slot found
                     }//<fcs
@@ -258,7 +266,7 @@ namespace NFX.ApplicationModel.Pile
                }
 
 
-               private void allocChunk(int address, byte[] payloadBuffer, int allocPayloadSize, byte serVer)
+               private void allocChunk(int address, byte[] payloadBuffer, int serializedSize, int allocPayloadSize, byte serVer, bool isLink)
                {
                   var allocSize = allocPayloadSize + CHUNK_HDER_SZ;
 
@@ -283,9 +291,18 @@ namespace NFX.ApplicationModel.Pile
                   adr+=4;
                   Data[adr] = serVer;
                   adr++;
-                  Array.Copy(payloadBuffer, 0, Data, adr, allocPayloadSize > payloadBuffer.Length ? payloadBuffer.Length : allocPayloadSize);
 
-                  adr+=allocPayloadSize;
+                  var bsz = allocPayloadSize;
+                  if (serVer==SVER_UTF8 || serVer==SVER_BUFF)
+                  {
+                    //Write serializedSize preamble
+                    Data.WriteBEInt32(adr, serializedSize);
+                    adr+=4;
+                    bsz-=4;
+                  }
+
+                  Array.Copy(payloadBuffer, 0, Data, adr, bsz > payloadBuffer.Length ? payloadBuffer.Length : bsz);
+                  adr+=bsz;
 
                   //see if the chunk is too big and may be re-split
                   if (leftoverSize >0)//then split
@@ -296,7 +313,11 @@ namespace NFX.ApplicationModel.Pile
                   }//split
 
                   UsedBytes += allocPayloadSize;
-                  ObjectCount++;
+
+                  if (isLink)
+                    ObjectLinkCount++;
+                  else
+                    ObjectCount++;
                }
 
                private int scanForFreeLarge(int allocPayloadSize)
@@ -323,7 +344,7 @@ namespace NFX.ApplicationModel.Pile
                  return -1;//nothing found
                }
 
-               public void Deallocate(int address)
+               public void Deallocate(int address, bool isLink)
                {
                  var flag = readChunkFlag(Data, address);
                  if (flag==chunkFlag.Used)
@@ -335,7 +356,11 @@ namespace NFX.ApplicationModel.Pile
                    var freedPayloadSize = Data.ReadBEInt32(ref adr);
                    addFreeChunk(address, freedPayloadSize);
                    UsedBytes -= freedPayloadSize;
-                   ObjectCount--;
+
+                   if (isLink)
+                     ObjectLinkCount--;
+                   else
+                     ObjectCount--;
                  }
                }
 
@@ -677,6 +702,19 @@ namespace NFX.ApplicationModel.Pile
         }
 
         /// <summary>
+        /// Returns the total number of object links allocated at this point in time
+        /// </summary>
+        public long ObjectLinkCount
+        {
+          get
+          {
+             if (!Running) return 0;
+             var segs = m_Segments;
+             return segs.Where(s=>s!=null).Sum( seg => (long)Thread.VolatileRead(ref seg.ObjectLinkCount));
+          }
+        }
+
+        /// <summary>
         /// Returns the number of bytes allocated by this pile from the system memory heap.
         /// As pile pre-allocates memory in segments, it is absolutely normal to have this property return 100s of megabytes even when pile is almost empty.
         /// This property may return close to all physical memory available
@@ -830,7 +868,11 @@ namespace NFX.ApplicationModel.Pile
       /// Throws out-of-space if there is not enough space in the pile and limits are set.
       /// Optional lifeSpanSec is ignored by this implementation
       /// </summary>
-      public PilePointer Put(object obj, uint lifeSpanSec = 0)
+      public PilePointer Put(object obj, uint lifeSpanSec = 0, int preallocateBlockSize = 0)
+      {
+        return put(null, obj, null, 0, 0, preallocateBlockSize, false);
+      }
+      private PilePointer put(_segment lockedSegment, object obj, byte[] buffer, int serializedSize, byte serializerVersion, int preallocateBlockSize, bool isLink)
       {
         if (!Running) return PilePointer.Invalid;
 
@@ -839,16 +881,18 @@ namespace NFX.ApplicationModel.Pile
         Interlocked.Increment(ref m_stat_PutCount);
 
         //1 serialize to determine the size
-        int serializedSize;
-        byte serializerVersion;
-        var buffer = serialize(obj, out serializedSize, out serializerVersion);
+        if (buffer==null)
+        {
+          buffer = serialize(obj, out serializedSize, out serializerVersion);
+        }
 
         var payloadSize = IntMath.Align8(serializedSize);
+        if (preallocateBlockSize>payloadSize) payloadSize =  IntMath.Align8(preallocateBlockSize);
         var chunkSize = CHUNK_HDER_SZ + payloadSize;
 
 
         if (chunkSize>m_SegmentSize)
-         throw new PileOutOfSpaceException(StringConsts.PILE_OBJECT_LARGER_SEGMENT_ERROR.Args(payloadSize));
+         throw new PileOutOfSpaceException(StringConsts.PILE_OBJECT_LARGER_SEGMENT_ERROR.Args(payloadSize, m_SegmentSize));
 
         while(true)
         {
@@ -868,7 +912,6 @@ namespace NFX.ApplicationModel.Pile
             }
 
             var oldSegWindow = m_AllocMode==AllocationMode.ReuseSpace ? 8 : 2;
-
             for(int cnt=0, idxSegment=si; idxSegment<segs.Count; idxSegment++, cnt++)
             {
               if (cnt==oldSegWindow && idxSegment < segs.Count-CPU_COUNT-1)//20170325 DKh
@@ -879,17 +922,20 @@ namespace NFX.ApplicationModel.Pile
 
               var seg = segs[idxSegment];
               if (seg==null) continue;
-              if (seg.DELETED!=0) continue;
+              if (Thread.VolatileRead(ref seg.DELETED)!=0) continue;
 
               var sused = seg.UsedBytes;
               if (seg.FreeCapacity > chunkSize)
               {
-                 if (!tryGetWriteLock(seg)) continue;//20170325 DKh if (!getWriteLock(seg)) return PilePointer.Invalid;
+                 //20170406 MUST use tryGetWriteLock() so deadlock does not happen when called from put(ptr, object)
+                 //from within another lock
+                 var needsLock = seg!=lockedSegment;
+                 if (needsLock && !tryGetWriteLock(seg)) continue;//20170325 DKh if (!getWriteLock(seg)) return PilePointer.Invalid;
                  try
                  {
                    if (Thread.VolatileRead(ref seg.DELETED)==0 && seg.FreeCapacity > chunkSize)
                    {
-                     var adr = seg.Allocate(buffer, payloadSize, serializerVersion);
+                     var adr = seg.Allocate(buffer, serializedSize, payloadSize, serializerVersion, isLink);
                      if (adr>=0) return new PilePointer(idxSegment, adr);//allocated before crawl
 
                      var utcNow = DateTime.UtcNow;
@@ -900,7 +946,7 @@ namespace NFX.ApplicationModel.Pile
                          seg.LastCrawl = utcNow;
 
                          //try again
-                         adr = seg.Allocate(buffer, payloadSize, serializerVersion);
+                         adr = seg.Allocate(buffer, serializedSize, payloadSize, serializerVersion, isLink);
                          if (adr>=0) return new PilePointer(idxSegment, adr);//allocated after crawl
                      }
                      //if we are here - still could not allocate, will try next segment in iteration
@@ -908,7 +954,8 @@ namespace NFX.ApplicationModel.Pile
                  }
                  finally
                  {
-                   releaseWriteLock(seg);
+                   if (needsLock)
+                     releaseWriteLock(seg);
                  }
               }
             }//for
@@ -932,13 +979,107 @@ namespace NFX.ApplicationModel.Pile
            var newSeg = new _segment(this);
            var newSegs = new List<_segment>(m_Segments);
            newSegs.Add( newSeg );
-           var adr = newSeg.Allocate(buffer, payloadSize, serializerVersion);
+           var adr = newSeg.Allocate(buffer, serializedSize, payloadSize, serializerVersion, isLink);
            var pp = new PilePointer(newSegs.Count-1, adr);
            m_Segments = newSegs;
            return pp;
         }
       }
 
+
+
+      /// <summary>
+      /// Tries to put the new object over an existing one at the pre-define position.
+      /// The pointer has to reference a valid allocated block.
+      /// If object fits in the allocated block returns true, otherwise tries to create an internal link
+      /// to the new pointer which is completely transparent to the caller. The linking may be explicitly disabled
+      /// in which case the method returns false when the new object does not fit into the existing block
+      /// </summary>
+      public bool Put(PilePointer ptr, object obj, uint lifeSpanSec = 0, bool link = true)
+      {
+        var result = put(ptr, obj, lifeSpanSec, link);
+        if (result) Interlocked.Increment(ref m_stat_PutCount);
+        return result;
+      }
+      private bool put(PilePointer ptr, object obj, uint lifeSpanSec, bool link)
+      {
+        if (!Running) return false;
+        if (obj==null) throw new PileException(StringConsts.ARGUMENT_ERROR+GetType().Name+".Put(obj==null)");
+
+        //1 serialize to determine the size
+        int serializedSize;
+        byte serializerVersion;
+        var buffer = serialize(obj, out serializedSize, out serializerVersion);
+
+        var newPayloadSize = serializedSize;//do not Align as the existing block is already aligned
+
+        //2 see if the slot is allocated (under write lock)
+        var segs = m_Segments;
+        if (ptr.Segment<0 || ptr.Segment>=segs.Count)
+         throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+
+        var seg = segs[ptr.Segment];
+        if (seg==null || Thread.VolatileRead(ref seg.DELETED)!=0)
+          throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+
+        var linkPointer = PilePointer.Invalid;
+        if (!getWriteLock(seg)) return false;//Service shutting down
+        try
+        {
+          //2nd check under lock
+          if (Thread.VolatileRead(ref seg.DELETED)!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+
+          var data = seg.Data;
+          var addr = ptr.Address;
+          if (addr<0 || addr>=data.LongLength-CHUNK_HDER_SZ)
+           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_ADDR_EOF_ERROR + ptr.ToString());
+
+          var cflag = readChunkFlag(data, addr); addr+=3;
+          if (cflag!=chunkFlag.Used)
+           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_ADDR_CHUNK_FLAG_ERROR + ptr.ToString());
+
+          var payloadSize = data.ReadBEInt32(ref addr);
+          if (payloadSize>data.Length)
+           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_ADDR_PAYLOAD_SIZE_ERROR.Args(ptr, payloadSize));
+
+          var existingSVer = data[addr];
+          if (existingSVer==SVER_LINK)
+            linkPointer = new PilePointer(data, addr+1);
+
+          if (newPayloadSize<=payloadSize)//fit in existing block
+          {
+            data[addr] = serializerVersion;
+            addr++;
+            if (serializerVersion==SVER_UTF8 || serializerVersion==SVER_BUFF)
+            {
+              data.WriteBEInt32(addr, serializedSize);
+              addr+=4;
+              Array.Copy(buffer, 0, data, addr, newPayloadSize - 4);
+            }
+            else
+             Array.Copy(buffer, 0, data, addr, newPayloadSize);
+          }
+          else
+          {
+            if (!link || payloadSize<PilePointer.RAW_BYTE_SIZE) return false;//does not fit
+
+            //3 Create link
+            data[addr] = SVER_LINK;
+            addr++;
+            var lptr = put(seg, obj, buffer, serializedSize, serializerVersion, 0, true);//this is NOT a deadlock because put(tryGetWriteLock) does not cause deadlock
+            //write pointer to data....
+            lptr.RawWrite(data, addr);
+          }
+        }
+        finally
+        {
+          releaseWriteLock(seg);
+        }
+
+        if (linkPointer.Valid) delete(linkPointer, false, true);
+
+        return true;
+      }
 
       /// <summary>
       /// Returns a CLR object by its pointer or throws access violation if pointer is invalid
@@ -974,7 +1115,7 @@ namespace NFX.ApplicationModel.Pile
 
 
         var seg = segs[ptr.Segment];
-        if (seg==null || seg.DELETED!=0)
+        if (seg==null || Thread.VolatileRead(ref seg.DELETED)!=0)
           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
 
         Interlocked.Increment(ref m_stat_GetCount);
@@ -983,7 +1124,7 @@ namespace NFX.ApplicationModel.Pile
         try
         {
           //2nd check under lock
-          if (seg.DELETED!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+          if (Thread.VolatileRead(ref seg.DELETED)!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
 
           var data = seg.Data;
           var addr = ptr.Address;
@@ -998,14 +1139,17 @@ namespace NFX.ApplicationModel.Pile
           if (payloadSize>data.Length)
            throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_ADDR_PAYLOAD_SIZE_ERROR.Args(ptr, payloadSize));
 
-          if (raw)
-          {
-             serVersion = data[addr];
-          }
-          //otherwise not used for now
+
+          serVersion = data[addr];
           addr++;
 
-          return raw ? readRaw(data, addr, payloadSize) : deserialize(data, addr, payloadSize);
+          if (serVersion == SVER_LINK)
+          {
+           var linkPointer = new PilePointer(data, addr);
+           return get(linkPointer, raw, out serVersion);//this does not deadlock because read locks do not deadlock but write locks do TrygetWriteLock under main WriteLock
+          }
+
+          return raw ? readRaw(data, addr, payloadSize) : deserialize(data, addr, payloadSize, serVersion);
         }
         finally
         {
@@ -1020,6 +1164,11 @@ namespace NFX.ApplicationModel.Pile
       /// </summary>
       public bool Delete(PilePointer ptr, bool throwInvalid = true)
       {
+        return delete(ptr, throwInvalid, false);
+      }
+
+      public bool delete(PilePointer ptr, bool throwInvalid, bool isLink)
+      {
         if (!Running) return false;
 
         var segs = m_Segments;
@@ -1031,7 +1180,7 @@ namespace NFX.ApplicationModel.Pile
 
 
         var seg = segs[ptr.Segment];
-        if (seg==null || seg.DELETED!=0)
+        if (seg==null || Thread.VolatileRead(ref seg.DELETED)!=0)
         {
           if (throwInvalid) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
           return false;
@@ -1041,11 +1190,16 @@ namespace NFX.ApplicationModel.Pile
 
         var removeEmptySegment = false;
 
+        var linkPointer = PilePointer.Invalid;
         if (!getWriteLock(seg)) return false;//Service shutting down
         try
         {
           //2nd check under lock
-          if (seg.DELETED!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+          if (Thread.VolatileRead(ref seg.DELETED)!=0)
+          {
+           if (throwInvalid) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+           return false;
+          }
 
           var data = seg.Data;
           var addr = ptr.Address;
@@ -1062,12 +1216,21 @@ namespace NFX.ApplicationModel.Pile
             return false;
           }
 
-          seg.Deallocate(ptr.Address);
+          addr+=4;//skip over payload size
 
+          var serVer = data[addr];
+
+          if (serVer==SVER_LINK)
+          {
+             addr++;
+             linkPointer = new PilePointer(data, addr);
+          }
+
+          seg.Deallocate(ptr.Address, isLink);
 
           //release segment
           //if nothing left allocated and either reuseSpace or 50/50 chance
-          if (seg.ObjectCount==0 && (m_AllocMode==AllocationMode.ReuseSpace || (ptr.Address & 1) == 1))
+          if (seg.AllObjectCount==0 && (m_AllocMode==AllocationMode.ReuseSpace || (ptr.Address & 1) == 1))
           {
             Thread.VolatileWrite(ref seg.DELETED, 1);//Mark as deleted
             removeEmptySegment = true;
@@ -1106,6 +1269,9 @@ namespace NFX.ApplicationModel.Pile
           }//lock barrier
 
 
+        //delete linked object
+        if (linkPointer.Valid) delete(linkPointer, false, true);
+
         return true;
       }
 
@@ -1124,14 +1290,14 @@ namespace NFX.ApplicationModel.Pile
 
 
         var seg = segs[ptr.Segment];
-        if (seg==null || seg.DELETED!=0)
+        if (seg==null || Thread.VolatileRead(ref seg.DELETED)!=0)
           throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
 
         if (!getReadLock(seg)) return 0;//Service shutting down
         try
         {
           //2nd check under lock
-          if (seg.DELETED!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
+          if (Thread.VolatileRead(ref seg.DELETED)!=0) throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_SEGMENT_ERROR + ptr.ToString());
 
           var data = seg.Data;
           var addr = ptr.Address;
@@ -1143,7 +1309,14 @@ namespace NFX.ApplicationModel.Pile
            throw new PileAccessViolationException(StringConsts.PILE_AV_BAD_ADDR_CHUNK_FLAG_ERROR + ptr.ToString());
 
           var payloadSize = data.ReadBEInt32(ref addr);
-          return payloadSize;
+
+          var serVer = data[addr];
+          if (serVer!=SVER_LINK)
+            return payloadSize;
+
+          addr++;
+          var linkPointer = new PilePointer(data, addr);
+          return SizeOf(linkPointer);
         }
         finally
         {
@@ -1178,7 +1351,7 @@ namespace NFX.ApplicationModel.Pile
 
             foreach(var seg in m_Segments)
             {
-                   if (seg==null || Thread.VolatileRead(ref seg.ObjectCount)!=0)
+                   if (seg==null || seg.AllObjectCount!=0)
                    {
                      newSegments.Add(seg);
                      continue;
@@ -1187,7 +1360,7 @@ namespace NFX.ApplicationModel.Pile
                    if (!getWriteLock(seg)) return total;
                    try
                    {
-                     if (Thread.VolatileRead(ref seg.ObjectCount)!=0)
+                     if (seg.AllObjectCount!=0)
                      {
                        newSegments.Add(seg);
                        continue;
@@ -1329,17 +1502,16 @@ namespace NFX.ApplicationModel.Pile
           segment.RWSynchronizer.ReleaseWriteLock();
         }
 
-
           private static void writeUsedFlag(byte[] data, int adr)
           {
-            data[adr] = CHUNK_USED_FLAG1;
+            data[adr]   = CHUNK_USED_FLAG1;
             data[adr+1] = CHUNK_USED_FLAG2;
             data[adr+2] = CHUNK_USED_FLAG3;
           }
 
           private static void writeFreeFlag(byte[] data, int adr)
           {
-            data[adr] = CHUNK_FREE_FLAG1;
+            data[adr]   = CHUNK_FREE_FLAG1;
             data[adr+1] = CHUNK_FREE_FLAG2;
             data[adr+2] = CHUNK_FREE_FLAG3;
           }
@@ -1364,8 +1536,45 @@ namespace NFX.ApplicationModel.Pile
 
           [ThreadStatic] private static SlimSerializer ts_WriteSerializer;
 
+
+          private const int STR_BUF_SZ = 32 * 1024;
+
+          private const int MAX_STR_LEN = STR_BUF_SZ / 2; //2 bytes per UTF16 character
+                                                          //this is done on purpose NOT to call
+                                                          //Encoding.GetByteCount()
+
+          [ThreadStatic] private static byte[] ts_StrBuff;
+
           private byte[] serialize(object payload, out int payloadSize, out byte serVersion)
           {
+            var spayload = payload as string;
+            if (spayload != null) //Special handlig for strings
+            {
+              serVersion = SVER_UTF8;
+              var len = spayload.Length;
+              var encoding = NFX.IO.Streamer.UTF8Encoding;
+              if (len>MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
+              {
+                var buf = encoding.GetBytes(spayload);
+                payloadSize = 4 + buf.Length;//preamble + content
+                return buf;
+              }
+              //try to reuse pre-allocated buffer
+              if (ts_StrBuff==null) ts_StrBuff = new byte[STR_BUF_SZ];
+              payloadSize = 4 + encoding.GetBytes(spayload, 0, len, ts_StrBuff, 0);//preamble + content
+              return ts_StrBuff;
+            }
+            //------------------------------------------------------------------------------
+            var bpayload = payload as byte[];
+            if (bpayload!=null)
+            {
+              serVersion = SVER_BUFF;
+              payloadSize = 4 + bpayload.Length;//preamble + content
+              return bpayload;
+            }
+            //------------------------------------------------------------------------------
+
+
             var stream = getTLWriteStream();
             var serializer = ts_WriteSerializer;
             if (serializer==null || serializer.Owner != this || serializer.__globalTypeRegistry!=m_CurrentTypeRegistry)
@@ -1399,7 +1608,7 @@ namespace NFX.ApplicationModel.Pile
             }//while
 
             payloadSize = (int)stream.Position;
-            serVersion = 0;//not used for now
+            serVersion =  SVER_SLIM;
             return stream.GetBuffer();
           }
 
@@ -1414,8 +1623,23 @@ namespace NFX.ApplicationModel.Pile
 
           [ThreadStatic] private static SlimSerializer ts_ReadSerializer;
 
-          private object deserialize(byte[] data, int addr, int payloadSize)
+          private object deserialize(byte[] data, int addr, int payloadSize, byte serVersion)
           {
+            if (serVersion==SVER_UTF8)
+            {
+              var sz = data.ReadBEInt32(ref addr) - 4;//less preamble size
+              return NFX.IO.Streamer.UTF8Encoding.GetString(data, addr, sz);
+            }
+
+            if (serVersion==SVER_BUFF)
+            {
+              var sz = data.ReadBEInt32(ref addr) - 4;//less preamble size
+              var buff = new byte[sz];
+              Array.Copy(data, addr, buff, 0, sz);
+              return buff;
+            }
+
+
             var stream = getTLReadStream(data, addr, payloadSize);
             var serializer = ts_ReadSerializer;
 

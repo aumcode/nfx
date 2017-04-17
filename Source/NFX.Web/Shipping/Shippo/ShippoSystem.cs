@@ -80,12 +80,12 @@ namespace NFX.Web.Shipping.Shippo
         { Weight.UnitType.Kg, "kg" }
       };
 
-      public static readonly Dictionary<string, string> CARRIERS = new Dictionary<string, string>
+      public static readonly Dictionary<CarrierType, string> CARRIERS = new Dictionary<CarrierType, string>
       {
-        { USPS_CARRIER_ID,        "usps" },
-        { DHL_EXPRESS_CARRIER_ID, "dhl_express" },
-        { FEDEX_CARRIER_ID,       "fedex" },
-        { UPS_CARRIER_ID,         "ups" }
+        { CarrierType.USPS,       "usps" },
+        { CarrierType.DHLExpress, "dhl_express" },
+        { CarrierType.FedEx,      "fedex" },
+        { CarrierType.UPS,        "ups" }
       };
 
       public static readonly Dictionary<string, TrackStatus> TRACK_STATUSES = new Dictionary<string, TrackStatus>
@@ -156,7 +156,8 @@ namespace NFX.Web.Shipping.Shippo
 
       public override TrackInfo TrackShipment(ShippingSession session, IShippingContext context, string carrierID, string trackingNumber)
       {
-        return TrackShipment((ShippoSession)session, context, carrierID, trackingNumber);
+        // spol 20170412: redirect to carrier's tracking page for now; use the method below to enable Shippo tracking
+        return base.TrackShipment(session, context, carrierID, trackingNumber);
       }
 
       public TrackInfo TrackShipment(ShippoSession session, IShippingContext context, string carrierID, string trackingNumber)
@@ -197,10 +198,16 @@ namespace NFX.Web.Shipping.Shippo
             carrierID.IsNotNullOrWhiteSpace() &&
             trackingNumber.IsNotNullOrWhiteSpace())
         {
-            return URI_TRACKING_BY_NUM.Args(carrierID, trackingNumber);
+          var carrier = GetShippingCarriers(session, context).FirstOrDefault(c => c.Name.EqualsIgnoreCase(carrierID));
+          if (carrier==null) return null;
+
+          string ccode;
+          if (!CARRIERS.TryGetValue(carrier.Type, out ccode)) return null;
+
+          return URI_TRACKING_BY_NUM.Args(carrierID, trackingNumber);
         }
 
-        return null;
+        return url;
       }
 
       public override Address ValidateAddress(ShippingSession session, IShippingContext context, Address address, out ValidateShippingAddressException error)
@@ -226,12 +233,12 @@ namespace NFX.Web.Shipping.Shippo
         }
       }
 
-      public override Financial.Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)
+      public override ShippingRate EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment)
       {
         return EstimateShippingCost((ShippoSession)session, context, shipment);
       }
 
-      public Financial.Amount? EstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment)
+      public ShippingRate EstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment)
       {
         var logID = Log(MessageType.Info, "EstimateShippingCost()", StringConsts.SHIPPO_ESTIMATE_SHIPPING_COST_MESSAGE.Args(shipment.FromAddress, shipment.ToAddress, shipment.Service.Name));
 
@@ -305,8 +312,12 @@ namespace NFX.Web.Shipping.Shippo
         if (trackingNumber.IsNullOrWhiteSpace())
           throw new ShippingException("Tracking number is empty");
 
+        var carrier = GetShippingCarriers(session, context).FirstOrDefault(c => c.Name.EqualsIgnoreCase(carrierID));
+        if (carrier==null)
+          throw new ShippingException("Unknown carrier");
+
         string ccode;
-        if (!CARRIERS.TryGetValue(carrierID, out ccode))
+        if (!CARRIERS.TryGetValue(carrier.Type, out ccode))
           throw new ShippingException("Unknown carrier");
 
         var cred = (ShippoCredentials)session.User.Credentials;
@@ -420,7 +431,7 @@ namespace NFX.Web.Shipping.Shippo
         return corrAddress;
       }
 
-      private Financial.Amount? doEstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment, Guid logID)
+      private ShippingRate doEstimateShippingCost(ShippoSession session, IShippingContext context, Shipment shipment, Guid logID)
       {
         var cred = (ShippoCredentials)session.User.Credentials;
         var sbody = getShipmentBody(shipment);
@@ -446,18 +457,44 @@ namespace NFX.Web.Shipping.Shippo
         var rates = response["rates_list"] as JSONDataArray;
         if (rates == null) return null;
 
+        var bestApprRate = new ShippingRate
+                           {
+                             CarrierID=shipment.Carrier.Name,
+                             ServiceID=shipment.Service.Name,
+                             PackageID=shipment.Package.Name
+                           };
+        var bestAltRate = new ShippingRate
+                          {
+                            CarrierID=shipment.Carrier.Name,
+                            ServiceID=shipment.Service.Name,
+                            PackageID=shipment.Package.Name,
+                            IsAlternative = true
+                          };
+
+        // try to find rate with requested carrier/service/package (i.e. "appropriate") with the best price
+        // if no appropriate rate found, return alternative rate (also with the best price)
         foreach (JSONDataMap rate in rates)
         {
           var carrierID = rate["carrier_account"].AsString();
-          if (carrierID.IsNotNullOrWhiteSpace() &&
-              string.Equals(carrierID, shipment.Carrier.Name, StringComparison.InvariantCultureIgnoreCase) &&
-              string.Equals(rate["servicelevel_token"].AsString(), shipment.Service.Name, StringComparison.InvariantCultureIgnoreCase))
-            return new Financial.Amount(rate["currency_local"].AsString(), rate["amount_local"].AsDecimal());
+          var serviceID = rate["servicelevel_token"].AsString();
+          var cost = new Financial.Amount(rate["currency_local"].AsString(), rate["amount_local"].AsDecimal());
 
-            // todo: where is Template?! minimize cost among all mathced rates?
+          if (shipment.Carrier.Name.EqualsIgnoreCase(carrierID) &&
+              shipment.Service.Name.EqualsIgnoreCase(serviceID))
+          {
+            if (bestApprRate.Cost==null ||
+                (bestApprRate.Cost.Value.CurrencyISO.EqualsIgnoreCase(cost.CurrencyISO) && // todo: multiple currencies
+                 bestApprRate.Cost.Value.Value > cost.Value))
+              bestApprRate.Cost = cost;
+          }
+
+          if (bestAltRate.Cost==null ||
+              (bestAltRate.Cost.Value.CurrencyISO.EqualsIgnoreCase(cost.CurrencyISO) && // todo: multiple currencies
+               bestAltRate.Cost.Value.Value > cost.Value))
+            bestAltRate.Cost = cost;
         }
 
-        return null;
+        return (bestApprRate.Cost != null) ? bestApprRate : bestAltRate;
       }
 
       private JSONDataMap doGetRate(ShippoSession session, string rateID, Guid logID)

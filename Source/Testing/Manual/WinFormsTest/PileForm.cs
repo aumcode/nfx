@@ -448,8 +448,7 @@ namespace WinFormsTest
                       di++;
                   }
                 }
-
-                Thread.Sleep(90+ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 20));
+    //            Thread.Sleep(90+ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 20));
 
               }
             }

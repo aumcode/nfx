@@ -182,6 +182,56 @@ namespace NFX.NUnit.AppModel.Pile
         }
       }
 
+      [TestCase(125000)]
+      public void SweepOldRejuvenateSome(int COUNT)
+      {
+        using (var cache = PileCacheTestCore.MakeDurableCache())
+        {
+           var tA = cache.GetOrCreateTable<long>("A");
+
+           for(var i=0; i<COUNT; i++)
+           {
+              var key = i * 7;
+              var value = "value of "+i.ToString();
+              var pr = tA.Put(key, value, maxAgeSec: 20 );
+              Aver.AreObjectEqualTest(PutResult.Inserted, pr);
+           }
+
+           Aver.AreEqual(COUNT, tA.Count);
+
+           const int WAIT = 45;
+           for(var j=0; j<WAIT;j++)
+           {
+             Console.WriteLine("Wait loop iteration #{0} of {1}", j, WAIT);
+             for(var i=0; i<COUNT; i++)
+             {
+               var odd = (i & 1) != 0;
+               if (odd) continue;//do not rejuvenate ODD
+               var key = i * 7;
+               Aver.IsTrue( tA.Rejuvenate(key) );
+             }
+             Thread.Sleep(1000);
+           }
+
+           for(var i=0; i<COUNT; i++)
+           {
+              var key = i * 7;
+              var value = "value of "+i.ToString();
+              var odd = (i & 1) != 0;
+              var got = tA.Get(key) as string;
+
+              if (odd)
+               Aver.IsNull( got );
+              else
+               Aver.AreEqual(value, got);
+           }
+
+           Aver.AreEqual(COUNT / 2, cache.Pile.ObjectCount);//Half of objects died
+        }
+      }
+
+
+
 
       [TestCase(    100)]
       [TestCase(   1000)]

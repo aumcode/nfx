@@ -116,11 +116,12 @@ namespace NFX.Web.Shipping
     IEnumerable<ShippingCarrier> GetShippingCarriers(ShippingSession session, IShippingContext context);
 
     /// <summary>
-    /// Estimates shipping label cost
+    /// Estimates shipping label cost.
     /// </summary>
-    Financial.Amount? EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment);
+    /// <returns>Rate for original or alternative shipment</returns>
+    ShippingRate EstimateShippingCost(ShippingSession session, IShippingContext context, Shipment shipment);
 
-    // RefundLabel
+    // todo: RefundLabel
   }
 
   /// <summary>
