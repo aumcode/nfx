@@ -66,7 +66,188 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="security">Security</h1>
               
-<p>...</p>
+<p><strong>NFX</strong> proposes its own security model appropriate for any application type.
+Below is the demonstration of <strong>NFX</strong> Security model for the case of <strong>NFX.Glue</strong> client-server application.
+It is possible add users with certain credentials and permissions in security/users section  of *.laconf configuration file, 
+and then seal any server methods or the whole server by applying <code>PermissionAttribute</code> attribute which guaranted that only users with appropriate permissions can
+access the methods.</p>
+<p>The guide is quite brief in some places. For details, please check the <a href="echo.html">demo</a>.</p>
+<p>1. Create new blank C# solution and add Class Library project <code>DemoContracts</code>
+with the reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX">via NuGet</a>)</p>
+<p>2. Add ISecureService.cs file with the following contents:</p>
+<pre><code class="lang-cs">/// &lt;summary&gt;
+/// Only those users who have superman permission can call the service
+/// &lt;/summary&gt;
+[Glued]
+[AuthenticationSupport]
+[AdHocPermission(&quot;specialized&quot;, &quot;superman&quot;, AccessLevel.VIEW)]
+public interface ISecureService
+{
+  string Echo(string message);
+
+  /// &lt;summary&gt;
+  /// This method can only accessed by superman who is also a president
+  /// &lt;/summary&gt;
+  [AdHocPermission(&quot;specialized&quot;, &quot;president&quot;, AccessLevel.VIEW)]
+  string PresidentEcho(string message);
+}
+</code></pre><p>You will also need to add following usings</p>
+<pre><code>using NFX.Glue;
+using NFX.Security;
+</code></pre><p>3. Add new C# Console Application project <code>DemoServer</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project. Add DemoServer.laconf laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+
+    servers
+    {
+      server
+      {
+        node=&quot;sync://localhost:8080&quot;
+        contract-servers=$&quot;DemoServer.SecureService, DemoServer&quot;
+      }
+    }
+  }
+
+  security
+  {
+    users
+    {
+      user
+      {
+        name=&quot;Clinton&quot;
+        description=&quot;Bill Clinton&quot;
+        id=&quot;clinton&quot;
+        password= &quot;{ hash: &#39;fyQ5RvWb2LxW90s+fBKKJg==&#39;, salt: &#39;salt&#39;, algo: &#39;MD5&#39; }&quot; // phash newyorksalt
+        rights
+        {
+          specialized { superman {level=1} president {level=1} }
+          gov { executive {level=0} } // he is not president
+        }
+      }
+
+      user
+      {
+        name=&quot;Trump&quot;
+        description=&quot;Donald Trump&quot;
+        id=&quot;trump&quot;
+        password= &quot;{ hash: &#39;fyQ5RvWb2LxW90s+fBKKJg==&#39;, salt: &#39;salt&#39;, algo: &#39;MD5&#39; }&quot; // phash chicagosalt
+        rights
+        {
+          specialized { superman {level=1} president {level=1} }
+          gov { executive {level=1} } // he is current president
+        }
+      }
+    }
+  }
+}
+</code></pre><p>Be sure to set Build Action : None and Copy to Output Directory: Always in the config file properties.</p>
+<p>4. Add SecureService.cs file with the contents:</p>
+<pre><code class="lang-cs">public class SecureService : ISecureService
+{
+  public string Echo(string message)
+  {
+    return &quot;Secure service echo: &quot; + message;
+  }
+
+  [AdHocPermission(&quot;gov&quot;, &quot;executive&quot;, AccessLevel.VIEW)]
+  public string PresidentEcho(string message)
+  {
+    return &quot;President secure echo: &quot; + message;
+  }
+}
+</code></pre><p>You will also need to add following <code>NFX.Security</code> using directive</p>
+<p>5. Add the following code to the <code>Main</code> method of DemoServer.Program.cs file</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  Console.WriteLine(&quot;server is running...&quot;);
+  Console.WriteLine(&quot;Glue servers:&quot;);
+  foreach (var service in App.Glue.Servers)
+    Console.WriteLine(&quot;   &quot; + service);
+
+  Console.ReadLine();
+}
+</code></pre><p>6. Add the last one C# Console Application project <code>DemoClient</code> with the references to <strong>NFX</strong> and <code>DemoContracts</code> project.
+Add DemoClient.laconf laconic configuration file:</p>
+<pre><code class="lang-js">application
+{
+  glue
+  {
+    bindings
+    {
+      binding
+      {
+        name=&quot;sync&quot;
+        type=&quot;NFX.Glue.Native.SyncBinding, NFX&quot;
+      }
+    }
+  }
+}
+</code></pre><p>Again, be sure to set Build Action : None and Copy to Output Directory: Always in the file properties.</p>
+<p>7. Create client proxy class that will operate with the service above:</p>
+<p>gluec &quot;$(SolutionDir)DemoContracts/bin/Debug/DemoContracts.dll&quot; /o out=&quot;$(SolutionDir)DemoClient&quot; cl-suffix=&quot;AutoClient&quot;</p>
+<p>Rebuild <code>DemoContracts</code> project and add the file SecureServiceAutoClient.cs to the <code>DemoClient</code> project (the file will appear in the root of the project).</p>
+<p>8. Add the following code to the <code>Main</code> method of DemoClient.Program.cs:</p>
+<pre><code class="lang-cs">using (var application = new ServiceBaseApplication(args, null))
+{
+  using (var client = new SecureServiceAutoClient(&quot;sync://localhost:8080&quot;))
+  {
+    while (true)
+    {
+      var input = Console.ReadLine();
+      var cmd = input.Split(new char[] { &#39; &#39; }, StringSplitOptions.RemoveEmptyEntries);
+      exeCommand(client, cmd);
+    }
+  }
+}
+</code></pre><p>Add the following method:</p>
+<pre><code class="lang-cs">private static void exeCommand(SecureServiceAutoClient client, string[] cmd)
+{
+  try
+  {
+    var chkPresident = cmd[0].AsBool();
+    var name = cmd[1];
+    var password = cmd[2];
+    var message = cmd[3];
+
+    client.Headers.Add(
+      new AuthenticationHeader(
+        new IDPasswordCredentials(name, password)));
+
+    var response = chkPresident ?
+                   client.PresidentEcho(message) :
+                   client.Echo(message);
+
+    Console.WriteLine(response);
+  }
+  catch (Exception error)
+  {
+    Console.WriteLine(error.ToMessageWithType());
+  }
+}
+</code></pre><p>You will also need to add usings</p>
+<pre><code class="lang-cs">using System.Diagnostics;
+using NFX;
+using NFX.ApplicationModel;
+using DemoContracts.GluedClients;
+</code></pre><p>9. Run <code>DemoServer</code> server host and start the <code>DemoClient</code> client application.
+Execute the following commands sequentially: &quot;false trump chicago hello&quot;, &quot;true trump chicago hello&quot;, &quot;false clinton newyork hello&quot;, &quot;true clinton newyork hello&quot;, &quot;true clinton wrongpwd hello&quot;. 
+The output will be like</p>
+<pre><code>Secure service echo: hello
+President secure echo: hello
+Secure service echo: hello
+[NFX.Glue.RemoteException]...
+[NFX.Glue.RemoteException]...
+</code></pre><p>Therefore, user &#39;trump&#39; can call both of the server methods <code>SecureService.Echo</code> and <code>SecureService.PresidentEcho</code>, while user &#39;clinton&#39; can call only <code>SecureService.Echo</code>.</p>
 
             </article>
           </div>
