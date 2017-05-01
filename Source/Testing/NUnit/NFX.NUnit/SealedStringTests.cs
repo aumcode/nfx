@@ -1,4 +1,4 @@
-/*<FILE_LICENSE>
+﻿/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
 * Copyright 2003-2017 ITAdapter Corp. Inc.
 *
@@ -49,7 +49,7 @@ namespace NFX.NUnit
         public void Create()
         {
           var s1 = new SealedString("Lenin");
-          
+
           var original = s1.Value;
 
           Assert.IsTrue(s1.IsAssigned);
@@ -57,13 +57,45 @@ namespace NFX.NUnit
           Console.WriteLine(s1.ToString());
         }
 
+        [TestCase(10)]
+        [TestCase(100)]
+        [TestCase(250)]
+        [TestCase(1250)]
+        [TestCase(32000)]
+        [TestCase(132000)]
+        public void VariousSizesOfWideChars(int cnt)
+        {
+          var original = new string('久', cnt);
+
+          var sld = new SealedString(original);
+
+          var got = sld.Value;
+
+          Aver.IsTrue(sld.IsAssigned);
+          Aver.AreEqual(original, got);
+        }
+
+        [Test]
+        public void LongMulticulturalString()
+        {
+          var original = "就是巴尼宝贝儿吧，俺说。有什么怪事儿或是好事儿吗？ когда американские авианосцы 'Уинсон' и 'Мидуэй' приблизились 지구상의　３대 we have solved the problem";
+
+          var sld = new SealedString(original);
+
+          var got = sld.Value;
+
+          Aver.IsTrue(sld.IsAssigned);
+          Aver.AreEqual(original, got);
+        }
+
+
         [TestCase]
         public void Equals()
         {
           var s1 = new SealedString("Bird");
           var s2 = new SealedString("Cat");
-          
-          
+
+
           Assert.IsTrue(s1.IsAssigned);
           Assert.IsTrue(s2.IsAssigned);
           Assert.AreEqual("Bird", s1.Value);
@@ -106,7 +138,7 @@ namespace NFX.NUnit
           var endCount = SealedString.TotalCount;
           var endUseCount = SealedString.TotalBytesUsed;
           var endAllocCount = SealedString.TotalBytesAllocated;
-          
+
           Assert.AreEqual( startCount+cnt, endCount);
           Assert.IsTrue(endUseCount > startUseCount);
           Assert.IsTrue(endAllocCount >= startAllocCount);
@@ -123,7 +155,7 @@ namespace NFX.NUnit
         [TestCase(  125000,  1024,   32000)]
         public void Multithreaded(int cnt, int from, int to)
         {
-        
+
           var startCount = SealedString.TotalCount;
           var startUseCount = SealedString.TotalBytesUsed;
           var startAllocCount = SealedString.TotalBytesAllocated;
@@ -136,10 +168,10 @@ namespace NFX.NUnit
           Console.WriteLine("Total: {0:n0} / used bytes: {1:n0} / allocated: {2:n0}", startCount, startUseCount, startAllocCount);
 
           var sw = System.Diagnostics.Stopwatch.StartNew();
-            Parallel.For(0, cnt, (_) => 
+            Parallel.For(0, cnt, (_) =>
             {
                var content = data[NFX.ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, data.Length)];
-               var s = new SealedString(content); 
+               var s = new SealedString(content);
                var restored = s.Value;
                Assert.AreEqual(content, restored);
             });
@@ -148,7 +180,7 @@ namespace NFX.NUnit
           var endCount = SealedString.TotalCount;
           var endUseCount = SealedString.TotalBytesUsed;
           var endAllocCount = SealedString.TotalBytesAllocated;
-          
+
           Assert.AreEqual( startCount+cnt, endCount);
           Assert.IsTrue(endUseCount > startUseCount);
           Assert.IsTrue(endAllocCount >= startAllocCount);

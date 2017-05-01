@@ -350,9 +350,9 @@ namespace NFX.NUnit.Serialization
         public void ToTypedRow_Arrays_FromString_Row()
         {
             var str =
-            @"{ 
-                Row: { Name: ""Ivan"", Int32Array: [1, 0, -12345] }, 
-                RowArray: 
+            @"{
+                Row: { Name: ""Ivan"", Int32Array: [1, 0, -12345] },
+                RowArray:
                     [
                         { Name: ""John"", Int8: 123 },
                         { Name: ""Anna"", Single: 123.567 }
@@ -701,9 +701,9 @@ namespace NFX.NUnit.Serialization
         public void ToTypedRow_Lists_FromString_Row()
         {
             var str =
-            @"{ 
-                Row: { Name: ""Ivan"", Int32List: [1, 0, -12345] }, 
-                RowList: 
+            @"{
+                Row: { Name: ""Ivan"", Int32List: [1, 0, -12345] },
+                RowList:
                     [
                         { Name: ""John"", Int8: 123 },
                         { Name: ""Anna"", Single: 123.567 }
@@ -1063,9 +1063,9 @@ namespace NFX.NUnit.Serialization
         public void ToAmorphousRow_FromString_Row()
         {
             var str =
-            @"{ 
-                Row_1: { Name: ""Ivan"", Int32Array: [1, 0, -12345] }, 
-                RowArray_1: 
+            @"{
+                Row_1: { Name: ""Ivan"", Int32Array: [1, 0, -12345] },
+                RowArray_1:
                     [
                         { Name: ""John"", Int8: 123 },
                         { Name: ""Anna"", Single: 123.567 }
@@ -1100,8 +1100,44 @@ namespace NFX.NUnit.Serialization
             Assert.AreEqual("Anna", innerArrayRow1["Name"]);
             Assert.AreEqual(123.567F, innerArrayRow1["Single"].AsFloat());
         }
-
         #endregion Amorphous
+
+
+
+        #region Targeting
+
+        [TestCase]
+        public void TargetedNames()
+        {
+            var str =
+            @"{
+                fn: ""Ivan"",
+                ln: ""Kozelov"",
+                age: 123
+            }";
+
+            var row = new RowWithTargetedNames();
+            JSONReader.ToRow(row, str.JSONToDataObject() as JSONDataMap, nameBinding: JSONReader.NameBinding.ByBackendName(null));
+            Aver.AreEqual( "Ivan",    row.FirstName);
+            Aver.AreEqual( "Kozelov", row.LastName);
+            Aver.AreEqual( 123,       row.Age);
+
+            str =
+            @"{
+                fn: ""Ivan"",
+                ln: ""Kozelov"",
+                a: 123
+            }";
+
+            row = new RowWithTargetedNames();
+            JSONReader.ToRow(row, str.JSONToDataObject() as JSONDataMap, nameBinding: JSONReader.NameBinding.ByBackendName("MY-TARGET"));
+            Aver.AreEqual( "Ivan",    row.FirstName);
+            Aver.AreEqual( "Kozelov", row.LastName);
+            Aver.AreEqual( 123,       row.Age);
+
+        }
+        #endregion
+
 
         #region Types
 
@@ -1305,6 +1341,22 @@ namespace NFX.NUnit.Serialization
             {
             }
         }
+
+
+        public class RowWithTargetedNames : TypedRow
+        {
+          [Field(backendName: "fn")]
+          public string FirstName{ get; set;}
+
+          [Field(backendName: "ln")]
+          public string LastName{ get; set;}
+
+          [Field(backendName: "age")]
+          [Field("MY-TARGET", backendName: "a")]
+          public int Age{ get; set;}
+
+        }
+
 
         #endregion Types
     }

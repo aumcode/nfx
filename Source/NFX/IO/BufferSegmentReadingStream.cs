@@ -60,6 +60,14 @@ namespace NFX.IO
           idxStart+count>buffer.LongLength)
       throw new NFXIOException(StringConsts.ARGUMENT_ERROR+GetType().Name+".BindBuffer(idxStart={0}, count={1})".Args(idxStart, count));
 
+      UnsafeBindBuffer(buffer, idxStart, count);
+    }
+
+    /// <summary>
+    /// Sets byte[] as stream source this method does the same as BindBuffer without extra if statements, correct data is expected to be supplied
+    /// </summary>
+    public void UnsafeBindBuffer(byte[] buffer, long idxStart, long count)
+    {
       m_Buffer = buffer;
       m_Offset = idxStart;
       m_Count = count;

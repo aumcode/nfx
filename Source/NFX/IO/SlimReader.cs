@@ -34,7 +34,7 @@ namespace NFX.IO
     {
         #region .ctor
 
-            protected internal SlimReader(Encoding encoding=null) : base(encoding)
+            protected internal SlimReader() : base(null)
             {
             }
 
@@ -473,29 +473,17 @@ namespace NFX.IO
                 return null;
               }
 
-          private const int STR_BUF_SZ = 32 * 1024;
-
-          [ThreadStatic]
-          private static byte[] ts_StrBuff;
-
-
           public override string ReadString()
           {
-            //20150626 DKh
-            //var buf = this.ReadByteArray();
-            //if (buf==null) return null;
-
-            //return m_Encoding.GetString(buf);
-
             var has = this.ReadBool();
             if (!has) return null;
 
             var bsz = this.ReadInt();
-            if (bsz<STR_BUF_SZ)
+            if (bsz<SlimFormat.STR_BUF_SZ)
             {
-              if (ts_StrBuff==null) ts_StrBuff = new byte[STR_BUF_SZ];
-              ReadFromStream(ts_StrBuff, bsz);
-              return m_Encoding.GetString(ts_StrBuff, 0, bsz);
+              if (SlimFormat.ts_StrBuff==null) SlimFormat.ts_StrBuff = new byte[SlimFormat.STR_BUF_SZ];
+              ReadFromStream(SlimFormat.ts_StrBuff, bsz);
+              return m_Encoding.GetString(SlimFormat.ts_StrBuff, 0, bsz);
             }
 
 

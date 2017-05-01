@@ -88,16 +88,19 @@ namespace NFX
             return new KeyValuePair<HttpStatusCode, string>(res.StatusCode, null);
         }
 
-        [ThreadStatic] private static byte[] copyBuffer;
+        [ThreadStatic] private static byte[] ts_CopyBuffer;
         /// <summary>
         /// Copies one stream into another using temp buffer
         /// </summary>
-        public static void CopyStream(Stream from, Stream to)
+        public static void CopyStream(Stream from, Stream to, bool noCache = false)
         {
-            if (copyBuffer==null) copyBuffer = new byte[64*1024];
+            if (ts_CopyBuffer==null) ts_CopyBuffer = new byte[98*1024];
             int read;
-            while((read = from.Read(copyBuffer, 0, copyBuffer.Length)) > 0)
-                to.Write(copyBuffer, 0, read);
+            while((read = from.Read(ts_CopyBuffer, 0, ts_CopyBuffer.Length)) > 0)
+                to.Write(ts_CopyBuffer, 0, read);
+
+            if (noCache)
+              ts_CopyBuffer = null;
         }
 
 

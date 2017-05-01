@@ -54,6 +54,86 @@ namespace NFX.NUnit.AppModel.Pile
         GC.Collect();
       }
 
+      [Test]
+      public void MulticulturalString()
+      {
+        using (var pile = new DefaultPile())
+        {
+          pile.Start();
+
+            var str = @"
+外国語の学習と教授
+
+Language Learning and Teaching
+
+Изучение и обучение иностранных языков
+
+Tere Daaheng Aneng Karimah
+
+語文教學・语文教学
+
+Enseñanza y estudio de idiomas
+
+Изучаване и Преподаване на Чужди Езици
+
+ქართული ენის შესწავლა და სწავლება
+
+'læŋɡwidʒ 'lɘr:niŋ ænd 'ti:tʃiŋ
+
+Lus kawm thaib qhia
+
+Ngôn Ngữ, Sự học,
+
+‭‫ללמוד וללמד את השֵפה
+
+L'enseignement et l'étude des langues
+
+말배우기와 가르치기
+
+Nauka języków obcych
+
+Γλωσσική Εκμὰθηση και Διδασκαλία
+
+‭‫ﺗﺪﺭﯾﺲ ﻭ ﯾﺎﺩﮔﯿﺮﯼ ﺯﺑﺎﻥ
+
+Sprachlernen und -lehren
+
+‭‫ﺗﻌﻠﻢ ﻭﺗﺪﺭﻳﺲ ﺍﻟﻌﺮﺑﻴﺔ
+
+เรียนและสอนภาษา";
+
+            var pp = pile.Put(str);
+
+            var got = pile.Get(pp) as string;
+
+            Aver.AreEqual(str, got);
+        }
+      }
+
+
+      [TestCase(100)]
+      [TestCase(1024)]
+      [TestCase(96* 1024)]
+      [TestCase(256* 1024)]
+      [TestCase(512* 1024)]
+      [TestCase(1024* 1024)]
+      public void LongMulticulturalString(int cnt)
+      {
+        using (var pile = new DefaultPile())
+        {
+          pile.Start();
+
+            var str = new string('久', cnt);
+
+            var pp = pile.Put(str);
+
+            var got = pile.Get(pp) as string;
+
+            Aver.AreEqual(str, got);
+        }
+      }
+
+
 
       [TestCase(25000, 2    ,1 )]
       [TestCase(25000, 3    ,1 )]

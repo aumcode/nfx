@@ -322,6 +322,19 @@ namespace NFX.Wave
 
 
       /// <summary>
+      /// Retrieves the CMS context that "sees" the particular CMS file system version.
+      /// The ICMSContext instance is disposable and should be released after the use
+      /// </summary>
+      /// <param name="version">
+      /// The version that the context "sees". Pass null for the latest approved version.
+      /// See PortalHub.Instance.CMS.Version*
+      /// </param>
+      public virtual CMS.ICMSContext GetCMSContext(NFX.IO.FileSystem.IFileSystemVersion version = null)
+      {
+        return PortalHub.Instance.CMSBank.GetContext(this, version);
+      }
+
+      /// <summary>
       /// Translates the named content into desired language trying to infer language from work context/locality/session.
       /// The search is first done in this portal then in inherited portals.
       /// Returns an empty string if no translation is possible

@@ -1034,6 +1034,54 @@ namespace NFX.NUnit.Serialization
 
     #region WriteRead
 
+    //20170429 DKh
+    [TestCase(100)]
+    [TestCase(256)]
+    [TestCase(512)]
+    [TestCase(1024)]
+    [TestCase(64*1024)]
+    [TestCase(512*1024)]
+    public void WriteReadLongStringOfLongChars(int cnt)
+    {
+      using (var stream = new MemoryStream())
+      {
+        var doc1 = new BSONDocument();
+
+        doc1.Set( new BSONStringElement("a", new string('久', cnt)));
+
+        doc1.WriteAsBSON(stream);
+        stream.Position = 0;
+
+        var doc2 = new BSONDocument(stream);
+
+        Aver.AreEqual(1, doc2.Count);
+        Aver.AreEqual( cnt, ((BSONStringElement)doc2["a"]).Value.Length );
+      }
+    }
+
+
+    [Test]
+    public void WriteReadLongMulticulturalString()
+    {
+      using (var stream = new MemoryStream())
+      {
+        var doc1 = new BSONDocument();
+
+        var original = "就是巴尼宝贝儿吧，俺说。有什么怪事儿或是好事儿吗？ когда американские авианосцы 'Уинсон' и 'Мидуэй' приблизились 지구상의　３대 we have solved the problem";
+
+        doc1.Set( new BSONStringElement("a", original));
+
+        doc1.WriteAsBSON(stream);
+        stream.Position = 0;
+
+        var doc2 = new BSONDocument(stream);
+
+        Aver.AreEqual(1, doc2.Count);
+        Aver.AreEqual( original, ((BSONStringElement)doc2["a"]).Value );
+      }
+    }
+
+
     [TestCase]
     public void WriteReadStream()
     {

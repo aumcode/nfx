@@ -133,11 +133,9 @@ namespace NFX
 
     private const int SEG_MAX_SIZE = CoreConsts.MAX_BYTE_BUFFER_SIZE;
 
-    private const int STR_BUF_SZ = 32 * 1024;
+    private const int STR_BUF_SZ = 512;//Sealed Strings are usually short (because there are very many of them, that's why this class is used)
 
-    private const int MAX_BUF_STR_LEN = STR_BUF_SZ / 2; //2 bytes per UTF16 character
-                                                        //this is done on purpose NOT to call
-                                                        //Encoding.GetByteCount()
+    private const int MAX_BUF_STR_LEN = (STR_BUF_SZ / 3) - 16; //3 bytes per UTF8
     [ThreadStatic]
     private static byte[] ts_StrBuff;
 

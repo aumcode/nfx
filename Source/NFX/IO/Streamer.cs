@@ -35,18 +35,15 @@ namespace NFX.IO
             {
               m_Encoding = encoding ?? UTF8Encoding;
 
-              m_Buff32 = ts_Buff32;
+              m_Buff32 = SlimFormat.ts_Buff32;
               if (m_Buff32==null)
               {
                 var buf = new byte[32];
                 m_Buff32 = buf;
-                ts_Buff32 = buf;
+                SlimFormat.ts_Buff32 = buf;
               }
 
             }
-
-            [ThreadStatic]
-            private static byte[] ts_Buff32;
 
             protected byte[] m_Buff32;
 

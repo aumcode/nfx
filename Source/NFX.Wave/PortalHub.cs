@@ -33,6 +33,8 @@ namespace NFX.Wave
     public const string CONFIG_FS_CONNECT_PARAMS_SECTION = "connect-params";
     public const string CONFIG_FS_ROOT_PATH_ATTR = "root-path";
 
+    public const string CONFIG_CMS_BANK_SECTION = "cms-bank";
+
     private static object s_Lock = new object();
     internal static volatile PortalHub s_Instance;
 
@@ -88,6 +90,8 @@ namespace NFX.Wave
 
           DisposableObject.DisposeAndNull(ref m_ContentFS);
 
+          DisposableObject.DisposeAndNull(ref m_CMSBank);
+
           base.Destructor();
         }
       }
@@ -97,6 +101,7 @@ namespace NFX.Wave
     private FileSystemSessionConnectParams m_ContentFSConnect;
     private FileSystem m_ContentFS;
     private string m_ContentFSRootPath;
+    private CMS.ICMSBankImplementation m_CMSBank;
 
     internal Registry<Portal> m_Portals;
 
@@ -111,6 +116,16 @@ namespace NFX.Wave
     /// Returns file system that serves static content for portals
     /// </summary>
     public IFileSystem ContentFileSystem{ get{ return m_ContentFS;}}
+
+    /// <summary>
+    /// Returns the ICMSBank instance
+    /// </summary>
+    public CMS.ICMSBank CMSBank{ get{ return m_CMSBank;} }
+
+    /// <summary>
+    /// Returns true if CMS is initializes with non-NOP CMS bank
+    /// </summary>
+    public bool CMSAvailable{ get{ return !(m_CMSBank is CMS.NOPCMSBank);} }
 
     public FileSystemSessionConnectParams ContentFileSystemConnectParams{ get{ return m_ContentFSConnect;}}
 
@@ -168,6 +183,18 @@ namespace NFX.Wave
       m_ContentFSRootPath = fsNode.AttrByName(CONFIG_FS_ROOT_PATH_ATTR).Value;
       if (m_ContentFSRootPath.IsNullOrWhiteSpace())
        throw new WaveException(StringConsts.CONFIG_PORTAL_HUB_FS_ROOT_PATH_ERROR.Args(CONFIG_CONTENT_FS_SECTION, CONFIG_FS_ROOT_PATH_ATTR));
+
+      //todo temporary - uncomment after done
+      //var cmsNode = node[CONFIG_CMS_BANK_SECTION];
+      //if (cmsNode.Exists)
+      //{
+      //  m_CMSBank = FactoryUtils.MakeAndConfigure<CMS.ICMSBankImplementation>(cmsNode, typeof(CMS.CMSBank));
+      //  var svc = m_CMSBank as ServiceModel.Service;
+      //  if (svc!=null)
+      //    svc.Start();
+      //}
+      //else
+        m_CMSBank = CMS.NOPCMSBank.Instance;
     }
 
     public string Name { get { return GetType().Name; } }

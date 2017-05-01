@@ -21,15 +21,15 @@ using System.Text;
 namespace NFX.Serialization.BSON
 {
   /// <summary>
-  /// Facilitates read.writing binary BSON primitives. Developers shopuld not normallu use this class
+  /// Facilitates read.writing binary BSON primitives. Developers should not normally use this class
   /// as it is used by serializers and socket low-level code
   /// </summary>
   public static class BinUtils
   {
     #region CONST
       public const byte TERMINATOR = 0x00;
-      private const int BUFFER_LENGTH = 512;
-      private const int MAX_CHARS_IN_BUFFER = BUFFER_LENGTH;
+      private const int BUFFER_LENGTH = 1024;
+      private const int MAX_CHARS_IN_BUFFER = (BUFFER_LENGTH / 3 /*UTF8 max bytes per char*/) - 16/* BOM etc. */;
     #endregion
 
     #region Fields
@@ -55,19 +55,19 @@ namespace NFX.Serialization.BSON
       {
         var buffer = ensureBuffer();
 
-        var maxByteCount = value.Length * 2; // UTF8 string length in UNICODE16 pairs
-        if (maxByteCount < BUFFER_LENGTH)
+        var len = value.Length;
+        if (len <= MAX_CHARS_IN_BUFFER)
         {
-          var actual = s_UTF8Encoding.GetBytes(value, 0, value.Length, buffer, 0);
+          var actual = s_UTF8Encoding.GetBytes(value, 0, len, buffer, 0);
           stream.Write(buffer, 0, actual);
         }
         else
         {
           int charCount;
           var totalCharsWritten = 0;
-          while (totalCharsWritten < value.Length)
+          while (totalCharsWritten < len)
           {
-            charCount = Math.Min(MAX_CHARS_IN_BUFFER, value.Length - totalCharsWritten);
+            charCount = Math.Min(MAX_CHARS_IN_BUFFER, len - totalCharsWritten);
             var count = s_UTF8Encoding.GetBytes(value, totalCharsWritten, charCount, buffer, 0);
             stream.Write(buffer, 0, count);
             totalCharsWritten += charCount;

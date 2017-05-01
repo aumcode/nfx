@@ -1537,13 +1537,23 @@ namespace NFX.ApplicationModel.Pile
           [ThreadStatic] private static SlimSerializer ts_WriteSerializer;
 
 
-          private const int STR_BUF_SZ = 32 * 1024;
+          private const int MIN_TLS_WRITE_CAPACITY = 96 * 1024;//LOH
+          private const int TRIM_TLS_WRITE_CAPACITY = 512 * 1024;
 
-          private const int MAX_STR_LEN = STR_BUF_SZ / 2; //2 bytes per UTF16 character
-                                                          //this is done on purpose NOT to call
-                                                          //Encoding.GetByteCount()
+          [ThreadStatic] private static MemoryStream ts_WriteStream;
 
-          [ThreadStatic] private static byte[] ts_StrBuff;
+
+          private MemoryStream getTLWriteStream()
+          {
+            MemoryStream result = ts_WriteStream;
+            if (result!=null && result.Capacity < TRIM_TLS_WRITE_CAPACITY)
+              return result;
+
+            result = new MemoryStream( MIN_TLS_WRITE_CAPACITY );
+            ts_WriteStream = result;
+            return result;
+          }
+
 
           private byte[] serialize(object payload, out int payloadSize, out byte serVersion)
           {
@@ -1553,16 +1563,18 @@ namespace NFX.ApplicationModel.Pile
               serVersion = SVER_UTF8;
               var len = spayload.Length;
               var encoding = NFX.IO.Streamer.UTF8Encoding;
-              if (len>MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
+              var bufStream = getTLWriteStream();
+              var maxChars = (bufStream.Capacity / 3) - 16;//UTF8 3 bytes per char - headers BOM etc..
+              if (len>maxChars)//This is much faster than Encoding.GetByteCount()
               {
                 var buf = encoding.GetBytes(spayload);
                 payloadSize = 4 + buf.Length;//preamble + content
                 return buf;
               }
               //try to reuse pre-allocated buffer
-              if (ts_StrBuff==null) ts_StrBuff = new byte[STR_BUF_SZ];
-              payloadSize = 4 + encoding.GetBytes(spayload, 0, len, ts_StrBuff, 0);//preamble + content
-              return ts_StrBuff;
+              var strBuf = bufStream.GetBuffer();
+              payloadSize = 4 + encoding.GetBytes(spayload, 0, len, strBuf, 0);//preamble + content
+              return strBuf;
             }
             //------------------------------------------------------------------------------
             var bpayload = payload as byte[];
@@ -1680,24 +1692,13 @@ namespace NFX.ApplicationModel.Pile
              result = new BufferSegmentReadingStream();
              ts_ReadStream = result;
             }
-            result.BindBuffer(buf, idxStart, count);
+            result.UnsafeBindBuffer(buf, idxStart, count);
             return result;
           }
 
 
 
-          [ThreadStatic] private static MemoryStream ts_WriteStream;
 
-
-          private MemoryStream getTLWriteStream()
-          {
-            const int DEFAULT_TLS_WRITE_CAPACITY = 64 * 1024;
-            MemoryStream result = ts_WriteStream;
-            if (result!=null) return result;
-            result = new MemoryStream( DEFAULT_TLS_WRITE_CAPACITY );
-            ts_WriteStream = result;
-            return result;
-          }
 
 
           private void dumpStats()

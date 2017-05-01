@@ -51,6 +51,15 @@
   <ItemGroup>
     <Compile Include="Client\Record.cs" />
     <Compile Include="Client\RecordModelGenerator.cs" />
+    <Compile Include="CMS\ConfigResource.cs" />
+    <Compile Include="CMS\NLSResource.cs" />
+    <Compile Include="CMS\FileResource.cs" />
+    <Compile Include="CMS\Exceptions.cs" />
+    <Compile Include="CMS\DirectoryResource.cs" />
+    <Compile Include="CMS\Resource.cs" />
+    <Compile Include="CMS\CMSBank.cs" />
+    <Compile Include="CMS\Intfs.cs" />
+    <Compile Include="CMS\NOPCMSBank.cs" />
     <Compile Include="Matches.cs" />
     <Compile Include="Filters\BeforeAfterFilterBase.cs" />
     <Compile Include="Filters\EffectiveCallerIPEndPointFilter.cs" />

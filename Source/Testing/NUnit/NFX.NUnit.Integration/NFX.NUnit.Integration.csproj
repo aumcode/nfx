@@ -99,6 +99,7 @@
     <Compile Include="Wave\WebClientCookied.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Web\Cloud\AzureTest.cs" />
     <Compile Include="Web\Pay\AutostarterTest.cs" />
     <Compile Include="Web\Pay\PayPalTest.cs" />
     <Compile Include="Web\Pay\FakePaySystemHost.cs" />

@@ -749,6 +749,23 @@ namespace NFX.DataAccess.CRUD
                  }
             }
 
+            //20170420 DKh+Ogee multitargeting for deserilization to ROW from JSON
+            /// <summary>
+            /// Returns a field def that matches the desired backed name for the specified target or null
+            /// </summary>
+            /// <param name="targetName">Target or null, if null any target assumed</param>
+            /// <param name="backendName">The name of the backend</param>
+            /// <param name="backendNameComparison">The string comparison to use against the backend name, OrdinalIgnoreCase is dflt</param>
+            /// <returns>The desired field or null</returns>
+            public FieldDef TryFindFieldByTargetedBackendName(
+                                                      string targetName,
+                                                      string backendName,
+                                                      StringComparison backendNameComparison = StringComparison.OrdinalIgnoreCase)
+            {
+                 return m_FieldDefs.FirstOrDefault(  fd => fd.GetBackendNameForTarget(targetName).Equals(backendName, backendNameComparison)  );
+            }
+
+
 
             public IEnumerator<Schema.FieldDef> GetEnumerator()
             {

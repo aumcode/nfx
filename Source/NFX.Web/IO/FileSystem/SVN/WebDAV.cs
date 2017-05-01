@@ -315,7 +315,7 @@ namespace NFX.IO.FileSystem.SVN
 
         public override string ToString()
         {
- 	         return "{0} from {1}".Args(m_Name, m_Date);
+ 	         return "Version #{0} on {1} by {2} {3}".Args(m_Name, m_Date, m_Creator, m_Comment);
         }
 
         public override int GetHashCode()
@@ -329,7 +329,7 @@ namespace NFX.IO.FileSystem.SVN
           if (other == null)
             return false;
           else
-            return m_Name == other.m_Name;
+            return m_Name.EqualsOrdSenseCase(other.m_Name);
         }
       }
 

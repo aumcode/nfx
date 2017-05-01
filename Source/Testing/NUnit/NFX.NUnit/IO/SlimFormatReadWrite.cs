@@ -32,6 +32,47 @@ namespace NFX.NUnit.IO
     public class SlimFormatReadWrite
     {
 
+
+        [TestCase(10)]
+        [TestCase(20)]
+        [TestCase(250)]
+        [TestCase(512)]
+        [TestCase(1024)]
+        [TestCase(16000)]
+        [TestCase(64000)]
+        [TestCase(95000)]
+        [TestCase(98000)]
+        [TestCase(128000)]
+        [TestCase(512000)]
+        public void StringOfWideChars(int cnt)
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+            var builder = new StringBuilder();
+            for(var i=0; i<cnt; i++)
+              builder.Append( i%3==0 ?  '久' : i%7==0 ? 'ﺉ' :  i%16==0 ? 'Ж' : '1' );
+            var original = builder.ToString();
+
+            Console.WriteLine(original.TakeFirstChars(125));
+
+            w.Write( original );
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+
+            var got = r.ReadString();
+
+            Aver.AreEqual(original, got);
+          }
+        }
+
+
         [TestCase]
         public void PositiveInt()
         {

@@ -235,7 +235,7 @@ namespace NFX.NUnit.Serialization
         var s = new SlimSerializer();
 
         var dIn = new stringMapCls
-        { 
+        {
           Map1 = new StringMap(false)
           {
             {"a", "Alex"},
@@ -271,7 +271,7 @@ namespace NFX.NUnit.Serialization
         var s = new SlimSerializer();
 
         var dIn = new stringMapCls
-        { 
+        {
           Map1 = new StringMap(false)
           {
             {"a", "Alex"},
@@ -300,6 +300,113 @@ namespace NFX.NUnit.Serialization
         Assert.AreEqual( "Boris", dOut.Map1["B"]);
       }
     }
+
+
+    [TestCase(10)]
+    [TestCase(210)]
+    [TestCase(3240)]
+    [TestCase(128000)]
+    [TestCase(512000)]
+    [TestCase(1512000)]
+    public void StringMap_WideCharsLong(int cnt)
+    {
+      using (var ms = new MemoryStream())
+      {
+        var s = new SlimSerializer();
+
+        var original1 = new string('久', cnt);
+        var original2 = "就是巴尼宝贝儿吧，俺说。有什么怪事儿或是好事儿吗？ когда американские авианосцы 'Уинсон' и 'Мидуэй' приблизились 지구상의　３대 we have solved the problem";
+
+        var dIn = new stringMapCls
+        {
+          Map1 = new StringMap(false)
+          {
+            {"a", original1},
+            {"b", original2}
+          }
+        };
+
+        s.Serialize(ms, dIn);
+        ms.Seek(0, SeekOrigin.Begin);
+
+        var dOut = (stringMapCls)s.Deserialize(ms);
+
+        Assert.IsNotNull(dOut);
+        Assert.IsNotNull(dOut.Map1);
+        Assert.IsNull(dOut.Map2);
+
+        Assert.IsFalse( dOut.Map1.CaseSensitive );
+        Assert.AreEqual( 2, dOut.Map1.Count);
+
+
+        Assert.AreEqual( original1, dOut.Map1["a"]);
+        Assert.AreEqual( original1, dOut.Map1["A"]);
+
+        Assert.AreEqual( original2, dOut.Map1["b"]);
+        Assert.AreEqual( original2, dOut.Map1["B"]);
+      }
+    }
+
+    [Test]
+    public void StringManyLanguages()
+    {
+      using (var ms = new MemoryStream())
+      {
+        var s = new SlimSerializer();
+
+        var original =@"
+        外国語の学習と教授
+
+Language Learning and Teaching
+
+Изучение и обучение иностранных языков
+
+Tere Daaheng Aneng Karimah
+
+語文教學・语文教学
+
+Enseñanza y estudio de idiomas
+
+Изучаване и Преподаване на Чужди Езици
+
+ქართული ენის შესწავლა და სწავლება
+
+'læŋɡwidʒ 'lɘr:niŋ ænd 'ti:tʃiŋ
+
+Lus kawm thaib qhia
+
+Ngôn Ngữ, Sự học,
+
+‭‫ללמוד וללמד את השֵפה
+
+L'enseignement et l'étude des langues
+
+말배우기와 가르치기
+
+Nauka języków obcych
+
+Γλωσσική Εκμὰθηση και Διδασκαλία
+
+‭‫ﺗﺪﺭﯾﺲ ﻭ ﯾﺎﺩﮔﯿﺮﯼ ﺯﺑﺎﻥ
+
+Sprachlernen und -lehren
+
+‭‫ﺗﻌﻠﻢ ﻭﺗﺪﺭﻳﺲ ﺍﻟﻌﺮﺑﻴﺔ
+
+เรียนและสอนภาษา";
+
+
+        s.Serialize(ms, original);
+        ms.Seek(0, SeekOrigin.Begin);
+
+        var got = s.Deserialize(ms) as string;
+
+        Assert.IsNotNull(got);
+        Assert.AreEqual( original, got);
+      }
+    }
+
+
 
 
   }

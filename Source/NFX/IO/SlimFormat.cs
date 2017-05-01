@@ -48,6 +48,19 @@ namespace NFX.IO
        public const int MAX_STRING_ARRAY_CNT =  MAX_BYTE_ARRAY_LEN / 48;
 
 
+       public const int STR_BUF_SZ = 96 * 1024;// ensure placement in LOH
+                                               // in many business cases Slim Serializes pretty big chunks of text:
+                                               // NLS pairs containing full page product markup (2-8 Kbytes of text per ISO Lang)
+                                               // pre-serialized JSON fragments i.e. 6-8 kb
+
+       public const int MAX_STR_LEN = (STR_BUF_SZ / 3) - 16; //3 bytes per UTF8 character - 16 BOM etc.
+                                                              //this is done on purpose NOT to call
+                                                              //Encoding.GetByteCount()
+
+       [ThreadStatic] internal static byte[] ts_Buff32;
+
+       [ThreadStatic] internal static byte[] ts_StrBuff;
+
        protected SlimFormat() : base()
        {
           TypeSchema = new Serialization.Slim.TypeSchema(this);
@@ -83,12 +96,12 @@ namespace NFX.IO
 
        public override SlimReader MakeReadingStreamer(Encoding encoding = null)
        {
-           return new SlimReader(encoding);
+           return new SlimReader();
        }
 
        public override SlimWriter MakeWritingStreamer(Encoding encoding = null)
        {
-           return new SlimWriter(encoding);
+           return new SlimWriter();
        }
     }
 }

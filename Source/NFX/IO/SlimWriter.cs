@@ -36,7 +36,7 @@ namespace NFX.IO
     {
         #region .ctor
 
-            protected internal SlimWriter(Encoding encoding = null) : base(encoding)
+            protected internal SlimWriter() : base(null)
             {
             }
         #endregion
@@ -475,25 +475,9 @@ namespace NFX.IO
                 this.Write(false);
               }
 
-          private const int STR_BUF_SZ = 32 * 1024;
-
-          private const int MAX_STR_LEN = STR_BUF_SZ / 2; //2 bytes per UTF16 character
-                                                          //this is done on purpose NOT to call
-                                                          //Encoding.GetByteCount()
-          [ThreadStatic]
-          private static byte[] ts_StrBuff;
 
           public override void Write(string value)
           {
-            //20150626 DKh
-            //if (value==null)
-            //{
-            //  this.Write(false);
-            //  return;
-            //}
-            //var buf = m_Encoding.GetBytes(value);
-            //this.Write(buf);
-
             if (value==null)
             {
               this.Write(false);
@@ -503,7 +487,7 @@ namespace NFX.IO
             this.Write(true);
 
             var len = value.Length;
-            if (len>MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
+            if (len>SlimFormat.MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
             {
               var buf = m_Encoding.GetBytes(value);
               this.Write(buf.Length);
@@ -512,11 +496,11 @@ namespace NFX.IO
             }
 
             //try to reuse pre-allocated buffer
-            if (ts_StrBuff==null) ts_StrBuff = new byte[STR_BUF_SZ];
-            var bcnt = m_Encoding.GetBytes(value, 0, len, ts_StrBuff, 0);
+            if (SlimFormat.ts_StrBuff==null) SlimFormat.ts_StrBuff = new byte[SlimFormat.STR_BUF_SZ];
+            var bcnt = m_Encoding.GetBytes(value, 0, len, SlimFormat.ts_StrBuff, 0);
 
             this.Write(bcnt);
-            m_Stream.Write(ts_StrBuff, 0, bcnt);
+            m_Stream.Write(SlimFormat.ts_StrBuff, 0, bcnt);
           }
 
           public override void Write(uint value)

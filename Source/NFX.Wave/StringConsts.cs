@@ -154,6 +154,8 @@ namespace NFX.Wave
 
       public const string CONFIG_PORTAL_HUB_FS_ROOT_PATH_ERROR = "Portal hub content file system '{0}' section root path attribute '{1}' is required";
 
+      public const string CONFIG_CMS_BANK_FS_ROOT_PATH_ERROR = "CMSBank content file system '{0}' section root path attribute '{1}' is required";
+
       public const string PORTAL_HUB_INSTANCE_ALREADY_CONTAINS_PORTAL_ERROR = "Portal hub instance already has portal '{0}' registered";
 
       public const string PORTAL_PARENT_DEPTH_ERROR = "Portal '{0}' point to parent portal '{1}' which exceeds max depths of {2}";
@@ -161,5 +163,8 @@ namespace NFX.Wave
       public const string PORTAL_PARENT_INVALID_ERROR = "Portal '{0}' point to parent portal '{1}' which does not exist";
 
       public const string CONFIG_PORTAL_LOCALIZATION_FILE_ERROR =  "Portal '{0}' points to localization message file '{1}' which could not be read: {2}";
+
+
+      public const string CMS_NAVIGATE_T_ERROR =  "Portal '{0}' CMSContext.Navigate<{1}>('{2}') does not land at a resource of desired type";
   }
 }
