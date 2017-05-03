@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using System.IO;
 
 namespace NFX.CodeAnalysis.Source
 {
-  
+
       /// <summary>
       /// Represents source code stored in a stream
       /// </summary>
@@ -37,7 +37,7 @@ namespace NFX.CodeAnalysis.Source
               m_Language = language;
               m_Name = name;
             }
-            
+
             /// <summary>
             /// Constructs stream source with specified language and encoding
             /// </summary>
@@ -47,7 +47,7 @@ namespace NFX.CodeAnalysis.Source
               m_Language = language;
               m_Name = name;
             }
-    
+
 
             private Language m_Language;
             private string m_Name;
@@ -59,7 +59,7 @@ namespace NFX.CodeAnalysis.Source
               DiscardBufferedData();
             }
 
-    
+
             /// <summary>
             /// Returns source's name
             /// </summary>
@@ -93,6 +93,6 @@ namespace NFX.CodeAnalysis.Source
             }
 
       }
-  
-  
+
+
 }

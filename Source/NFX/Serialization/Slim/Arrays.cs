@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,6 +14,9 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
+/*
+ * Author: Dmitriy Khmaladze, dmitriy@itadapter.com
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,20 +39,20 @@ namespace NFX.Serialization.Slim
           /// Used for possible stream corruption detection
           /// </summary>
           public const int MAX_ELM_COUNT = MAX_DIM_COUNT * 10 * 1024 * 1024;
-          
+
            public static string ArrayToDescriptor(Array array, Type type, VarIntStr typeHandle)
            {
               if (array.LongLength>MAX_ELM_COUNT)
-                throw new SlimSerializationException(StringConsts.SLIM_ARRAYS_OVER_MAX_ELM_ERROR.Args(array.LongLength, MAX_ELM_COUNT)); 
-              
+                throw new SlimSerializationException(StringConsts.SLIM_ARRAYS_OVER_MAX_ELM_ERROR.Args(array.LongLength, MAX_ELM_COUNT));
+
               if (type==typeof(object[]))//special case for object[], because this type is very often used in Glue and other places
                return "$2|"+array.Length.ToString();
 
 
-              var th = typeHandle.StringValue ?? 
-                      ( typeHandle.IntValue < TypeRegistry.STR_HNDL_POOL.Length ? 
-                                TypeRegistry.STR_HNDL_POOL[typeHandle.IntValue] : 
-                                '$'+typeHandle.IntValue.ToString() 
+              var th = typeHandle.StringValue ??
+                      ( typeHandle.IntValue < TypeRegistry.STR_HNDL_POOL.Length ?
+                                TypeRegistry.STR_HNDL_POOL[typeHandle.IntValue] :
+                                '$'+typeHandle.IntValue.ToString()
                       );
 
                var ar = array.Rank;
@@ -69,7 +72,7 @@ namespace NFX.Serialization.Slim
                   if (i<ar-1)
                    descr.Append(',');
                }
-                      
+
               return descr.ToString();
            }
 
@@ -77,7 +80,7 @@ namespace NFX.Serialization.Slim
       public static Array DescriptorToArray(string descr, Type type)
       {
           var i = descr.IndexOf('|');
-                   
+
           if (i<2)
           {
             throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_MISSING_ARRAY_DIMS_ERROR + descr.ToString());
@@ -89,14 +92,14 @@ namespace NFX.Serialization.Slim
             var total = quickParseInt(descr, ref i, descr.Length);
             if (total>MAX_ELM_COUNT)
               throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_OVER_MAX_ELM_ERROR.Args(total, MAX_ELM_COUNT));
-               
+
             return new object[total];
           }
 
-         
-    
+
+
           Array instance = null;
-         
+
           if (!type.IsArray)
             throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_TYPE_NOT_ARRAY_ERROR + type.FullName);
 
@@ -104,7 +107,7 @@ namespace NFX.Serialization.Slim
           var len = descr.Length;
           //descr = $0|0~12,1~100
           //           ^
-          
+
           try
           {
               var dimCount = 1;
@@ -127,7 +130,7 @@ namespace NFX.Serialization.Slim
                 lowerBounds[dim] = lb;
                 total+=onelen;
               }
-           
+
              if (total>MAX_ELM_COUNT)
                 throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_OVER_MAX_ELM_ERROR.Args(total, MAX_ELM_COUNT));
 
@@ -145,7 +148,7 @@ namespace NFX.Serialization.Slim
                 {
                   int result = 0;
                   bool pos = true;
-                  for(; i<len; i++) 
+                  for(; i<len; i++)
                   {
                     var c = str[i];
                     if (c=='-')
@@ -159,12 +162,12 @@ namespace NFX.Serialization.Slim
                       return pos ? result : -result;
                     }
                     var d = c - '0';
-                    if (d<0 || d>9) throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_WRONG_ARRAY_DIMS_ERROR + str); 
+                    if (d<0 || d>9) throw new SlimDeserializationException(StringConsts.SLIM_ARRAYS_WRONG_ARRAY_DIMS_ERROR + str);
                     result *= 10;
                     result += d;
                   }
 
-                  return pos ? result : -result; 
+                  return pos ? result : -result;
                 }
 
     }

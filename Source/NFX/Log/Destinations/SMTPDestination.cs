@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using System.Net.Mail;
 using NFX.Environment;
 
 namespace NFX.Log.Destinations
-{   
+{
 
     /// <summary>
     /// Implements log destination that sends emails
@@ -33,17 +33,17 @@ namespace NFX.Log.Destinations
     {
         #region CONSTS
 
-          
+
              public const int DEFAULT_SMTP_PORT = 587;
-   
+
 
 
         #endregion
 
 
-    
+
         #region .ctor
-       
+
             /// <summary>
             /// Creates a new instance of destination that sends EMails
             /// </summary>
@@ -51,7 +51,7 @@ namespace NFX.Log.Destinations
             {
               SmtpPort = DEFAULT_SMTP_PORT;
             }
-       
+
             /// <summary>
             /// Creates a new instance of destination that sends EMails
             /// </summary>
@@ -67,12 +67,12 @@ namespace NFX.Log.Destinations
               base.Destructor();
             }
       #endregion
-        
+
 
       #region Private Fields
 
         private SmtpClient m_Smtp;
-      
+
       #endregion
 
 
@@ -80,12 +80,14 @@ namespace NFX.Log.Destinations
 
         [Config]
         public string SmtpHost { get; set; }
-        [Config]
+        [Config(Default = DEFAULT_SMTP_PORT)]
         public int SmtpPort { get; set; }
 
         [Config]
         public bool SmtpSSL { get; set; }
 
+        [Config]
+        public string DropFolder { get; set; }
 
 
         [Config]
@@ -115,20 +117,32 @@ namespace NFX.Log.Destinations
 
        public override void Open()
        {
-           base.Open();
-          
-           m_Smtp = 
-               new SmtpClient
-               {
-                   Host = this.SmtpHost,
-                   Port = this.SmtpPort,
-                   EnableSsl = this.SmtpSSL,
-                   DeliveryMethod = SmtpDeliveryMethod.Network,
-                   UseDefaultCredentials = false,
-                   Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword)
-               };
+          base.Open();
+
+          if (DropFolder.IsNotNullOrWhiteSpace() && System.IO.Directory.Exists(DropFolder))
+          {
+            m_Smtp =
+                    new SmtpClient
+                    {
+                      DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+                      PickupDirectoryLocation = DropFolder
+                    };
+          }
+          else
+          {
+            m_Smtp =
+                    new SmtpClient
+                    {
+                      Host = this.SmtpHost,
+                      Port = this.SmtpPort,
+                      EnableSsl = this.SmtpSSL,
+                      DeliveryMethod = SmtpDeliveryMethod.Network,
+                      UseDefaultCredentials = false,
+                      Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword)
+                    };
+          }
        }
-       
+
        public override void Close()
        {
            if (m_Smtp!=null)
@@ -140,9 +154,9 @@ namespace NFX.Log.Destinations
        }
 
       #endregion
-        
-       
-      #region Protected 
+
+
+      #region Protected
 
         protected internal override void DoSend(Message entry)
         {
@@ -150,15 +164,15 @@ namespace NFX.Log.Destinations
 
            var from = new MailAddress(this.FromAddress, this.FromName);
            var to = new MailAddress(ToAddress);
-           
+
 
            using (var email = new MailMessage(from, to))
            {
 
                 email.Subject = this.Subject ?? entry.Topic;
-                email.Body = (this.Body??string.Empty) + entry.ToString();//for now 
+                email.Body = (this.Body??string.Empty) + entry.ToString();//for now
                 email.CC.Add(ToAddress);
-                
+
                 m_Smtp.Send(email);
            }
         }

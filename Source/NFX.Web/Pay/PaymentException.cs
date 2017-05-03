@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,28 +31,12 @@ namespace NFX.Web.Pay
   /// <summary>
   /// General NFX payment system specific exception
   /// </summary>
+  [Serializable]
   public class PaymentException: NFXException
   {
-    public PaymentException()
-    {
-    }
-
-    public PaymentException(string message)
-      : base(message)
-    {
-    }
-
-    public PaymentException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected PaymentException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
-  } //NFXPaymentException
-
+    public PaymentException() { }
+    public PaymentException(string message) : base(message) { }
+    public PaymentException(string message, Exception inner) : base(message, inner) { }
+    protected PaymentException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+  }
 }

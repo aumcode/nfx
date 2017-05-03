@@ -1,7 +1,7 @@
 
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -140,13 +140,13 @@ namespace NFX.IO.FileSystem.S3.V4
         };
 
         return item;
-      } 
+      }
 
     #endregion
 
     #region ctor
 
-      private S3V4ListBucketItem() { } 
+      private S3V4ListBucketItem() { }
 
     #endregion
 
@@ -158,7 +158,7 @@ namespace NFX.IO.FileSystem.S3.V4
           return string.Format("Folder name=\"{0}\", key=\"{1}\", date=\"{2}\"", ItemName, Key, LastModified);
         else
           return string.Format("File name=\"{0}\", key=\"{1}\", date=\"{2}\", size=\"{3}\"", ItemName, Key, LastModified, Size);
-      } 
+      }
 
     #endregion
 
@@ -170,7 +170,7 @@ namespace NFX.IO.FileSystem.S3.V4
       public ulong Size { get; private set; }
       public bool IsFolder { get; private set; }
 
-      public string ItemName { get; private set; } 
+      public string ItemName { get; private set; }
 
       public bool IsNested { get; private set; }
 
@@ -182,7 +182,7 @@ namespace NFX.IO.FileSystem.S3.V4
       {
         if (string.IsNullOrWhiteSpace(key))
           return false;
-	
+
         int separatorPos = key.IndexOf('/');
 
         bool isNested = separatorPos != -1 && separatorPos != key.Length-1;

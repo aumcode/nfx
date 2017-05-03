@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -95,20 +95,37 @@ static string xml2 = @"
 
 static string xml3 = @"
  <root>
-    <section-c>  
+    <section-c>
        Will cause failure if merged with XML1
     </section-c>
  </root>
 ";
+
+static string xml4 = @"
+ <root>
+    <section-a>
+      <_delete/>
+    </section-a>
+    <section-b _override='attributes' _clear='true'>
+
+    </section-b>
+ </root>
+";
+
+
+
         [TestCase]
         public void BasicMerge()
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+          var conf3 = NFX.Environment.XMLConfiguration.CreateFromXML(xml4);
+
           var conf = new NFX.Environment.MemoryConfiguration();
           conf.CreateFromMerge(conf1.Root, conf2.Root);
-                                                              
+
+          var conf4 = new NFX.Environment.MemoryConfiguration();
+          conf4.CreateFromMerge(conf.Root, conf3.Root);
 
           Assert.AreEqual("Sub Value 1", conf.Root["section-a"]["sub1"].Value);
           Assert.AreEqual("Sub Value 2 ammended", conf.Root["section-a"]["sub2"].Value);
@@ -118,6 +135,8 @@ static string xml3 = @"
           Assert.AreEqual("Clock", conf.Root["section-a"].Children.FirstOrDefault(n=>n.IsSameName("destination") && n.AttrByName("name").Value=="B").AttrByName("type").Value);
           Assert.AreEqual("SMTPMail", conf1.Root["section-a"].Children.FirstOrDefault(n=>n.IsSameName("destination") && n.AttrByName("name").Value=="B").AttrByName("type").Value);
 
+          Assert.IsTrue(conf4.Root["section-b"].AttrCount == 1);
+          Assert.IsTrue(!conf4.Root["section-a"].Exists);
         }
 
         [TestCase]
@@ -126,9 +145,9 @@ static string xml3 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml3);
-          
+
           var conf = new NFX.Environment.MemoryConfiguration();
-          
+
           try
           {
             conf.CreateFromMerge(conf1.Root, conf2.Root);
@@ -147,10 +166,10 @@ static string xml3 = @"
         {
           var conf1 = NFX.Environment.XMLConfiguration.CreateFromXML(xml1);
           var conf2 = NFX.Environment.XMLConfiguration.CreateFromXML(xml2);
-          
+
           var conf = new NFX.Environment.MemoryConfiguration();
           conf.CreateFromMerge(conf1.Root, conf2.Root);
-                                                              
+
 
           Assert.AreEqual("This can not be overridden and no exception will be thrown", conf.Root["section-d"].Value);
           Assert.AreEqual(1, conf.Root["section-d"].Attributes.Count());
@@ -170,7 +189,7 @@ static string xml3 = @"
           {
             var conf = new NFX.Environment.MemoryConfiguration();
             conf.CreateFromMerge(conf1.Root, conf2.Root);
-          } 
+          }
           clock.Stop();
 
           Console.WriteLine("Config merge performance. Merged {0} times in {1} ms", CNT, clock.ElapsedMilliseconds);
@@ -362,7 +381,144 @@ static string largexml2 = @"
 
  </r>
 ";
+        [Test]
+        public void SectionMerge_1()
+        {
+          var conf1 = "r{ a{} c{}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf2 = "r{ b{ z = 134 }}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
+          conf1.OverrideBy(conf2);
+
+          Assert.AreEqual(3, conf1.ChildCount);
+          Assert.IsTrue( conf1.Navigate("/a").Exists);
+          Assert.IsTrue( conf1.Navigate("/b").Exists);
+          Assert.IsTrue( conf1.Navigate("/c").Exists);
+          Assert.IsTrue( conf1.Navigate("/b/$z").Exists);
+          Assert.AreEqual( 134,  conf1.Navigate("/b/$z").ValueAsInt());
+        }
+
+        [Test]
+        public void SectionMerge_2()
+        {
+          var conf1 = "r{ a{} c{}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf2 = "r{ b{ z = 134 } c{ y=456} c{z=789 }}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          conf1.OverrideBy(conf2);
+
+          Assert.AreEqual(3, conf1.ChildCount);//<---3 because all "C" get collapsed into one
+          Assert.IsTrue( conf1.Navigate("/a").Exists);
+          Assert.IsTrue( conf1.Navigate("/b").Exists);
+          Assert.IsTrue( conf1.Navigate("/c").Exists);
+          Assert.IsTrue( conf1.Navigate("/b/$z").Exists);
+          Assert.AreEqual( 134,  conf1.Navigate("/b/$z").ValueAsInt());
+
+          Assert.IsTrue( conf1.Navigate("/c/$y").Exists);
+          Assert.IsTrue( conf1.Navigate("/c/$z").Exists);
+
+          Assert.AreEqual( 456,  conf1.Navigate("/c/$y").ValueAsInt());
+          Assert.AreEqual( 789,  conf1.Navigate("/c/$z").ValueAsInt());
+        }
+
+        [Test]
+        public void SectionMerge_3()
+        {
+          var conf1 = "r{ a{} c{}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf2 = "r{ b{ z = 134 } c{ y=456} c{z=789 }}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          var rules = new NodeOverrideRules{ AppendSectionsWithoutMatchAttr = true };
+          conf1.OverrideBy(conf2, rules);
+
+          Assert.AreEqual(5, conf1.ChildCount);//<---- 5 because all "C" get appended
+          Assert.IsTrue( conf1.Navigate("/a").Exists);
+          Assert.IsTrue( conf1.Navigate("/b").Exists);
+          Assert.IsTrue( conf1.Navigate("/c").Exists);
+          Assert.IsTrue( conf1.Navigate("/b/$z").Exists);
+          Assert.AreEqual( 134,  conf1.Navigate("/b/$z").ValueAsInt());
+
+          Assert.IsTrue( conf1.Navigate("/c[y=456]").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[z=789]").Exists);
+
+          Assert.AreEqual( 456,  conf1.Navigate("/c[y=456]/$y").ValueAsInt());
+          Assert.AreEqual( 789,  conf1.Navigate("/c[z=789]/$z").ValueAsInt());
+        }
+
+        [Test]
+        public void SectionMerge_4()
+        {
+          var conf1 = "r{ a{} c{}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf2 = "r{ b{ z = 134 } c{name='id1' y=456} c{name='id2' z=789 }}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          conf1.OverrideBy(conf2);
+
+          Assert.AreEqual(5, conf1.ChildCount); //<-- 5 because names are different
+          Assert.IsTrue( conf1.Navigate("/a").Exists);
+          Assert.IsTrue( conf1.Navigate("/b").Exists);
+          Assert.IsTrue( conf1.Navigate("/c").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id1]").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id2]").Exists);
+          Assert.IsTrue( conf1.Navigate("/b/$z").Exists);
+          Assert.AreEqual( 134,  conf1.Navigate("/b/$z").ValueAsInt());
+
+          Assert.IsTrue( conf1.Navigate("/c[name=id1]/$y").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id2]/$z").Exists);
+
+          Assert.AreEqual( 456,  conf1.Navigate("/c[name=id1]/$y").ValueAsInt());
+          Assert.AreEqual( 789,  conf1.Navigate("/c[name=id2]/$z").ValueAsInt());
+        }
+
+        [Test]
+        public void SectionMerge_5()
+        {
+          var conf1 = "r{ a{} c{}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf2 = "r{ b{ z = 134 } c{name='id1' y=456} c{name='id2' z=789 } c{ gg=123}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          conf1.OverrideBy(conf2);
+
+          Assert.AreEqual(5, conf1.ChildCount); //<-- 5 because names are different, but 6th collapses into the one without name
+          Assert.IsTrue( conf1.Navigate("/a").Exists);
+          Assert.IsTrue( conf1.Navigate("/b").Exists);
+          Assert.IsTrue( conf1.Navigate("/c").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id1]").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id2]").Exists);
+          Assert.IsTrue( conf1.Navigate("/b/$z").Exists);
+          Assert.AreEqual( 134,  conf1.Navigate("/b/$z").ValueAsInt());
+
+          Assert.IsTrue( conf1.Navigate("/c/$gg").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id1]/$y").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id2]/$z").Exists);
+
+          Assert.AreEqual( 123,  conf1.Navigate("/c/$gg").ValueAsInt());
+          Assert.AreEqual( 456,  conf1.Navigate("/c[name=id1]/$y").ValueAsInt());
+          Assert.AreEqual( 789,  conf1.Navigate("/c[name=id2]/$z").ValueAsInt());
+        }
+
+        [Test]
+        public void SectionMerge_6()
+        {
+          var conf1 = "r{ a{} c{}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf2 = "r{ b{ z = 134 } c{name='id1' y=456} c{name='id2' z=789 } c{ gg=123}}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+          var rules = new NodeOverrideRules{ AppendSectionsWithoutMatchAttr = true };
+          conf1.OverrideBy(conf2, rules);
+
+          Assert.AreEqual(6, conf1.ChildCount); //<-- 6 because names are different, but 6th gets added due to rules
+          Assert.IsTrue( conf1.Navigate("/a").Exists);
+          Assert.IsTrue( conf1.Navigate("/b").Exists);
+          Assert.IsTrue( conf1.Navigate("/c").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id1]").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id2]").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[gg=123]").Exists);
+          Assert.IsTrue( conf1.Navigate("/b/$z").Exists);
+          Assert.AreEqual( 134,  conf1.Navigate("/b/$z").ValueAsInt());
+
+          Assert.IsTrue( conf1.Navigate("/c[gg=123]/$gg").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id1]/$y").Exists);
+          Assert.IsTrue( conf1.Navigate("/c[name=id2]/$z").Exists);
+
+          Assert.AreEqual( 123,  conf1.Navigate("/c[gg=123]/$gg").ValueAsInt());
+          Assert.AreEqual( 456,  conf1.Navigate("/c[name=id1]/$y").ValueAsInt());
+          Assert.AreEqual( 789,  conf1.Navigate("/c[name=id2]/$z").ValueAsInt());
+        }
 
 
     }

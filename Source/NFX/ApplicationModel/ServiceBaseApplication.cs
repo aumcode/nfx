@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -47,36 +47,36 @@ namespace NFX.ApplicationModel
   public class ServiceBaseApplication : CommonApplicationLogic
   {
     #region .ctor
-      
+
       /// <summary>
-      /// Takes optional args[] and root configuration. If configuration is null then
+      /// Takes optional application args[] and root configuration.
+      /// The args are parsed into CommandArgsConfiguration.
+      /// </summary>
+      public ServiceBaseApplication(string[] args, ConfigSectionNode rootConfig)
+        : this(null, args == null ? null : new CommandArgsConfiguration(args), rootConfig)
+      {}
+
+      /// <summary>
+      /// Takes optional command-line configuration args and root configuration. If configuration is null then
       ///  application is configured from a file co-located with entry-point assembly and
       ///   called the same name as assembly with '.config' extension, unless args are specified and "/config file"
       ///   switch is used in which case 'file' has to be locatable and readable.
       /// </summary>
-      public ServiceBaseApplication(string[] args, ConfigSectionNode rootConfig)
+      public ServiceBaseApplication(string name, Configuration cmdLineArgs, ConfigSectionNode rootConfig)
+        : base(name)
       {
         lock(typeof(ServiceBaseApplication))
         {
             if (s_Instance != null) throw new NFXException(StringConsts.SVCAPP_INSTANCE_ALREADY_CREATED_ERROR);
-            
+
             try
             {
-                  Configuration argsConfig;
-                  if (args != null)
-                    argsConfig = new CommandArgsConfiguration(args);
-                  else
-                    argsConfig = new MemoryConfiguration();
+                  m_CommandArgs = (cmdLineArgs ?? new MemoryConfiguration()).Root;
+                  m_ConfigRoot  = rootConfig ?? GetConfiguration().Root;
 
-                  m_CommandArgs = argsConfig.Root;
-
-               
-                  m_ConfigRoot = rootConfig ?? GetConfiguration().Root;
-                
                   InitApplication();
-        
-                  s_Instance = this;
 
+                  s_Instance = this;
             }
             catch
             {
@@ -85,8 +85,6 @@ namespace NFX.ApplicationModel
             }
         }
       }
-
-     
 
 
       protected override void Destructor()
@@ -98,19 +96,19 @@ namespace NFX.ApplicationModel
             s_Instance = null;
          }
       }
-    
+
 
     #endregion
 
     #region Fields
 
       protected static ServiceBaseApplication s_Instance;
-      
+
       protected ConfigSectionNode m_CommandArgs;
-      
+
     #endregion
-    
-  
+
+
     #region Properties
 
       /// <summary>
@@ -119,26 +117,26 @@ namespace NFX.ApplicationModel
       public static ServiceBaseApplication Instance
       {
         get
-        {      
+        {
           if (s_Instance==null)
             throw new NFXException(StringConsts.SVCAPP_INSTANCE_NULL_ERROR);
-           
+
           return s_Instance;
         }
       }
-      
+
       /// <summary>
-      /// Indicates whether application context was allocated  
+      /// Indicates whether application context was allocated
       /// </summary>
-      public static bool ContextAvailable 
+      public static bool ContextAvailable
       {
         get
         {
           return s_Instance!=null;
         }
       }
-      
-      
+
+
       #region IApplication Members
 
         /// <summary>
@@ -161,7 +159,7 @@ namespace NFX.ApplicationModel
         }
 
 
-        
+
         /// <summary>
         /// References application logger
         /// </summary>
@@ -191,7 +189,7 @@ namespace NFX.ApplicationModel
         ///  <code>
         ///   if (ServiceApplication.Instance.CommandArgs["DeleteFiles"].Exists)
         ///   {
-        ///     // this will run if process was invoked like so: process.exe /deleteFiles 
+        ///     // this will run if process was invoked like so: process.exe /deleteFiles
         ///   }
         ///  </code>
         /// </summary>
@@ -205,7 +203,7 @@ namespace NFX.ApplicationModel
         ///  <code>
         ///   if (Servicepplication.CmdArgs["DeleteFiles"].Exists)
         ///   {
-        ///     // this will run if process was invoked like so: process.exe /deleteFiles 
+        ///     // this will run if process was invoked like so: process.exe /deleteFiles
         ///   }
         ///  </code>
         /// </summary>
@@ -213,7 +211,7 @@ namespace NFX.ApplicationModel
         {
           get { return Instance.CommandArgs; }
         }
-        
+
 
         /// <summary>
         /// Provides access to configuration root for the whole application
@@ -222,7 +220,7 @@ namespace NFX.ApplicationModel
         {
           get { return Instance.ConfigRoot; }
         }
-        
+
 
         /// <summary>
         /// References application data store
@@ -233,13 +231,13 @@ namespace NFX.ApplicationModel
         }
 
         /// <summary>
-        /// References application object store. Objects will survive application termination 
+        /// References application object store. Objects will survive application termination
         /// </summary>
         public static IObjectStore Objects
         {
           get { return Instance.ObjectStore; }
         }
-        
+
 
         /// <summary>
         /// References glue that can be used to connect to remote entities
@@ -263,7 +261,7 @@ namespace NFX.ApplicationModel
         ///  may elect to get accurate times from the network or other external precision time sources (i.e. NASA atomic clock)
         /// </summary>
         public static ITimeSource Time
-        {                                   
+        {
           get { return Instance.TimeSource;}
         }
 
@@ -272,16 +270,16 @@ namespace NFX.ApplicationModel
         /// References event timer which maintains and runs scheduled Event instances
         /// </summary>
         public static IEventTimer Timer
-        {                                   
+        {
           get { return Instance.EventTimer;}
         }
 
     #endregion
-                              
-      
+
+
     #endregion
-    
-    
+
+
     #region Public
 
       /// <summary>
@@ -291,7 +289,7 @@ namespace NFX.ApplicationModel
       {
         Instance.Dispose();
       }
-    
+
     #endregion
 
 
@@ -305,7 +303,7 @@ namespace NFX.ApplicationModel
 
           if (string.IsNullOrEmpty(configFile))
               configFile = GetDefaultConfigFileName();
-                  
+
 
           Configuration conf;
 
@@ -319,5 +317,5 @@ namespace NFX.ApplicationModel
 
     #endregion
   }
-  
+
 }

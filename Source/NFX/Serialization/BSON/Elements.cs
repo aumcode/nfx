@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,7 +62,7 @@ namespace NFX.Serialization.BSON
 
     protected override void ReadValueFromStream(Stream stream)
     {
-      var elements = new List<BSONElement>(); 
+      var elements = new List<BSONElement>();
       long start = stream.Position;
       var totalSize = BinUtils.ReadInt32(stream);
       long read = 4;
@@ -63,7 +79,7 @@ namespace NFX.Serialization.BSON
 
       var terminator = BinUtils.ReadByte(stream);
       if (terminator != BinUtils.TERMINATOR || stream.Position - start != totalSize)
-        throw new BSONException(StringConsts.BSON_EOD_ERROR); 
+        throw new BSONException(StringConsts.BSON_EOD_ERROR);
     }
 
     protected internal override void WriteValueToStream(Stream stream)
@@ -96,7 +112,7 @@ namespace NFX.Serialization.BSON
         }
 
       }
-         
+
       return m_ValueByteSize;
     }
   }
@@ -112,7 +128,7 @@ namespace NFX.Serialization.BSON
     public BSONDocumentElement(BSONDocument value) : base(null, value.NonNull(text: "value"))
     {
     }
-   
+
     public BSONDocumentElement(string name, BSONDocument value) : base(name.NonNull(text: "name"), value.NonNull(text: "value"))
     {
     }
@@ -150,7 +166,7 @@ namespace NFX.Serialization.BSON
     public BSONStringElement(string value) : base(null, value.NonNull(text: "value"))
     {
     }
-   
+
     public BSONStringElement(string name, string value) : base(name.NonNull(text: "name"), value.NonNull(text: "value"))
     {
     }
@@ -194,7 +210,7 @@ namespace NFX.Serialization.BSON
     public BSONInt32Element(Int32 value) : base(null, value)
     {
     }
-   
+
     public BSONInt32Element(string name, Int32 value) : base(name.NonNull(text: "name"), value)
     {
     }
@@ -216,13 +232,13 @@ namespace NFX.Serialization.BSON
     {
       BinUtils.WriteInt32(stream, Value);
     }
-  } 
+  }
 
   /// <summary>
   /// Represents a BSON element with an bool value
   /// </summary>
   public sealed class BSONBooleanElement : BSONElement<bool>
-  { 
+  {
     /// <summary>
     /// Creates an array element
     /// </summary>
@@ -261,13 +277,13 @@ namespace NFX.Serialization.BSON
       var b = Value ? (byte)BSONBoolean.True : (byte)BSONBoolean.False;
       BinUtils.WriteByte(stream, b);
     }
-  }   
+  }
 
   /// <summary>
   /// Represents a BSON element with an UTC DateTime value
   /// </summary>
   public sealed class BSONDateTimeElement : BSONElement<DateTime>
-  { 
+  {
     /// <summary>
     /// Creates an array element
     /// </summary>
@@ -289,7 +305,7 @@ namespace NFX.Serialization.BSON
 
     protected override void ReadValueFromStream(Stream stream)
     {
-      Value = BinUtils.ReadInt64(stream).FromMillisecondsSinceUnixEpochStart(); 
+      Value = BinUtils.ReadInt64(stream).FromMillisecondsSinceUnixEpochStart();
     }
 
     protected internal override void WriteValueToStream(Stream stream)
@@ -317,7 +333,7 @@ namespace NFX.Serialization.BSON
           );
       }
     }
-  } 
+  }
 
   /// <summary>
   /// Represents a BSON element with an regular expression value
@@ -343,8 +359,8 @@ namespace NFX.Serialization.BSON
 
     protected internal override int GetValueByteSize()
     {
-      return BinUtils.UTF8Encoding.GetByteCount(Value.Pattern) + 
-             Value.Options.Count() + 
+      return BinUtils.UTF8Encoding.GetByteCount(Value.Pattern) +
+             Value.Options.Count() +
              2; //string terminator
     }
 
@@ -373,7 +389,7 @@ namespace NFX.Serialization.BSON
     public BSONDoubleElement(double value) : base(null, value)
     {
     }
-   
+
     public BSONDoubleElement(string name, double value) : base(name.NonNull(text: "name"), value)
     {
     }
@@ -408,7 +424,7 @@ namespace NFX.Serialization.BSON
     public BSONInt64Element(Int64 value) : base(null, value)
     {
     }
-   
+
     public BSONInt64Element(string name, Int64 value) : base(name.NonNull(text: "name"), value)
     {
     }
@@ -452,7 +468,7 @@ namespace NFX.Serialization.BSON
     public BSONObjectIDElement(BSONObjectID value) : base(null, value)
     {
     }
-   
+
     public BSONObjectIDElement(string name, BSONObjectID value) : base(name.NonNull(text: "name"), value)
     {
     }
@@ -489,7 +505,7 @@ namespace NFX.Serialization.BSON
     public BSONBinaryElement(BSONBinary value) : base(null, value)
     {
     }
-   
+
     public BSONBinaryElement(string name, BSONBinary value) : base(name.NonNull(text: "name"), value)
     {
     }
@@ -524,7 +540,7 @@ namespace NFX.Serialization.BSON
       BinUtils.WriteBinary(stream, Value.Data);
     }
   }
-  
+
   /// <summary>
   /// Represents a BSON element with a javascript value
   /// </summary>
@@ -536,7 +552,7 @@ namespace NFX.Serialization.BSON
     public BSONJavaScriptElement(string value) : base(null, value.NonNull(text: "value"))
     {
     }
-   
+
     public BSONJavaScriptElement(string name, string value) : base(name.NonNull(text: "name"), value.NonNull(text: "value"))
     {
     }
@@ -567,8 +583,8 @@ namespace NFX.Serialization.BSON
       BinUtils.WriteInt32(stream, length);
       BinUtils.WriteCString(stream, Value ?? string.Empty);
     }
-  } 
-  
+  }
+
   /// <summary>
   /// Represents a BSON element with a javascript with scope value
   /// </summary>
@@ -580,7 +596,7 @@ namespace NFX.Serialization.BSON
     public BSONJavaScriptWithScopeElement(BSONCodeWithScope value) : base(null, value)
     {
     }
-   
+
     public BSONJavaScriptWithScopeElement(string name, BSONCodeWithScope value) : base(name.NonNull(text: "name"), value)
     {
     }
@@ -624,19 +640,19 @@ namespace NFX.Serialization.BSON
         m_ValueByteSize = 4 + // int32 full size
                      4 + // int32 js string length
                      BinUtils.UTF8Encoding.GetByteCount(Value.Code) +
-                     1 + //string terminator     
+                     1 + //string terminator
                      Value.Scope.GetByteSize(true);
       }
 
       return m_ValueByteSize;
     }
-  } 
+  }
 
   /// <summary>
   /// Represents a BSON element with an Timestamp value
   /// </summary>
   public sealed class BSONTimestampElement : BSONElement<BSONTimestamp>
-  { 
+  {
     /// <summary>
     /// Creates an array element
     /// </summary>
@@ -668,7 +684,7 @@ namespace NFX.Serialization.BSON
       BinUtils.WriteUInt32(stream, Value.Increment);
       BinUtils.WriteUInt32(stream, Value.EpochSeconds);
     }
-  }  
+  }
 
   /// <summary>
   /// Represents an element with Min Key value
@@ -695,8 +711,8 @@ namespace NFX.Serialization.BSON
 
     public override void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
     {
-      JSONWriter.WriteMap(wri, 
-           nestingLevel+1, 
+      JSONWriter.WriteMap(wri,
+           nestingLevel+1,
            options,
            new DictionaryEntry("$minKey", 1)
       );
@@ -727,16 +743,16 @@ namespace NFX.Serialization.BSON
     protected internal override void WriteValueToStream(Stream stream){ }
 
     protected override void ReadValueFromStream(Stream stream){ }
-    
+
     public override void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
     {
-      JSONWriter.WriteMap(wri, 
-           nestingLevel+1, 
+      JSONWriter.WriteMap(wri,
+           nestingLevel+1,
            options,
            new DictionaryEntry("$maxKey", 1)
       );
     }
-  } 
+  }
 
   /// <summary>
   /// Represents an element with NULL value

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ namespace NFX.IO.FileSystem
     public sealed class FileSystemFile : FileSystemSessionItem
     {
       #region .ctor
-        
+
         /// <summary>
         /// Internal method that should not be called by developers
         /// </summary>
-        public FileSystemFile(FileSystemSession session, 
-                                        string parentPath, 
+        public FileSystemFile(FileSystemSession session,
+                                        string parentPath,
                                         string name,
                                         IFileSystemHandle handle) :
                               base(session, parentPath, name, handle)
@@ -53,7 +53,7 @@ namespace NFX.IO.FileSystem
           }
           base.Destructor();
         }
-        
+
       #endregion
 
       #region Fields
@@ -75,7 +75,7 @@ namespace NFX.IO.FileSystem
       #endregion
 
       #region Public Sync Methods
-        
+
         /// <summary>
         /// Reads all text from file using byte order mark detection with UTF8 encoding
         /// </summary>

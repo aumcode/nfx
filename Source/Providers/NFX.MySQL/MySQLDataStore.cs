@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,8 +31,6 @@ using System.Threading.Tasks;
 using NFX.Environment;
 using NFX.DataAccess;
 using NFX.DataAccess.CRUD;
-using NFX.RecordModel;
-using NFX.RecordModel.DataAccess;
 
 using MySql.Data.MySqlClient;
 
@@ -45,12 +43,12 @@ namespace NFX.DataAccess.MySQL
   /// Implements MySQL general data store that auto-generates SQLs for record models and supports CRUD operations.
   /// This class IS thread-safe load/save/delete operations
   /// </summary>
-  public class MySQLDataStore : MySQLDataStoreBase, IModelDataStoreImplementation, ICRUDDataStoreImplementation
+  public class MySQLDataStore : MySQLDataStoreBase, ICRUDDataStoreImplementation
   {
     #region CONSTS
         public const string SCRIPT_FILE_SUFFIX = ".mys.sql";
     #endregion
-    
+
     #region .ctor/.dctor
 
       public MySQLDataStore() : base()
@@ -71,30 +69,8 @@ namespace NFX.DataAccess.MySQL
 
     #endregion
 
-    #region IModelDataStore
-
-      public void Load(ModelBase instance, IDataStoreKey key, params object[] extra)
-      {
-        using (var cnn = GetConnection())
-          DoLoad(cnn, instance, key, extra);
-      }
-
-      public void Save(ModelBase instance, IDataStoreKey key, params object[] extra)
-      {
-        using (var cnn = GetConnection())
-          DoSave(cnn, instance, key, extra);
-      }
-
-      public void Delete(ModelBase instance, IDataStoreKey key, params object[] extra)
-      {
-        using (var cnn = GetConnection())
-          DoDelete(cnn, instance, key, extra);
-      }
-
-    #endregion
-
     #region ICRUDDataStore
-        
+
         //WARNING!!!
         //The ASYNC versions of sync call now call TaskUtils.AsCompletedTask( sync_version )
         // which executes synchronously. Because of it CRUDOperationCallContext does not need to be captured
@@ -103,8 +79,8 @@ namespace NFX.DataAccess.MySQL
         // CRUDOperationCallContext and pass it along the call chain
 
 
-        
-        public CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, 
+
+        public CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted,
                                                 TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose)
         {
             var cnn = GetConnection();
@@ -146,7 +122,7 @@ namespace NFX.DataAccess.MySQL
 
         public Task<Schema> GetSchemaAsync(Query query)
         {
-            return TaskUtils.AsCompletedTask( () => this.GetSchema(query) ); 
+            return TaskUtils.AsCompletedTask( () => this.GetSchema(query) );
         }
 
         public List<RowsetBase> Load(params Query[] queries)
@@ -192,15 +168,38 @@ namespace NFX.DataAccess.MySQL
                         });
         }
 
+        public Cursor OpenCursor(Query query)
+        {
+          Cursor result = null;
+          var cnn = GetConnection();
+          try
+          {
+            result = DoOpenCursor(cnn, null, query);
+          }
+          catch
+          {
+             DisposableObject.DisposeAndNull(ref cnn);
+             throw;
+          }
+
+          return result;
+        }
+
+        public Task<Cursor> OpenCursorAsync(Query query)
+        {
+           return TaskUtils.AsCompletedTask( () => this.OpenCursor(query) );
+        }
+
+
         public int Save(params RowsetBase[] rowsets)
         {
-           using (var cnn = GetConnection()) 
+           using (var cnn = GetConnection())
               return DoSave(cnn,  null, rowsets);
         }
 
         public Task<int> SaveAsync(params RowsetBase[] rowsets)
         {
-           return TaskUtils.AsCompletedTask( () => this.Save(rowsets) ); 
+           return TaskUtils.AsCompletedTask( () => this.Save(rowsets) );
         }
 
         public int Insert(Row row, FieldFilterFunc filter = null)
@@ -211,7 +210,7 @@ namespace NFX.DataAccess.MySQL
 
         public Task<int> InsertAsync(Row row, FieldFilterFunc filter = null)
         {
-            return TaskUtils.AsCompletedTask( () => this.Insert(row, filter) ); 
+            return TaskUtils.AsCompletedTask( () => this.Insert(row, filter) );
         }
 
         public int Upsert(Row row, FieldFilterFunc filter = null)
@@ -259,7 +258,7 @@ namespace NFX.DataAccess.MySQL
         }
 
 
-        public ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
+        public CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource)
         {
             return new MySQLCRUDScriptQueryHandler(this, querySource);
         }
@@ -275,43 +274,12 @@ namespace NFX.DataAccess.MySQL
 
 
     #region Protected + Overrides
-       
+
         public override void Configure(IConfigSectionNode node)
         {
             m_QueryResolver.Configure(node);
             base.Configure(node);
         }
-
-        
-        /// <summary>
-        /// Performs model load from MySQL server by generating appropriate SQL statement automatically.
-        /// Override to do custom loading for particular model instance
-        /// </summary>
-        protected internal virtual void DoLoad(MySqlConnection cnn, ModelBase instance, IDataStoreKey key, object[] extra)
-        {
-          RecordModelGenerator.Load(this, cnn, null, instance, key, extra);
-        }
-
-
-
-        /// <summary>
-        /// Performs model save into MySQL server by generating appropriate SQL statement automatically
-        /// Override to do custom saving for particular model instance
-        /// </summary>
-        protected internal virtual void DoSave(MySqlConnection cnn, ModelBase instance, IDataStoreKey key, object[] extra)
-        {
-          RecordModelGenerator.Save(this, cnn, instance, key, extra);
-        }
-
-        /// <summary>
-        /// Performs delete per model instance  from MySQL server by generating appropriate SQL statement automatically
-        /// Override to do custom deletion for particular model instance
-        /// </summary>
-        protected internal virtual void DoDelete(MySqlConnection cnn, ModelBase instance, IDataStoreKey key, object[] extra)
-        {
-          RecordModelGenerator.Delete(this, cnn, instance, key, extra);
-        }
-
 
         /// <summary>
         ///  Performs CRUD load without fetching data only returning schema. Override to do custom Query interpretation
@@ -321,7 +289,18 @@ namespace NFX.DataAccess.MySQL
             if (query==null) return null;
 
             var handler = QueryResolver.Resolve(query);
-            return handler.GetSchema( new MySQLCRUDQueryExecutionContext(this, cnn, transaction), query);
+            try
+            {
+              return handler.GetSchema( new MySQLCRUDQueryExecutionContext(this, cnn, transaction), query);
+            }
+            catch (Exception error)
+            {
+              throw new MySQLDataAccessException(
+                              StringConsts.GET_SCHEMA_ERROR + error.ToMessageWithType(),
+                              error,
+                              KeyViolationKind.Unspecified,
+                              CRUDGenerator.KeyViolationName(error));
+            }
         }
 
 
@@ -335,13 +314,46 @@ namespace NFX.DataAccess.MySQL
 
             foreach(var query in queries)
             {
-               var handler = QueryResolver.Resolve(query);
-               var rowset = handler.Execute( new MySQLCRUDQueryExecutionContext(this, cnn, transaction), query, oneRow);
-               result.Add( rowset );
+              var handler = QueryResolver.Resolve(query);
+              try
+              {
+                var rowset = handler.Execute( new MySQLCRUDQueryExecutionContext(this, cnn, transaction), query, oneRow);
+                result.Add(rowset);
+              }
+              catch (Exception error)
+              {
+                throw new MySQLDataAccessException(
+                                StringConsts.LOAD_ERROR + error.ToMessageWithType(),
+                                error,
+                                KeyViolationKind.Unspecified,
+                                CRUDGenerator.KeyViolationName(error));
+              }
             }
 
             return result;
-            
+
+        }
+
+
+        /// <summary>
+        ///  Performs CRUD load. Override to do custom Query interpretation
+        /// </summary>
+        protected internal virtual Cursor DoOpenCursor(MySqlConnection cnn, MySqlTransaction transaction, Query query)
+        {
+            var context = new MySQLCRUDQueryExecutionContext(this, cnn, transaction);
+            var handler = QueryResolver.Resolve(query);
+            try
+            {
+              return handler.OpenCursor( context, query);
+            }
+            catch (Exception error)
+            {
+              throw new MySQLDataAccessException(
+                              StringConsts.OPEN_CURSOR_ERROR + error.ToMessageWithType(),
+                              error,
+                              KeyViolationKind.Unspecified,
+                              CRUDGenerator.KeyViolationName(error));
+            }
         }
 
         /// <summary>
@@ -355,8 +367,19 @@ namespace NFX.DataAccess.MySQL
 
             foreach(var query in queries)
             {
-               var handler = QueryResolver.Resolve(query);
-               affected += handler.ExecuteWithoutFetch( new MySQLCRUDQueryExecutionContext(this, cnn, transaction), query);
+              var handler = QueryResolver.Resolve(query);
+              try
+              {
+                affected += handler.ExecuteWithoutFetch(new MySQLCRUDQueryExecutionContext(this, cnn, transaction), query);
+              }
+              catch (Exception error)
+              {
+                throw new MySQLDataAccessException(
+                               StringConsts.EXECUTE_WITHOUT_FETCH_ERROR + error.ToMessageWithType(),
+                               error,
+                               KeyViolationKind.Unspecified,
+                               CRUDGenerator.KeyViolationName(error));
+              }
             }
 
             return affected;
@@ -384,7 +407,7 @@ namespace NFX.DataAccess.MySQL
                     }
                 }
             }
-            
+
 
             return affected;
         }
@@ -402,7 +425,7 @@ namespace NFX.DataAccess.MySQL
         /// Performs CRUD row upsert. Override to do custom upsertion
         /// </summary>
         protected internal virtual int DoUpsert(MySqlConnection cnn, MySqlTransaction transaction, Row row, FieldFilterFunc filter = null)
-        {         
+        {
             checkReadOnly(row.Schema, "upsert");
             return CRUDGenerator.CRUDUpsert(this, cnn, transaction, row, filter);
         }

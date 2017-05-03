@@ -78,7 +78,6 @@
     <Compile Include="IJokeContract.cs" />
     <Compile Include="JokeContractClient.cs" />
     <Compile Include="JokeInspectors.cs" />
-    <Compile Include="PatientRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimplePersonRow.cs" />
     <Compile Include="SultanPermission.cs" />

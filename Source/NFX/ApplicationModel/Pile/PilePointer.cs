@@ -1,4 +1,23 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+/*
+ * Author: Dmitriy Khmaladze, Spring 2015  dmitriy@itadapter.com
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +36,11 @@ namespace NFX.ApplicationModel.Pile
   /// </summary>
   public struct PilePointer : IEquatable<PilePointer>
   {
-    
+    /// <summary>
+    /// The size of the pointer when directly written to byte[]
+    /// </summary>
+    public const int RAW_BYTE_SIZE = sizeof(int) + sizeof(int) + sizeof(int);//node seg+addr
+
     /// <summary>
     /// Returns a -1:-1 non-valid pointer (either local or distributed)
     /// </summary>
@@ -31,7 +54,7 @@ namespace NFX.ApplicationModel.Pile
       NodeID = nodeId;
       Segment = seg;
       Address = addr;
-    } 
+    }
 
     /// <summary>
     /// Create local pointer
@@ -41,6 +64,16 @@ namespace NFX.ApplicationModel.Pile
       NodeID = -1;
       Segment = seg;
       Address = addr;
+    }
+
+    /// <summary>
+    /// Reads the pointer from the byte[] written to by RawWrite() at the specified address
+    /// </summary>
+    public PilePointer(byte[] buf, int addr)
+    {
+      NodeID  = buf.ReadBEInt32(ref addr);
+      Segment = buf.ReadBEInt32(ref addr);
+      Address = buf.ReadBEInt32(ref addr);
     }
 
     /// <summary>
@@ -71,7 +104,7 @@ namespace NFX.ApplicationModel.Pile
 
     public override int GetHashCode()
     {
-      return Address; 
+      return Address;
     }
 
     public override bool Equals(object obj)
@@ -93,6 +126,18 @@ namespace NFX.ApplicationModel.Pile
        return "L:"+Segment.ToString("X4")+":"+Address.ToString("X8");
       else
        return NodeID.ToString("X4")+":"+Segment.ToString("X4")+":"+Address.ToString("X8");
+    }
+
+    /// <summary>
+    /// Writes this this instance directly to byte[] without any headers
+    /// </summary>
+    public void RawWrite(byte[] buf, int addr)
+    {
+      buf.WriteBEInt32(addr, NodeID);
+      addr += sizeof(int);
+      buf.WriteBEInt32(addr, Segment);
+      addr += sizeof(int);
+      buf.WriteBEInt32(addr, Address);
     }
 
     public static bool operator ==(PilePointer l, PilePointer r)

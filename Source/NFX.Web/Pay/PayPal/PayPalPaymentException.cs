@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2016 IT Adapter Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization;
@@ -38,10 +54,10 @@ namespace NFX.Web.Pay.PayPal
         public static PayPalPaymentException ComposeError(string header, Exception inner)
         {
             var webError = inner as System.Net.WebException;
-            if (webError == null)
+            if (webError == null || webError.Response==null)
                 return new PayPalPaymentException(header, inner);
 
-            var response = (HttpWebResponse)webError.Response; 
+            var response = (HttpWebResponse)webError.Response;
 
             var responseMessage = string.Empty;
             try
@@ -75,14 +91,14 @@ namespace NFX.Web.Pay.PayPal
                 case (415): statusMessage = StringConsts.PAYMENT_PAYPAL_415_STATUSCODE; break;
                 case (422): statusMessage = StringConsts.PAYMENT_PAYPAL_422_STATUSCODE; break;
                 case (429): statusMessage = StringConsts.PAYMENT_PAYPAL_429_STATUSCODE; break;
-                default: statusMessage = StringConsts.PAYMENT_PAYPAL_UNKNOWN_STATUSCODE; break;    
+                default: statusMessage = StringConsts.PAYMENT_PAYPAL_UNKNOWN_STATUSCODE; break;
             }
-            if (statusCode >= 500 && statusCode < 600)   
+            if (statusCode >= 500 && statusCode < 600)
                 statusMessage = StringConsts.PAYMENT_PAYPAL_50x_STATUSCODE;
 
             var message = "{0}{1}Status: {2} - {3}{4}Response: {5}"
                             .Args(
-                                header, System.Environment.NewLine, 
+                                header, System.Environment.NewLine,
                                 statusCode, statusMessage, System.Environment.NewLine,
                                 responseMessage);
 

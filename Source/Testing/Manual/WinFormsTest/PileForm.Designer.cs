@@ -1,4 +1,20 @@
-﻿namespace WinFormsTest
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+namespace WinFormsTest
 {
   partial class PileForm
   {
@@ -88,6 +104,7 @@
       this.label17 = new System.Windows.Forms.Label();
       this.stbMemCapacityBytes = new System.Windows.Forms.TextBox();
       this.btnCompact = new System.Windows.Forms.Button();
+      this.chkRaw = new System.Windows.Forms.CheckBox();
       this.grpPerson.SuspendLayout();
       this.groupBox1.SuspendLayout();
       this.SuspendLayout();
@@ -264,6 +281,7 @@
       // 
       // grpPerson
       // 
+      this.grpPerson.Controls.Add(this.chkRaw);
       this.grpPerson.Controls.Add(this.btnPersonParaGet);
       this.grpPerson.Controls.Add(this.btnStruct);
       this.grpPerson.Controls.Add(this.btnPersonSizeOf);
@@ -739,6 +757,16 @@
       this.btnCompact.UseVisualStyleBackColor = true;
       this.btnCompact.Click += new System.EventHandler(this.btnCompact_Click);
       // 
+      // chkRaw
+      // 
+      this.chkRaw.AutoSize = true;
+      this.chkRaw.Location = new System.Drawing.Point(143, 111);
+      this.chkRaw.Name = "chkRaw";
+      this.chkRaw.Size = new System.Drawing.Size(79, 17);
+      this.chkRaw.TabIndex = 38;
+      this.chkRaw.Text = "Raw Buffer";
+      this.chkRaw.UseVisualStyleBackColor = true;
+      // 
       // PileForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -851,5 +879,6 @@
     private System.Windows.Forms.Button btnStruct;
     private System.Windows.Forms.Button btnPersonParaGet;
     private System.Windows.Forms.Button btnCompact;
+    private System.Windows.Forms.CheckBox chkRaw;
   }
 }

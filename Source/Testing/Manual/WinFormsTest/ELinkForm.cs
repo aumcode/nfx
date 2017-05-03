@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ using System.Windows.Forms;
 using NFX.DataAccess.Distributed;
 
 using NFX;
+using NFX.Security.CAPTCHA;
+using NFX.Security;
 
 namespace WinFormsTest
 {
@@ -60,13 +62,13 @@ namespace WinFormsTest
 
             var lnk2 = new ELink( lnk.Link );
 
-            tbResult.Text = lnk2.ID.ToString(); 
+            tbResult.Text = lnk2.ID.ToString();
         }
 
         private void btnBigID_Click(object sender, EventArgs e)
         {
             ulong id = 182500000000;// ulong.MaxValue;
-            
+
             var lnk = new ELink(id, null);// new byte[]{ 123, 18});
             tbELink.Text = lnk.Link;
         }
@@ -80,15 +82,28 @@ namespace WinFormsTest
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
-           Text = "Score: {0}   Easy%: {1}  Normal%: {2} Hard%: {3}".Args(
-                       NFX.Security.PasswordUtils.PasswordStrengthScore(tbPassword.Text),
-                       NFX.Security.PasswordUtils.PasswordStrengthPercent(tbPassword.Text, NFX.Security.PasswordUtils.TOP_SCORE_EASY),
-                       NFX.Security.PasswordUtils.PasswordStrengthPercent(tbPassword.Text, NFX.Security.PasswordUtils.TOP_SCORE_NORMAL),
-                       NFX.Security.PasswordUtils.PasswordStrengthPercent(tbPassword.Text, NFX.Security.PasswordUtils.TOP_SCORE_HARD));
+          var pm = App.SecurityManager.PasswordManager;
+          var bytes = Encoding.UTF8.GetBytes(tbPassword.Text);
+          using (var password = new SecureBuffer(bytes.Length))
+          {
+            foreach (var b in bytes)
+              password.Push(b);
+            Array.Clear(bytes, 0, bytes.Length);
+            password.Seal();
 
+            var hash = pm.ComputeHash(PasswordFamily.Text, password);
+
+            Text = "Score: {0}   Easy%: {1}  Normal%: {2} Hard%: {3}".Args(
+              pm.CalculateStrenghtScore(PasswordFamily.Text, password),
+              pm.CalculateStrenghtPercent(PasswordFamily.Text, password, DefaultPasswordManager.TOP_SCORE_MINIMUM),
+              pm.CalculateStrenghtPercent(PasswordFamily.Text, password, DefaultPasswordManager.TOP_SCORE_NORMAL),
+              pm.CalculateStrenghtPercent(PasswordFamily.Text, password, DefaultPasswordManager.TOP_SCORE_MAXIMUM));
+
+            tbJSON.Text = hash.ToString();
+          }
         }
 
-       
+
         private void sbv_Scroll(object sender, ScrollEventArgs e)
         {
           var img = cb2.Checked ? pb3.Image : pb1.Image;
@@ -114,9 +129,25 @@ namespace WinFormsTest
 
            var lnk2 = new ELink( lnk.Link );
 
-           tbResult.Text = lnk2.ID.ToString(); 
+           tbResult.Text = lnk2.ID.ToString();
         }
 
-        
+
+        public static string a1 = ExternalRandomGenerator.Instance.NextRandomWebSafeString().Substring(0, 2);
+        string a2;
+
+        private void btnPuzzle_Click(object sender, EventArgs e)
+        {
+           var pk = new PuzzleKeypad(NFX.Parsing.NaturalTextGenerator.Generate(16));
+           var img = pk.DefaultRender(Color.White, false);
+           pic.Image = img;
+
+          // a1 = "a";
+           a2 = tbPassword.Text;
+
+           Text = "'{0}' ref eq '{1}' is {2}, == is {3} ".Args(a1, a2, object.ReferenceEquals(a1,a2), a1==a2);
+        }
+
+
     }
 }

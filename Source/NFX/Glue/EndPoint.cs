@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace NFX.Glue
 
             m_Glue = (IGlueImplementation)glue;
         }
-        
+
         protected EndPoint(IGlue glue, Node node, Binding binding)
         {
             if (glue == null)
@@ -52,7 +52,7 @@ namespace NFX.Glue
 
         protected IGlueImplementation m_Glue;
 
-       
+
 
         protected Node m_Node;    //[A]ddress
         protected Binding m_Binding; //[B]inding
@@ -76,7 +76,7 @@ namespace NFX.Glue
         /// </summary>
         public Binding Binding { get { return m_Binding; } }
 
-        
+
     }
 
 

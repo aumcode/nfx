@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -49,7 +50,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,6 +74,8 @@
     <Compile Include="CRUD\MySQLTests.cs" />
     <Compile Include="CRUD\TestLogic.cs" />
     <Compile Include="CRUD\TestObjects.cs" />
+    <EmbeddedResource Include="ExternalCfg.laconf" />
+    <Compile Include="GeoLookup\GeoLookupTest.cs" />
     <Compile Include="Glue\JokeCalculator.cs" />
     <Compile Include="Glue\JokeContracts.cs" />
     <Compile Include="Glue\JokeHelper.cs" />
@@ -97,16 +99,23 @@
     <Compile Include="Wave\WebClientCookied.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Web\Cloud\AzureTest.cs" />
     <Compile Include="Web\Pay\AutostarterTest.cs" />
-    <Compile Include="Web\Pay\FakePaySystemHost.cs" />
-    <Compile Include="Web\Pay\MockTest.cs" />
     <Compile Include="Web\Pay\PayPalTest.cs" />
+    <Compile Include="Web\Pay\FakePaySystemHost.cs" />
+    <Compile Include="Web\Shipping\FakeShippingSystemHost.cs" />
+    <Compile Include="Web\Pay\MockTest.cs" />
     <Compile Include="Web\Pay\PayTestCommon.cs" />
+    <Compile Include="Web\Pay\BraintreeTest.cs" />
+    <Compile Include="Web\Shipping\ShippoTest.cs" />
     <Compile Include="Web\Pay\StripeTest.cs" />
     <Compile Include="Web\Social\AutostarterTest.cs" />
-    <Compile Include="Web\Tax\TaxTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NFX.Erlang\NFX.Erlang.csproj">
+      <Project>{f4cc3692-4836-429b-9f43-908d9e99b458}</Project>
+      <Name>NFX.Erlang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
       <Project>{247f9980-3f58-42bd-b261-e23a75dfc3b5}</Project>
       <Name>NFX.Wave</Name>
@@ -151,12 +160,17 @@
     <EmbeddedResource Include="CRUD\Types.Load.mys.sql" />
     <EmbeddedResource Include="CRUD\FullGDID.Load.mys.sql" />
     <EmbeddedResource Include="CRUD\LoadPerzon.mon.json" />
+    <EmbeddedResource Include="CRUD\Tuple.LoadAll.mys.sql" />
     <Content Include="CRUD\CreateTables.txt" />
     <EmbeddedResource Include="CRUD\LoadPerzonsInAgeSpan.mon.json" />
     <EmbeddedResource Include="CRUD\Echo.erl.qry" />
     <EmbeddedResource Include="CRUD\SECDEF.erl.qry" />
     <EmbeddedResource Include="CRUD\SecDef.ByExchange.erl.qry" />
     <EmbeddedResource Include="CRUD\WorldNews.erl.qry" />
+    <EmbeddedResource Include="CRUD\LoadAllMyData.mon.json" />
+    <EmbeddedResource Include="CRUD\LoadInvoice.mon.json" />
+    <EmbeddedResource Include="CRUD\LoadMuchData.mon.json" />
+    <EmbeddedResource Include="CRUD\LoadPerzonAge.mon.json" />
     <None Include="CRUD\ErlSpecific\nfx_crud.erl" />
     <None Include="CRUD\ErlSpecific\nfx_test.erl" />
     <None Include="CRUD\ErlSpecific\StartErlNode.bat" />
@@ -171,9 +185,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Web\Pay\Tax\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

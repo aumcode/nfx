@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 namespace NFX.Log
 {
   /// <summary>
@@ -52,7 +52,7 @@ namespace NFX.Log
     /// Last debug-related message type for use in debug-related max-level config setting
     /// </summary>
     DebugZ,
-    
+
     /// <summary>
     /// Tracing, no danger to system operation
     /// </summary>
@@ -62,7 +62,7 @@ namespace NFX.Log
     TraceB,
     TraceC,
     TraceD,
-    
+
     /// <summary>
     /// Emitted by DataStore implementations
     /// </summary>
@@ -82,7 +82,7 @@ namespace NFX.Log
     /// Last trace-related message type for use in trace-related max-level config setting
     /// </summary>
     TraceZ,
-    
+
     /// <summary>
     /// Performance/Instrumentation-related message
     /// </summary>

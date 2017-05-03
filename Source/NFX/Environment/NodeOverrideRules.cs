@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,44 +21,44 @@ using System.Text;
 
 namespace NFX.Environment
 {
-    
+
     /// <summary>
     /// Override specifications that dictate what to do when another node supplies entity with the same name
     /// </summary>
-    public enum OverrideSpec 
+    public enum OverrideSpec
     {
       /// <summary>
       /// Override everything: attributes, sections, and value
       /// </summary>
       All=0,
-      
+
       /// <summary>
       /// Ovveride attributes only
       /// </summary>
-      Attributes, 
+      Attributes,
 
       /// <summary>
       /// Override sections only
       /// </summary>
-      Sections, 
-      
+      Sections,
+
       /// <summary>
       /// Completely replace node
       /// </summary>
-      Replace, 
-      
+      Replace,
+
       /// <summary>
       /// Stop override at this level
       /// </summary>
-      Stop, 
+      Stop,
 
       /// <summary>
       /// Fail the process
       /// </summary>
-      Fail 
+      Fail
     }
-    
-    
+
+
     /// <summary>
     /// Contains node override rule definitions such as override specifier names and values.
     /// This class is used for merging/override of configurations/nodes
@@ -66,7 +66,7 @@ namespace NFX.Environment
     public sealed class NodeOverrideRules
     {
        #region CONST
-       
+
         public const string DEFAULT_OVERRIDE_ATTR_NAME = "_override";
         public const string DEFAULT_OVERRIDE_VALUE_ATTRIBUTES = "attributes";
         public const string DEFAULT_OVERRIDE_VALUE_SECTIONS = "sections";
@@ -78,6 +78,8 @@ namespace NFX.Environment
         public const string DEFAULT_SECTION_MATCH_ATTR_NAME = "name";
 
         public const string DEFAULT_SECTION_CLEAR_NAME = "_clear";
+        public const string DEFAULT_ATTRIBUTE_CLEAR_NAME = "_clear";
+        public const string DEFAULT_SECTION_DELETE_NAME = "_delete";
        #endregion
 
 
@@ -114,6 +116,8 @@ namespace NFX.Environment
 
             private string m_SectionMatchAttrName;
             private string m_SectionClearName;
+            private string m_AttributeClearName;
+            private string m_SectionDeleteName;
        #endregion
 
 
@@ -187,13 +191,23 @@ namespace NFX.Environment
 
 
         /// <summary>
-        /// Provides attribute name for matching of multiple sections with the same name, i.e. a logger may have many 'destinations' 
+        /// Provides attribute name for matching of multiple sections with the same name, i.e. a logger may have many 'destinations'
         /// subnodes each with different 'name' attribute
         /// </summary>
         public string SectionMatchAttrName
         {
           get { return m_SectionMatchAttrName ?? DEFAULT_SECTION_MATCH_ATTR_NAME;}
           set { m_SectionMatchAttrName = value; }
+        }
+
+        /// <summary>
+        /// When true will APPEND sections not having SectionMatchAttrName defined,
+        /// otherwise matches section names by SectionMatchAttrName
+        /// </summary>
+        public bool AppendSectionsWithoutMatchAttr
+        {
+          get;
+          set;
         }
 
         /// <summary>
@@ -205,12 +219,30 @@ namespace NFX.Environment
           set { m_SectionClearName = value; }
         }
 
+        /// <summary>
+        /// Provides a name for clear section - when present it deletes all existing attributes
+        /// </summary>
+        public string AttributeClearName
+        {
+          get { return m_AttributeClearName ?? DEFAULT_ATTRIBUTE_CLEAR_NAME; }
+          set { m_AttributeClearName = value; }
+        }
+
+        /// <summary>
+        /// Provides a name for clear section - when present it deletes all existing attributes
+        /// </summary>
+        public string SectionDeleteName
+        {
+          get { return m_SectionDeleteName ?? DEFAULT_SECTION_DELETE_NAME; }
+          set { m_SectionDeleteName = value; }
+        }
+
        #endregion
 
        #region Public
 
           /// <summary>
-          /// Tries to convert a string to OverrideSpec enum. If string is null or empty then "All" is returned, otherwise exception is thrown if 
+          /// Tries to convert a string to OverrideSpec enum. If string is null or empty then "All" is returned, otherwise exception is thrown if
           ///  the value does not match any of the expected values. The comparison is case-insensitive
           /// </summary>
           public OverrideSpec StringToOverrideSpec(string str)

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,37 +38,37 @@ namespace licupd
       Console.WriteLine("    lfile - path to license file");
       Console.WriteLine("    [-pat pattern] - optional pattern search such as '-pat *.txt'. Assumes '*.cs' if omitted");
       Console.WriteLine("    [-insert] - optional switch that causes license block insertion when missing");
-      
+
       var args = new CommandArgsConfiguration(str_args);
-      
+
       var path =  args.Root.AttrByIndex(0).ValueAsString(string.Empty);
-      
+
       var license = File.ReadAllText(args.Root.AttrByIndex(1).ValueAsString(string.Empty));
-      
+
       var fpat = args.Root["pat"].AttrByIndex(0).ValueAsString("*.cs");
 
       var insert = args.Root["insert"].Exists;
-       
-       
+
+
       var regexp = new Regex(
       @"/\*<FILE_LICENSE>[\s*|\S*]{0,}</FILE_LICENSE>\*/"
-      
-      ); 
-                  
+
+      );
+
       var replaced = 0;
       var inserted = 0;
-      
+
       foreach(var fn in path.AllFileNamesThatMatch(fpat, true))
       {
        var content = File.ReadAllText(fn);
-       
+
        if (regexp.Match(content).Success)
        {
           Console.Write("Matched:  " + fn);
           File.WriteAllText(fn, regexp.Replace(content, license));
           Console.WriteLine("   Replaced.");
-          replaced++; 
-       } 
+          replaced++;
+       }
        else
         if (insert)
         {
@@ -78,12 +76,12 @@ namespace licupd
           File.WriteAllText(fn, content);
           Console.WriteLine("Inserted:  " + fn);
           inserted++;
-        }  
+        }
       }//freach file
-     
+
      Console.WriteLine(string.Format("Total Replaced: {0}  Inserted: {1}", replaced, inserted));
      Console.WriteLine("Strike <enter>");
-     Console.ReadLine(); 
+     Console.ReadLine();
     }
   }
 }

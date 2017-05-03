@@ -20,7 +20,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -49,8 +49,20 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\Record.cs" />
     <Compile Include="Client\RecordModelGenerator.cs" />
+    <Compile Include="CMS\ConfigResource.cs" />
+    <Compile Include="CMS\NLSResource.cs" />
+    <Compile Include="CMS\FileResource.cs" />
+    <Compile Include="CMS\Exceptions.cs" />
+    <Compile Include="CMS\DirectoryResource.cs" />
+    <Compile Include="CMS\Resource.cs" />
+    <Compile Include="CMS\CMSBank.cs" />
+    <Compile Include="CMS\Intfs.cs" />
+    <Compile Include="CMS\NOPCMSBank.cs" />
+    <Compile Include="Matches.cs" />
     <Compile Include="Filters\BeforeAfterFilterBase.cs" />
+    <Compile Include="Filters\EffectiveCallerIPEndPointFilter.cs" />
     <Compile Include="Filters\PortalFilter.cs" />
     <Compile Include="Filters\SecurityFilter.cs" />
     <Compile Include="Filters\GeoLookupFilter.cs" />
@@ -72,6 +84,7 @@
     <Compile Include="MVC\ActionResult.cs" />
     <Compile Include="MVC\Attributes.cs" />
     <Compile Include="MVC\Controller.cs" />
+    <Compile Include="MVC\CacheControlAttribute.cs" />
     <Compile Include="MVC\NoCacheAttribute.cs" />
     <Compile Include="MVC\Reflection.cs" />
     <Compile Include="MVC\SessionCSRFCheckAttribute.cs" />
@@ -103,33 +116,65 @@
     <Compile Include="WorkMatch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BUILD_INFO.txt" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.all.min.js" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.braintree.js" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.stripe.js" />
+    <EmbeddedResource Include="BUILD_INFO.txt" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.CopyAndSelect.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.select.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.selector-chain.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.image-view.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.markup.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.object-editor.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\stl\select.test.css" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.html.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\js-compiler.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\js-compiler.test.html" />
+    <Content Include="Templatization\StockContent\Embedded\script\wv.dialog.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\js-compiler.ntc.js" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.rmgui.js" />
+    <None Include="Templatization\StockContent\Embedded\script\wv.rmgui.ntc.js" />
+    <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.all.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.braintree.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.stripe.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.data.tests.htm" />
-    <Content Include="Templatization\StockContent\Embedded\script\payment.providers.test.html" />
+    <None Include="Templatization\StockContent\Embedded\script\payment.providers.test.html" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.data.tests.js" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.tests.js" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.tests.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.default.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\stl\console.modern.css" />
-    <None Include="Templatization\StockContent\Embedded\script\image-box.test.htm" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\wv.objectinspector.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.ruler.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.tree.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.ideas.utest.htm" />
     <None Include="Templatization\StockContent\Embedded\script\CLOSURE_ERROR_OUT.txt" />
-    <Content Include="Templatization\StockContent\Embedded\script\ideas.js" />
     <None Include="Templatization\StockContent\Embedded\script\signal.htm" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.chart.svg.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.chart.svg.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\wv.chart.svg.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\wv.forms.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.data.tests.htm" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.js" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.gui.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.gui.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.tests.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ad.png" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\flags\ae.png" />
@@ -395,7 +440,9 @@
   <PropertyGroup>
     <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"
 
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src /c "NFX.Templatization.NHTCompiler, NFX"
+
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.ntc.js" -r -ext ".js" -replace ".ntc.js" /src /c "NFX.Templatization.TextJSTemplateCompiler, NFX" -o dom-gen="cmp{pretty=1}"
 
 
 where /q java

@@ -48,11 +48,10 @@
 
     destination
     {  
-       type=$(/$log-csv)
-	   name="WinFormsTest Log"
-	   path=$(/$log-root) 
-       name-time-format='yyyyMMdd'
-       generate-failover-msg=false
+     type=$(/$log-csv)
+     name="WinFormsTest Log"
+     path=$(/$log-root) 
+     file-name="{0:yyyyMMdd}-$($name).csv.log"
     }
   }
 
@@ -153,7 +152,7 @@
                 
                 root-path=$"c:\users\anton\desktop"
                 
-                //cache-max-age-sec="10"
+                //cache-control { max-age-sec=10 }
                 
                 match
                 {

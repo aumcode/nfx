@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ using NFX.Instrumentation;
 
 namespace NFX.Log.Instrumentation
 {
-   
+
     [Serializable]
     public abstract class LogLongGauge : LongGauge, IInstrumentationInstrument
     {
@@ -39,7 +39,7 @@ namespace NFX.Log.Instrumentation
         {
            var inst = App.Instrumentation;
            if (inst.Enabled)
-             inst.Record(new LogMsgCount(source, value)); 
+             inst.Record(new LogMsgCount(source, value));
         }
 
 
@@ -49,7 +49,7 @@ namespace NFX.Log.Instrumentation
 
         protected override Datum MakeAggregateInstance()
         {
-            return new LogMsgCount(this.Source, 0); 
+            return new LogMsgCount(this.Source, 0);
         }
     }
 

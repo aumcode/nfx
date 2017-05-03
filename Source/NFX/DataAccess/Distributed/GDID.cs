@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,20 +26,22 @@ namespace NFX.DataAccess.Distributed
   /// <summary>
   /// Represents a Global Distributed ID key (key field) used in distributed databases that identify entities with a combination of unsigned 32 bit integer
   ///  'Era' and unsigned 64 bit integer 'ID'. The first 32 bit integer is an 'era' in which the 'ID' (64 bit) was created, consequently
-  /// a GDID is a 12 byte = 96 bit integer that can hold 2^96 = 79,228,162,514,264,337,593,543,950,336 combinations. 
+  /// a GDID is a 12 byte = 96 bit integer that can hold 2^96 = 79,228,162,514,264,337,593,543,950,336 combinations.
   /// The ID consists of two segments: 4 bit authority + 60 bits counter. Authority segment occupies the most significant 4 bits of uint64, so
   ///  the system may efficiently query the data store to identify the highest stored ID value in a range.
-  /// Authorities identify one of 16 possible ID generation sources in the global distributed system, therefore ID duplications are not 
-  /// possible between authorities. 
+  /// Authorities identify one of 16 possible ID generation sources in the global distributed system, therefore ID duplications are not
+  /// possible between authorities.
   /// Within a single era, GDID structure may identify 2^60 = 1,152,921,504,606,846,976(per authority) * 16(authorities) = 2^64 = 18,446,744,073,709,551,616 total combinations.
-  /// Because of such a large number of combinations supported by GDID.ID alone (having the same Era), some systems may always use Era=0 and only store the ID part 
-  /// (i.e. as UNSIGNED BIGINT in SQL datastores)
+  /// Because of such a large number of combinations supported by GDID.ID alone (having the same Era), some systems may always use Era=0 and only store the ID part
+  /// (i.e. as UNSIGNED BIGINT in SQL datastores).
+  /// Note GDID.Zero is never returned by generators as it represents the absence of a value
   /// </summary>
   [Serializable]
   public struct GDID : IDataStoreKey, IComparable<GDID>, IEquatable<GDID>, IComparable, IJSONWritable, IDistributedStableHashProvider
   {
         public const UInt64 AUTHORITY_MASK = 0xf000000000000000;
-        public const UInt64 COUNTER_MASK   = 0x0fffffffffffffff;
+        public const UInt64 COUNTER_MASK   = 0x0fffffffffffffff;//0x 0f  ff  ff  ff  ff  ff  ff  ff
+                                                                //    1   2   3   4   5   6   7   8
 
         /// <summary>
         /// Provides maximum value for counter segment
@@ -69,20 +71,20 @@ namespace NFX.DataAccess.Distributed
         {
           if (authority>AUTHORITY_MAX || counter>COUNTER_MAX)
             throw new DistributedDataAccessException(StringConsts.DISTRIBUTED_DATA_GDID_CTOR_ERROR.Args(authority, AUTHORITY_MAX, counter, COUNTER_MAX));
-          
+
           Era = era;
           ID = (((UInt64)authority)<<60) | (counter & COUNTER_MASK);
         }
-    
+
         public GDID(byte[] bytes, int startIdx = 0)
         {
           if (bytes==null || startIdx <0 || (bytes.Length-startIdx)<sizeof(uint)+sizeof(ulong))
             throw new DistributedDataAccessException(StringConsts.ARGUMENT_ERROR+"GDID.ctor(bytes==null<minsz)");
-           
+
           Era = bytes.ReadBEUInt32();
           ID =  bytes.ReadBEUInt64(4);
-        } 
-       
+        }
+
 
         /// <summary>
         /// Returns the 0..15 index of the authority that issued this ID
@@ -90,7 +92,7 @@ namespace NFX.DataAccess.Distributed
         public int Authority
         {
           get { return (int)( (ID & AUTHORITY_MASK) >> 60 );  }
-        }                           
+        }
 
         /// <summary>
         /// Returns the 60 bits of counter segment of this id (without athority segment upper 4 bits)
@@ -99,13 +101,13 @@ namespace NFX.DataAccess.Distributed
         {
           get { return ID & COUNTER_MASK; }
         }
-        
+
         /// <summary>
         /// Returns the GDID buffer as BigEndian Era:ID tuple
         /// </summary>
         public byte[] Bytes
         {
-          get 
+          get
           {
             var result = new byte[sizeof(uint)+sizeof(ulong)];
             result.WriteBEUInt32(0, Era);
@@ -113,29 +115,40 @@ namespace NFX.DataAccess.Distributed
             return result;
           }
         }
-        
-        
-        public override string  ToString()
+
+        /// <summary>
+        /// True is this instance is invalid - represents 0:0:0
+        /// </summary>
+        public bool IsZero
         {
-           //20160123 spol fix incorrect parsing
- 	       //return "GDID[{0}:{1}({2},{3})]".Args(Era, ID, Authority, Counter);
-           return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
+          get{ return Era==0 && ID==0;}
         }
-    
+
+        /// <summary>
+        /// Returns the guaranted parsable stable string representation of GDID in the form 'Era:Authority:Counter'
+        /// </summary>
+        public override string ToString()
+        {
+          // WARNING!!! returned string representation must be parsable in the original form 'Era:Authority:Counter' and must not change
+          return Era.ToString() + ":" + Authority.ToString() + ":" + Counter.ToString();
+        }
+
+        public string ToHexString() { return Era.ToString("X8") + ID.ToString("X16"); }
+
         public override int GetHashCode()
         {
- 	       return (int)Era ^ (int)ID ^ (int)(ID >> 32);
+ 	        return (int)Era ^ (int)ID ^ (int)(ID >> 32);
         }
 
         public ulong GetDistributedStableHash()
         {
-         return  ((ulong)Era << 32) ^ ID;
+          return  ((ulong)Era << 32) ^ ID;
         }
-    
+
         public override bool  Equals(object obj)
         {
- 	       if(obj==null || !(obj is GDID)) return false;
-         return this.Equals(((GDID)obj));
+ 	        if(obj==null || !(obj is GDID)) return false;
+          return this.Equals(((GDID)obj));
         }
 
         public int CompareTo(GDID other)
@@ -238,71 +251,112 @@ namespace NFX.DataAccess.Distributed
         {
           gdid = GDID.Zero;
 
-          var ix = str.IndexOf("0x", StringComparison.OrdinalIgnoreCase);
-          if (ix>-1)//HEX format
+          var ic = str.IndexOf(':');
+          if (ic>-1) //regular Era:Auth:Counter format
           {
-            ix+=2;//skip 0x
-            var buf = new byte[sizeof(uint) + sizeof(ulong)];
-            var j = 0;
-            for(var i=ix; i<str.Length;)
-            {
-              var dh = hexDigit(str[i]); i++;
-              if (dh<0 || i==str.Length) return false;
-              var dl = hexDigit(str[i]); i++;
-              if (dl<0) return false;
+            const int MIN_LEN = 5;// "0:0:0"
+            if (str.IsNullOrWhiteSpace() || str.Length<MIN_LEN) return false;
 
-              if (j==buf.Length) return false;
-              buf[j] = (byte)((dh << 4) + dl);
-              j++;
-            }
-            if (j<buf.Length) return false;
+            string sera, sau, sctr;
+            var i1 = ic;
+            if (i1<=0 || i1==str.Length-1) return false;
 
-            gdid = new GDID(buf);
+            sera = str.Substring(0, i1);
+
+            var i2 = str.IndexOf(':', i1+1);
+            if (i2<0 || i2==str.Length-1 || i2==i1+1) return false;
+
+            sau = str.Substring(i1+1, i2-i1-1);
+
+            sctr = str.Substring(i2+1);
+
+            uint era=0;
+            if (!uint.TryParse(sera, out era)) return false;
+
+            byte au=0;
+            if (!byte.TryParse(sau, out au)) return false;
+
+            ulong ctr;
+            if (!ulong.TryParse(sctr, out ctr)) return false;
+
+            if (au>AUTHORITY_MAX || ctr>COUNTER_MAX) return false;
+
+            gdid = new GDID(era, au, ctr);
             return true;
-          }//HEX format
+          }
 
-          //regular Era:Auth:Counter format
-          const int MIN_LEN = 5;// "0:0:0"
-          if (str.IsNullOrWhiteSpace() || str.Length<MIN_LEN) return false;
+          //HEX format
+          str.Trim();
+          var ix = str.IndexOf("0x", StringComparison.OrdinalIgnoreCase);
+          if (ix == 0) ix += 2;//skip 0x
+          else ix = 0;
 
-          string sera, sau, sctr;
-          var i1 = str.IndexOf(':', 0);
-          if (i1<=0 || i1==str.Length-1) return false;
-         
-          sera = str.Substring(0, i1);
+          var buf = new byte[sizeof(uint) + sizeof(ulong)];
+          var j = 0;
+          for(var i=ix; i<str.Length;)
+          {
+            var dh = hexDigit(str[i]); i++;
+            if (dh<0 || i==str.Length) return false;
+            var dl = hexDigit(str[i]); i++;
+            if (dl<0) return false;
 
-          var i2 = str.IndexOf(':', i1+1);
-          if (i2<0 || i2==str.Length-1 || i2==i1+1) return false;
+            if (j==buf.Length) return false;
+            buf[j] = (byte)((dh << 4) + dl);
+            j++;
+          }
+          if (j<buf.Length) return false;
 
-          sau = str.Substring(i1+1, i2-i1-1);
-
-          sctr = str.Substring(i2+1); 
-
-
-
-          uint era=0;
-          if (!uint.TryParse(sera, out era)) return false;
-
-          byte au=0;
-          if (!byte.TryParse(sau, out au)) return false;
-
-          ulong ctr;
-          if (!ulong.TryParse(sctr, out ctr)) return false;
-
-          if (au>AUTHORITY_MAX || ctr>COUNTER_MAX) return false;
-
-          gdid = new GDID(era, au, ctr);
+          gdid = new GDID(buf);
           return true;
         }
-
   }
 
 
+  /// <summary>
+  /// Represents a tuple of GDID and its symbolic representation (framework usualy uses an ELink as symbolic representation).
+  /// This struct is needed to pass GDID along with its ELink representation together.
+  /// Keep in mind that string poses a GC load, so this stuct is not suitable for beiing used as a pile cache key
+  /// </summary>
+  [Serializable]
+  public struct GDIDSymbol : IEquatable<GDIDSymbol>
+  {
+     public GDIDSymbol(GDID gdid, string symbol)
+     {
+       GDID = gdid;
+       Symbol = symbol;
+     }
+
+     public readonly GDID GDID;
+     public readonly string Symbol;
+
+     public bool IsZero{ get{ return GDID.IsZero;}}
+
+     public override string ToString()
+     {
+       return "{0}::'{1}'".Args(GDID, Symbol);
+     }
+
+     public override int GetHashCode()
+     {
+       return GDID.GetHashCode() ^ (Symbol!=null ? Symbol.GetHashCode() : 0);
+     }
+
+     public override bool Equals(object obj)
+     {
+       if (!(obj is GDIDSymbol)) return false;
+       return this.Equals((GDIDSymbol)obj);
+     }
+
+     public bool Equals(GDIDSymbol other)
+     {
+       return this.GDID.Equals(other.GDID) && this.Symbol.EqualsOrdSenseCase(other.Symbol);
+     }
+  }
 
   /// <summary>
   /// Compares GDID regardless of authority. This is useful for range checking, when authorities generating GDIDs in the same
   ///  range should be disregarded. Use GDIDRangeComparer.Instance.
-  ///  Only relative range comparison can be made. 
+  ///  Only relative range comparison can be made.
   ///  The Equality returned by this comparer can not be relied upon for GDID comparison as it disregards authority.
   ///  Equality can only be tested for range comparison.
   /// </summary>

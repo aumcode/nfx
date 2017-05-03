@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace NFX.Throttling
     public abstract class Throttle : ApplicationComponent, IConfigurable, IThrottle
     {
         #region CONSTS
-        
+
             internal const string DEFAULT_UNITS = "times";
 
         #endregion
@@ -64,7 +64,7 @@ namespace NFX.Throttling
             }
 
         #endregion
-            
+
         #region Private
 
             private IThrottlingImplementation m_ThrottlingImpl; internal void __setThrottling(IThrottlingImplementation ti) { m_ThrottlingImpl = ti; }

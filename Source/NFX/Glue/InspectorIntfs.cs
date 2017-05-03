@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ namespace NFX.Glue
          {
            var si = FactoryUtils.MakeAndConfigure<IServerMsgInspector>(inode);
            registry.Register(si);
-         } 
+         }
 
        }
 
@@ -104,7 +104,7 @@ namespace NFX.Glue
          {
            var ci = FactoryUtils.MakeAndConfigure<IClientMsgInspector>(inode);
            registry.Register(ci);
-         } 
+         }
 
        }
 

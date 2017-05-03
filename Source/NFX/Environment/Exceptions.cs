@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,41 +15,25 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 
-
 /* NFX by ITAdapter
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace NFX.Environment
 {
-
   /// <summary>
   /// Configuration-related exception
   /// </summary>
   [Serializable]
   public class ConfigException : NFXException
   {
-    public ConfigException()
-    {
-    }
-
-    public ConfigException(string message) : base(message)
-    {
-    }
-
-    public ConfigException(string message, Exception inner) : base(message, inner)
-    {
-    }
-
-    protected ConfigException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-
-    }
-
+    public ConfigException() { }
+    public ConfigException(string message) : base(message) { }
+    public ConfigException(string message, Exception inner) : base(message, inner) { }
+    protected ConfigException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
 
   /// <summary>
@@ -58,20 +42,9 @@ namespace NFX.Environment
   [Serializable]
   public sealed class BehaviorApplyException : ConfigException
   {
-    
-    public BehaviorApplyException()
-    {
-    }
-
-    public BehaviorApplyException(string message, Exception inner) : base(message, inner)
-    {
-    }
-
-    public BehaviorApplyException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-
-    }
-
+    public BehaviorApplyException() { }
+    public BehaviorApplyException(string message) : base(message) { }
+    public BehaviorApplyException(string message, Exception inner) : base(message, inner) { }
+    internal BehaviorApplyException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

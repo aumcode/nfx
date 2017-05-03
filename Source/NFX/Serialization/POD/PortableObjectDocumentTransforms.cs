@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -45,13 +45,13 @@ namespace NFX.Serialization.POD
     public abstract class PortableObjectDocumentDeserializationTransform : Attribute
     {
         /// <summary>
-        /// Override to construct new object instance from CompositeData. 
+        /// Override to construct new object instance from CompositeData.
         /// Return null to let the default implementatiom/ctor be invoked by the framework
         /// </summary>
         public abstract object ConstructObjectInstance(CompositeData data);
 
         /// <summary>
-        /// Handles the deserialization of the object instance from CompoisteCustomData bag. Returns true to indicate that 
+        /// Handles the deserialization of the object instance from CompoisteCustomData bag. Returns true to indicate that
         ///  deserialization was handled completely here and default framework implementation should not be called
         /// </summary>
         public abstract bool DeserializeFromCompositeCustomData(object instance, CompositeCustomData data);

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace NFX.Glue.Implementation
     internal class Calls
     {
           private class _dict : ConcurrentDictionary<FID, CallSlot>{}//ConcurrentDictionary Sets levelof parallelism to CPU count * 4
-    
+
       public Calls(int bucketCount)
       {
         if (bucketCount<1) bucketCount = 97;
@@ -47,7 +47,7 @@ namespace NFX.Glue.Implementation
       private _dict[] m_Buckets;
 
 
-      
+
       /// <summary>
       /// Tries to pur CallSlot instance in the internal list if instance with same ID is not already in the list
       /// </summary>
@@ -56,13 +56,13 @@ namespace NFX.Glue.Implementation
          var requestID = call.RequestID;
 
          //getBucket() inlined for performance
-         var idx = (requestID.GetHashCode() & CoreConsts.ABS_HASH_MASK) % m_BucketCount; 
+         var idx = (requestID.GetHashCode() & CoreConsts.ABS_HASH_MASK) % m_BucketCount;
          var bucket = m_Buckets[idx];
 
          bucket.TryAdd(requestID, call);
       }
-      
-      
+
+
       /// <summary>
       /// Tries to get, return and remove CallSlot instance by its RequestID from the list.
       /// Returns null if CallSlot with such an id does not exist and nothing was removed
@@ -75,7 +75,7 @@ namespace NFX.Glue.Implementation
 
           CallSlot result;
           if (bucket.TryRemove(requestID, out result)) return result;
-                      
+
           return null;
       }
 

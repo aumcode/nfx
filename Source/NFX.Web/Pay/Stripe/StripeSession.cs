@@ -1,7 +1,7 @@
 
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,54 +23,41 @@
  * Author: Denis Latushkin<dxwizard@gmail.com>
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 
 using NFX;
-using NFX.Environment;
 using NFX.Security;
-using NFX.Web.Pay;
 
 namespace NFX.Web.Pay.Stripe
 {
   public class StripeSession: PaySession
   {
     #region .ctor
-
-      public StripeSession(PaySystem paySystem, StripeConnectionParameters cParams) 
-        : base(paySystem, cParams) { }
-
+      public StripeSession(PaySystem paySystem, StripeConnectionParameters cParams, IPaySessionContext context = null)
+        : base(paySystem, cParams, context) { }
     #endregion
 
     #region Properties
-
-      public string Email 
-      { 
-        get 
+      public string Email
+      {
+        get
         {
-          if (m_User == null || m_User == User.Fake) return string.Empty;
-          var cred = m_User.Credentials as StripeCredentials;
+          if (!IsValid) return string.Empty;
+          var cred = User.Credentials as StripeCredentials;
           if (cred == null) return string.Empty;
-          return cred.Email; 
+          return cred.Email;
         }
       }
 
-      public string SecretKey 
-      { 
-        get 
+      public string SecretKey
+      {
+        get
         {
-          if (m_User == null || m_User == User.Fake) return string.Empty;
-          var cred = m_User.Credentials as StripeCredentials;
+          if (!IsValid) return string.Empty;
+          var cred = User.Credentials as StripeCredentials;
           if (cred == null) return string.Empty;
-          return cred.SecretKey; 
+          return cred.SecretKey;
         }
       }
-      
     #endregion
-
-  } //StripeSession
-
+  }
 }

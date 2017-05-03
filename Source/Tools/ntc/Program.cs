@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -49,10 +49,10 @@ namespace ntc
 
 
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           ConsoleUtils.WriteMarkupContent( typeof(Program).GetText("Welcome.txt") );
 
           if (config.Root["?"].Exists ||
@@ -63,8 +63,8 @@ namespace ntc
              return;
           }
 
-          
-          
+
+
           if (!config.Root.AttrByIndex(0).Exists)
           {
             ConsoleUtils.Error("Template source path is missing");
@@ -134,8 +134,8 @@ namespace ntc
                                     ConsoleUtils.Info("Compile unit errors:");
                                     foreach(var erru in compiler.CompileUnitsWithErrors)
                                     {
-                                     ConsoleUtils.Error(string.Format("Unit '{0}'. Type '{1}' Text: '{2}'", 
-                                                                         erru.TemplateSource.GetName(16), 
+                                     ConsoleUtils.Error(string.Format("Unit '{0}'. Type '{1}' Text: '{2}'",
+                                                                         erru.TemplateSource.GetName(16),
                                                                          erru.CompilationException.GetType().Name,
                                                                          erru.CompilationException.Message));
                                     }
@@ -150,13 +150,16 @@ namespace ntc
                                   static void writeToDiskCompiledSourceFiles(TemplateCompiler compiler, IConfigSectionNode configRoot)
                                   {
                                      var ext = configRoot["ext"].AttrByIndex(0).ValueAsString(compiler.LanguageSourceFileExtension);
-                                     
+                                     var re = configRoot["replace"].AttrByIndex(0).ValueAsString();
+
                                       foreach(var cu in compiler)
                                       {
                                         if (cu.CompilationException!=null) continue;
                                         var fs = cu.TemplateSource as FileTemplateStringContentSource;
                                         if (fs==null) continue;
-                                        File.WriteAllText(fs.FileName + ext , cu.CompiledSource);
+
+                                        var fn = (re.IsNotNullOrWhiteSpace() ? fs.FileName.Replace(re, string.Empty) : fs.FileName) + ext;
+                                        File.WriteAllText(fn , cu.CompiledSource);
                                       }
                                   }
 

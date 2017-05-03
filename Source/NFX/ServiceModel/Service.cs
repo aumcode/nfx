@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -51,19 +51,19 @@ namespace NFX.ServiceModel
 
         #region .ctor
 
-                
+
                 protected Service() : base()
                 {
                 }
 
                 protected Service(object director) : base(director)
-                {   
+                {
                 }
 
                 protected override void Destructor()
                 {
                     if (m_Disposing) return;
-            
+
                     m_Disposing = true;
                     try
                     {
@@ -82,7 +82,7 @@ namespace NFX.ServiceModel
         #endregion
 
         #region Private Fields
-           
+
             private volatile bool m_Disposing;
 
             private object m_StatusLock = new object();
@@ -91,7 +91,7 @@ namespace NFX.ServiceModel
 
             [Config]
             private string m_Name;
-          
+
             [Config(TimeLocation.CONFIG_TIMELOCATION_SECTION)]
             private TimeLocation m_TimeLocation = new TimeLocation();
 
@@ -107,7 +107,7 @@ namespace NFX.ServiceModel
             {
               get{ return Attribute.IsDefined(GetType(), typeof(ApplicationDontAutoStartServiceAttribute));}
             }
-        
+
             /// <summary>
             /// Current service status
             /// </summary>
@@ -169,7 +169,7 @@ namespace NFX.ServiceModel
                     DoConfigure(fromNode);
                 }
             }
-        
+
             /// <summary>
             /// Blocking call that starts the service instance
             /// </summary>
@@ -188,7 +188,7 @@ namespace NFX.ServiceModel
                 EnsureObjectNotDisposed();
                 lock (m_StatusLock)
                     if (m_Status == ControlStatus.Inactive)
-                    { 
+                    {
                         m_Status = ControlStatus.Starting;
                         try
                         {
@@ -201,7 +201,7 @@ namespace NFX.ServiceModel
                           m_Status = ControlStatus.Inactive;
                           throw;
                         }
-                    } 
+                    }
             }
 
             /// <summary>
@@ -253,7 +253,7 @@ namespace NFX.ServiceModel
 
 
             /// <summary>
-            /// Accepts a visit of a manager entity - this call is useful for periodic updates of service status, 
+            /// Accepts a visit of a manager entity - this call is useful for periodic updates of service status,
             /// i.e.  when service does not have a thread of its own it can be periodically managed by some other service through this method.
             /// The default implementation of DoAcceptManagerVisit(object, DateTime) does nothing
             /// </summary>
@@ -367,7 +367,7 @@ namespace NFX.ServiceModel
             /// </summary>
             protected virtual void DoConfigure(IConfigSectionNode node)
             {
-            
+
             }
 
             /// <summary>
@@ -399,13 +399,23 @@ namespace NFX.ServiceModel
 
 
             /// <summary>
-            /// Accepts a visit from external manager. Base implementation does nothing. 
+            /// Accepts a visit from external manager. Base implementation does nothing.
             ///  Override in services that need external management calls
             ///   to update their state periodically, i.e. when they don't have a thread on their own
             /// </summary>
             protected virtual void DoAcceptManagerVisit(object manager, DateTime managerNow)
             {
-              
+
+            }
+
+            /// <summary>
+            /// WARNING: Developers never call this method!!!
+            /// It is used by advanced derived implementations that need to synchronize status updates.
+            /// We do not want to make statuslock protected as it is almost never needed, hence this accessor
+            /// </summary>
+            protected object ____ObtainPrivateServiceStatusLockObject()
+            {
+              return m_StatusLock;
             }
 
         #endregion
@@ -432,9 +442,9 @@ namespace NFX.ServiceModel
         }
 
         protected Service(TDirector director) : base(director)
-        {   
+        {
         }
-       
+
         public new TDirector ComponentDirector
         {
             get { return (TDirector)base.ComponentDirector; }

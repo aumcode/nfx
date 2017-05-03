@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ namespace NFX.DataAccess.MySQL
 
         #endregion  
         
-        #region Peoperties
+        #region Properties
 
             internal MySQLDataStore Store
             {
@@ -95,6 +95,16 @@ namespace NFX.DataAccess.MySQL
         protected override Task<List<RowsetBase>> DoLoadAsync(bool oneRow, params Query[] queries)
         {
             return TaskUtils.AsCompletedTask( () => this.DoLoad(oneRow, queries) );
+        }
+
+        protected override Cursor DoOpenCursor(Query query)
+        {
+            return Store.DoOpenCursor(m_Connection, m_Transaction, query);
+        }
+
+        protected override Task<Cursor> DoOpenCursorAsync(Query query)
+        {
+            return TaskUtils.AsCompletedTask( () => this.DoOpenCursor(query) );
         }
 
         protected override int DoExecuteWithoutFetch(params Query[] queries)

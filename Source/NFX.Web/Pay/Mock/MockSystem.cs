@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ using NFX.Environment;
 using NFX.ServiceModel;
 using NFX.Log;
 using System.Threading;
+using NFX.Financial;
 
 namespace NFX.Web.Pay.Mock
 {
@@ -47,7 +48,7 @@ namespace NFX.Web.Pay.Mock
 
       //public const string CONFIG_ACCOUNT_NUMBER_ATTR = "account-number";
       //public const string CONFIG_ROUTING_NUMBER_ATTR = "routing-number";
-      //public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type"; 
+      //public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type";
 
     #endregion
 
@@ -76,11 +77,11 @@ namespace NFX.Web.Pay.Mock
           private List<AccountData> m_CreditCardDeclined;
           private List<AccountData> m_CreditCardLuhnError;
           private List<AccountData> m_CreditCardCvcError;
-          private List<AccountData> m_CreditCardCorrectWithAddr; 
+          private List<AccountData> m_CreditCardCorrectWithAddr;
 
-          private List<AccountData> m_DebitBankCorrect; 
-          private List<AccountData> m_DebitCardCorrect; 
-          private List<AccountData> m_DebitCardCorrectWithAddr; 
+          private List<AccountData> m_DebitBankCorrect;
+          private List<AccountData> m_DebitCardCorrect;
+          private List<AccountData> m_DebitCardCorrectWithAddr;
 
         #endregion
 
@@ -96,7 +97,7 @@ namespace NFX.Web.Pay.Mock
           public List<AccountData> DebitBankCorrect { get { return m_DebitBankCorrect != null ? m_DebitBankCorrect : m_DebitBankCorrect = new List<AccountData>(); } }
           public List<AccountData> DebitCardCorrect { get { return m_DebitCardCorrect != null ? m_DebitCardCorrect : m_DebitCardCorrect = new List<AccountData>(); } }
           public List<AccountData> DebitCardCorrectWithAddr { get { return m_DebitCardCorrectWithAddr != null ? m_DebitCardCorrectWithAddr : m_DebitCardCorrectWithAddr = new List<AccountData>(); } }
-      
+
         #endregion
 
         #region Config
@@ -138,7 +139,7 @@ namespace NFX.Web.Pay.Mock
 
       public MockSystem(string name, IConfigSectionNode node) : base(name, node) { }
 
-      public MockSystem(string name, IConfigSectionNode node, object director) : base(name, node, director) { } 
+      public MockSystem(string name, IConfigSectionNode node, object director) : base(name, node, director) { }
 
     #endregion
 
@@ -146,7 +147,8 @@ namespace NFX.Web.Pay.Mock
 
       private IConfigSectionNode m_AccountsCfg;
       private Accounts m_Accounts;
-      
+      private MockWebTerminal m_WebTerminal;
+
     #endregion
 
 
@@ -158,36 +160,113 @@ namespace NFX.Web.Pay.Mock
       public IConfigSectionNode AccountsCfg
       {
         get { return m_AccountsCfg; }
-        set 
+        set
         {
           m_Accounts = FactoryUtils.MakeAndConfigure<Accounts>(value, typeof(Accounts));
           m_AccountsCfg = value;
         }
-      } 
+      }
+
+      public override IPayWebTerminal WebTerminal
+      {
+        get
+        {
+          if (m_WebTerminal == null)
+            m_WebTerminal = new MockWebTerminal(this);
+          return m_WebTerminal;
+        }
+      }
 
     #endregion
 
     #region PaySystem implementation
+      protected override ConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
+      { return ConnectionParameters.Make<MockConnectionParameters>(paramsSection); }
 
-      protected override PaySession DoStartSession(PayConnectionParameters cParams = null)
+      protected override PaySession DoStartSession(ConnectionParameters cParams, IPaySessionContext context = null)
+      { return new MockSession(this, (MockConnectionParameters)cParams, context); }
+
+      protected internal override Transaction DoTransfer(PaySession session, Account from, Account to, Amount amount, string description = null, object extraData = null)
       {
-        PayConnectionParameters sessionParams = cParams ?? DefaultSessionConnectParams;
-        return this.StartSession(sessionParams as MockConnectionParameters);
+        var actualAccountData = session.FetchAccountData(to);
+
+        if (actualAccountData == null)
+        {
+          StatTransferError();
+          throw new PaymentMockException(StringConsts.PAYMENT_UNKNOWN_ACCOUNT_ERROR.Args(from) + this.GetType().Name + ".Transfer");
+        }
+
+        AccountData accountData = null;
+
+        accountData = m_Accounts.DebitBankCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountID.ToString()
+                                                && c.CardExpirationYear == actualAccountData.CardExpirationDate.Value.Year
+                                                && c.CardExpirationMonth == actualAccountData.CardExpirationDate.Value.Month
+                                                && c.CardVC == actualAccountData.CardVC);
+
+        if (accountData != null)
+        {
+          var created = DateTime.Now;
+
+          var taId = session.GenerateTransactionID(TransactionType.Transfer);
+
+          var ta = new Transaction(taId, TransactionType.Transfer, TransactionStatus.Success, Account.EmptyInstance, to, this.Name, taId, created, amount, description: description, extraData: extraData);
+
+          StatTransfer(amount);
+
+          return ta;
+        }
+
+        accountData = m_Accounts.DebitCardCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountID.ToString()
+                                                && c.CardExpirationYear == actualAccountData.CardExpirationDate.Value.Year
+                                                && c.CardExpirationMonth == actualAccountData.CardExpirationDate.Value.Month
+                                                && c.CardVC == actualAccountData.CardVC);
+
+        if (accountData != null)
+        {
+          var created = DateTime.Now;
+
+          var taId = session.GenerateTransactionID(TransactionType.Transfer);
+
+          var ta = new Transaction(taId, TransactionType.Transfer, TransactionStatus.Success, Account.EmptyInstance, to, this.Name, taId, created, amount, description: description, extraData: extraData);
+
+          StatTransfer(amount);
+
+          return ta;
+        }
+
+        accountData = m_Accounts.DebitCardCorrectWithAddr.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountID.ToString()
+                                                && c.CardExpirationYear == actualAccountData.CardExpirationDate.Value.Year
+                                                && c.CardExpirationMonth == actualAccountData.CardExpirationDate.Value.Month
+                                                && c.CardVC == actualAccountData.CardVC
+                                                && c.BillingAddress1 != actualAccountData.BillingAddress.Address1
+                                                && c.BillingAddress2 != actualAccountData.BillingAddress.Address2
+                                                && c.BillingCountry != actualAccountData.BillingAddress.Country
+                                                && c.BillingCity != actualAccountData.BillingAddress.City
+                                                && c.BillingPostalCode != actualAccountData.BillingAddress.PostalCode
+                                                && c.BillingRegion != actualAccountData.BillingAddress.Region
+                                                && c.BillingEmail != actualAccountData.BillingAddress.EMail
+                                                && c.BillingPhone != actualAccountData.BillingAddress.Phone);
+
+        if (accountData != null)
+        {
+          var created = DateTime.Now;
+
+          var taId = session.GenerateTransactionID(TransactionType.Transfer);
+
+          var ta = new Transaction(taId, TransactionType.Transfer, TransactionStatus.Success, Account.EmptyInstance, to, this.Name, taId, created, amount, description: description, extraData: extraData);
+
+          StatTransfer(amount);
+
+          return ta;
+        }
+
+        StatTransferError();
+        throw new PaymentException(StringConsts.PAYMENT_INVALID_CARD_NUMBER_ERROR + this.GetType().Name + ".Transfer");
       }
 
-      public MockSession StartSession(MockConnectionParameters cParams)
+      protected internal override Transaction DoCharge(PaySession session, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
       {
-        return new MockSession(this, cParams);
-      }
-
-      public override PaymentException VerifyPotentialTransaction(PaySession session, ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Financial.Amount amount)
-      {
-        throw new NotImplementedException();
-      }
-
-      public override Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Financial.Amount amount, bool capture = true, string description = null, object extraData = null)
-      {
-        var fromActualData = PaySystemHost.AccountToActualData(context, from);
+        var fromActualData = session.FetchAccountData(from);
 
         if (fromActualData == null)
         {
@@ -195,13 +274,13 @@ namespace NFX.Web.Pay.Mock
           throw new PaymentMockException(StringConsts.PAYMENT_UNKNOWN_ACCOUNT_ERROR.Args(from) + this.GetType().Name + ".Charge");
         }
 
-        if (m_Accounts.CreditCardDeclined.Any(c => c.AccountNumber == fromActualData.AccountNumber))
+        if (m_Accounts.CreditCardDeclined.Any(c => c.AccountNumber == fromActualData.AccountID.ToString()))
         {
           StatChargeError();
           throw new PaymentMockException(this.GetType().Name + ".Charge: card '{0}' declined".Args(fromActualData));
         }
 
-        if (m_Accounts.CreditCardLuhnError.Any(c => c.AccountNumber == fromActualData.AccountNumber))
+        if (m_Accounts.CreditCardLuhnError.Any(c => c.AccountNumber == fromActualData.AccountID.ToString()))
         {
           StatChargeError();
           throw new PaymentMockException(this.GetType().Name + ".Charge: card number '{0}' is incorrect".Args(fromActualData));
@@ -210,22 +289,22 @@ namespace NFX.Web.Pay.Mock
 
         AccountData foundAccount = null;
 
-        foundAccount = m_Accounts.CreditCardsCorrect.FirstOrDefault(c => c.AccountNumber == fromActualData.AccountNumber);
+        foundAccount = m_Accounts.CreditCardsCorrect.FirstOrDefault(c => c.AccountNumber == fromActualData.AccountID.ToString());
 
         if (foundAccount != null)
         {
-          if (foundAccount.CardExpirationYear != fromActualData.CardExpirationYear)
+          if (foundAccount.CardExpirationYear != fromActualData.CardExpirationDate.Value.Year)
           {
             StatChargeError();
             throw new PaymentMockException(StringConsts.PAYMENT_INVALID_EXPIRATION_DATE_ERROR
-              .Args(fromActualData.CardExpirationYear, fromActualData.CardExpirationMonth) + this.GetType().Name + ".Charge");
+              .Args(fromActualData.CardExpirationDate.Value.Year, fromActualData.CardExpirationDate.Value.Month) + this.GetType().Name + ".Charge");
           }
 
-          if (foundAccount.CardExpirationMonth != fromActualData.CardExpirationMonth)
+          if (foundAccount.CardExpirationMonth != fromActualData.CardExpirationDate.Value.Month)
           {
             StatChargeError();
             throw new PaymentMockException(StringConsts.PAYMENT_INVALID_EXPIRATION_DATE_ERROR
-              .Args(fromActualData.CardExpirationYear, fromActualData.CardExpirationMonth) + this.GetType().Name + ".Charge");
+              .Args(fromActualData.CardExpirationDate.Value.Year, fromActualData.CardExpirationDate.Value.Month) + this.GetType().Name + ".Charge");
           }
 
           if (foundAccount.CardVC != fromActualData.CardVC)
@@ -236,31 +315,31 @@ namespace NFX.Web.Pay.Mock
 
           var created = DateTime.UtcNow;
 
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
+          var taId = session.GenerateTransactionID(TransactionType.Charge);
 
-          var ta = Transaction.Charge(taId, this.Name, taId, from, to, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Charge, TransactionStatus.Success, from, to, this.Name, taId, created, amount, description: description, extraData: extraData);
 
           StatCharge(amount);
 
           return ta;
         }
 
-        foundAccount = m_Accounts.CreditCardCorrectWithAddr.FirstOrDefault(c => c.AccountNumber == fromActualData.AccountNumber);
+        foundAccount = m_Accounts.CreditCardCorrectWithAddr.FirstOrDefault(c => c.AccountNumber == fromActualData.AccountID.ToString());
 
         if (foundAccount != null)
         {
-          if (foundAccount.CardExpirationYear != fromActualData.CardExpirationYear)
+          if (foundAccount.CardExpirationYear != fromActualData.CardExpirationDate.Value.Year)
           {
             StatChargeError();
             throw new PaymentMockException(StringConsts.PAYMENT_INVALID_EXPIRATION_DATE_ERROR
-              .Args(fromActualData.CardExpirationYear, fromActualData.CardExpirationMonth) + this.GetType().Name + ".Charge");
+              .Args(fromActualData.CardExpirationDate.Value.Year, fromActualData.CardExpirationDate.Value.Month) + this.GetType().Name + ".Charge");
           }
 
-          if (foundAccount.CardExpirationMonth != fromActualData.CardExpirationMonth)
+          if (foundAccount.CardExpirationMonth != fromActualData.CardExpirationDate.Value.Month)
           {
             StatChargeError();
             throw new PaymentMockException(StringConsts.PAYMENT_INVALID_EXPIRATION_DATE_ERROR
-              .Args(fromActualData.CardExpirationYear, fromActualData.CardExpirationMonth) + this.GetType().Name + ".Charge");
+              .Args(fromActualData.CardExpirationDate.Value.Year, fromActualData.CardExpirationDate.Value.Month) + this.GetType().Name + ".Charge");
           }
 
           if (foundAccount.CardVC != fromActualData.CardVC)
@@ -284,9 +363,9 @@ namespace NFX.Web.Pay.Mock
 
           var created = DateTime.UtcNow;
 
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Charge);
+          var taId = session.GenerateTransactionID(TransactionType.Charge);
 
-          var ta = Transaction.Charge(taId, this.Name, taId, from, to, amount, created, description);
+          var ta = new Transaction(taId, TransactionType.Charge, TransactionStatus.Success, from, to, this.Name, taId, created, amount, description: description, extraData: extraData);
 
           StatCharge(amount);
 
@@ -296,109 +375,23 @@ namespace NFX.Web.Pay.Mock
         throw new PaymentException(StringConsts.PAYMENT_INVALID_CARD_NUMBER_ERROR + this.GetType().Name + ".Charge");
       }
 
-      public override void Capture(PaySession session, ITransactionContext context, ref Transaction charge, Financial.Amount? amount = null, string description = null, object extraData = null)
+      protected internal override bool DoVoid(PaySession session, Transaction charge, string description = null, object extraData = null)
+      {
+        StatVoid(charge);
+        return true;
+      }
+
+      protected internal override bool DoCapture(PaySession session, Transaction charge, decimal? amount = null, string description = null, object extraData = null)
       {
         StatCapture(charge, amount);
+        return true;
       }
 
-      public override Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Financial.Amount? amount = null, string description = null, object extraData = null)
+      protected internal override bool DoRefund(PaySession session, Transaction charge, decimal? amount = null, string description = null, object extraData = null)
       {
-        var refundAmount = amount ?? charge.Amount;
-
-        var created = DateTime.UtcNow;
-
-        var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Refund);
-
-        var refundTA = new Transaction(taId, TransactionType.Refund, this.Name, taId, Account.EmptyInstance, charge.From, refundAmount, created, description, relatedTransactionID: charge.ID, canRefund: false);
-
         StatRefund(charge, amount);
-
-        return refundTA;
+        return true;
       }
-
-      public override Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Financial.Amount amount, string description = null, object extraData = null)
-      {
-        var actualAccountData = PaySystemHost.AccountToActualData(context, to);
-
-        if (actualAccountData == null)
-        {
-          StatTransferError();
-          throw new PaymentMockException(StringConsts.PAYMENT_UNKNOWN_ACCOUNT_ERROR.Args(from) + this.GetType().Name + ".Transfer");
-        }
-
-        AccountData accountData = null;
-
-        accountData = m_Accounts.DebitBankCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber 
-                                                && c.CardExpirationYear == actualAccountData.CardExpirationYear
-                                                && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
-                                                && c.CardVC == actualAccountData.CardVC);
-
-        if (accountData != null)
-        {
-          var created = DateTime.Now;
-
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
-
-          var ta = Transaction.Transfer(taId, this.Name, taId, Account.EmptyInstance, to, amount, created, description, extraData);
-
-          StatTransfer(amount);
-
-          return ta;
-        }
-
-        accountData = m_Accounts.DebitCardCorrect.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber 
-                                                && c.CardExpirationYear == actualAccountData.CardExpirationYear
-                                                && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
-                                                && c.CardVC == actualAccountData.CardVC);
-
-        if (accountData != null)
-        {
-          var created = DateTime.Now;
-
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
-
-          var ta = Transaction.Transfer(taId, this.Name, taId, Account.EmptyInstance, to, amount, created, description, extraData);
-
-          StatTransfer(amount);
-
-          return ta;
-        }
-
-        accountData = m_Accounts.DebitCardCorrectWithAddr.FirstOrDefault(c => c.AccountNumber == actualAccountData.AccountNumber 
-                                                && c.CardExpirationYear == actualAccountData.CardExpirationYear
-                                                && c.CardExpirationMonth == actualAccountData.CardExpirationMonth
-                                                && c.CardVC == actualAccountData.CardVC
-                                                && c.BillingAddress1 != actualAccountData.BillingAddress.Address1
-                                                && c.BillingAddress2 != actualAccountData.BillingAddress.Address2
-                                                && c.BillingCountry != actualAccountData.BillingAddress.Country
-                                                && c.BillingCity != actualAccountData.BillingAddress.City
-                                                && c.BillingPostalCode != actualAccountData.BillingAddress.PostalCode
-                                                && c.BillingRegion != actualAccountData.BillingAddress.Region
-                                                && c.BillingEmail != actualAccountData.BillingAddress.EMail
-                                                && c.BillingPhone != actualAccountData.BillingAddress.Phone);
-
-        if (accountData != null)
-        {
-          var created = DateTime.Now;
-
-          var taId = PaySystemHost.GenerateTransactionID(session, context, TransactionType.Transfer);
-
-          var ta = Transaction.Transfer(taId, this.Name, taId, Account.EmptyInstance, to, amount, created, description, extraData);
-
-          StatTransfer(amount);
-
-          return ta;
-        }
-
-        StatTransferError();
-        throw new PaymentException(StringConsts.PAYMENT_INVALID_CARD_NUMBER_ERROR + this.GetType().Name + ".Transfer");
-      }
-
-      protected override PayConnectionParameters MakeDefaultSessionConnectParams(IConfigSectionNode paramsSection)
-      {
-        return PayConnectionParameters.Make<MockConnectionParameters>(paramsSection);
-      } 
-
     #endregion
   }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -415,7 +415,7 @@ namespace NFX.WinForms.Controls
           Point trg = m_TargetPoint;
           trg.Offset(-Location.X, -Location.Y);
 
-          BaseApplication.Theme.PartRenderer.Balloon(e.Graphics, rect, trg, m_BalloonColor, null);
+          //BaseApplication.Theme.PartRenderer.Balloon(e.Graphics, rect, trg, m_BalloonColor, null);
 
           //render Text
 
@@ -428,15 +428,15 @@ namespace NFX.WinForms.Controls
         
           using(Brush txtBrush = new SolidBrush(this.ForeColor))
           {
-            BaseApplication.Theme.PartRenderer.Text(
-                                                 e.Graphics, 
-                                                 rect, 
-                                                 false,
-                                                 Font,
-                                                 txtBrush, 
-                                                 null, 
-                                                 Text,
-                                                 m_BalloonTextAlignment);
+           // BaseApplication.Theme.PartRenderer.Text(
+           //                                      e.Graphics, 
+           //                                      rect, 
+           //                                      false,
+           //                                      Font,
+           //                                      txtBrush, 
+           //                                      null, 
+           //                                      Text,
+           //                                      m_BalloonTextAlignment);
           }                                       
                      
           base.OnPaint(e);

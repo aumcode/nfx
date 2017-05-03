@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,18 +20,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NFX.Environment;
+using NFX.Financial;
 using NFX.Web.Pay;
 using NFX.Web.Pay.Mock;
-using NFX.Web.Pay.Tax;
-using NFX.Web.Pay.Tax.NOP;
 
 namespace NFX.NUnit.Integration.Web.Pay
 {
-  
-
-  internal class FakePaySystemHost : IPaySystemHostImplementation
+  internal class FakePaySystemHost : PaySystemHost
   {
     #region Consts
+    public const string BRAINTREE_WEB_TERM = "fake-web-terminal";
+
+    // Valid nonces
+    public const string BRAINTREE_NONCE = "fake-valid-nonce";                                    // A valid nonce that can be used to create a transaction
+    public const string BRAINTREE_VISA_NONCE = "fake-valid-visa-nonce";                          // A nonce representing a valid Visa card request
+    public const string BRAINTREE_AMEX_NONCE = "fake-valid-amex-nonce";                          // A nonce representing a valid American Express card request
+    public const string BRAINTREE_MASTERCARD_NONCE = "fake-valid-mastercard-nonce";              // A nonce representing a valid Mastercard request
+    public const string BRAINTREE_DISCOVER_NONCE = "fake-valid-discover-nonce";                  // A nonce representing a valid Discover card request
+    public const string BRAINTREE_JCB_NONCE = "fake-valid-jcb-nonce";                            // A nonce representing a valid JCB card request
+    public const string BRAINTREE_MAESTRO_NONCE = "fake-valid-maestro-nonce";                    // A nonce representing a valid Maestro card request
+    public const string BRAINTREE_DINERSCLUB_NONCE = "fake-valid-dinersclub-nonce";              // A nonce representing a valid Diners Club card request
+    public const string BRAINTREE_PREPAID_NONCE = "fake-valid-prepaid-nonce";                    // A nonce representing a valid prepaid card request
+    public const string BRAINTREE_COMMERCIAL_NONCE = "fake-valid-commercial-nonce";              // A nonce representing a valid commercial card request
+    public const string BRAINTREE_DURBIN_REGULATED_NONCE = "fake-valid-durbin-regulated-nonce";  // A nonce representing a valid Durbin regulated card request
+    public const string BRAINTREE_HEALTHCARE_NONCE = "fake-valid-healthcare-nonce";              // A nonce representing a valid healthcare card request
+    public const string BRAINTREE_DEBIT_NONCE = "fake-valid-debit-nonce";                        // A nonce representing a valid debit card request
+    public const string BRAINTREE_PAYROLL_NONCE = "fake-valid-payroll-nonce";                    // A nonce representing a valid payroll card request
+
+    // Valid nonces with card info
+    public const string BRAINTREE_NO_INDICATORS_NONCE = "fake-valid-no-indicators-nonce";                          // A nonce representing a request for a valid card with no indicators
+    public const string BRAINTREE_UNKNOWN_INDICATORS_NONCE = "fake-valid-unknown-indicators-nonce";                // A nonce representing a request for a valid card with unknown indicators
+    public const string BRAINTREE_COUNTRY_OF_ISSUANCE_USA_NONCE = "fake-valid-country-of-issuance-usa-nonce";      // A nonce representing a request for a valid card issued in the USA
+    public const string BRAINTREE_COUNTRY_OF_ISSUANCE_CAD_NONCE = "fake-valid-country-of-issuance-cad-nonce";      // A nonce representing a request for a valid card issued in Canada
+    public const string BRAINTREE_ISSUING_BANK_NETWORK_ONLY_NONCE = "fake-valid-issuing-bank-network-only-nonce";  // A nonce representing a request for a valid card with the message 'Network Only' from the issuing bank
+
+    // Processor rejected nonces
+    public const string BRAINTREE_PROCESSOR_DECLINED_VISA_NONCE = "fake-processor-declined-visa-nonce";             // A nonce representing a request for a Visa card that was declined by the processor
+    public const string BRAINTREE_PROCESSOR_DECLINED_MASTERCARD_NONCE = "fake-processor-declined-mastercard-nonce"; // A nonce representing a request for a Mastercard that was declined by the processor
+    public const string BRAINTREE_PROCESSOR_DECLINED_AMEX_NONCE = "fake-processor-declined-amex-nonce";             // A nonce representing a request for a American Express card that was declined by the processor
+    public const string BRAINTREE_PROCESSOR_DECLINED_DISCOVER_NONCE = "fake-processor-declined-discover-nonce";     // A nonce representing a request for a Discover card that was declined by the processor
+    public const string BRAINTREE_PROCESSOR_FAILURE_JCB_NONCE = "fake-processor-failure-jcb-nonce";                 // A nonce representing a request for a JCB card that was declined by the processor
+
+    // Gateway rejected nonces
+    public const string BRAINTREE_LUHN_INVALID_NONCE = "fake-luhn-invalid-nonce";                      // A nonce representing a Luhn-invalid card
+    public const string BRAINTREE_CONSUMED_NONCE = "fake-consumed-nonce";                              // A nonce that has already been consumed
+    public const string BRAINTREE_GATEWAY_REJECTED_FRAUD_NONCE = "fake-gateway-rejected-fraud-nonce";  // A fraudulent nonce
 
     public readonly static Account CARD_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 1000001);
     public readonly static Account CARD_DECLINED = new Account("user", 111, 1000100);
@@ -44,33 +78,28 @@ namespace NFX.NUnit.Integration.Web.Pay
     public readonly static Account CARD_DEBIT_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 1000003);
     public readonly static Account CARD_DEBIT_ACCOUNT_STRIPE_CORRECT_WITH_ADDRESS = new Account("user", 111, 1000004);
     public readonly static Account BANK_ACCOUNT_STRIPE_CORRECT = new Account("user", 111, 2000001);
-
-    public readonly static Account PAYPAL_CORRECT_ACCOUNT = new Account("user", 211, 3000001);
-
-    #endregion
-
-    #region Static
-
-      private static Lazy<FakePaySystemHost> s_Instance = new Lazy<FakePaySystemHost>(() => new FakePaySystemHost());
-
-      public static FakePaySystemHost Instance { get { return s_Instance.Value; } } 
-
     #endregion
 
     #region Accounts hardcoded
+    private static List<Transaction> s_TransactionList = new List<Transaction>();
 
-    public readonly MockActualAccountData[] MockActualAccountDatas = {
-        new MockActualAccountData() {
-          Account = PAYPAL_CORRECT_ACCOUNT, 
-          AccountData = new AccountData()
-          {
-            FirstName = "Pay",
-            LastName = "Pal",
-            AccountNumber = "paypal-001",
-            BillingEmail = null // is taken from configuration
-          }
-        },
-     
+    private static readonly IDictionary<string, AccountData> s_MockAccountDatas = new Dictionary<string, AccountData> {
+        { BRAINTREE_WEB_TERM , new AccountData {
+
+        } },
+        { BRAINTREE_NONCE, new AccountData {
+          FirstName = "Martin",
+          LastName = "Kaleigh",
+
+          BillingAddress1 = "272 Keslar School Rd",
+          BillingCity = "Acme",
+          BillingRegion = "PA",
+          BillingPostalCode = "15610-1067",
+          BillingCountry = "USA"
+        } }
+      };
+
+    private static List<IActualAccountData> s_MockActualAccountDatas = new List<IActualAccountData> {
         new MockActualAccountData() {
           Account = CARD_ACCOUNT_STRIPE_CORRECT,
           AccountData = new AccountData()
@@ -238,80 +267,70 @@ namespace NFX.NUnit.Integration.Web.Pay
           }
         },
       };
+    #endregion
 
+    #region .ctor
+    public FakePaySystemHost() : base(typeof(FakePaySystemHost).Name, null) { }
+    public FakePaySystemHost(string name, IConfigSectionNode node) : base(name, node) { }
+    public FakePaySystemHost(string name, IConfigSectionNode node, object director) : base(name, node, director) {}
     #endregion
 
     #region Pvt. fields
-
-      private static List<Transaction> m_TransactionList = new List<Transaction>();
-      private ICurrencyMarket m_Market = new ConfigBasedCurrencyMarket();
-
+    private ICurrencyMarket m_Market = new ConfigBasedCurrencyMarket();
+    private object m_NextTransactionID = null;
     #endregion
 
     #region Properties
-
-      public ITaxCalculator TaxCalc { get { return NOPTaxCalculator.Instance;} }
-      
+    [Config]
+    public string PaypalValidAccount { get; set; }
     #endregion
 
     #region Public
-
-      /// <summary>
-      /// Persists transaction in memory
-      /// </summary>
-      public void SaveTransaction(Transaction ta)
-      {
-        lock (m_TransactionList)
-          m_TransactionList.Add(ta);
-      }
-
+    public void SetNextTransactionID(object id) { m_NextTransactionID = id; }
     #endregion
 
     #region IPaySystemHostImplementation
+    protected override Transaction DoFetchTransaction(PaySession session, object id)
+    {
+      return s_TransactionList.SingleOrDefault(ta => ta.ID == id);
+    }
 
-      public object GenerateTransactionID(PaySession callerSession, ITransactionContext context, TransactionType type)
+    protected override IActualAccountData DoFetchAccountData(PaySession session, Account account)
+    {
+      return s_MockActualAccountDatas.SingleOrDefault(m => m.Account == account);
+    }
+
+    public override ICurrencyMarket CurrencyMarket { get { return m_Market; } }
+
+    protected override object DoGenerateTransactionID(PaySession session, TransactionType type)
+    {
+      if (m_NextTransactionID != null)
       {
-        return generateUniqueID();
+        var id = m_NextTransactionID;
+        m_NextTransactionID = null;
+        return id;
       }
+      var eLink = new ELink((((ulong)ExternalRandomGenerator.Instance.NextRandomInteger) << 32) + ((ulong)ExternalRandomGenerator.Instance.NextRandomInteger), null);
+      return eLink.Link;
+    }
 
-      /// <summary>
-      /// In this implementation returns transaction from memory list by id
-      /// </summary>
-      public Transaction FetchTransaction(ITransactionContext context, object id)
-     { 
-        return m_TransactionList.FirstOrDefault(ta => ta.ID == id);
-      }
-
-      public IActualAccountData AccountToActualData(ITransactionContext context, Account account)
+    protected override void DoStoreTransaction(PaySession session, Transaction tran)
+    {
+      lock (s_TransactionList)
       {
-        return MockActualAccountDatas.FirstOrDefault(m => m.Account == account);
+        s_TransactionList.RemoveAll(tr => tr.ID.Equals(tran.ID));
+        s_TransactionList.Add(tran);
       }
+    }
 
-      public void Configure(Environment.IConfigSectionNode node)
+    protected override void DoStoreAccountData(PaySession session, IActualAccountData accoundData)
+    {
+      lock (s_MockActualAccountDatas)
       {
-        NFX.Environment.ConfigAttribute.Apply(this, node);
-
-        // get specific pay system information
-        var validPayPalAccound = MockActualAccountDatas.First(a => a.AccountData.AccountNumber == "paypal-001");
-        validPayPalAccound.PrimaryEMail = node.AttrByName("paypal-valid-account").Value;
+        s_MockActualAccountDatas.RemoveAll(ad => ad.Account == accoundData.Account);
+        s_MockActualAccountDatas.Add(accoundData);
       }
-
-      public string Name { get { return this.GetType().Name; } }
-
-      public ICurrencyMarket CurrencyMarket { get{ return m_Market;}}
-
+    }
     #endregion
-
-    #region pvt./impl
-
-      private string generateUniqueID()
-      {
-        ulong id = (((ulong)ExternalRandomGenerator.Instance.NextRandomInteger) << 32) + ((ulong)ExternalRandomGenerator.Instance.NextRandomInteger);
-        var eLink = new ELink(id, new byte[] { });
-        return eLink.Link;
-      }
-
-    #endregion
-
   }
 }

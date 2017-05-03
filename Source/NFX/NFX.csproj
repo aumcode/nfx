@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsentValue.cs" />
     <Compile Include="App.cs" />
     <Compile Include="ApplicationModel\BaseSession.cs" />
     <Compile Include="ApplicationModel\CommonApplicationLogic.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="ApplicationModel\ExecutionContext.cs" />
     <Compile Include="ApplicationModel\LifecycleIntfs.cs" />
     <Compile Include="ApplicationModel\NOPSession.cs" />
+    <Compile Include="ApplicationModel\Pile\CacheExtensions.cs" />
     <Compile Include="ApplicationModel\Pile\DefaultPile.cs" />
     <Compile Include="ApplicationModel\Pile\Enums.cs" />
     <Compile Include="ApplicationModel\Pile\Exceptions.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="ApplicationModel\Pile\Instrumentation\Gauges.cs" />
     <Compile Include="ApplicationModel\Pile\IPile.cs" />
     <Compile Include="ApplicationModel\Pile\ICache.cs" />
+    <Compile Include="ApplicationModel\Pile\KeyStructs.cs" />
     <Compile Include="ApplicationModel\Pile\LocalCache.cs" />
     <Compile Include="ApplicationModel\Pile\LocalCacheTable.cs" />
     <Compile Include="ApplicationModel\Pile\PilePointer.cs" />
@@ -108,10 +111,16 @@
     <Compile Include="ApplicationModel\Volatile\ObjectStoreEntry.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreProvider.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
+    <Compile Include="Collections\LookAheadEnumerable.cs" />
     <Compile Include="Collections\NamedInterlocked.cs" />
+    <Compile Include="Collections\StringMap.cs" />
     <Compile Include="DataAccess\CRUD\CacheParams.cs" />
+    <Compile Include="DataAccess\CRUD\CRUDQueryHandler.cs" />
     <Compile Include="DataAccess\CRUD\iListReadOnly.cs" />
+    <Compile Include="DataAccess\CRUD\JSONMappings.cs" />
+    <Compile Include="DataAccess\CRUD\NotImplementedCRUDDataStore.cs" />
     <Compile Include="DataAccess\CRUD\RowEqualityComparer.cs" />
+    <Compile Include="DataAccess\CRUD\Cursor.cs" />
     <Compile Include="DataUtils.cs" />
     <Compile Include="CoreConsts.cs" />
     <Compile Include="DataAccess\CRUD\CRUDOperationCallContext.cs" />
@@ -120,17 +129,8 @@
     <Compile Include="DataAccess\CRUD\Subscriptions\Subscription.cs" />
     <Compile Include="DataAccess\CRUD\Subscriptions\SubscriptionAppComponent.cs" />
     <Compile Include="Environment\ConfigNodeEqualityComparer.cs" />
-    <Compile Include="Erlang\Connect\Transport\ErlTcpTransport.cs" />
-    <Compile Include="Erlang\Connect\Transport\ErlTransportFactory.cs" />
-    <Compile Include="Erlang\Connect\Transport\ErlTransportPasswordSource.cs" />
-    <Compile Include="Erlang\Connect\Transport\IErlTransport.cs" />
-    <Compile Include="Erlang\DataAccess\ErlCRUDMailbox.cs" />
-    <Compile Include="Erlang\DataAccess\ErlCRUDQueryExecutionContext.cs" />
-    <Compile Include="Erlang\DataAccess\ErlCRUDScriptQueryHandler.cs" />
-    <Compile Include="Erlang\DataAccess\ErlCRUDSubscription.cs" />
-    <Compile Include="Erlang\DataAccess\ErlDataStore.cs" />
-    <Compile Include="Erlang\DataAccess\ErlDataAccessException.cs" />
-    <Compile Include="Erlang\DataAccess\SchemaMap.cs" />
+    <Compile Include="Environment\ConfigStringBuilder.cs" />
+    <Compile Include="Environment\JSONConfiguration.cs" />
     <Compile Include="ExternalParameterAttribute.cs" />
     <Compile Include="CodeAnalysis\Source\StreamSource.cs" />
     <Compile Include="CodeAnalysis\XML\XMLLanguage.cs" />
@@ -163,27 +163,6 @@
     <Compile Include="DataAccess\Enums.cs" />
     <Compile Include="DataAccess\IUniqueSequenceProvider.cs" />
     <Compile Include="ELink.cs" />
-    <Compile Include="Erlang\Connect\ErlConnection.cs" />
-    <Compile Include="Erlang\Internal\ErlAcceptor.cs" />
-    <Compile Include="Erlang\Internal\ErlMonitors.cs" />
-    <Compile Include="Erlang\ErlApp.cs" />
-    <Compile Include="Erlang\Connect\ErlEpmd.cs" />
-    <Compile Include="Erlang\Connect\ErlLink.cs" />
-    <Compile Include="Erlang\Connect\ErlLocalNode.cs" />
-    <Compile Include="Erlang\Connect\ErlMbox.cs" />
-    <Compile Include="Erlang\Connect\ErlMsg.cs" />
-    <Compile Include="Erlang\Connect\ErlTransportTrace.cs" />
-    <Compile Include="Erlang\Connect\ErlAbstractConnection.cs" />
-    <Compile Include="Erlang\Connect\ErlAbstractNode.cs" />
-    <Compile Include="Erlang\Internal\ErlConstAtoms.cs" />
-    <Compile Include="Erlang\Internal\ErlParser.cs" />
-    <Compile Include="Erlang\ErlPatternMatcher.cs" />
-    <Compile Include="Erlang\Connect\ErlRemoteNode.cs" />
-    <Compile Include="Erlang\Internal\ErlBlockingQueue.cs" />
-    <Compile Include="Erlang\Internal\ErlIoServer.cs" />
-    <Compile Include="Erlang\Internal\ErlRpcServer.cs" />
-    <Compile Include="Erlang\Internal\MboxRegistry.cs" />
-    <Compile Include="Erlang\Types\ErlTrace.cs" />
     <Compile Include="ExternalRandomGenerator.cs" />
     <Compile Include="Financial\Amount.cs" />
     <Compile Include="Financial\Exceptions.cs" />
@@ -203,6 +182,7 @@
     <Compile Include="Glue\Native\WireData.cs" />
     <Compile Include="Glue\Tools\GluecCompiler.cs" />
     <Compile Include="Glue\Tools\CSharpGluecCompiler.cs" />
+    <Compile Include="GuidTypeResolver.cs" />
     <Compile Include="IEndableInstance.cs" />
     <Compile Include="Instrumentation\BaseGauges.cs" />
     <Compile Include="Instrumentation\SelfInstruments.cs" />
@@ -216,6 +196,7 @@
     <Compile Include="IO\ErrorHandling\GaloisField.cs" />
     <Compile Include="IO\ErrorHandling\GaloisPolynomial.cs" />
     <Compile Include="IO\ErrorHandling\ReedSolomonEncoder.cs" />
+    <Compile Include="IO\FileSystem\DeleteFilesJob.cs" />
     <Compile Include="IO\FileSystem\FileSystemDirectory.cs" />
     <Compile Include="IO\FileSystem\FileSystemException.cs" />
     <Compile Include="IO\FileSystem\FileSystemFile.cs" />
@@ -243,6 +224,7 @@
     <Compile Include="IO\Net\IPRange.cs" />
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="IO\SlimFormat.cs" />
+    <Compile Include="KeyedMonitor.cs" />
     <Compile Include="Log\Bin\Exceptions.cs" />
     <Compile Include="Log\Bin\Metadata.cs" />
     <Compile Include="Log\Bin\Format.cs" />
@@ -306,27 +288,6 @@
     <Compile Include="DataAccess\CRUD\Intfs.cs" />
     <Compile Include="DataAccess\CRUD\Query.cs" />
     <Compile Include="DataAccess\CRUD\Rowset.cs" />
-    <Compile Include="Erlang\Internal\AtomTable.cs" />
-    <Compile Include="Erlang\Internal\ErlConsts.cs" />
-    <Compile Include="Erlang\ErlException.cs" />
-    <Compile Include="Erlang\ErlOutputStream.cs" />
-    <Compile Include="Erlang\Types\ErlTupleBase.cs" />
-    <Compile Include="Erlang\Types\ErlTuple.cs" />
-    <Compile Include="Erlang\Types\ErlList.cs" />
-    <Compile Include="Erlang\Types\ErlString.cs" />
-    <Compile Include="Erlang\Types\ErlRef.cs" />
-    <Compile Include="Erlang\Types\ErlPort.cs" />
-    <Compile Include="Erlang\Types\ErlPid.cs" />
-    <Compile Include="Erlang\Types\ErlBinary.cs" />
-    <Compile Include="Erlang\Types\ErlByte.cs" />
-    <Compile Include="Erlang\Types\ErlBoolean.cs" />
-    <Compile Include="Erlang\Types\Enums.cs" />
-    <Compile Include="Erlang\Types\ErlAtom.cs" />
-    <Compile Include="Erlang\Types\ErlDouble.cs" />
-    <Compile Include="Erlang\Types\ErlLong.cs" />
-    <Compile Include="Erlang\Types\ErlObject.cs" />
-    <Compile Include="Erlang\Types\ErlVar.cs" />
-    <Compile Include="Erlang\Types\ErlVarBind.cs" />
     <Compile Include="DataAccess\CRUD\Attributes.cs" />
     <Compile Include="DataAccess\CRUD\DynamicRow.cs" />
     <Compile Include="DataAccess\CRUD\Exceptions.cs" />
@@ -334,17 +295,29 @@
     <Compile Include="DataAccess\CRUD\Schema.cs" />
     <Compile Include="DataAccess\CRUD\Table.cs" />
     <Compile Include="DataAccess\CRUD\TypedRow.cs" />
-    <Compile Include="Erlang\ErlInputStream.cs" />
     <Compile Include="OS\Computer.cs" />
     <Compile Include="OS\Instrumentation\Gauges.cs" />
     <Compile Include="OS\ManyReadersOneWriterSynchronizer.cs" />
     <Compile Include="OS\NetworkUtils.cs" />
+    <Compile Include="Security\HashedPassword.cs" />
+    <Compile Include="Security\IPasswordManager.cs" />
+    <Compile Include="Security\MD5PasswordHashingAlgorithm.cs" />
+    <Compile Include="Security\PasswordHashingAlgorithm.cs" />
+    <Compile Include="Security\DefaultPasswordManager.cs" />
+    <Compile Include="Security\PasswordRepresentation.cs" />
+    <Compile Include="Security\SecureBuffer.cs" />
+    <Compile Include="Serialization\Arow\ArowAttribute.cs" />
+    <Compile Include="Serialization\Arow\ArowSerializer.cs" />
+    <Compile Include="Serialization\Arow\CodeGenerator.cs" />
+    <Compile Include="Serialization\Arow\Reader.cs" />
+    <Compile Include="Serialization\Arow\Exceptions.cs" />
+    <Compile Include="Serialization\Arow\Writer.cs" />
+    <Compile Include="Serialization\CSV\CSVParser.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
-    <Compile Include="RecordModel\CRUDSchemaRecord.cs" />
+    <Compile Include="SealedString.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />
-    <Compile Include="Security\PasswordUtils.cs" />
     <Compile Include="Security\SocialNetTokenCredentials.cs" />
     <Compile Include="Serialization\BSON\BinUtils.cs" />
     <Compile Include="Serialization\BSON\BSONDocument.cs" />
@@ -354,6 +327,7 @@
     <Compile Include="Serialization\BSON\Exceptions.cs" />
     <Compile Include="Serialization\BSON\BSONSpecialValues.cs" />
     <Compile Include="Serialization\BSON\RowConverter.cs" />
+    <Compile Include="Serialization\CSV\CSVWritingOptions.cs" />
     <Compile Include="Serialization\JSON\JSONExtensions.cs" />
     <Compile Include="Serialization\JSON\JSONReadableWritableIntfs.cs" />
     <Compile Include="CodeAnalysis\JSON\JSONPatternMatchAttribute.cs" />
@@ -457,7 +431,6 @@
     <Compile Include="Glue\Node.cs" />
     <Compile Include="Glue\NOPGlue.cs" />
     <Compile Include="Glue\Bindings.cs" />
-    <Compile Include="Glue\Protocol\RemoteExceptionData.cs" />
     <Compile Include="Glue\Protocol\RequestMsg.cs" />
     <Compile Include="Glue\CallSlot.cs" />
     <Compile Include="Glue\Protocol\ResponseMsg.cs" />
@@ -493,7 +466,6 @@
     <Compile Include="Inventorization\BasicInventorization.cs" />
     <Compile Include="Inventorization\InventorizationManager.cs" />
     <Compile Include="Inventorization\InventorizationException.cs" />
-    <Compile Include="Inventorization\RecordModelInventorization.cs" />
     <Compile Include="Inventorization\IInventorization.cs" />
     <Compile Include="IO\WritingStreamer.cs" />
     <Compile Include="IO\ReadingStreamer.cs" />
@@ -515,7 +487,6 @@
     <Compile Include="Log\Syslog\SyslogClient.cs" />
     <Compile Include="Log\Syslog\SyslogMessage.cs" />
     <Compile Include="Parsing\Enums.cs" />
-    <Compile Include="RecordModel\Attributes.cs" />
     <Compile Include="ReferenceEqualityComparer.cs" />
     <Compile Include="RelationalModel\Compiler.cs" />
     <Compile Include="RelationalModel\MsSQLServerCompiler.cs" />
@@ -561,29 +532,8 @@
     <Compile Include="Parsing\TokenParser.cs" />
     <Compile Include="Parsing\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecordModel\BindingBase.cs" />
-    <Compile Include="RecordModel\BindingIntf.cs" />
-    <Compile Include="RecordModel\ContextIntf.cs" />
     <Compile Include="DataAccess\DataStoreKeys.cs" />
     <Compile Include="DataAccess\Exceptions.cs" />
-    <Compile Include="RecordModel\DataAccess\IModelDataStore.cs" />
-    <Compile Include="RecordModel\Enums.cs" />
-    <Compile Include="RecordModel\Events.cs" />
-    <Compile Include="RecordModel\Exceptions.cs" />
-    <Compile Include="RecordModel\Field.cs" />
-    <Compile Include="RecordModel\FieldBinding.cs" />
-    <Compile Include="RecordModel\FieldClasses.cs" />
-    <Compile Include="RecordModel\FieldIntf.cs" />
-    <Compile Include="RecordModel\FieldPropertyDescriptor.cs" />
-    <Compile Include="RecordModel\GUIDataParser.cs" />
-    <Compile Include="RecordModel\IControllableInteractions.cs" />
-    <Compile Include="RecordModel\ListField.cs" />
-    <Compile Include="RecordModel\LookupDictionary.cs" />
-    <Compile Include="RecordModel\ModelBase.cs" />
-    <Compile Include="RecordModel\Notifications.cs" />
-    <Compile Include="RecordModel\Record.cs" />
-    <Compile Include="RecordModel\RecordBinding.cs" />
-    <Compile Include="RecordModel\TypedField.cs" />
     <Compile Include="Security\AccessLevel.cs" />
     <Compile Include="Security\ConfigSecurityManager.cs" />
     <Compile Include="Security\AuthenticationToken.cs" />
@@ -614,6 +564,8 @@
     <Compile Include="Serialization\POD\PortableObjectDocumentTransforms.cs" />
     <Compile Include="Serialization\POD\MetaTypes.cs" />
     <Compile Include="Serialization\POD\PortableObjectDocument.cs" />
+    <Compile Include="Serialization\CSV\CSVWriter.cs" />
+    <Compile Include="Serialization\Arow\DataTypes.cs" />
     <Compile Include="Serialization\SerializationUtils.cs" />
     <Compile Include="Serialization\Slim\Arrays.cs" />
     <Compile Include="Serialization\Slim\Attributes.cs" />
@@ -636,9 +588,14 @@
     <Compile Include="ServiceModel\WorkItem.cs" />
     <Compile Include="ServiceModel\WorkItemAggregatorService.cs" />
     <Compile Include="ServiceModel\WorkQueue.cs" />
+    <Compile Include="Standards\Countries_ISO3166_1.cs" />
+    <Compile Include="Standards\Distance.cs" />
+    <Compile Include="Standards\Weight.cs" />
     <Compile Include="StringConsts.cs" />
     <Compile Include="StringValueConversion.cs" />
     <Compile Include="TaskUtils.cs" />
+    <Compile Include="Templatization\DOMGenerator.cs" />
+    <Compile Include="Templatization\NHTCompiler.cs" />
     <Compile Include="Templatization\Sources.cs" />
     <Compile Include="Templatization\IRenderingTarget.cs" />
     <Compile Include="Templatization\Exceptions.cs" />
@@ -646,6 +603,8 @@
     <Compile Include="Templatization\StringRenderingTarget.cs" />
     <Compile Include="Templatization\Template.cs" />
     <Compile Include="Templatization\TextCSTemplateCompiler.cs" />
+    <Compile Include="Aver.cs" />
+    <Compile Include="Templatization\TextJSTemplateCompiler.cs" />
     <Compile Include="Throttling\NOPThrottle.cs" />
     <Compile Include="Throttling\Intfs.cs" />
     <Compile Include="Throttling\NOPThrottling.cs" />
@@ -667,9 +626,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeAnalysis\Laconfig\LaconfigParser.Impl.cs" />
-    <None Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Compile Include="Media\TagCodes\QR\QRMatrix.Mask.cs" />
     <None Include="Media\TagCodes\CHANGES" />
   </ItemGroup>

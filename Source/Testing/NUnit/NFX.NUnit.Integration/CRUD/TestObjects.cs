@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ namespace NFX.NUnit.Integration.CRUD
 
     public class Types : TypedRow
     {
-      [Field]
+      [Field(key: true)]
       public GDID GDID{ get; set;} 
 
       [Field]
@@ -122,6 +122,9 @@ namespace NFX.NUnit.Integration.CRUD
       
       [Field]
       public DateTime? DOB{ get; set;} 
+
+      [Field]
+      public int? Age{ get; set;} 
     }
 
 
@@ -138,5 +141,18 @@ namespace NFX.NUnit.Integration.CRUD
       public string String_Name{ get; set;}
     }
 
+
+    [Serializable]
+    [Table(name: "tbl_tuple")]
+    public class TupleData : TypedRow
+    {
+        public TupleData() {}
+
+        [Field(required: true, key: true)]
+        public long COUNTER {get; set;}
+
+        [Field(required: true)]
+        public string DATA {get; set;}
+    }
 
 }

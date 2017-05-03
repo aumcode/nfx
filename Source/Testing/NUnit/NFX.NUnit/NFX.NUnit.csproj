@@ -80,6 +80,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\PointerCacheTest.cs" />
+    <Compile Include="AppModel\Pile\PilePrimitivesTest.cs" />
+    <Compile Include="AppModel\Pile\PileMutableTests.cs" />
+    <Compile Include="AppModel\Pile\DurableCacheTest.cs" />
+    <Compile Include="AppModel\Pile\PileTests3.cs" />
+    <Compile Include="AppModel\Pile\PileTests2.cs" />
+    <Compile Include="AppModel\Pile\KeyStructsTest.cs" />
     <Compile Include="AppModel\Pile\PileCacheTestCore.cs" />
     <Compile Include="AppModel\FinishNotifiablesTests.cs" />
     <Compile Include="AppModel\Pile\CacheTest.cs" />
@@ -91,16 +98,32 @@
     <Compile Include="CodeAnalysis\JSONLexer.cs" />
     <Compile Include="CodeAnalysis\JSONParser.cs" />
     <Compile Include="Collections\BitListTest.cs" />
+    <Compile Include="Collections\StringMapTests.cs" />
+    <Compile Include="Collections\LookAheadEnumerableTest.cs" />
     <Compile Include="Collections\RegistryTests.cs" />
     <Compile Include="Collections\EventedDictionaryTests.cs" />
     <Compile Include="Collections\EventedListTests.cs" />
     <Compile Include="Collections\MatrixTest.cs" />
     <Compile Include="Config\ConfAndJSON.cs" />
     <Compile Include="Config\ConfigNodeEqualityComparerTest.cs" />
+    <Compile Include="Config\JSONConfigurationTest.cs" />
     <Compile Include="Config\ValueAccessors.cs" />
     <Compile Include="Config\FactoryUtilsTests.cs" />
     <Compile Include="Config\ProviderLoads.cs" />
     <Compile Include="BuildInfoTest.cs" />
+    <Compile Include="Security\PasswordManagerTests.cs" />
+    <Compile Include="Serialization\ARowBenchmarking.cs" />
+    <Compile Include="Serialization\ARow.TestCores.cs" />
+    <Compile Include="Serialization\ARow.Rows.cs" />
+    <Compile Include="Serialization\ARow.cs" />
+    <Compile Include="Serialization\ARowAllTypes.cs" />
+    <Compile Include="Serialization\ARowAmorphous.cs" />
+    <Compile Include="Serialization\ARowBenchmarkingParallel.cs" />
+    <Compile Include="Serialization\CSVWriterTest.cs" />
+    <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
+    <Compile Include="Serialization\CSVParserTest.cs" />
+    <Compile Include="SealedStringTests.cs" />
+    <Compile Include="DataAccess\FieldAttrCloningTests.cs" />
     <Compile Include="DataAccess\RowCopyFields.cs" />
     <Compile Include="DataAccess\SchemaRegExpAndDisplayFormat.cs" />
     <Compile Include="DataAccess\GDIDTest.cs" />
@@ -147,6 +170,7 @@
     <Compile Include="Parsing\NatTxtGen.cs" />
     <Compile Include="Security\PuzzleKeypadTests.cs" />
     <Compile Include="Serialization\BSON.cs" />
+    <Compile Include="Serialization\Slim3.cs" />
     <Compile Include="Serialization\JSONtoRow.cs" />
     <Compile Include="Serialization\RowConverterTest.cs" />
     <Compile Include="Serialization\SlimObjectGraph.cs" />
@@ -154,6 +178,9 @@
     <Compile Include="Serialization\JSONDynamism.cs" />
     <Compile Include="Serialization\Slim2.cs" />
     <Compile Include="Social\SocialSerialization.cs" />
+    <Compile Include="Standards\Countries_ISO3166_1.cs" />
+    <Compile Include="Standards\DistanceTest.cs" />
+    <Compile Include="Standards\WeightTest.cs" />
     <Compile Include="StringValueConversionTests.cs" />
     <Compile Include="ObjectValueConversionTests.cs" />
     <Compile Include="DataAccess\QuerySourceParsing.cs" />
@@ -186,15 +213,9 @@
     <Compile Include="Parsing\CompilingExpressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parsing\Evaluator.cs" />
-    <Compile Include="RecordModel\SpeedRecord.cs" />
-    <Compile Include="RecordModel\RecordWithAttributes.cs" />
-    <Compile Include="RecordModel\PersonRecordWithAttributes.cs" />
-    <Compile Include="RecordModel\PersonRecord.cs" />
-    <Compile Include="RecordModel\Record.cs" />
     <Compile Include="ScopeTest.cs" />
     <Compile Include="Serialization\ArrayWalking.cs" />
     <Compile Include="Serialization\POD.cs" />
-    <Compile Include="Serialization\ExampleRecord.cs" />
     <Compile Include="Serialization\JSON.cs" />
     <Compile Include="Serialization\PODSlim.cs" />
     <Compile Include="Serialization\TestObjects.cs" />
@@ -205,18 +226,22 @@
     <Compile Include="TestLog.cs" />
     <Compile Include="Throttling\ThrottlingTest.cs" />
     <Compile Include="Wave\URIPatternTests.cs" />
+    <Compile Include="Web\Client\RecordTest.cs" />
+    <Compile Include="Web\EscapeJSLiteralTest.cs" />
+    <Compile Include="Web\MultiPart\MultipartTest.cs" />
     <Compile Include="Web\PortalHubTests.cs" />
-    <Compile Include="Web\MultiPart\CopyToTest.cs" />
-    <Compile Include="Web\MultiPart\FindSplitTests.cs" />
-    <Compile Include="Web\MultiPart\FindTest.cs" />
     <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />
-    <Compile Include="Web\MultiPart\SplitTest.cs" />
-    <Compile Include="Web\ParseQueryStringTest.cs" />
     <Compile Include="Web\Pay\ConfigBasedCurrencyMarketTests.cs" />
     <Compile Include="Web\Pay\FeeTests.cs" />
+    <Compile Include="Web\Shipping\AddressComparatorTest.cs" />
+    <Compile Include="Web\CacheControlTests.cs" />
     <Compile Include="Web\WebSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NFX.Erlang\NFX.Erlang.csproj">
+      <Project>{f4cc3692-4836-429b-9f43-908d9e99b458}</Project>
+      <Name>NFX.Erlang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NFX.Wave\NFX.Wave.csproj">
       <Project>{247f9980-3f58-42bd-b261-e23a75dfc3b5}</Project>
       <Name>NFX.Wave</Name>
@@ -250,6 +275,9 @@
     <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_test_chinese.txt.dat" />
     <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_inputs_and_test_russian.txt.dat" />
     <EmbeddedResource Include="Web\MultiPart\Resources\upload_stream_2_text_files.txt.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\bmp.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\test.dat" />
+    <EmbeddedResource Include="Web\MultiPart\Resources\txt.dat" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -267,10 +295,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RecordModel\PersonRecordWithAttributes.test-tech.js" />
-    <EmbeddedResource Include="RecordModel\PersonRecordWithAttributes.m_fldName.test-tech.js" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

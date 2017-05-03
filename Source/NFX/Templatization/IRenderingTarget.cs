@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ namespace NFX.Templatization
     /// </summary>
     public interface IRenderingTarget
     {
-      
+
       /// <summary>
       /// Encodes an object per underlying target specification. For example, a Http-related target may
       ///  encode strings using HttpEncoder. If particular target does not support encoding then this method should just return the argument unmodified
       /// </summary>
       object Encode(object value);
-      
-      
+
+
       /// <summary>
       /// Writes a generic object into target. Templates are not necessarily text-based, consequently this method takes an object argument
       /// </summary>
@@ -44,6 +44,6 @@ namespace NFX.Templatization
       /// Flushes writes into underlying target implementation. If target does not support buffering then this call does nothing
       /// </summary>
       void Flush();
-      
+
     }
 }

@@ -1,0 +1,6 @@
+﻿<push><b color=black><f color=white>
+Arow Serializer Code Generator<f color=gray>
+Copyright (c) 2017 D.Khmaladze / ITAdapter Inc.
+Version 1.0 / NFX as of Feb 24 2017
+
+<pop>

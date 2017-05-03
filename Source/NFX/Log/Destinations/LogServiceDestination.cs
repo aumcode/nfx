@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ namespace NFX.Log.Destinations
        #region .ctor
         public LogServiceDestination() : base(null)
         {
-          
+
         }
-       
+
         public LogServiceDestination(string name) : base(name)
         {
         }
@@ -43,18 +43,18 @@ namespace NFX.Log.Destinations
           base.Destructor();
         }
       #endregion
-        
+
        #region Pvt Fields
-        
+
         private LogService  m_Service = new LogService(null);
-      #endregion   
-       
-      
+      #endregion
+
+
       #region Properties
-      
+
 
       #endregion
-      
+
       #region Public
 
 
@@ -63,17 +63,17 @@ namespace NFX.Log.Destinations
                base.Open();
                m_Service.Start();
            }
-       
+
            public override void Close()
            {
                m_Service.WaitForCompleteStop();
                base.Close();
            }
 
-      #endregion 
-       
-        
-        
+      #endregion
+
+
+
         #region Protected
 
         protected override void DoConfigure(IConfigSectionNode node)
@@ -81,13 +81,13 @@ namespace NFX.Log.Destinations
             base.DoConfigure(node);
             m_Service.Configure(node);
         }
-        
-        
+
+
         protected internal override void DoSend(Message msg)
         {
            m_Service.Write(msg);
         }
-     
+
       #endregion
     }
 }

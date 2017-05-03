@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,46 +21,42 @@ using System.Text;
 
 namespace NFX.Security
 {
-    
     /// <summary>
     /// Represents security provider-internal ID that SecurityManager assigns into User object on authentication.
     /// These tokens can be used in place of Credentials to re-authenticate users or to requery user rights.
-    /// External parties should never be supplied with this struct as it is backend-internal 
+    /// External parties should never be supplied with this struct as it is backend-internal
     /// </summary>
     [Serializable]
     public struct AuthenticationToken
     {
-        
-        public AuthenticationToken(string realm, object data)
-        {
-           m_Realm = realm;
-           m_Data = data;
-        }
-        
-        private string m_Realm;
-        private object m_Data;
-        
-        
-        /// <summary>
-        /// Provides information about back-end security source (realm) that perfomed authentication, i.e. LDAP instance, Database name etc...
-        /// </summary>
-        public string Realm
-        {
-          get {return m_Realm;}
-        }
+      public AuthenticationToken(string realm, object data)
+      {
+          m_Realm = realm;
+          m_Data = data;
+      }
 
-        /// <summary>
-        /// Provides provider-specific key/id that uniquely identifies the user in the realm
-        /// </summary>
-        public object Data
-        {
-          get { return m_Data; } 
-        }
+      private string m_Realm;
+      private object m_Data;
 
-        public override string ToString()
-        {
-          return "AuthToken({0}::{1})".Args(m_Realm, m_Data);
-        }
+      /// <summary>
+      /// Provides information about back-end security source (realm) that perfomed authentication, i.e. LDAP instance, Database name etc...
+      /// </summary>
+      public string Realm
+      {
+        get {return m_Realm;}
+      }
 
+      /// <summary>
+      /// Provides provider-specific key/id that uniquely identifies the user in the realm
+      /// </summary>
+      public object Data
+      {
+        get { return m_Data; }
+      }
+
+      public override string ToString()
+      {
+        return "AuthToken({0}::{1})".Args(m_Realm, m_Data);
+      }
     }
 }

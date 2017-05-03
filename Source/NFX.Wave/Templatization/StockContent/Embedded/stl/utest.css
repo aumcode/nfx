@@ -1,0 +1,10 @@
+body {  padding: 0;  margin: 0; font-family: Tahoma, Verdana; font-size: 10px; }
+pre { font-family: 'Courier New'; font-size: 10px; display: block; border: 1px dotted #e0e0e0; 
+      padding: 2px; margin: 2px 2px 2px 2px; background-color: rgba(220,220,220,0.4); white-space: pre-wrap;}
+.wvUTestArea { width: 100%; display: block;  border: 1px solid #004080; background-color: #0094ff; }
+.wvUTestTitle { font-weight: bold; display: block; }
+.wvUTestNumber { font-weight: normal; color: #e0e0e0; font-size: 0.8em; border: 1px solid #404040; background-color: #202020; padding: 0 1ch; }
+.wvUTestOK { margin-left: auto;  margin-right: auto; width: 99%; padding: 1px; background-color: #b6ff00; border: 1px dotted #202020; }
+.wvUTestError { margin-left: auto; margin-right: auto; width: 99%; padding: 1px; background-color: #ff8080;  border: 2px solid red; }
+.wvUTestTableError { background-color: #ffa0a0; }
+.wvUTestTableTotal * { font-size: 1.5em; border-top: 2px solid #404040; }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ using MySql.Data.MySqlClient;
 using NFX;
 using NFX.Log;
 using NFX.DataAccess;
-using NFX.RecordModel;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
 
@@ -34,26 +33,11 @@ using NFX.DataAccess.Distributed;
 namespace NFX.DataAccess.MySQL
 {
 
-  internal static class GeneratorUtils
+  /// <summary>
+  /// Facilitates various SQL-construction and logging tasks
+  /// </summary>
+  public static class GeneratorUtils
   {
-
-        public static Record AsSuitableRecordInstance(ModelBase model, bool autoSql)
-        {
-          var record = model as Record;
-
-          if (record == null)
-            throw new MySQLDataAccessException(string.Format(StringConsts.MODEL_TYPE_NOT_RECORD_ERROR, model.GetType().Name));
-
-          if (autoSql)
-          {
-              if (string.IsNullOrEmpty(record.TableName))
-                throw new MySQLDataAccessException(string.Format(StringConsts.RECORD_TABLE_NAME_ERROR, model.GetType().Name));
-          }
-      
-          return record;
-        }
-
-
 
         public static string KeyToWhere(IDataStoreKey key, MySqlParameterCollection parameters)
         {

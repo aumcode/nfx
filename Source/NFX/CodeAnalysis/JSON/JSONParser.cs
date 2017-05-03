@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -25,25 +25,29 @@ namespace NFX.CodeAnalysis.JSON
     /// <summary>
     /// Parses JSON lexer output into object graphs.
     /// NOTE: Although called JSON, this is really a JSON superset implementation that includes extra features:
-    ///  comments, directives, verbatim strings(start with $), ' or " string escapes, unquoted object key names 
+    ///  comments, directives, verbatim strings(start with $), ' or " string escapes, unquoted object key names
     /// </summary>
     public sealed partial class JSONParser : Parser<JSONLexer>
     {
-        
-        public JSONParser(JSONLexer input,  MessageList messages = null, bool throwErrors = false) :
+
+        public JSONParser(JSONLexer input,  MessageList messages = null, bool throwErrors = false, bool caseSensitiveMaps = true) :
             base(new JSONData(), new JSONLexer[]{ input }, messages, throwErrors)
         {
             m_Lexer = Input.First();
+            m_CaseSensitiveMaps = caseSensitiveMaps;
         }
-        
-        
-        public JSONParser(JSONData context, JSONLexer input,  MessageList messages = null, bool throwErrors = false) :
+
+
+        public JSONParser(JSONData context, JSONLexer input,  MessageList messages = null, bool throwErrors = false, bool caseSensitiveMaps = true) :
             base(context, new JSONLexer[]{ input }, messages, throwErrors)
         {
             m_Lexer = Input.First();
+            m_CaseSensitiveMaps = caseSensitiveMaps;
         }
-        
+
         private JSONLexer m_Lexer;
+
+        private bool m_CaseSensitiveMaps;
 
         public JSONLexer Lexer { get { return m_Lexer;} }
 
@@ -60,13 +64,13 @@ namespace NFX.CodeAnalysis.JSON
         }
 
 
-        
-       
+
+
         protected override void DoParse()
         {
             try
             {
-                tokens = Lexer.GetEnumerator(); 
+                tokens = Lexer.GetEnumerator();
                 fetchPrimary();
                 var root = doAny();
                 ResultContext.setData( root );

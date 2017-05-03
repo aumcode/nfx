@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,16 +16,12 @@
 </FILE_LICENSE>*/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 
 using NFX;
 using NFX.Environment;
 using NFX.Security;
 using NFX.Financial;
+using System.Collections.Generic;
 
 namespace NFX.Web.Pay
 {
@@ -36,92 +32,174 @@ namespace NFX.Web.Pay
   public abstract class PaySession : DisposableObject, INamed
   {
     #region .ctor
+    protected PaySession(PaySystem paySystem, ConnectionParameters cParams, IPaySessionContext context = null)
+    {
+      if (paySystem == null || cParams == null)
+        throw new PaymentException(StringConsts.ARGUMENT_ERROR + this.GetType().Name + ".ctor((paySystem|cParams)=null)");
 
-      protected PaySession(PaySystem paySystem, PayConnectionParameters cParams)
+      PaySystem = paySystem;
+
+      Context = context ?? PaySystemHost.GetDefaultTransactionContext();
+
+      ConnectionParameters = cParams;
+
+      lock (PaySystem.Sessions)
+        PaySystem.Sessions.Add(this);
+    }
+
+    protected override void Destructor()
+    {
+      try
       {
-        if (paySystem == null || cParams == null)
-          throw new PaymentException(StringConsts.ARGUMENT_ERROR + this.GetType().Name + ".ctor(paySystem is not null and cParams is not null)");
+        if (m_AffectedAccounts != null)
+          foreach (var account in m_AffectedAccounts.Values)
+            PaySystemHost.DoStoreAccountData(this, account);
 
-        m_PaySystem = paySystem;
-
-        m_Name = cParams.Name;
-
-        m_User = cParams.User;
-
-        lock (m_PaySystem.m_Sessions)
-          m_PaySystem.m_Sessions.Add(this);
+        if (m_AffectedTransactions != null)
+          foreach (var tran in m_AffectedTransactions.Values)
+            PaySystemHost.DoStoreTransaction(this, tran);
+      }
+      finally
+      {
+        if (PaySystem != null)
+          lock (PaySystem.Sessions)
+            PaySystem.Sessions.Remove(this);
       }
 
-      protected override void Destructor()
-      {
-        lock (m_PaySystem.m_Sessions)
-          m_PaySystem.m_Sessions.Remove(this);
-
-        base.Destructor();
-      }
-
+      base.Destructor();
+    }
     #endregion
 
-    #region Pvt/Prot/Int Fields
+    #region Fields
+    public readonly IPaySessionContext Context;
+    public readonly PaySystem PaySystem;
+    protected readonly ConnectionParameters ConnectionParameters;
 
-      private readonly PaySystem m_PaySystem;
-      private readonly string m_Name;
-      protected readonly User m_User;
-
+    private Dictionary<object, Transaction> m_AffectedTransactions;
+    private Dictionary<Account, IActualAccountData> m_AffectedAccounts;
     #endregion
 
     #region Properties
+    protected PaySystemHost PaySystemHost { get { return PaySystem.PaySystemHost as PaySystemHost; } }
+    public string Name { get { return ConnectionParameters.Name; } }
+    public User User { get { return ConnectionParameters.User; } internal set { ConnectionParameters.User = value; } }
 
-      protected PaySystem PaySystem { get { return m_PaySystem; } }
-      public string Name { get { return m_Name; } }
-      public User User { get { return m_User; } }
-
+    public bool IsValid { get { return ConnectionParameters.User != null && ConnectionParameters.User != User.Fake; } }
     #endregion
 
     #region Public
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public PaymentException VerifyPotentialTransaction(TransactionType type, Account from, Account to, Amount amount)
+    {
+      return PaySystem.DoVerifyPotentialTransaction(this, type, from, to, amount);
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public PaymentException VerifyPotentialTransaction(ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount)
-      {
-        return m_PaySystem.VerifyPotentialTransaction(this, context, transfer, from, to, amount);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public Transaction Charge(Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
+    {
+      var tran = PaySystem.DoCharge(this, from, to, amount, capture, description, extraData);
+      StoreTransaction(tran);
+      return tran;
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public Transaction Charge(ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null)
-      {
-        return m_PaySystem.Charge(this, context, from, to, amount, capture, description, extraData);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public Transaction Transfer(Account from, Account to, Amount amount, string description = null, object extraData = null)
+    {
+      var tran = PaySystem.DoTransfer(this, from, to, amount, description, extraData);
+      StoreTransaction(tran);
+      return tran;
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public void Capture(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
-      {
-        m_PaySystem.Capture(this, context, ref charge, amount, description, extraData);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public bool Refresh(Transaction tran)
+    {
+      var changed = PaySystem.DoRefresh(this, tran);
+      if (changed) StoreTransaction(tran);
+      return changed;
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public Transaction Refund(ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null)
-      { 
-        return m_PaySystem.Refund(this, context, ref charge, amount, description, extraData);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public bool Void(Transaction tran, string description = null, object extraData = null)
+    {
+      var changed = PaySystem.DoVoid(this, tran, description, extraData);
+      if (changed) StoreTransaction(tran);
+      return changed;
+    }
 
-      /// <summary>
-      /// Has the same semantics as corresponding PaySystem method executed in context of this session
-      /// </summary>
-      public Transaction Transfer(ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null)
-      {
-        return m_PaySystem.Transfer(this, context, from, to, amount, description, extraData);
-      }
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public bool Capture(Transaction tran, decimal? amount = null, string description = null, object extraData = null)
+    {
+      var changed = PaySystem.DoCapture(this, tran, amount, description, extraData);
+      if (changed) StoreTransaction(tran);
+      return changed;
+    }
 
+    /// <summary>
+    /// Has the same semantics as corresponding PaySystem method executed in context of this session
+    /// </summary>
+    public bool Refund(Transaction tran, decimal? amount = null, string description = null, object extraData = null)
+    {
+      var changed = PaySystem.DoRefund(this, tran, amount, description, extraData);
+      if (changed) StoreTransaction(tran);
+      return changed;
+    }
+
+    /// <summary>
+    /// Generates new transaction ID for desired pay session and transaction type (Charge, Transfer).
+    /// Context supplies host specific information about this transation i.e. user id
+    /// </summary>
+    public object GenerateTransactionID(TransactionType type)
+    {
+      return PaySystemHost.DoGenerateTransactionID(this, type);
+    }
+
+    public void StoreTransaction(Transaction tran)
+    {
+      if (m_AffectedTransactions == null)
+        m_AffectedTransactions = new Dictionary<object, Transaction>();
+
+      m_AffectedTransactions[tran.ID] = tran;
+    }
+
+    public void StoreAccountData(IActualAccountData accoundData)
+    {
+      if (m_AffectedAccounts == null)
+        m_AffectedAccounts = new Dictionary<Account, IActualAccountData>();
+
+      m_AffectedAccounts[accoundData.Account] = accoundData;
+    }
+
+    public Transaction FetchTransaction(object id)
+    {
+      Transaction result = null;
+      if (m_AffectedTransactions != null && m_AffectedTransactions.ContainsKey(id))
+        result = m_AffectedTransactions[id];
+      if (result == null)
+        result = PaySystemHost.DoFetchTransaction(this, id);
+      return result;
+    }
+
+    public IActualAccountData FetchAccountData(Account account)
+    {
+      IActualAccountData result = null;
+      if (m_AffectedAccounts != null && m_AffectedAccounts.ContainsKey(account))
+        result = m_AffectedAccounts[account];
+      if (result == null)
+        result = PaySystemHost.DoFetchAccountData(this, account);
+      return result;
+    }
     #endregion
-
-  } //PaySession
-
+  }
 }

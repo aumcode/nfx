@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ namespace NFX
     /// Checks for reference equality. Use ReferenceEqualityComparer(T).Instance
     /// </summary>
     public sealed class ReferenceEqualityComparer<T> : EqualityComparer<T>
-    {   
+    {
         private static ReferenceEqualityComparer<T> s_Instance = new ReferenceEqualityComparer<T>();
 
-        public static ReferenceEqualityComparer<T> Instance { get { return s_Instance;}} 
+        public static ReferenceEqualityComparer<T> Instance { get { return s_Instance;}}
 
         private ReferenceEqualityComparer() {}
 

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ using NUnit.Framework;
 using NFX;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
+using NFX.Serialization.JSON;
 
 namespace NFX.NUnit.Integration.CRUD
 {
@@ -33,12 +34,12 @@ namespace NFX.NUnit.Integration.CRUD
         public static void QueryInsertQuery(ICRUDDataStore store)
         {
             var query = new Query("CRUD.Patient.List") { new Query.Param("LN", "%loff") };
-            var result = store.Load( query );  
+            var result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             var rowset = result[0];
             Assert.AreEqual(0, rowset.Count);
-                
+
             var row = new DynamicRow(rowset.Schema);
 
             row["ssn"] = "999-88-9012";
@@ -48,28 +49,28 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.IsNull( row.Validate());
 
-            store.Insert(row);   
+            store.Insert(row);
 
-                      
-            result = store.Load( query );  
+
+            result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             rowset = result[0];
 
             Assert.AreEqual(1, rowset.Count);
             Assert.AreEqual("Jack", rowset[0]["First_Name"]);
-            
+
         }
 
         public static void ASYNC_QueryInsertQuery(ICRUDDataStore store)
         {
             var query = new Query("CRUD.Patient.List") { new Query.Param("LN", "%loff") };
-            var task = store.LoadAsync( query );  
+            var task = store.LoadAsync( query );
 
             Assert.AreEqual(1, task.Result.Count);
             var rowset = task.Result[0];
             Assert.AreEqual(0, rowset.Count);
-                
+
             var row = new DynamicRow(rowset.Schema);
 
             row["ssn"] = "999-88-9012";
@@ -79,28 +80,28 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.IsNull( row.Validate());
 
-            store.InsertAsync(row).Wait();   
+            store.InsertAsync(row).Wait();
 
-                      
-            task = store.LoadAsync( query );  
+
+            task = store.LoadAsync( query );
 
             Assert.AreEqual(1, task.Result.Count);
             rowset = task.Result[0];
 
             Assert.AreEqual(1, rowset.Count);
             Assert.AreEqual("Jack", rowset[0]["First_Name"]);
-            
+
         }
 
         public static void QueryInsertQuery_TypedRow(ICRUDDataStore store)
         {
             var query = new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff") };
-            var result = store.Load( query );  
+            var result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             var rowset = result[0];
             Assert.AreEqual(0, rowset.Count);
-                
+
             var row = new Patient();
 
             row.SSN = "999-88-9012";
@@ -110,10 +111,10 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.IsNull( row.Validate());
 
-            store.Insert(row);   
+            store.Insert(row);
 
-                      
-            result = store.Load( query );  
+
+            result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             rowset = result[0];
@@ -121,18 +122,18 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(1, rowset.Count);
             Assert.IsInstanceOf<Patient>( rowset[0] );
             Assert.AreEqual("Jack", rowset[0]["First_Name"]);
-            
+
         }
 
         public static void QueryInsertQuery_TypedRowDerived(ICRUDDataStore store)
         {
             var query = new Query("CRUD.Patient.List", typeof(SuperPatient) ) { new Query.Param("LN", "%loff") };
-            var result = store.Load( query );  
+            var result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             var rowset = result[0];
             Assert.AreEqual(0, rowset.Count);
-                
+
             var row = new SuperPatient();
 
             row.SSN = "999-88-9012";
@@ -143,10 +144,10 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.IsNull( row.Validate());
 
-            store.Insert(row);   
+            store.Insert(row);
 
-                      
-            result = store.Load( query );  
+
+            result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             rowset = result[0];
@@ -154,19 +155,19 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(1, rowset.Count);
             Assert.IsInstanceOf<SuperPatient>( rowset[0] );
             Assert.AreEqual("Jack", rowset[0]["First_Name"]);
-            
+
         }
 
 
         public static void QueryInsertQuery_DynamicRow(ICRUDDataStore store)
         {
             var query = new Query<DynamicRow>("CRUD.Patient.List") { new Query.Param("LN", "%ruman") };
-            var result = store.Load( query );  
+            var result = store.Load( query );
 
             Assert.AreEqual(1, result.Count);
             var rowset = result[0];
             Assert.AreEqual(0, rowset.Count);
-                
+
             var row = new Patient();
 
             row.SSN = "999-88-9012";
@@ -176,15 +177,15 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.IsNull( row.Validate());
 
-            store.Insert(row);   
+            store.Insert(row);
 
-                      
-            var row2 = store.LoadRow( query );  
+
+            var row2 = store.LoadRow( query );
 
             Assert.IsNotNull(row2);
             Assert.IsInstanceOf<DynamicRow>( row2 );
             Assert.AreEqual("Mans", row2["First_Name"]);
-            
+
         }
 
 
@@ -192,7 +193,7 @@ namespace NFX.NUnit.Integration.CRUD
         {
             var rowset = new Rowset( Schema.GetForTypedRow(typeof(Patient)));
             rowset.LogChanges = true;
-       
+
             for(var i=0; i<1000; i++)
             {
                 rowset.Insert( new Patient
@@ -203,10 +204,10 @@ namespace NFX.NUnit.Integration.CRUD
                                  DOB = new DateTime(1980, 1, 12)
                                });
             }
-            
+
             for(var i=0; i<327; i++)
             {
-                rowset.Insert( new Patient 
+                rowset.Insert( new Patient
                                {
                                  SSN = "999-88-9012",
                                  First_Name = "Jack",
@@ -218,11 +219,11 @@ namespace NFX.NUnit.Integration.CRUD
             store.Save( rowset );
 
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } )[0];
-            
+
             Assert.AreEqual(1000, result.Count);
 
             result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%ovich%") } )[0];
-            
+
             Assert.AreEqual(327, result.Count);
         }
 
@@ -230,7 +231,7 @@ namespace NFX.NUnit.Integration.CRUD
         {
             var rowset = new Rowset( Schema.GetForTypedRow(typeof(Patient)));
             rowset.LogChanges = true;
-       
+
             for(var i=0; i<1000; i++)
             {
                 rowset.Insert( new Patient
@@ -241,10 +242,10 @@ namespace NFX.NUnit.Integration.CRUD
                                  DOB = new DateTime(1980, 1, 12)
                                });
             }
-            
+
             for(var i=0; i<327; i++)
             {
-                rowset.Insert( new Patient 
+                rowset.Insert( new Patient
                                {
                                  SSN = "999-88-9012",
                                  First_Name = "Jack",
@@ -256,11 +257,11 @@ namespace NFX.NUnit.Integration.CRUD
             store.SaveAsync( rowset ).Wait();
 
             var task = store.LoadAsync( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } );
-            
+
             Assert.AreEqual(1000, task.Result[0].Count);
 
             task = store.LoadAsync( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%ovich%") } );
-            
+
             Assert.AreEqual(327, task.Result[0].Count);
         }
 
@@ -282,15 +283,15 @@ namespace NFX.NUnit.Integration.CRUD
                                });
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } )[0];
-            
+
             Assert.AreEqual(0, result.Count);
 
             transaction.Commit();
 
             result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } )[0];
-            
+
             Assert.AreEqual(25, result.Count);
         }
 
@@ -314,15 +315,15 @@ namespace NFX.NUnit.Integration.CRUD
 
             Task.WaitAll(tasks.ToArray());
 
-            
+
             var task = store.LoadAsync( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } );
-            
+
             Assert.AreEqual(0, task.Result[0].Count);
 
             transaction.Commit();
 
             task = store.LoadAsync( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } );
-            
+
             Assert.AreEqual(25, task.Result[0].Count);
         }
 
@@ -343,15 +344,15 @@ namespace NFX.NUnit.Integration.CRUD
                                });
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } )[0];
-            
+
             Assert.AreEqual(0, result.Count);
 
             transaction.Rollback();
 
             result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff%") } )[0];
-            
+
             Assert.AreEqual(0, result.Count);
         }
 
@@ -369,9 +370,9 @@ namespace NFX.NUnit.Integration.CRUD
                                });
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
-            
+
             Assert.AreEqual(1, result.Count);
             var row = result[0] as Patient;
             Assert.AreEqual("5", row.SSN);
@@ -401,9 +402,9 @@ namespace NFX.NUnit.Integration.CRUD
                                }).Wait();
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
-            
+
             Assert.AreEqual(1, result.Count);
             var row = result[0] as Patient;
             Assert.AreEqual("5", row.SSN);
@@ -435,9 +436,9 @@ namespace NFX.NUnit.Integration.CRUD
                                });
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
-            
+
             Assert.AreEqual(1, result.Count);
             var row = result[0] as Patient;
             Assert.AreEqual("5", row.SSN);
@@ -465,9 +466,9 @@ namespace NFX.NUnit.Integration.CRUD
                                }).Wait();
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
-            
+
             Assert.AreEqual(1, result.Count);
             var row = result[0] as Patient;
             Assert.AreEqual("5", row.SSN);
@@ -496,9 +497,9 @@ namespace NFX.NUnit.Integration.CRUD
                                });
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
-            
+
             Assert.AreEqual(1, result.Count);
             var row = result[0] as Patient;
             Assert.AreEqual("5", row.SSN);
@@ -506,7 +507,7 @@ namespace NFX.NUnit.Integration.CRUD
 
             row.Phone = "22-94-92";
             store.Upsert( row );
-            
+
             result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("22-94-92", result[0]["Phone"]);
@@ -547,9 +548,9 @@ namespace NFX.NUnit.Integration.CRUD
                                }).Wait();
             }
 
-            
+
             var result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
-            
+
             Assert.AreEqual(1, result.Count);
             var row = result[0] as Patient;
             Assert.AreEqual("5", row.SSN);
@@ -557,7 +558,7 @@ namespace NFX.NUnit.Integration.CRUD
 
             row.Phone = "22-94-92";
             store.UpsertAsync( row ).Wait();
-            
+
             result = store.Load( new Query("CRUD.Patient.List", typeof(Patient) ) { new Query.Param("LN", "%loff_5") } )[0];
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("22-94-92", result[0]["Phone"]);
@@ -585,19 +586,19 @@ namespace NFX.NUnit.Integration.CRUD
         }
 
 
-        
+
 
 
         public static void GetSchemaAndTestVariousTypes(ICRUDDataStore store)
         {
             var schema = store.GetSchema(new Query("CRUD.Types.Load"));
-                
+
             var row = new DynamicRow(schema);
             row["GDID"] = new GDID(0, 145);
             row["SCREEN_NAME"] = "User1";
             row["STRING_NAME"] = "Some user 1";
             row["CHAR_NAME"] = "Some user 2";
-            row["BOOL_CHAR"] = 'T'; 
+            row["BOOL_CHAR"] = 'T';
             row["BOOL_BOOL"] = true;
 
             row["AMOUNT"] = 145670.23m;
@@ -621,20 +622,20 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.AreEqual(1980, row2["DOB"].AsDateTime().Year);
 
-            
+
         }
 
 
         public static void ASYNC_GetSchemaAndTestVariousTypes(ICRUDDataStore store)
         {
             var schema = store.GetSchemaAsync(new Query("CRUD.Types.Load")).Result;
-                
+
             var row = new DynamicRow(schema);
             row["GDID"] = new GDID(0, 145);
             row["SCREEN_NAME"] = "User1";
             row["STRING_NAME"] = "Some user 1";
             row["CHAR_NAME"] = "Some user 2";
-            row["BOOL_CHAR"] = 'T'; 
+            row["BOOL_CHAR"] = 'T';
             row["BOOL_BOOL"] = true;
 
             row["AMOUNT"] = 145670.23m;
@@ -658,47 +659,64 @@ namespace NFX.NUnit.Integration.CRUD
 
             Assert.AreEqual(1980, row2["DOB"].AsDateTime().Year);
 
-            
+
         }
 
 
         public static void TypedRowTestVariousTypes(ICRUDDataStore store)
         {
-                
+
             var row = new Types();
-            row["GDID"] = new GDID(0, 234);
-            row["SCREEN_NAME"] = "User1";
-            row["STRING_NAME"] = "Some user 1";
-            row["CHAR_NAME"] = "Some user 2";
-            row["BOOL_CHAR"] = true; //notice TRUE for both char and bool columns below 
-            row["BOOL_BOOL"] = true;
+            row.GDID = new GDID(0, 234);
+            row.Screen_Name = "User1";
+            row.String_Name = "Some user 1";
+            row.Char_Name = "Some user 2";
+            row.Bool_Char = true; //notice TRUE for both char and bool columns below
+            row.Bool_Bool = true;
 
             row["AMOUNT"] = 145670.23m;
 
             row["DOB"] = new DateTime(1980,12,1);
+            row["Age"] = 145;
 
             store.Insert( row );
 
-            var row2 = store.LoadOneRow(new Query("CRUD.Types.Load", new GDID(0, 234)));
+            var row2 = store.LoadRow(new Query<Types>("CRUD.Types.Load", new GDID(0, 234)));
 
             Assert.NotNull(row2);
-            Assert.AreEqual(234, row2["GDID"]);
-            Assert.AreEqual("User1", row2["Screen_Name"]);
-            Assert.AreEqual("Some user 1", row2["String_Name"]);
-            Assert.AreEqual("Some user 2", row2["Char_Name"]);
+            Assert.AreEqual(new GDID(0,0,234), row2.GDID);
+            Assert.AreEqual("User1", row2.Screen_Name);
+            Assert.AreEqual("Some user 1", row2.String_Name);
+            Assert.AreEqual("Some user 2", row2.Char_Name);
 
-            Assert.AreEqual(true, row2["BOOL_Char"].AsBool());
-            Assert.AreEqual(true, row2["BOOL_BOOL"].AsBool());
+            Assert.AreEqual(true, row2.Bool_Char.Value);
+            Assert.AreEqual(true, row2.Bool_Bool.Value);
 
-            Assert.AreEqual(145670.23m, row2["Amount"]);
+            Assert.AreEqual(145670.23m, row2.Amount);
 
-            Assert.AreEqual(1980, row2["DOB"].AsDateTime().Year);
+            Assert.AreEqual(1980, row2.DOB.Value.Year);
+
+            Assert.AreEqual(145, row2.Age);
+
+            row.Age = null;
+            row.Bool_Bool = null;
+            row.DOB = null;
+            store.Update(row);
+
+            var row3 = store.LoadRow(new Query<Types>("CRUD.Types.Load", new GDID(0, 234)));
+            Assert.IsFalse(row3.Age.HasValue);
+            Assert.IsFalse(row3.Bool_Bool.HasValue);
+            Assert.IsFalse(row3.DOB.HasValue);
+
+            Assert.IsNull( row3["Age"].AsNullableInt());
+            Assert.IsNull( row3["DOB"].AsNullableDateTime());
+            Assert.IsNull( row3["Bool_Bool"].AsNullableBool());
         }
 
 
         public static void TypedRowTest_FullGDID(ICRUDDataStore store)
         {
-                
+
             var row = new FullGDID();
             row.GDID = new GDID(123, 2, 8907893234);
             row.VARGDID = row.GDID;
@@ -718,7 +736,7 @@ namespace NFX.NUnit.Integration.CRUD
         public static void GetSchemaAndTestFullGDID(ICRUDDataStore store)
         {
             var schema = store.GetSchema(new Query("CRUD.FullGDID.Load"));
-                
+
             var row = new DynamicRow(schema);
 
             var key = new GDID(179, 1, 1234567890);
@@ -747,10 +765,10 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(1, affected);
 
             var query = new Query<Patient>("CRUD.Patient.List") { new Query.Param("LN", "%%") };
-            var persisted = store.LoadRow(query);  
+            var persisted = store.LoadRow(query);
             Assert.IsNotNull(persisted);
             Assert.AreEqual(patient.First_Name, persisted.First_Name);
-            Assert.AreEqual(patient.Last_Name, persisted.Last_Name); 
+            Assert.AreEqual(patient.Last_Name, persisted.Last_Name);
             Assert.AreEqual(patient.SSN, persisted.SSN);
             Assert.AreEqual(patient.City, persisted.City);
             Assert.AreEqual(patient.Address1, persisted.Address1);
@@ -778,8 +796,8 @@ namespace NFX.NUnit.Integration.CRUD
             persisted.Last_Name = "Smith";
             affected = store.Update(persisted, null, (r, k, f) => f.Name != "First_Name" && f.Name != "Zip");
             Assert.AreEqual(1, affected);
-            
-            var updated = store.LoadRow(query);  
+
+            var updated = store.LoadRow(query);
             Assert.IsNotNull(updated);
             Assert.AreEqual(persisted.SSN, updated.SSN);
             Assert.AreEqual(persisted.City, updated.City);
@@ -792,8 +810,8 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(persisted.Note, updated.Note);
 
             Assert.AreEqual(patient.First_Name, updated.First_Name);
-            Assert.AreEqual(persisted.Last_Name, updated.Last_Name); 
-            Assert.AreEqual(patient.Zip, updated.Zip); 
+            Assert.AreEqual(persisted.Last_Name, updated.Last_Name);
+            Assert.AreEqual(patient.Zip, updated.Zip);
         }
 
         public static void UpsertWithPredicate(ICRUDDataStore store)
@@ -809,8 +827,8 @@ namespace NFX.NUnit.Integration.CRUD
             persisted.Last_Name = "Smith";
             affected = store.Upsert(persisted, (r, k, f) => f.Name != "Zip");
             Assert.AreEqual(2, affected);
-            
-            var updated = store.LoadRow(query);  
+
+            var updated = store.LoadRow(query);
             Assert.IsNotNull(updated);
             Assert.AreEqual(persisted.SSN, updated.SSN);
             Assert.AreEqual(persisted.City, updated.City);
@@ -823,8 +841,166 @@ namespace NFX.NUnit.Integration.CRUD
             Assert.AreEqual(persisted.Note, updated.Note);
 
             Assert.AreEqual(persisted.First_Name, updated.First_Name);
-            Assert.AreEqual(persisted.Last_Name, updated.Last_Name); 
+            Assert.AreEqual(persisted.Last_Name, updated.Last_Name);
             Assert.AreEqual(patient.Zip, updated.Zip); // notice ZIP remains the same
+        }
+
+
+        public static void Populate_OpenCursor(ICRUDDataStore store)
+        {
+            const int CNT = 1000;
+
+            for(var i=0; i<CNT; i++)
+            {
+              var patient = new TupleData
+              {
+                 COUNTER = i,
+                 DATA = i.ToString()+"-DATA"
+              };
+              store.Insert( patient );
+            }
+
+
+
+            var query = new Query<TupleData>("CRUD.Tuple.LoadAll");
+            var result = store.LoadOneRowset( query );
+
+            Assert.AreEqual(CNT, result.Count);
+
+            Assert.AreEqual(0, result[0]["COUNTER"]);
+            Assert.AreEqual(CNT-1, result[result.Count-1]["COUNTER"]);
+
+            {
+                using(var cursor = store.OpenCursor( query ))
+                {
+                   Assert.IsFalse( cursor.Disposed );
+                   var cnt = 0;
+                   foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                    cnt++;
+
+                   Assert.AreEqual(CNT, cnt);
+                   Assert.IsTrue( cursor.Disposed );//foreach must have closed the cursor
+                }
+            }
+
+            {
+                var cursor = store.OpenCursor( query );
+
+                Assert.IsFalse( cursor.Disposed );
+
+                var cen = cursor.GetEnumerator();
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+
+                Console.WriteLine( cen.Current.Schema.ToJSON(JSONWritingOptions.PrettyPrintRowsAsMap) );
+
+                Assert.AreEqual(0, cen.Current["COUNTER"]);
+                Assert.AreEqual("0-DATA", cen.Current["DATA"]);
+
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+                Assert.AreEqual(1, cen.Current["COUNTER"]);
+                Assert.AreEqual("1-DATA", cen.Current["DATA"]);
+
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+                Assert.AreEqual(2, cen.Current["COUNTER"]);
+                Assert.AreEqual("2-DATA", cen.Current["DATA"]);
+
+
+                cursor.Dispose();
+                Assert.IsTrue( cursor.Disposed );
+            }
+
+            {
+                using(var cursor = store.OpenCursor( query ))
+                {
+                   Assert.IsFalse( cursor.Disposed );
+                   var cnt = 0;
+                   foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                    cnt++;
+
+                   Assert.AreEqual(CNT, cnt);
+                   Assert.IsTrue( cursor.Disposed );//foreach must have closed the cursor
+                   try
+                   {
+                     foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                     Assert.Fail("Must have failed");
+                   }
+                   catch
+                   {
+
+                   }
+
+                }
+            }
+
+            {
+               var cursor = store.OpenCursor( query );
+
+                Assert.IsFalse( cursor.Disposed );
+
+                var cen = cursor.GetEnumerator();
+                cen.MoveNext();
+                Assert.IsNotNull( cen.Current );
+                Assert.AreEqual(0, cen.Current["COUNTER"]);
+
+                try
+                {
+                  Assert.IsFalse( cursor.Disposed );
+
+                  var cen2 = cursor.GetEnumerator();
+                  Assert.Fail("This should not have heppened as cant iterate cursor the second time");
+                }
+                catch
+                {
+
+                }
+
+                cursor.Dispose();
+                Assert.IsTrue( cursor.Disposed );
+            }
+
+        }
+
+        public static void Populate_ASYNC_OpenCursor(ICRUDDataStore store)
+        {
+            const int CNT = 1000;
+
+            for(var i=0; i<CNT; i++)
+            {
+              var patient = new TupleData
+              {
+                 COUNTER = i,
+                 DATA = i.ToString()+"-DATA"
+              };
+              store.Insert( patient );
+            }
+
+
+
+            var query = new Query<TupleData>("CRUD.Tuple.LoadAll");
+            var result = store.LoadOneRowset( query );
+
+            Assert.AreEqual(CNT, result.Count);
+
+            Assert.AreEqual(0, result[0]["COUNTER"]);
+            Assert.AreEqual(CNT-1, result[result.Count-1]["COUNTER"]);
+
+            var task = store.OpenCursorAsync( query )
+                              .ContinueWith( antecedent =>
+                                {
+                                    var cursor = antecedent.Result;;
+                                    Assert.IsFalse( cursor.Disposed );
+                                    var cnt = 0;
+                                    foreach(var row in cursor.AsEnumerableOf<TupleData>())
+                                    cnt++;
+
+                                    Assert.AreEqual(CNT, cnt);
+                                    Assert.IsTrue( cursor.Disposed );//foreach must have closed the cursor
+                                });
+            task.Wait();
+
         }
 
 

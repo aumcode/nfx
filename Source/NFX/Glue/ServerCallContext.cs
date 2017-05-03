@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,14 +28,14 @@ namespace NFX.Glue
     /// Provides access to server call context. Use to access Headers
     /// </summary>
     public static class ServerCallContext
-    {   
+    {
         [ThreadStatic]
         private static RequestMsg ts_Request;
 
         [ThreadStatic]
         private static Headers ts_ResponseHeaders;
 
-       
+
         /// <summary>
         /// Returns RequestMsg which is being processed. Access incoming headers through Request.Headers
         /// </summary>
@@ -49,15 +49,15 @@ namespace NFX.Glue
         /// </summary>
         public static Headers ResponseHeaders
         {
-          get 
+          get
           {
             if (ts_ResponseHeaders==null) ts_ResponseHeaders = new Headers();
-            return ts_ResponseHeaders; 
+            return ts_ResponseHeaders;
           }
         }
 
 
-       
+
         /// <summary>
         /// Internal framework-only method to bind thread-level context
         /// </summary>

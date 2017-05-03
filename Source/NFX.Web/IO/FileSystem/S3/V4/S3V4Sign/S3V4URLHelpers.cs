@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@ namespace NFX.IO.FileSystem.S3.V4.S3V4Sign
           string.Join("&", parameters.Select(p => string.Format("{0}={1}", Uri.EscapeDataString(p.Key), Uri.EscapeDataString(p.Value)))));
       }
 
-      string endpointURL = string.Format("https://{0}s3{1}.amazonaws.com/{2}{3}", bucketURLPart, regionURLPart, 
-        itemRelativePath != null ? itemRelativePath.TrimStart('/') : null, 
+      string endpointURL = string.Format("https://{0}s3{1}.amazonaws.com/{2}{3}", bucketURLPart, regionURLPart,
+        itemRelativePath != null ? itemRelativePath.TrimStart('/') : null,
         queryParametersStr);
 
       return endpointURL;

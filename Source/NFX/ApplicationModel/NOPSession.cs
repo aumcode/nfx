@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,9 +32,9 @@ namespace NFX.ApplicationModel
 
         private NOPSession()
         {
-          
+
         }
-      
+
         /// <summary>
         /// Returns a singlelton instance of the NOPSession
         /// </summary>
@@ -42,14 +42,14 @@ namespace NFX.ApplicationModel
         {
            get { return s_Instance; }
         }
-        
-        
+
+
         public Guid ID
         {
             get { return s_ID; }
         }
 
-        public Guid? OldID 
+        public Guid? OldID
         {
            get { return null;}
         }
@@ -69,6 +69,11 @@ namespace NFX.ApplicationModel
            get { return null; }
         }
 
+        public SessionLoginType LastLoginType
+        {
+           get { return SessionLoginType.Unspecified; }
+        }
+
         public bool IsEnded
         {
            get { return false; }
@@ -82,7 +87,7 @@ namespace NFX.ApplicationModel
 
         public string LanguageISOCode
         {
-            get { return CoreConsts.ISO_LANG_ENGLISH;} 
+            get { return CoreConsts.ISO_LANG_ENGLISH;}
         }
 
 
@@ -112,7 +117,7 @@ namespace NFX.ApplicationModel
 
         }
 
-        public void HasJustLoggedIn()
+        public void HasJustLoggedIn(SessionLoginType loginType)
         {
 
         }

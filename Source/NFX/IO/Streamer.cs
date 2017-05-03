@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,32 +27,29 @@ namespace NFX.IO
     /// Represents a base for stream readers and writers.
     /// Streamer object instances ARE NOT THREAD-safe
     /// </summary>
-    public abstract class Streamer 
+    public abstract class Streamer
     {
             public static readonly UTF8Encoding UTF8Encoding = new UTF8Encoding(false, false);
-        
+
             protected Streamer(Encoding encoding = null)
             {
               m_Encoding = encoding ?? UTF8Encoding;
 
-              m_Buff32 = ts_Buff32;
+              m_Buff32 = SlimFormat.ts_Buff32;
               if (m_Buff32==null)
               {
                 var buf = new byte[32];
                 m_Buff32 = buf;
-                ts_Buff32 = buf;
+                SlimFormat.ts_Buff32 = buf;
               }
 
             }
-
-            [ThreadStatic]
-            private static byte[] ts_Buff32;
 
             protected byte[] m_Buff32;
 
             protected Stream m_Stream;
             protected Encoding m_Encoding;
-            
+
 
 
             /// <summary>
@@ -80,8 +77,8 @@ namespace NFX.IO
               get { return m_Encoding; }
             }
 
-            
-               
+
+
             /// <summary>
             /// Sets the stream as the target for output/input.
             /// This call must be coupled with UnbindStream()
@@ -100,10 +97,10 @@ namespace NFX.IO
             /// <summary>
             /// Unbinds the current stream. This call is coupled with BindStream(stream)
             /// </summary>
-            public void UndindStream()
+            public void UnbindStream()
             {
               if (m_Stream==null) return;
-              
+
               if (this is WritingStreamer) m_Stream.Flush();
               m_Stream = null;
             }

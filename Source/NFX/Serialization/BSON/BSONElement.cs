@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,7 +76,7 @@ namespace NFX.Serialization.BSON
     public static Func<Stream, BSONElement> GetElementFactory(BSONElementType bsonType)
     {
       Func<Stream, BSONElement> result;
-      if (s_ELEMENTSTREAMCTORS.TryGetValue(bsonType, out result)) return result; 
+      if (s_ELEMENTSTREAMCTORS.TryGetValue(bsonType, out result)) return result;
 
       throw new BSONException(StringConsts.BSON_TYPE_NOT_SUPORTED_ERROR.Args(bsonType));
     }
@@ -68,7 +84,7 @@ namespace NFX.Serialization.BSON
     private static Func<string, object, BSONElement> GetValueSet(BSONElementType bsonType)
     {
       Func<string, object, BSONElement> result;
-      if (s_ELEMENTVALUECTORS.TryGetValue(bsonType, out result)) return result; 
+      if (s_ELEMENTVALUECTORS.TryGetValue(bsonType, out result)) return result;
 
       throw new BSONException(StringConsts.BSON_TYPE_NOT_SUPORTED_ERROR.Args(bsonType));
     }
@@ -76,18 +92,18 @@ namespace NFX.Serialization.BSON
     public static BSONElement MakeOfType(BSONElementType bsonType, string name, object value)
     {
       var f = GetValueSet(bsonType);
-      return f(name, value); 
+      return f(name, value);
     }
 
 
 
     #region .ctor
-      
+
       protected BSONElement(string name)
       {
         m_Name = name;//null=array
       }
-      
+
       protected BSONElement(Stream stream)
       {
         if (stream==null)
@@ -96,7 +112,7 @@ namespace NFX.Serialization.BSON
         m_Name = BinUtils.ReadCString(stream);
         ReadValueFromStream(stream);
       }
-    
+
     #endregion .ctor
 
     private string m_Name;
@@ -104,16 +120,16 @@ namespace NFX.Serialization.BSON
 
     #region Properties
       /// <summary>
-      /// Return the name of this element. The name is immutable. 
+      /// Return the name of this element. The name is immutable.
       /// Check IaArrayElelemnt first, as this property can not be gotten for array elements
       /// </summary>
-      public string Name 
+      public string Name
       {
         get
         {
           if (m_Name==null) throw new BSONException(StringConsts.BSON_ARRAY_ELM_NAME_ERROR);
-          return m_Name; 
-        } 
+          return m_Name;
+        }
       }
 
       /// <summary>
@@ -125,7 +141,7 @@ namespace NFX.Serialization.BSON
       /// Provides BSON classification of data type
       /// </summary>
       public abstract BSONElementType ElementType { get; }
-      
+
       /// <summary>
       /// Gets/sets the value of this element polymorphically
       /// </summary>
@@ -146,7 +162,7 @@ namespace NFX.Serialization.BSON
           m_ByteSize = 1 + //type
                        BinUtils.UTF8Encoding.GetByteCount(Name) +
                        1 + //string terminator
-                       GetValueByteSize();    
+                       GetValueByteSize();
         }
 
         return m_ByteSize;
@@ -167,14 +183,14 @@ namespace NFX.Serialization.BSON
 
       public virtual void WriteAsJSON(TextWriter wri, int nestingLevel, JSONWritingOptions options = null)
       {
-        JSONWriter.Write(this.ObjectValue, wri, options); 
+        JSONWriter.Write(this.ObjectValue, wri, options);
       }
 
     #endregion
 
-    #region Protected   
+    #region Protected
       /// <summary>
-      /// Returns the size of this element in bytes 
+      /// Returns the size of this element in bytes
       /// </summary>
       protected internal abstract int GetValueByteSize();
 
@@ -187,12 +203,12 @@ namespace NFX.Serialization.BSON
         BinUtils.WriteCString(stream, Name);
         WriteValueToStream(stream);
       }
-      
+
       /// <summary>
       /// Override to write this element into a stream
       /// </summary>
       protected internal abstract void WriteValueToStream(Stream stream);
-      
+
       /// <summary>
       /// Override to read element's value from stream
       /// </summary>
@@ -289,13 +305,13 @@ namespace NFX.Serialization.BSON
       }
     #endregion
 
-     
+
   }
 
   /// <summary>
   /// Base class for BSON elements with typed Value property
   /// </summary>
-  public abstract class BSONElement<T> : BSONElement 
+  public abstract class BSONElement<T> : BSONElement
   {
       protected BSONElement(string name, T value) : base(name)
       {
@@ -305,13 +321,13 @@ namespace NFX.Serialization.BSON
       protected BSONElement(Stream stream) : base(stream)
       {
       }
-      
+
       protected T m_Value;
-      
+
       public T Value
       {
         get { return m_Value;}
-        set 
+        set
         {
          if (!typeof(T).IsValueType)
          {
@@ -336,9 +352,9 @@ namespace NFX.Serialization.BSON
         {
           try
           {
-             if (value==null) 
+             if (value==null)
                throw new BSONException("value=null");
-             
+
              Value = (T)value;
           }
           catch(Exception error)
@@ -352,5 +368,5 @@ namespace NFX.Serialization.BSON
       {
         return IsArrayElement ? "[{0}({1})]".Args(GetType().Name, Value) :  "{0}('{1}'='{2}')".Args(GetType().Name, Name, Value);
       }
-  } 
+  }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,18 +46,18 @@ namespace NFX.DataAccess.MongoDB
     public const string CONNECTION_EXISTING_ACQUISITION_ERROR =
         "Could not obtain a connection to '{0}' as the connection limit of {1} is set and {2} ms existing acquisition timeout has passed";
 
-    public const string MODEL_TYPE_NOT_RECORD_ERROR =
-        "Model is not of a 'Record' type. Passed type: {0}. Check provider implementation";
+    //public const string MODEL_TYPE_NOT_RECORD_ERROR =
+    //    "Model is not of a 'Record' type. Passed type: {0}. Check provider implementation";
 
-    public const string RECORD_TABLE_NAME_ERROR =
-        "Record's 'TableName' property is blank. Passed type: '{0}'. Check record implementation";
+    //public const string RECORD_TABLE_NAME_ERROR =
+    //    "Record's 'TableName' property is blank. Passed type: '{0}'. Check record implementation";
 
     public const string COLLECTION_DOES_NOT_EXIST_ERROR =
         "Record's 'TableName' property specifies a collection that does not exist: '{0}'";
 
     public const string KEY_SUPPORT_ERROR =
         "MongoDB driver supports only the following IDataStoreKey implementations:  NameValueDataStoreKey";
-   
+
     public const string LOADING_ENTITY_NOT_FOUND_ERROR =
         "Could not load entity as store returned no data for supplied key:\n{0}";
 
@@ -111,7 +111,7 @@ namespace NFX.DataAccess.MongoDB
 
     public const string PROTO_SERVER_REPLIED_WITH_NO_DOCUMENTS_ERROR =
         "Server replied with no documents";
-    
+
     public const string PROTO_REPLY_DOC_COUNT_EXCEED_LIMIT_ERROR =
         "Can not process OP_REPLY as it contains {0} documents which exceeds the limit of {1} documents. Socket connection is most likely corrupted";
 
@@ -122,12 +122,15 @@ namespace NFX.DataAccess.MongoDB
     public const string CURSOR_ENUM_ALREADY_STARTED_ERROR =
         "Cursor can be enumerated only once and can not be Reset() again";
 
-    
+
     public const string QUERY_FINISH_STATEMENT_COMPILE_ERROR =
         "Current query statement should be finished with one of the following statements: Equals(), NotEquals(), GreaterThan(), NotGreaterThan(), LessThan(), NotLessThan(), Exists()";
 
     public const string QUERY_START_STATEMENT_COMPILE_ERROR =
         "Current query statement should start with element name. Use Add(string) method";
+
+    public const string CONNECTION_STRING_NULL_OR_EMPTY_ERROR = "Connection string null or empty";
+    public const string CONNECTION_STRING_INVALID_ERROR = "Connection string '{0}' is invalid: {1}";
   }
 }
 

@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
   class GoogleDriveRequestBody : Dictionary<string, object>
   {
     #region CONST
-      
+
       private const string RFC3339 = "yyyy-MM-dd'T'HH:mm:ss.fffffffK";
 
     #endregion

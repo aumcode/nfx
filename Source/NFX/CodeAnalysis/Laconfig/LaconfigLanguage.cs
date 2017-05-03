@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using NFX.CodeAnalysis.Source;
 namespace NFX.CodeAnalysis.Laconfig
 {
     /// <summary>
-    /// Represents Laconic + Config = Laconfig terse configuration language 
+    /// Represents Laconic + Config = Laconfig terse configuration language
     /// </summary>
     public sealed class LaconfigLanguage : Language
     {
@@ -42,12 +42,12 @@ namespace NFX.CodeAnalysis.Laconfig
         {
             get
             {
-                yield return "lac"; 
-                yield return "lacon"; 
-                yield return "laconf"; 
+                yield return "lac";
+                yield return "lacon";
+                yield return "laconf";
                 yield return "laconfig";
                 yield return "rschema";
-                yield return "acmb"; 
+                yield return "amb";
             }
         }
 

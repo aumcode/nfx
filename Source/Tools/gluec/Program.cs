@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ namespace gluec
 
 
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           ConsoleUtils.WriteMarkupContent( typeof(Program).GetText("Welcome.txt") );
 
           if (config.Root["?", "h", "help"].Exists)
@@ -91,7 +91,7 @@ namespace gluec
           compiler.OutPath = Path.GetDirectoryName(afn);
           compiler.FilePerContract = true;
           compiler.NamespaceFilter = config.Root["f", "flt", "filter"].AttrByIndex(0).Value;
-          
+
           ConfigAttribute.Apply(compiler, config.Root["o", "opt", "options"]);
 
           ConsoleUtils.Info("Namespace filter: " + compiler.NamespaceFilter);

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace NFX.Geometry
   {
 
     #region .ctor
-      
+
       /// <summary>
       /// Initializes polar coordinates
       /// </summary>
@@ -64,7 +64,7 @@ namespace NFX.Geometry
 
     #endregion
 
-    #region Private Fields 
+    #region Private Fields
       private double m_R;
       private double m_Theta;
 
@@ -116,9 +116,9 @@ namespace NFX.Geometry
       }
     #endregion
 
-    
-      
-    #region Operators  
+
+
+    #region Operators
       public static bool operator ==(PolarPoint left, PolarPoint right)
       {
         return (left.m_R == right.m_R) && (left.m_Theta == right.m_Theta);
@@ -129,15 +129,15 @@ namespace NFX.Geometry
         return (left.m_R != right.m_R) || (left.m_Theta != right.m_Theta);
       }
     #endregion
-    
-    
+
+
     #region Object overrides
       public override bool Equals(object obj)
       {
         if (obj is PolarPoint)
          return this==((PolarPoint)obj);
         else
-         return false; 
+         return false;
       }
 
       public override int GetHashCode()
@@ -149,10 +149,10 @@ namespace NFX.Geometry
       {
         return string.Format("Distance: {0}; Angle: {1} rad.", m_R, m_Theta);
       }
-    
-    
+
+
     #endregion
-    
+
   }
 
 

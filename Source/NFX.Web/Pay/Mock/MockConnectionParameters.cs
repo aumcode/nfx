@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ using NFX.Security;
 
 namespace NFX.Web.Pay.Mock
 {
-  public class MockConnectionParameters: PayConnectionParameters
+  public class MockConnectionParameters: ConnectionParameters
   {
     #region Consts
 
@@ -45,7 +45,7 @@ namespace NFX.Web.Pay.Mock
 
       public const string CONFIG_ACCOUNT_NUMBER_ATTR = "account-number";
       public const string CONFIG_ROUTING_NUMBER_ATTR = "routing-number";
-      public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type"; 
+      public const string CONFIG_ACCOUNT_TYPE_ATTR = "account-type";
 
     #endregion
 

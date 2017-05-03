@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,12 +28,13 @@ namespace NFX.Financial
   [Serializable]
   public struct Amount : IEquatable<Amount>, IComparable<Amount>, IJSONWritable
   {
-    #region Const
-
-      private const decimal EMPTY_AMOUNT = 0;
-      private const string EMPTY_CURRENCY_ISO = "";
-
-    #endregion
+    internal static Amount Deserialize(string currencyISO, decimal value)
+    {
+      var result = new Amount();
+      result.m_CurrencyISO = currencyISO;
+      result.m_Value = value;
+      return result;
+    }
 
     public Amount(string currencyISO, decimal value)
     {
@@ -43,13 +44,15 @@ namespace NFX.Financial
       m_Value = value;
     }
 
+
+
     private string m_CurrencyISO;
     private decimal m_Value;
 
-    public string CurrencyISO { get{ return m_CurrencyISO ?? EMPTY_CURRENCY_ISO;} }
-    public decimal Value { get{ return m_Value;} }
+    public string  CurrencyISO { get{ return m_CurrencyISO ?? string.Empty;} }
+    public decimal Value       { get{ return m_Value;} }
 
-    public bool IsEmpty { get { return m_CurrencyISO == EMPTY_CURRENCY_ISO && m_Value == EMPTY_AMOUNT; } }
+    public bool IsEmpty { get { return m_CurrencyISO.IsNullOrWhiteSpace() && m_Value == 0m; } }
 
     /// <summary>
     /// Perfoms case-insensitive currency equality comparison
@@ -59,7 +62,7 @@ namespace NFX.Financial
       return CurrencyISO.EqualsOrdIgnoreCase(other.CurrencyISO);
     }
 
-    
+
     public static Amount Parse(string val)
     {
       if (val==null) throw new FinancialException(StringConsts.ARGUMENT_ERROR + typeof(Amount).FullName + ".Parse(null)");
@@ -94,7 +97,7 @@ namespace NFX.Financial
       var i = val.IndexOf(':');
       if (i<0)
       {
-        decimal dv; 
+        decimal dv;
         if (!decimal.TryParse(val, out dv)) return false;
         result = new Amount(null, dv);
         return true;
@@ -161,7 +164,7 @@ namespace NFX.Financial
         public static bool operator !=(Amount left, Amount right)
         {
           return !Equals(left, right);
-        } 
+        }
 
         public static bool operator <(Amount left, Amount right)
         {
@@ -171,7 +174,7 @@ namespace NFX.Financial
         public static bool operator >(Amount left, Amount right)
         {
           return left.IsSameCurrencyAs(right) && (left.Value > right.Value);
-        } 
+        }
 
         public static bool operator <=(Amount left, Amount right)
         {
@@ -181,7 +184,7 @@ namespace NFX.Financial
         public static bool operator >=(Amount left, Amount right)
         {
           return left.IsSameCurrencyAs(right) && (left.Value >= right.Value);
-        } 
+        }
 
         public static Amount operator +(Amount left, Amount right)
         {
@@ -247,6 +250,6 @@ namespace NFX.Financial
 
 
 
-       
-  } 
+
+  }
 }

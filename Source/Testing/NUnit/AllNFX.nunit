@@ -1,6 +1,6 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Debug" processModel="Separate" />
-  <Config name="Debug" appbase="C:\Users\Anton\Desktop\NFX\Output\Debug" configfile="NFX.NUnit.dll.config" binpathtype="Auto">
+  <Config name="Debug" appbase="..\..\..\Output\Debug" configfile="NFX.NUnit.dll.config" binpathtype="Auto">
     <assembly path="NFX.NUnit.dll" />
     <assembly path="NFX.NUnit.Integration.dll" />
   </Config>

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,53 +23,33 @@ using System.Threading.Tasks;
 
 using MySql.Data.MySqlClient;
 
-using NFX.DataAccess.CRUD;          
+using NFX.DataAccess.CRUD;
 
 namespace NFX.DataAccess.MySQL
 {
     /// <summary>
     /// Executes MySql CRUD script-based queries
     /// </summary>
-    public sealed class MySQLCRUDScriptQueryHandler : ICRUDQueryHandler   
+    public sealed class MySQLCRUDScriptQueryHandler : CRUDQueryHandler<MySQLDataStore>
     {
         #region .ctor
-            public MySQLCRUDScriptQueryHandler(MySQLDataStore store, QuerySource source)
-            {
-                m_Store = store;
-                m_Source = source;
-            }
-        #endregion
-
-        #region Fields
-            private MySQLDataStore m_Store;
-            private QuerySource m_Source;
+            public MySQLCRUDScriptQueryHandler(MySQLDataStore store, QuerySource source) : base(store, source) { }
         #endregion
 
         #region ICRUDQueryHandler
-            public string Name
-            {
-                get { return m_Source.Name; }
-            }
-
-            public ICRUDDataStore Store
-            {
-               get { return m_Store;}
-            }
-
-
-            public Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
+            public override Schema GetSchema(ICRUDQueryExecutionContext context, Query query)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
                 var target = ctx.DataStore.TargetName;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
-                    cmd.CommandText =  m_Source.StatementSource;
+                    cmd.CommandText =  Source.StatementSource;
 
-                    
+
                     PopulateParameters(cmd, query);
-                              
-                    
+
+
 
                     cmd.Transaction = ctx.Transaction;
 
@@ -90,31 +70,29 @@ namespace NFX.DataAccess.MySQL
                     using (reader)
                     {
                       Schema.FieldDef[] toLoad;
-                      return GetSchemaForQuery(target, query, reader, m_Source, out toLoad);
+                      return GetSchemaForQuery(target, query, reader, Source, out toLoad);
                     }//using reader
                 }//using command
             }
 
 
-            public Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query)
             {
               return TaskUtils.AsCompletedTask( () => this.GetSchema(context, query));
             }
 
 
-            public RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            public override RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
                 var target = ctx.DataStore.TargetName;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
-                    
-                    cmd.CommandText =  m_Source.StatementSource;
-                   
+
+                    cmd.CommandText =  Source.StatementSource;
+
                     PopulateParameters(cmd, query);
-                              
-                   
 
                     cmd.Transaction = ctx.Transaction;
 
@@ -132,27 +110,86 @@ namespace NFX.DataAccess.MySQL
                     }
 
                     using (reader)
-                      return PopulateRowset(reader, target, query, m_Source, oneRow);
+                      return PopulateRowset(ctx, reader, target, query, Source, oneRow);
                 }//using command
             }
 
-            public Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
+            public override Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false)
             {
               return TaskUtils.AsCompletedTask( () => this.Execute(context, query, oneRow));
             }
 
 
-            public int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
+            public override Cursor OpenCursor(ICRUDQueryExecutionContext context, Query query)
+            {
+              var ctx = (MySQLCRUDQueryExecutionContext)context;
+              var target = ctx.DataStore.TargetName;
+
+              Schema.FieldDef[] toLoad;
+              Schema schema = null;
+              MySqlDataReader reader = null;
+              var cmd = ctx.Connection.CreateCommand();
+              try
+              {
+
+                cmd.CommandText =  Source.StatementSource;
+
+                PopulateParameters(cmd, query);
+
+                cmd.Transaction = ctx.Transaction;
+
+                try
+                {
+                    reader = cmd.ExecuteReader();
+                    GeneratorUtils.LogCommand(ctx.DataStore.LogLevel, "queryhandler-ok", cmd, null);
+                }
+                catch(Exception error)
+                {
+                    GeneratorUtils.LogCommand(ctx.DataStore.LogLevel, "queryhandler-error", cmd, error);
+                    throw;
+                }
+
+
+                schema = GetSchemaForQuery(target, query, reader, Source, out toLoad);
+              }
+              catch
+              {
+                if (reader!=null) reader.Dispose();
+                cmd.Dispose();
+                throw;
+              }
+
+              var enumerable = execEnumerable(ctx, cmd, reader, schema, toLoad, query);
+              return new MySQLCursor( ctx, cmd, reader, enumerable );
+            }
+
+                      private IEnumerable<Row> execEnumerable(MySQLCRUDQueryExecutionContext ctx, MySqlCommand cmd, MySqlDataReader reader, Schema schema, Schema.FieldDef[] toLoad, Query query)
+                      {
+                        using(cmd)
+                         using(reader)
+                          while(reader.Read())
+                          {
+                            var row = PopulateRow(ctx, query.ResultRowType, schema, toLoad, reader);
+                            yield return row;
+                          }
+                      }
+
+            public override Task<Cursor> OpenCursorAsync(ICRUDQueryExecutionContext context, Query query)
+            {
+              return TaskUtils.AsCompletedTask( () => this.OpenCursor(context, query));
+            }
+
+
+            public override int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query)
             {
                 var ctx = (MySQLCRUDQueryExecutionContext)context;
 
                 using (var cmd = ctx.Connection.CreateCommand())
                 {
 
-                    cmd.CommandText =  m_Source.StatementSource;
-                    
+                    cmd.CommandText =  Source.StatementSource;
+
                     PopulateParameters(cmd, query);
-                                                                                    
 
                     cmd.Transaction = ctx.Transaction;
 
@@ -170,7 +207,7 @@ namespace NFX.DataAccess.MySQL
                 }//using command
             }
 
-            public Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
+            public override Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query)
             {
                return TaskUtils.AsCompletedTask( () => this.ExecuteWithoutFetch(context, query));
             }
@@ -180,29 +217,18 @@ namespace NFX.DataAccess.MySQL
         #region Static Helpers
 
             /// <summary>
-            /// Reads data from reader into rowset. th reader is NOT disposed 
+            /// Reads data from reader into rowset. the reader is NOT disposed
             /// </summary>
-            public static Rowset PopulateRowset(MySqlDataReader reader, string target, Query query, QuerySource qSource, bool oneRow)
+            public static Rowset PopulateRowset(MySQLCRUDQueryExecutionContext context, MySqlDataReader reader, string target, Query query, QuerySource qSource, bool oneRow)
             {
               Schema.FieldDef[] toLoad;
               Schema schema = GetSchemaForQuery(target, query, reader, qSource, out toLoad);
+              var store= context.DataStore;
 
               var result = new Rowset(schema);
               while(reader.Read())
               {
-                var row = Row.MakeRow(schema, query.ResultRowType);
-                        
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    var fdef = toLoad[i];
-                    if (fdef==null) continue;
-
-                    var val = reader.GetValue(i);
-                    if (fdef.NonNullableType==typeof(bool))
-                        row[fdef.Order] = val.AsNullableBool();
-                    else
-                        row[fdef.Order] = val;
-                }
+                var row = PopulateRow(context, query.ResultRowType, schema, toLoad, reader);
 
                 result.Add( row );
                 if (oneRow) break;
@@ -210,7 +236,48 @@ namespace NFX.DataAccess.MySQL
 
               return result;
             }
-            
+
+            /// <summary>
+            /// Reads data from reader into rowset. the reader is NOT disposed
+            /// </summary>
+            public static Row PopulateRow(MySQLCRUDQueryExecutionContext context, Type tRow, Schema schema, Schema.FieldDef[] toLoad, MySqlDataReader reader)
+            {
+              var store= context.DataStore;
+              var row = Row.MakeRow(schema, tRow);
+
+              for (int i = 0; i < reader.FieldCount; i++)
+              {
+                  var fdef = toLoad[i];
+                  if (fdef==null) continue;
+
+                  var val = reader.GetValue(i);
+
+                  if (val==null || val is DBNull)
+                  {
+                    row[fdef.Order] = null;
+                    continue;
+                  }
+
+                  if (fdef.NonNullableType==typeof(bool))
+                  {
+                      if (store.StringBool)
+                      {
+                        var bval = (val is bool) ? (bool)val : val.ToString().EqualsIgnoreCase(store.StringForTrue);
+                        row[fdef.Order] = bval;
+                      }
+                      else
+                      row[fdef.Order] = val.AsNullableBool();
+                  }
+                  else
+                      row[fdef.Order] = val;
+              }
+
+              return row;
+            }
+
+
+
+
             /// <summary>
             /// Populates MySqlCommand with parameters from CRUD Query object
             /// Note: this code was purposely made provider specific because other providers may treat some nuances differently
@@ -219,14 +286,14 @@ namespace NFX.DataAccess.MySQL
             {
                foreach(var par in query.Where(p=> p.HasValue))
                 cmd.Parameters.AddWithValue(par.Name, par.Value);
-               
+
                if (query.StoreKey!=null)
-               {                               
+               {
                 var where = GeneratorUtils.KeyToWhere(query.StoreKey, cmd.Parameters);
                 cmd.CommandText += "\n WHERE \n {0}".Args( where );
                }
 
-               CRUDGenerator.ConvertParameters(m_Store, cmd.Parameters);
+               CRUDGenerator.ConvertParameters(Store, cmd.Parameters);
             }
 
             /// <summary>
@@ -240,7 +307,7 @@ namespace NFX.DataAccess.MySQL
                var fdefs = new List<Schema.FieldDef>();
 
                for (int i = 0; i < reader.FieldCount; i++)
-               {                        
+               {
                     var fname = reader.GetName(i);
                     var ftype = reader.GetFieldType(i);
 
@@ -252,7 +319,7 @@ namespace NFX.DataAccess.MySQL
                 if (source.HasPragma && source.ModifyTarget.IsNotNullOrWhiteSpace()) table = source.ModifyTarget;
 
                if (table.IsNullOrWhiteSpace()) table = Guid.NewGuid().ToString();
-                
+
                return new Schema(table, source!=null ? source.ReadOnly : true,  fdefs);
             }
 
@@ -267,14 +334,16 @@ namespace NFX.DataAccess.MySQL
               if (rtp != null && typeof(TypedRow).IsAssignableFrom(rtp))
                 schema = Schema.GetForTypedRow(query.ResultRowType);
               else
-                schema = GetSchemaFromReader(query.Name, qSource, reader); 
-                      
+                schema = GetSchemaFromReader(query.Name, qSource, reader);
+
               //determine what fields to load
               toLoad = new Schema.FieldDef[reader.FieldCount];
               for (int i = 0; i < reader.FieldCount; i++)
               {
                 var name = reader.GetName(i);
                 var fdef = schema[name];
+
+      //todo A gde GetBackendNameFor target?
                 if (fdef==null) continue;
                 var attr =  fdef[target];
                 if (attr!=null)
@@ -291,8 +360,8 @@ namespace NFX.DataAccess.MySQL
 
     }
 
-    
-    
+
+
 
 
 }

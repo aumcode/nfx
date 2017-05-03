@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using NFX.Glue.Protocol;
 namespace NFX.Glue.Native
 {
     /// <summary>
-    /// Provides server-side functionality for synchronous communication pattern based on 
+    /// Provides server-side functionality for synchronous communication pattern based on
     ///  in-memory message exchange without serialization
     /// </summary>
     public class InProcServerTransport : ServerTransport<InProcBinding>
@@ -41,7 +41,7 @@ namespace NFX.Glue.Native
         #region Fields/Props
 
         #endregion
-        
+
         #region Protected
 
             protected override bool DoSendResponse(ResponseMsg response)

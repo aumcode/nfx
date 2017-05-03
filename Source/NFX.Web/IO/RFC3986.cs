@@ -1,7 +1,7 @@
 
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ namespace NFX.Web.IO
     #region Static
 
       /// <summary>
-      /// Encodes URL string according to RFC3986 
+      /// Encodes URL string according to RFC3986
       /// </summary>
       public static string URLEncode(string input)
       {
@@ -54,7 +54,7 @@ namespace NFX.Web.IO
       }
 
       /// <summary>
-      /// Encodes string according to RFC3986 
+      /// Encodes string according to RFC3986
       /// </summary>
       public static string Encode(string input)
       {

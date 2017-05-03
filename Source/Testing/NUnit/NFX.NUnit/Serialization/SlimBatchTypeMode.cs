@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -215,9 +231,59 @@ namespace NFX.NUnit.Serialization
         }
       }
 
+
+      [Test]
+      public void T5_Batch_WriteReadMany()
+      {
+        using (var ms = new MemoryStream())
+        {
+          var s1 = new SlimSerializer();
+          s1.TypeMode= TypeRegistryMode.Batch;
+          var s2 = new SlimSerializer();
+          s2.TypeMode= TypeRegistryMode.Batch;
+          
+          var o1a = new A1{ I1 = 12};      
+          var o1b = new A2{ I2 = 13};      
+          var o1c = new A1{ I1 = 14};      
+          var o1d = new A1{ I1 = 15};      
+          var o1e = new A1{ I1 = 16};      
+
+          s1.Serialize(ms, o1a);  Assert.IsTrue( s1.BatchTypesAdded );
+          ms.Position = 0;
+          var o2a = (A1)s2.Deserialize(ms); Assert.IsTrue( s2.BatchTypesAdded );
+
+          ms.Position = 0;
+          s1.Serialize(ms, o1b);  Assert.IsTrue( s1.BatchTypesAdded );
+          ms.Position = 0;
+          var o2b = (A2)s2.Deserialize(ms); Assert.IsTrue( s2.BatchTypesAdded );
+
+          ms.Position = 0;
+          s1.Serialize(ms, o1c);  Assert.IsFalse( s1.BatchTypesAdded );
+          ms.Position = 0;
+          var o2c = (A1)s2.Deserialize(ms); Assert.IsFalse( s2.BatchTypesAdded );
+
+          ms.Position = 0;
+          s1.Serialize(ms, o1d);  Assert.IsFalse( s1.BatchTypesAdded );
+          ms.Position = 0;
+          var o2d = (A1)s2.Deserialize(ms); Assert.IsFalse( s2.BatchTypesAdded );
+          
+          ms.Position = 0;
+          s1.Serialize(ms, o1e);  Assert.IsFalse( s1.BatchTypesAdded );
+          ms.Position = 0;
+          var o2e = (A1)s2.Deserialize(ms); Assert.IsFalse( s2.BatchTypesAdded );
+
+          Assert.AreEqual(12, o2a.I1); 
+          Assert.AreEqual(13, o2b.I2); 
+          Assert.AreEqual(14, o2c.I1); 
+          Assert.AreEqual(15, o2d.I1); 
+          Assert.AreEqual(16, o2e.I1); 
+        }
+      }
+
+
       [Test]
       [ExpectedException(typeof(SlimDeserializationException), ExpectedMessage="count mismatch", MatchType = MessageMatch.Contains)]
-      public void T4_BatchParcelMismatch_WriteMany()
+      public void T6_BatchParcelMismatch_WriteMany()
       {
         using (var ms = new MemoryStream())
         {
@@ -250,7 +316,7 @@ namespace NFX.NUnit.Serialization
 
       [Test]
       [ExpectedException(typeof(SlimDeserializationException), ExpectedMessage="count mismatch", MatchType = MessageMatch.Contains)]
-      public void T4_CountMismatchResetBatch_WriteMany()
+      public void T7_CountMismatchResetBatch_WriteMany()
       {
         using (var ms = new MemoryStream())
         {

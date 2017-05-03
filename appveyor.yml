@@ -1,0 +1,4 @@
+configuration: Release
+
+##for now disable tests
+test: off 

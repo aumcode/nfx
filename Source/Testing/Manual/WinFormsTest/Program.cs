@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using NFX.ApplicationModel;
 using NFX.WinForms;
 
 namespace WinFormsTest
@@ -35,31 +36,28 @@ namespace WinFormsTest
     {
       //This line initializes  NFX Application Model dependency injection services container
       //Separate class was needed because Application  class is sealed
-      using(new BaseApplication(args, null))
-      {                                      
+      using(new ServiceBaseApplication(args, null))
+      {
         Application.EnableVisualStyles();
        // Application.SetCompatibleTextRenderingDefault(false);
 
         Application.Run(new MenuForm());
-     //   Application.Run( new ChartFormDemo());
+   //  Application.Run( new ChartForm());
+   //    Application.Run( new ChartFormDemo());
 
-        //Application.Run(new PatientForm());
-        //Application.Run(new GridForm());
       // Application.Run(new Form2());
-       //Application.Run(new Form1());
       //    Application.Run(new MongoDBForm());
-      //    Application.Run(new LogForm());
-        // Application.Run(new ObjectStoreForm());
+//          Application.Run(new LogForm());
 
        //  Application.Run(new SerializerForm());
-//          Application.Run(new SerializerForm2());
+       //   Application.Run(new SerializerForm2());
 
 //        Application.Run(new WinFormsTest.Glue.JokeCalculatorClientForm());
          //Application.Run(new SerializerForm());
 //         Application.Run(new SerializerForm2());
-        
+
   //      Application.Run(new GlueForm());
-   //    Application.Run(new ELinkForm());
+//       Application.Run(new ELinkForm());
    //     Application.Run(new CacheTest());
 
        // Application.Run(new QRTestForm());
@@ -71,10 +69,10 @@ namespace WinFormsTest
   // Application.Run(new FIDForm());
 
      //   Application.Run(new WinFormsTest.ConsoleUtils.ConsoleUtilsFrm());
-      }  
+      }
 
     //   Application.Run(new BlankForm());
     }
-    
+
   }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -48,10 +48,10 @@ namespace NFX.IO.FileSystem.SVN
     /// <summary>
     /// Request timeout milliseconds
     /// </summary>
-    [Config]public int TimeoutMs 
+    [Config]public int TimeoutMs
     {
       get { return m_TimeoutMs; }
-      set { m_TimeoutMs = value < 0 ? 0 : value; } 
+      set { m_TimeoutMs = value < 0 ? 0 : value; }
     }
 
     public override void Configure(IConfigSectionNode node)
@@ -65,17 +65,17 @@ namespace NFX.IO.FileSystem.SVN
       {
         var cred = new IDPasswordCredentials(unm, upwd);
         var at = new AuthenticationToken(ServerURL, unm);
-        User = new User(cred, at, UserStatus.User, unm, unm, Rights.None);  
+        User = new User(cred, at, UserStatus.User, unm, unm, Rights.None);
       }
     }
   }
-  
+
   /// <summary>
   /// Provides SVN file system connection session
   /// </summary>
-  public sealed class SVNFileSystemSession : FileSystemSession 
+  public sealed class SVNFileSystemSession : FileSystemSession
   {
-    internal SVNFileSystemSession(SVNFileSystem fs, IFileSystemHandle handle, SVNFileSystemSessionConnectParams cParams) 
+    internal SVNFileSystemSession(SVNFileSystem fs, IFileSystemHandle handle, SVNFileSystemSessionConnectParams cParams)
                       : base(fs, handle, cParams)
     {
       m_ServerURL = cParams.ServerURL;
@@ -109,7 +109,7 @@ namespace NFX.IO.FileSystem.SVN
         return cred.ID;
       }
     }
-      
+
     /// <summary>
     /// Extracts user Password from User
     /// </summary>

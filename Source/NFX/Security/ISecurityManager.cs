@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ namespace NFX.Security
     /// </summary>
     public interface ISecurityManager : IApplicationComponent
     {
-       
+       IPasswordManager PasswordManager { get; }
+
        /// <summary>
        /// Authenticates user by checking the supplied credentials against the
        /// authentication store that this manager represents.
@@ -38,7 +39,7 @@ namespace NFX.Security
        /// If rights are computed on authentication than Authorize() just checks existing in-memory structure, otherwise
        ///  Authorize() may re-fetch permissions from store on every call or cache them for the specified interval in memory
        /// </summary>
-       /// <param name="credentials">User credentials. 
+       /// <param name="credentials">User credentials.
        /// Particular manager implementation may elect to support multiple credential types, i.e.
        /// IdPassword, Twitter, Facebook, OAuth, LegacySystemA/B/C etc.
        /// </param>
@@ -62,7 +63,7 @@ namespace NFX.Security
        /// </returns>
        User Authenticate(AuthenticationToken token);
 
-      
+
        /// <summary>
        /// Authenticates user by checking the supplied user's token against the
        /// authentication store that this manager represents.

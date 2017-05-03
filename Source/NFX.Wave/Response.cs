@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ using NFX.Serialization.JSON;
 namespace NFX.Wave
 {
   /// <summary>
-  /// Represents Response object used to generate web responses to client 
+  /// Represents Response object used to generate web responses to client
   /// </summary>
   public sealed class Response : DisposableObject
   {
@@ -68,8 +68,8 @@ namespace NFX.Wave
              var ie = srv.m_InstrumentationEnabled;
 
              if (ie && m_WasWrittenTo)
-              Interlocked.Increment(ref srv.m_Stat_WorkContextWrittenResponse);
-             
+              Interlocked.Increment(ref srv.m_stat_WorkContextWrittenResponse);
+
              stowClientVars();
 
              if (m_Buffer!=null)
@@ -81,8 +81,8 @@ namespace NFX.Wave
 
                 if (ie)
                 {
-                  Interlocked.Increment(ref srv.m_Stat_WorkContextBufferedResponse);
-                  Interlocked.Add(ref srv.m_Stat_WorkContextBufferedResponseBytes, sz);
+                  Interlocked.Increment(ref srv.m_stat_WorkContextBufferedResponse);
+                  Interlocked.Add(ref srv.m_stat_WorkContextBufferedResponseBytes, sz);
                 }
              }
            }
@@ -121,10 +121,10 @@ namespace NFX.Wave
       /// Determines whether the content is buffered locally. This property can not be set after
       ///  the response has been written to
       /// </summary>
-      public bool Buffered 
+      public bool Buffered
       {
         get {return !m_NetResponse.SendChunked;}
-        set 
+        set
         {
           if (m_WasWrittenTo)
             throw new WaveException(StringConsts.RESPONSE_WAS_WRITTEN_TO_ERROR+".Buffered.set()");
@@ -174,12 +174,12 @@ namespace NFX.Wave
       /// Returns true if current request processing cycle has changed the client var
       /// </summary>
       public bool ClientVarsChanged { get{ return m_ClientVarsChanged;} }
-      
+
 
     #endregion
 
     #region Public
-      
+
       /// <summary>
       /// Writes an object into response as string
       /// </summary>
@@ -199,7 +199,7 @@ namespace NFX.Wave
 
         WriteLine(content.ToString());
       }
-      
+
       /// <summary>
       /// Writes a string into response
       /// </summary>
@@ -219,7 +219,7 @@ namespace NFX.Wave
       {
         Write((content??string.Empty)+"\n");
       }
-    
+
       /// <summary>
       /// Writes an object as JSON. Does nothing if object is null
       /// </summary>
@@ -229,7 +229,7 @@ namespace NFX.Wave
         setWasWrittenTo();
         m_NetResponse.ContentType = NFX.Web.ContentType.JSON;
         JSONWriter.Write(data, new NonClosingStreamWrap( getStream() ), options, Encoding);
-      } 
+      }
 
       /// <summary>
       /// Write the file to the client so client can download it. May set Buffered=false to use chunked encoding for big files
@@ -238,7 +238,7 @@ namespace NFX.Wave
       {
         if (localFileName.IsNullOrWhiteSpace())
           throw new WaveException(StringConsts.ARGUMENT_ERROR+"Response.WriteFile(localFileName==null|empty)");
-        
+
         var fi = new FileInfo(localFileName);
 
         if (!fi.Exists)
@@ -247,20 +247,20 @@ namespace NFX.Wave
         var fsize = fi.Length;
         if (Buffered && fsize>MAX_DOWNLOAD_FILE_SIZE)
           throw new WaveException(StringConsts.RESPONSE_WRITE_FILE_OVER_MAX_SIZE_ERROR.Args(localFileName, MAX_DOWNLOAD_FILE_SIZE));
-        
+
         var ext = Path.GetExtension(localFileName);
         setWasWrittenTo();
         m_NetResponse.ContentType = NFX.Web.ContentType.ExtensionToContentType(ext, NFX.Web.ContentType.BINARY);
-        
+
         if (attachment)
-          m_NetResponse.Headers.Add(SysConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(fi.Name));
-        
+          m_NetResponse.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(fi.Name));
+
         if (bufferSize<MIN_DOWNLOAD_BUFFER_SIZE) bufferSize=MIN_DOWNLOAD_BUFFER_SIZE;
         else if (bufferSize>MAX_DOWNLOAD_BUFFER_SIZE) bufferSize=MAX_DOWNLOAD_BUFFER_SIZE;
 
         using(var fs = new FileStream(localFileName, FileMode.Open, FileAccess.Read))
         {
-          
+
           var dest = getStream();
           if (dest is MemoryStream)
           {
@@ -269,13 +269,13 @@ namespace NFX.Wave
             {
               ms.SetLength(fsize);//pre-allocate memory stream
               ms.Position = ms.Length;
-              fs.Read(ms.GetBuffer(), 0, (int)ms.Position);    
+              fs.Read(ms.GetBuffer(), 0, (int)ms.Position);
               return;
             }
           }
 
           fs.CopyTo(dest, bufferSize);
-        } 
+        }
       }
 
 
@@ -286,16 +286,16 @@ namespace NFX.Wave
       {
         if (stream==null)
           throw new WaveException(StringConsts.ARGUMENT_ERROR+"Response.WriteStream(stream==null)");
-        
+
         setWasWrittenTo();
-        
+
         if (attachmentName.IsNotNullOrWhiteSpace())
-          m_NetResponse.Headers.Add(SysConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(attachmentName));
-        
+          m_NetResponse.Headers.Add(WebConsts.HTTP_HDR_CONTENT_DISPOSITION, "attachment; filename={0}".Args(attachmentName));
+
         if (bufferSize<MIN_DOWNLOAD_BUFFER_SIZE) bufferSize=MIN_DOWNLOAD_BUFFER_SIZE;
         else if (bufferSize>MAX_DOWNLOAD_BUFFER_SIZE) bufferSize=MAX_DOWNLOAD_BUFFER_SIZE;
 
-          
+
         var dest = getStream();
         stream.CopyTo(dest, bufferSize);
       }
@@ -309,7 +309,7 @@ namespace NFX.Wave
         setWasWrittenTo();
         return getStream();
       }
-      
+
       /// <summary>
       /// Cancels the buffered content. Throws if the response is not Buffered
       /// </summary>
@@ -336,18 +336,21 @@ namespace NFX.Wave
       ///  the processing of filters and handlers continues unless 'work.Aborted = true' is issued in code.
       ///  See also 'RedirectAndAbort(url)'
       /// </summary>
-      public void Redirect(string url)
+      public void Redirect(string url, WebConsts.RedirectCode code = WebConsts.RedirectCode.Found_302)
       {
-        m_NetResponse.Redirect(url);
+        //20160707 DKh m_NetResponse.Redirect(url);
+        m_NetResponse.Headers.Set(HttpResponseHeader.Location, url);
+        m_NetResponse.StatusCode        = WebConsts.GetRedirectStatusCode(code);
+        m_NetResponse.StatusDescription = WebConsts.GetRedirectStatusDescription(code);
       }
 
       /// <summary>
       /// Configures response with redirect status and headers. This method also aborts the work pipeline,so
       ///  the processing of filters and handlers does not continue. See also 'Redirect(url)'
       /// </summary>
-      public void RedirectAndAbort(string url)
+      public void RedirectAndAbort(string url, WebConsts.RedirectCode code = WebConsts.RedirectCode.Found_302)
       {
-        m_NetResponse.Redirect(url);
+        this.Redirect(url, code);
         Work.Aborted = true;
       }
 
@@ -367,6 +370,28 @@ namespace NFX.Wave
         m_NetResponse.AppendCookie(cookie);
       }
 
+      public bool SetCacheControlHeaders(CacheControl control, bool force = true, string vary = null)
+      {
+        if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace()) return false;
+        var value = control.HTTPCacheControl;
+        if (value.IsNullOrWhiteSpace()) return false;
+
+        m_NetResponse.Headers[HttpResponseHeader.CacheControl] = value;
+        if (control.Cacheability == CacheControl.Type.NoCache)
+        {
+          m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
+          m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
+          m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
+        } else
+        {
+          //if (control.MaxAgeSec.HasValue)
+          //  m_NetResponse.Headers[HttpRequestHeader.Expires] = App.TimeSource.UTCNow.AddSeconds(control.MaxAgeSec.Value).DateTimeToHTTPCookieDateTime();
+          if (vary.IsNotNullOrWhiteSpace())
+            m_NetResponse.Headers[HttpResponseHeader.Vary] = vary;
+        }
+        return true;
+      }
+
       /// <summary>
       /// Sets headers so all downstream, layers (browsers, proxies) do not cache response.
       /// If Force==true(default) then overrides existing headers with no cache.
@@ -374,23 +399,15 @@ namespace NFX.Wave
       /// </summary>
       public bool SetNoCacheHeaders(bool force = true)
       {
-        if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace())
-          return false;
-        
-        m_NetResponse.Headers[HttpResponseHeader.CacheControl] = "no-cache, no-store, must-revalidate";
-        m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
-        m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
-        m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
-        return true;
-      }
+        return SetCacheControlHeaders(CacheControl.NoCache, force);
+        //if (!force && m_NetResponse.Headers[HttpResponseHeader.CacheControl].IsNotNullOrWhiteSpace())
+        //  return false;
 
-      /// <summary>
-      /// Sets max-age private cache header
-      /// </summary>
-      public void SetPrivateMaxAgeCacheHeader(int maxAgeSec)
-      {
-        m_NetResponse.Headers[System.Net.HttpResponseHeader.CacheControl] = "private, max-age="+maxAgeSec+", must-revalidate";
-        m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
+        //m_NetResponse.Headers[HttpResponseHeader.CacheControl] = "no-cache, no-store, must-revalidate";
+        //m_NetResponse.Headers[HttpResponseHeader.Pragma] = "no-cache";
+        //m_NetResponse.Headers[HttpResponseHeader.Expires] = "0";
+        //m_NetResponse.Headers[HttpResponseHeader.Vary] = "*";
+        //return true;
       }
 
       /// <summary>
@@ -403,7 +420,7 @@ namespace NFX.Wave
          loadClientVars();
          return m_ClientVars.Keys;
       }
-      
+
       /// <summary>
       /// Provides access to client state object which gets persisted as a cookie.
       /// Client states need to be used instead of cookies because of some HttpListener+Browser limitations
@@ -415,32 +432,32 @@ namespace NFX.Wave
           loadClientVars();
           string result;
           if (m_ClientVars.TryGetValue(key, out result)) return result;
-          return string.Empty; 
+          return string.Empty;
       }
-     
+
       /// <summary>
       /// Provides access to client state object which gets persisted as a cookie.
       /// Client states need to be used instead of cookies because of some HttpListener+Browser limitations
       /// that can not parse multiple cookies set into one Set-Cookie header.
       /// Pass null for value to delete the var form the collection. The values are generally expected to be base64 encoded by the caller
       /// </summary>
-      public void SetClientVar(string key, string value) 
+      public void SetClientVar(string key, string value)
       {
           if (m_WasWrittenTo && !Buffered)
             throw new WaveException(StringConsts.RESPONSE_WAS_WRITTEN_TO_ERROR+".SetClientVar()");
 
           if (key==null) key = string.Empty;
-          
-          
+
+
           if (key.IndexOf(KEY_DELIMITER)>=0)
             throw new WaveException(StringConsts.ARGUMENT_ERROR+".SetClientVar(key has "+KEY_DELIMITER+")");
 
 
-          
+
           if (value!=null && value.IndexOf(VAR_DELIMITER)>=0)
             throw new WaveException(StringConsts.ARGUMENT_ERROR+".SetClientVar(value has "+VAR_DELIMITER+")");
 
-                    
+
           loadClientVars();
 
           if (value==null)
@@ -457,7 +474,7 @@ namespace NFX.Wave
       }
 
 
-    #endregion 
+    #endregion
 
 
     #region .pvt
@@ -468,7 +485,7 @@ namespace NFX.Wave
         {
           m_Buffer = new MemoryStream();
           return m_Buffer;
-        }  
+        }
         return m_NetResponse.OutputStream;
       }
 
@@ -497,7 +514,6 @@ namespace NFX.Wave
         var cv = cookie.Value;
         if (cv.IsNullOrWhiteSpace()) return;
 
-//Console.WriteLine("Cookie detected: "+cv); 
 
         var segs = cv.Split(VAR_DELIMITER);
         foreach(var seg in segs)
@@ -509,7 +525,6 @@ namespace NFX.Wave
           else
             m_ClientVars[seg.Substring(0, i)] = seg.Substring(i+1);
         }
-//Console.WriteLine("Parsed: "+m_ClientVars.ToJSON());
       }
 
       private void stowClientVars()
@@ -528,20 +543,17 @@ namespace NFX.Wave
          sb.Append(kvp.Value);
          first = false;
         }
-        
+
         var cookieName = Work.Server.ClientVarsCookieName;
         var cv = sb.ToString();
 
         var total = cookieName.Length + cv.Length;
         if (total > MAX_COOKIE_LENGTH)
-         throw new WaveException(StringConsts.CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR.Args(total, MAX_COOKIE_LENGTH)); 
+         throw new WaveException(StringConsts.CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR.Args(total, MAX_COOKIE_LENGTH));
 
-
-// Console.WriteLine("Cookie added: "+cookieName+",  value: "+cv); 
-
-        AddHeader(NFX.Wave.SysConsts.HTTP_SET_COOKIE,
+        AddHeader(WebConsts.HTTP_SET_COOKIE,
                              "{0}={1};path=/;expires={2};HttpOnly"
-                           .Args(cookieName, cv, App.TimeSource.UTCNow.AddYears(100).DateTimeToHTTPCookieDateTime() )); 
+                           .Args(cookieName, cv, App.TimeSource.UTCNow.AddYears(100).DateTimeToHTTPCookieDateTime() ));
       }
 
 

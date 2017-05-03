@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace NFX.ApplicationModel
     public class BaseSession : ISession
     {
         #region .ctor
-            
+
             protected BaseSession() //used by serializer
             {
             }
@@ -46,7 +46,7 @@ namespace NFX.ApplicationModel
 
 
         #region Fields
-        
+
             private Guid m_ID;
             private ulong m_IDSecret;
 
@@ -64,6 +64,7 @@ namespace NFX.ApplicationModel
 
 
             private DateTime? m_LastLoginUTC;
+            private SessionLoginType m_LastLoginType;
             private User m_User;
 
 
@@ -75,7 +76,7 @@ namespace NFX.ApplicationModel
         #endregion
 
         #region Properties
-            
+
             /// <summary>
             /// Returns Session ID
             /// </summary>
@@ -93,7 +94,7 @@ namespace NFX.ApplicationModel
             {
                 get { return m_IDSecret; }
             }
-            
+
             /// <summary>
             /// When this parameter is not null then RegenerateID() was called and session provider may need to re-stow session object under a new ID
             /// </summary>
@@ -111,7 +112,7 @@ namespace NFX.ApplicationModel
             }
 
             /// <summary>
-            /// Indicates that user login happened in current request processing cycle. This flag is 
+            /// Indicates that user login happened in current request processing cycle. This flag is
             /// useful for long term token assignment on release
             /// </summary>
             public bool IsJustLoggedIn
@@ -126,6 +127,14 @@ namespace NFX.ApplicationModel
             public DateTime? LastLoginUTC
             {
               get { return m_LastLoginUTC;}
+            }
+
+            /// <summary>
+            /// Returns the last login type
+            /// </summary>
+            public SessionLoginType LastLoginType
+            {
+              get { return m_LastLoginType;}
             }
 
             /// <summary>
@@ -151,7 +160,7 @@ namespace NFX.ApplicationModel
             /// </summary>
             public virtual string LanguageISOCode
             {
-                get { return CoreConsts.ISO_LANG_ENGLISH;} 
+                get { return CoreConsts.ISO_LANG_ENGLISH;}
             }
 
             /// <summary>
@@ -159,7 +168,7 @@ namespace NFX.ApplicationModel
             /// </summary>
             public IDictionary<object, object> Items
             {
-                get 
+                get
                 {
                   if (m_Items==null)
                       lock(m_ItemsLock)
@@ -176,7 +185,7 @@ namespace NFX.ApplicationModel
             /// </summary>
             public object this[object key]
             {
-              get 
+              get
               {
                 object result;
                 if (Items.TryGetValue(key, out result)) return result;
@@ -202,10 +211,11 @@ namespace NFX.ApplicationModel
             /// Called from business code when user supplies login credentals and/or performs another action
             /// that can be qualified as a reliable user identity proof
             /// </summary>
-            public virtual void HasJustLoggedIn()
+            public virtual void HasJustLoggedIn(SessionLoginType loginType)
             {
               m_IsJustLoggedIn = true;
               m_LastLoginUTC = App.TimeSource.UTCNow;
+              m_LastLoginType = loginType;
             }
 
             /// <summary>

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ namespace NFX.Wave.Filters
 
       public const int DEFAULT_SESSION_TIMEOUT_MS = 5 *  //min
                                                     60 * //sec
-                                                    1000;//msec  
+                                                    1000;//msec
 
     #endregion
 
@@ -81,9 +81,9 @@ namespace NFX.Wave.Filters
         get { return m_CookieName ?? DEFAULT_COOKIE_NAME;}
         set { m_CookieName = value; }
       }
-      
+
       /// <summary>
-      /// Specifies session inactivity timeout in milliseconds. 
+      /// Specifies session inactivity timeout in milliseconds.
       /// For default implementation: assign 0 to use App.ObjectStore default object timeout value
       /// </summary>
       public int SessionTimeoutMs
@@ -91,13 +91,13 @@ namespace NFX.Wave.Filters
         get { return m_SessionTimeoutMs;}
         set { m_SessionTimeoutMs = value<0 ? 0 : value; }
       }
-      
+
     #endregion
 
     #region Protected
 
       protected sealed override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         if (work.m_SessionFilter==null)
         {
           try
@@ -121,30 +121,30 @@ namespace NFX.Wave.Filters
       protected internal virtual void FetchExistingOrMakeNewSession(WorkContext work, bool onlyExisting = false)
       {
         if (work.Session!=null) return;
-        WaveSession session = null; 
+        WaveSession session = null;
         ulong sidSecret = 0;
         var sid = ExtractSessionID(work, out sidSecret);
-        
+
         if (sid.HasValue)
         {
-          session = App.ObjectStore.CheckOut(sid.Value) as WaveSession; 
+          session = App.ObjectStore.CheckOut(sid.Value) as WaveSession;
 
           if (session!=null && session.IDSecret!=sidSecret)
           {
             App.ObjectStore.UndoCheckout(sid.Value);
             session = null;//The secret password does not match
             if (Server.m_InstrumentationEnabled)
-              Interlocked.Increment(ref Server.m_Stat_SessionInvalidID);
+              Interlocked.Increment(ref Server.m_stat_SessionInvalidID);
           }
         }
-       
+
         var foundExisting = true;
 
         if (session==null)
         {
           //20160124 DKh to use long term tokens
           //if (onlyExisting) return;//do not create anything
-          if (onlyExisting) 
+          if (onlyExisting)
           {
             session = TryMakeSessionFromExistingLongTermToken(work);
             if (session==null) return;//do not create anything
@@ -154,8 +154,8 @@ namespace NFX.Wave.Filters
           {
             foundExisting = false;
             if (NetGate!=null && NetGate.Enabled)
-               NetGate.IncreaseVariable(IO.Net.Gate.TrafficDirection.Incoming, 
-                                     work.Request.RemoteEndPoint.Address.ToString(),
+               NetGate.IncreaseVariable(IO.Net.Gate.TrafficDirection.Incoming,
+                                     work.EffectiveCallerIPEndPoint.Address.ToString(),
                                      NETGATE_NEWSESSION_VAR_NAME,
                                      1);
 
@@ -164,13 +164,15 @@ namespace NFX.Wave.Filters
         }
 
         if (foundExisting && Server.m_InstrumentationEnabled)
-           Interlocked.Increment(ref Server.m_Stat_SessionExisting);
+           Interlocked.Increment(ref Server.m_stat_SessionExisting);
 
         session.Acquire();
         if (work.GeoEntity!=null)
           session.GeoEntity = work.GeoEntity;
         work.m_Session = session;
         ApplicationModel.ExecutionContext.__SetThreadLevelSessionContext(session);
+
+        work.SetAuthenticated(session.User.IsAuthenticated);
       }
 
       /// <summary>
@@ -182,10 +184,10 @@ namespace NFX.Wave.Filters
       {
         return null;
       }
-      
+
       /// <summary>
       /// Override to put session object back into whatever storage medium is provided (i.e. DB) and
-      /// respond with appropriate session identifying token(i.e. a cookie) 
+      /// respond with appropriate session identifying token(i.e. a cookie)
       /// </summary>
       protected virtual void StowSession(WorkContext work)
       {
@@ -201,10 +203,14 @@ namespace NFX.Wave.Filters
              App.ObjectStore.CheckInUnderNewKey(session.OldID.Value, session.ID, session, m_SessionTimeoutMs);
             else
              App.ObjectStore.CheckIn(session.ID, session, m_SessionTimeoutMs);
-           
+
             if (session.IsNew || regenerated)
             {
-              work.Response.SetClientVar(m_CookieName, EncodeSessionID( session ));
+              var apiVersion = work.Request.Headers[SysConsts.HEADER_API_VERSION];
+              if (apiVersion!=null)
+                work.Response.AddHeader(SysConsts.HEADER_API_SESSION, EncodeSessionID( work, session, true));
+              else
+                work.Response.SetClientVar(m_CookieName, EncodeSessionID( work, session, false ));//the cookie is set only for non-api call
             }
           }
           else
@@ -215,7 +221,7 @@ namespace NFX.Wave.Filters
 
 
             if (Server.m_InstrumentationEnabled)
-               Interlocked.Increment(ref Server.m_Stat_SessionEnd);
+               Interlocked.Increment(ref Server.m_stat_SessionEnd);
           }
         }
         finally
@@ -233,23 +239,30 @@ namespace NFX.Wave.Filters
       {
         var cv = work.Response.GetClientVar(m_CookieName);// work.Request.Cookies[m_CookieName];
 
+        var apiHeaders = false;
+        if (cv.IsNullOrWhiteSpace())
+        {
+          cv = work.Request.Headers[SysConsts.HEADER_API_SESSION];
+          apiHeaders = true;
+        }
+
         if (cv.IsNotNullOrWhiteSpace())
         {
-          var guid = DecodeSessionID(cv, out idSecret);
+          var guid = DecodeSessionID(work, cv, apiHeaders, out idSecret);
           if (guid.HasValue) return guid.Value;
 
           if (Server.m_InstrumentationEnabled)
-              Interlocked.Increment(ref Server.m_Stat_SessionInvalidID);
+              Interlocked.Increment(ref Server.m_stat_SessionInvalidID);
         }
 
         idSecret = 0;
         return null;
       }
-      
+
       /// <summary>
       /// Override to encode session ID GUID into string representation
       /// </summary>
-      protected virtual string EncodeSessionID(WaveSession session)
+      protected virtual string EncodeSessionID(WorkContext work, WaveSession session, bool hasApiHeaders)
       {
         var encoded = new ELink(session.IDSecret, session.ID.ToByteArray());
         return encoded.Link;
@@ -258,12 +271,12 @@ namespace NFX.Wave.Filters
       /// <summary>
       /// Override to decode session ID GUID from string representation. Return null if conversion not possible
       /// </summary>
-      protected virtual Guid? DecodeSessionID(string id, out ulong idSecret)
+      protected virtual Guid? DecodeSessionID(WorkContext work, string id, bool hasApiHeaders, out ulong idSecret)
       {
         ELink encoded;
-        Guid guid; 
+        Guid guid;
         ulong secret;
-       
+
         try
         {
           encoded = new ELink(id);
@@ -279,21 +292,21 @@ namespace NFX.Wave.Filters
         idSecret = secret;
         return guid;
       }
-      
+
 
       /// <summary>
-      /// Called to create new session
+      /// Called to create a new session
       /// </summary>
       protected WaveSession MakeNewSession(WorkContext work)
       {
         if (Server.m_InstrumentationEnabled)
-          Interlocked.Increment(ref Server.m_Stat_SessionNew);
+          Interlocked.Increment(ref Server.m_stat_SessionNew);
 
         return MakeNewSessionInstance(work);
       }
 
       /// <summary>
-      /// Override to create new session instance
+      /// Override to create a new session instance
       /// </summary>
       protected virtual WaveSession MakeNewSessionInstance(WorkContext work)
       {
@@ -301,11 +314,11 @@ namespace NFX.Wave.Filters
       }
 
 
-    #endregion 
-    
+    #endregion
+
     #region .pvt
-    
-    #endregion  
+
+    #endregion
   }
 
 }

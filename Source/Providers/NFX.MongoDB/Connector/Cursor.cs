@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +30,7 @@ namespace NFX.DataAccess.MongoDB.Connector
   /// </summary>
   public sealed class Cursor : DisposableObject, IEnumerable<BSONDocument>, IEnumerator<BSONDocument>
   {
-    public const int DEFAULT_FETCH_BY = 32; 
+    public const int DEFAULT_FETCH_BY = 32;
 
     internal Cursor(Int64 id, Collection collection, Query query, BSONDocument selector, BSONDocument[] initialData)
     {
@@ -26,7 +42,7 @@ namespace NFX.DataAccess.MongoDB.Connector
       m_Buffered = initialData;
       m_Index = -1;
       m_EOF = initialData==null || initialData.Length==0;
-      
+
       //register cursor so it can get auto-closed on dispose
       if (!m_EOF)
         collection.Server.RegisterCursor(this);
@@ -54,7 +70,7 @@ namespace NFX.DataAccess.MongoDB.Connector
     /// Server-supplied cursor ID
     /// </summary>
     public Int64 ID { get{ return m_ID;}}
-    
+
     /// <summary>
     /// Collection that cursor is open against
     /// </summary>
@@ -122,9 +138,9 @@ namespace NFX.DataAccess.MongoDB.Connector
                     throw new MongoDBConnectorException(StringConsts.CURSOR_ENUM_ALREADY_STARTED_ERROR);
                   }
                 #endregion
-     
+
      #region .pvt
-      
+
       private void fetchNextChunk()
       {
           EnsureObjectNotDisposed();

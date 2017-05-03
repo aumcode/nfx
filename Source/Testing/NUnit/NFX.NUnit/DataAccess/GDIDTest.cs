@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +22,10 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using NFX.Serialization.JSON;
+using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
+using NFX.Serialization.JSON;
+
 
 namespace NFX.NUnit.DataAccess
 {
@@ -107,7 +125,7 @@ namespace NFX.NUnit.DataAccess
       public void GDID_11()
       {
         var gdid = new GDID(0x01020304, 0xfacaca00aa55aa55);
-          
+
         Assert.IsTrue( "01,02,03,04,fa,ca,ca,00,aa,55,aa,55".AsByteArray().SequenceEqual( gdid.Bytes ) );
       }
 
@@ -170,9 +188,21 @@ namespace NFX.NUnit.DataAccess
         //   ----era---- ------ulong -----------
         Assert.IsTrue( GDID.TryParse("0x00000000100000000000004B", out parsed) );
         Assert.AreEqual( new GDID(0,1,0x4b), parsed);
+        Assert.IsTrue( GDID.TryParse("00000000100000000000004B", out parsed) );
+        Assert.AreEqual( new GDID(0,1,0x4b), parsed);
+        Assert.IsTrue( GDID.TryParse(new GDID(0, 1, 0x4b).ToHexString(), out parsed) );
+        Assert.AreEqual( new GDID(0,1,0x4b), parsed);
 
         GDID? nullable;
-        Assert.IsTrue( GDID.TryParse("0x00000000100000000000004B", out nullable) );
+        Assert.IsTrue( GDID.TryParse("0X00000000100000000000004b", out nullable) );
+        Assert.IsTrue( nullable.HasValue);
+        Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
+
+        Assert.IsTrue( GDID.TryParse("00000000100000000000004b", out nullable) );
+        Assert.IsTrue( nullable.HasValue);
+        Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
+
+        Assert.IsTrue( GDID.TryParse(new GDID(0, 1, 0x4b).ToHexString(), out nullable) );
         Assert.IsTrue( nullable.HasValue);
         Assert.AreEqual( new GDID(0,1,0x4b), nullable.Value);
 
@@ -199,9 +229,9 @@ namespace NFX.NUnit.DataAccess
         var gdid = new GDID(347827,15,0xaedb3434b);
         var buf = gdid.Bytes;
         var hex = "0x"+buf.ToDumpString(DumpFormat.Hex).Replace(" ","");
-        
+
         Console.WriteLine(hex);
-        
+
         GDID gdid2;
         Assert.IsTrue(GDID.TryParse(hex, out gdid2));
         Assert.AreEqual(gdid, gdid2);
@@ -222,6 +252,100 @@ namespace NFX.NUnit.DataAccess
         //notice: Authority is ignored
         Assert.AreEqual(0, GDIDRangeComparer.Instance.Compare( new GDID(1, 13, 2), new GDID(1,8,2)));
 
+      }
+
+      [TestCase()]
+      public void GDID_Zero()
+      {
+        var zero = GDID.Zero;
+        Assert.IsTrue( zero.IsZero );
+
+        zero = new GDID(0,1,0);
+        Assert.IsFalse( zero.IsZero );
+      }
+
+      [TestCase()]
+      public void GDID_RequiredRow_1()
+      {
+        var row = new GDIDRow();
+        var err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+
+        row.GDID = new GDID(1,1,1);
+        err = row.Validate();
+
+        Assert.IsNull(err);
+        row.GDID = GDID.Zero;
+        err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+      }
+
+      [TestCase()]
+      public void GDID_RequiredRow_2()
+      {
+        var row = new NullableGDIDRow();
+        var err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+
+        row.GDID = new GDID(1,1,1);
+        err = row.Validate();
+
+        Assert.IsNull(err);
+
+        row.GDID = GDID.Zero;
+        err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+
+        row.GDID = null;//Nullable
+        err = row.Validate();
+
+        Assert.IsNotNull(err);
+        Assert.IsInstanceOf<CRUDFieldValidationException>(err);
+        Assert.AreEqual("GDID", ((CRUDFieldValidationException)err).FieldName);
+      }
+
+      public class GDIDRow: TypedRow
+      {
+        [Field(required: true)] public GDID GDID {get; set;}
+      }
+
+      public class NullableGDIDRow: TypedRow
+      {
+        [Field(required: true)] public GDID? GDID {get; set;}
+      }
+
+
+      [TestCase()]
+      public void GDIDSymbol()
+      {
+        var link = new ELink(new GDID(1280, 2, 8902382));
+
+        var gs = link.AsGDIDSymbol();
+
+        Assert.AreEqual(link.GDID, gs.GDID);
+        Assert.AreEqual(link.Link, gs.Symbol);
+
+        var gs2 = new GDIDSymbol(gs.GDID, gs.Symbol);
+        Assert.AreEqual(gs, gs2);
+        Assert.IsTrue( gs.Equals(gs2));
+        Assert.IsFalse( gs.Equals(this));
+        Assert.IsFalse( gs.Equals(null));
+
+        Assert.AreEqual(gs.GetHashCode(), gs2.GetHashCode());
+
+        Console.WriteLine( gs.ToString());
       }
 
   }

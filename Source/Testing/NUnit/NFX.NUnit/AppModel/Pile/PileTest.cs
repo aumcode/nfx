@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ namespace NFX.NUnit.AppModel.Pile
         {
           var ipile = pile as IPile;
 
-          var row = Charge.MakeFake(new GDID(0, 1));
+          var row = ChargeRow.MakeFake(new GDID(0, 1));
 
           var pp = ipile.Put(row);
 
@@ -107,7 +107,7 @@ namespace NFX.NUnit.AppModel.Pile
 
           var ipile = pile as IPile;
 
-          var row = Charge.MakeFake(new GDID(0, 1));
+          var row = CheckoutRow.MakeFake(new GDID(0, 1));
 
           var pp = ipile.Put(row);
 
@@ -115,10 +115,28 @@ namespace NFX.NUnit.AppModel.Pile
           Assert.AreEqual(DefaultPile.SEG_SIZE_DFLT, ipile.AllocatedMemoryBytes);
           Assert.AreEqual(1, ipile.SegmentCount);
         }
-      } 
+      }
 
       [Test]
-      public void PutTwo()
+      public void PutGetOne()
+      {
+        using (var pile = new DefaultPile())
+        {
+          pile.Start();
+          var ipile = pile as IPile;
+
+          var rowIn = CheckoutRow.MakeFake(new GDID(0, 1));
+
+          var pp = ipile.Put(rowIn);
+
+          var rowOut = ipile.Get(pp) as CheckoutRow;
+
+          Assert.AreEqual(rowIn, rowOut);
+        }
+      }
+
+      [Test]
+      public void PutGetTwo()
       {
         using (var pile = new DefaultPile())
         {
@@ -126,8 +144,8 @@ namespace NFX.NUnit.AppModel.Pile
 
           var ipile = pile as IPile;
 
-          var rowIn1 = Charge.MakeFake(new GDID(0, 1));
-          var rowIn2 = Charge.MakeFake(new GDID(0, 2));
+          var rowIn1 = CheckoutRow.MakeFake(new GDID(0, 1));
+          var rowIn2 = CheckoutRow.MakeFake(new GDID(0, 2));
 
           var pp1 = ipile.Put(rowIn1);
           var pp2 = ipile.Put(rowIn2);
@@ -136,31 +154,36 @@ namespace NFX.NUnit.AppModel.Pile
           Assert.AreEqual(DefaultPile.SEG_SIZE_DFLT, ipile.AllocatedMemoryBytes);
           Assert.AreEqual(1, ipile.SegmentCount);
 
-          var rowOut1 = pile.Get(pp1) as Charge;
-          var rowOut2 = pile.Get(pp2) as Charge;
+          var rowOut1 = pile.Get(pp1) as CheckoutRow;
+          var rowOut2 = pile.Get(pp2) as CheckoutRow;
 
           Assert.AreEqual(rowIn1, rowOut1);
           Assert.AreEqual(rowIn2, rowOut2);
         }
-      } 
+      }
+
+
+
 
       [Test]
-      public void PutGetObject()
+      public void PutGetRawObject()
       {
         using (var pile = new DefaultPile())
         {
           pile.Start();
           var ipile = pile as IPile;
 
-          var rowIn = Charge.MakeFake(new GDID(0, 1));
+          var buf = new byte[]{1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0};
 
-          var pp = ipile.Put(rowIn);
+          var pp = ipile.Put(buf);
 
-          var rowOut = ipile.Get(pp) as Charge;
+          byte svr;
+          var buf2 = ipile.GetRawBuffer(pp, out svr); //main point: we dont get any exceptions
 
-          Assert.AreEqual(rowIn, rowOut);
+          Assert.IsTrue(buf2.Length >= buf.Length);
         }
-      } 
+      }
+
 
 
       [Test]
@@ -173,7 +196,7 @@ namespace NFX.NUnit.AppModel.Pile
           var ipile = pile as IPile;
           ipile.Get(PilePointer.Invalid);
         }
-      } 
+      }
 
       [Test]
       [ExpectedException(typeof(PileAccessViolationException))]
@@ -185,7 +208,7 @@ namespace NFX.NUnit.AppModel.Pile
           var ipile = pile as IPile;
           ipile.Delete(PilePointer.Invalid);
         }
-      } 
+      }
 
       [Test]
       [ExpectedException(typeof(PileAccessViolationException))]
@@ -196,7 +219,7 @@ namespace NFX.NUnit.AppModel.Pile
           pile.Start();
           var ipile = pile as IPile;
 
-          var rowIn = Charge.MakeFake(new GDID(0, 1));
+          var rowIn = ChargeRow.MakeFake(new GDID(0, 1));
 
           var pp = ipile.Put(rowIn);
 
@@ -210,7 +233,7 @@ namespace NFX.NUnit.AppModel.Pile
 
           var rowOut = ipile.Get(pp);
         }
-      } 
+      }
 
       [Test]
       [ExpectedException(typeof(PileAccessViolationException))]
@@ -221,7 +244,7 @@ namespace NFX.NUnit.AppModel.Pile
           pile.Start();
           var ipile = pile as IPile;
 
-          var rowIn = Charge.MakeFake(new GDID(0, 1));
+          var rowIn = ChargeRow.MakeFake(new GDID(0, 1));
 
           var pp = ipile.Put(rowIn);
 
@@ -234,7 +257,7 @@ namespace NFX.NUnit.AppModel.Pile
 
 
         }
-      } 
+      }
 
       [Test]
       public void PutCheckerboardPattern2()
@@ -246,12 +269,12 @@ namespace NFX.NUnit.AppModel.Pile
 
           const ulong CNT = 100;
 
-          var ppp = new Tuple<PilePointer, Charge>[CNT];
+          var ppp = new Tuple<PilePointer, ChargeRow>[CNT];
 
           for (ulong i = 0; i < CNT; i++)
           {
-            var ch = Charge.MakeFake(new GDID(0, i));
-            ppp[i] = new Tuple<PilePointer,Charge>( ipile.Put(ch), ch);
+            var ch = ChargeRow.MakeFake(new GDID(0, i));
+            ppp[i] = new Tuple<PilePointer,ChargeRow>( ipile.Put(ch), ch);
           }
 
           Assert.AreEqual(CNT, ipile.ObjectCount);
@@ -284,7 +307,7 @@ namespace NFX.NUnit.AppModel.Pile
               Assert.AreEqual(ch, ppp[i].Item2);
             }
           }
-        }  
+        }
       }
 
       [Test]
@@ -329,7 +352,7 @@ namespace NFX.NUnit.AppModel.Pile
             else
             {
               var ch = ipile.Get(ppp[i].Item1);
-              Assert.AreEqual(ch, ppp[i].Item2);
+              Assert.AreEqual(ppp[i].Item2, ch);
             }
           }
 
@@ -338,7 +361,7 @@ namespace NFX.NUnit.AppModel.Pile
           ////Console.WriteLine("UtilizedBytes: {0}", ipile.UtilizedBytes);
           ////Console.WriteLine("OverheadBytes: {0}", ipile.OverheadBytes);
           ////Console.WriteLine("SegmentCount: {0}", ipile.SegmentCount);
-        }  
+        }
       }
 
       [TestCase(false, 100000, 0, 40, true)]
@@ -430,8 +453,8 @@ namespace NFX.NUnit.AppModel.Pile
        max-memory-limit=123666333000
 
        free-chunk-sizes='128, 256, 512, 1024, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 16000, 32000, 64000,  256000'
-     } 
-     
+     }
+
      pile
      {
        name='specialNamed'
@@ -441,8 +464,8 @@ namespace NFX.NUnit.AppModel.Pile
        max-memory-limit=127666333000
 
        free-chunk-sizes='77, 124, 180, 190, 200, 210, 220, 230, 1000, 2000, 3000, 4000, 5000, 32000, 64000,  257000'
-     }   
-   }     
+     }
+   }
  }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
         using(var app = new ServiceBaseApplication(null, conf))
@@ -450,13 +473,13 @@ namespace NFX.NUnit.AppModel.Pile
           using (var pile = new DefaultPile())
           {
             pile.Configure(null);
-          
+
             Assert.AreEqual(AllocationMode.FavorSpeed, pile.AllocMode);
             Assert.AreEqual(100000, pile.FreeListSize);
             Assert.AreEqual(79, pile.MaxSegmentLimit);
             Assert.AreEqual(395313152, pile.SegmentSize);
             Assert.AreEqual(123666333000, pile.MaxMemoryLimit);
-            
+
             Assert.AreEqual(128, pile.FreeChunkSizes[00]);
             Assert.AreEqual(256, pile.FreeChunkSizes[01]);
             Assert.AreEqual(512, pile.FreeChunkSizes[02]);
@@ -476,17 +499,17 @@ namespace NFX.NUnit.AppModel.Pile
 
             pile.Start();//just to test that it starts ok
           }
-          
+
           using (var pile = new DefaultPile("specialNamed"))
           {
             pile.Configure(null);
-           
+
             Assert.AreEqual(AllocationMode.ReuseSpace, pile.AllocMode);
             Assert.AreEqual(99000, pile.FreeListSize);
             Assert.AreEqual(73, pile.MaxSegmentLimit);
             Assert.AreEqual(395313152, pile.SegmentSize);
             Assert.AreEqual(127666333000, pile.MaxMemoryLimit);
-            
+
             Assert.AreEqual(77, pile.FreeChunkSizes[00]);
             Assert.AreEqual(124, pile.FreeChunkSizes[01]);
             Assert.AreEqual(180, pile.FreeChunkSizes[02]);
@@ -505,7 +528,7 @@ namespace NFX.NUnit.AppModel.Pile
             Assert.AreEqual(257000, pile.FreeChunkSizes[15]);
 
             pile.Start();//just to test that it starts ok
-          
+
 
           }
 

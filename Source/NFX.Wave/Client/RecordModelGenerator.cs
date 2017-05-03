@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -50,19 +50,19 @@ namespace NFX.Wave.Client
   /// <param name="isoLang">Desired isoLang for localization</param>
   /// <returns>JSONDataMap populated by business logic or null to indicate that no lookup values are available</returns>
   public delegate JSONDataMap ModelFieldValueListLookupFunc(RecordModelGenerator sender,
-                                                            Row  row, 
+                                                            Row  row,
                                                             Schema.FieldDef fdef,
                                                             string target,
                                                             string isoLang);
 
   /// <summary>
   /// Facilitates tasks of JSON generation for record models/rows as needed by WV.RecordModel client library.
-  /// This class does not generate nested models, only flat models for particular row 
+  /// This class does not generate nested models, only flat models for particular row
   /// (i.e. id row has a complex type field, it will be serialized as "object")
   /// </summary>
   public class RecordModelGenerator
   {
-      
+
       private volatile static RecordModelGenerator s_DefaultInstance;
 
       /// <summary>
@@ -71,24 +71,25 @@ namespace NFX.Wave.Client
       public static RecordModelGenerator DefaultInstance
       {
         get
-        { 
+        {
           if (s_DefaultInstance==null) //not thread safe its ok as instance is very lite
             s_DefaultInstance = new RecordModelGenerator();
 
           return s_DefaultInstance;
         }
       }
-      
+
       public RecordModelGenerator(){ }
       public RecordModelGenerator(IConfigSectionNode conf){ }
 
-      
-      public static readonly string[] METADATA_FIELDS = {
+      public const string METADATA_CONFIG_FIELD = "Config";
+
+      public static readonly HashSet<string> METADATA_FIELDS = new HashSet<string>{
             "Description",
             "Placeholder",
             "Type",
             "Kind",
-            "Case", 
+            "Case",
             "Stored",
             "Required",
             "Applicable",
@@ -105,13 +106,16 @@ namespace NFX.Wave.Client
             "Hint",
             "Marked",
             "LookupDict",
-            "Lookup", 
-            "DeferValidation"};
-      
-      
+            "Lookup",
+            "DeferValidation",
+            "ScriptType",
+            METADATA_CONFIG_FIELD};
+
+
+
       /// <summary>
       /// Allows localization framework to install hook so that values can get translated per user-selected culture.
-      /// The hook functor has the following signature: (string propertyName, string propValue): string. 
+      /// The hook functor has the following signature: (string propertyName, string propValue): string.
       /// Returns translated propValue.
       /// </summary>
       public event ModelLocalizationEventHandler ModelLocalization;
@@ -123,7 +127,7 @@ namespace NFX.Wave.Client
       ///  may get attributes for client data entry screen that sees field metadata differently, in which case target will reflect the name
       ///   of the screen
       /// </summary>
-      public virtual JSONDataMap RowToRecordInitJSON(Row row, 
+      public virtual JSONDataMap RowToRecordInitJSON(Row row,
                                                      Exception validationError,
                                                      string recID = null,
                                                      string target = null,
@@ -150,19 +154,24 @@ namespace NFX.Wave.Client
           if (form.HasRoundtripBag)
             result[FormModel.JSON_ROUNDTRIP_PROPERTY] = form.RoundtripBag.ToJSON(JSONWritingOptions.CompactASCII);
         }
-        
+
         var fields = new JSONDataArray();
         result["fields"] = fields;
 
         var schemaName = row.Schema.Name;
         if (row.Schema.TypedRowType!=null) schemaName = row.Schema.TypedRowType.FullName;
 
-        foreach(var fdef in row.Schema.FieldDefs.Where(fd=>!fd.NonUI))
+        foreach(var sfdef in row.Schema.FieldDefs.Where(fd=>!fd.NonUI))
         {
+          var fdef = row.GetClientFieldDef(this, sfdef, target, isoLang);
+          if (fdef==null || fdef.NonUI) continue;
+
           var fld = new JSONDataMap();
           fields.Add(fld);
           fld["def"] = FieldDefToJSON(row, schemaName, fdef, target, isoLang, valueListLookup);
-          fld["val"] = row.GetFieldValue(fdef);
+          var val = row.GetClientFieldValue(this, sfdef, target, isoLang);
+          if (val is GDID && ((GDID)val).IsZero) val = null;
+          fld["val"] = val;
           var ferr = validationError as CRUDFieldValidationException;
           //field level exception
           if (ferr!= null && ferr.FieldName==fdef.Name)
@@ -180,13 +189,13 @@ namespace NFX.Wave.Client
         }
 
         return result;
-      }   
+      }
 
 
-      protected virtual JSONDataMap FieldDefToJSON(Row row, 
+      protected virtual JSONDataMap FieldDefToJSON(Row row,
                                                    string schema,
                                                    Schema.FieldDef fdef,
-                                                   string target, 
+                                                   string target,
                                                    string isoLang,
                                                    ModelFieldValueListLookupFunc valueListLookup)
       {
@@ -195,7 +204,7 @@ namespace NFX.Wave.Client
         result["Name"] = fdef.Name;
         result["Type"] = MapCLRTypeToJS(fdef.NonNullableType);
         var key = fdef.AnyTargetKey;
-        if (key) result["Key"] = key; 
+        if (key) result["Key"] = key;
 
 
         if (fdef.NonNullableType.IsEnum)
@@ -213,7 +222,7 @@ namespace NFX.Wave.Client
         {
             if (attr.Description!=null) result["Description"] = OnLocalizeString(schema, "Description", attr.Description, isoLang);
             var str =  attr.StoreFlag==StoreFlag.OnlyStore || attr.StoreFlag==StoreFlag.LoadAndStore;
-            if (!str) result["Stored"] = str;
+            if (!str) result["Stored"] = false;
             if (attr.Required) result["Required"] = attr.Required;
             if (!attr.Visible) result["Visible"] = attr.Visible;
             if (attr.Min!=null) result["MinValue"] = attr.Min;
@@ -228,30 +237,39 @@ namespace NFX.Wave.Client
             }
             else
             {
-              if (valueListLookup!=null)
-              {
-                var valueList = valueListLookup(this, row, fdef, target, isoLang);
-                if (valueList!=null)
-                  result["LookupDict"] = valueList;
-              }
+              var valueList = valueListLookup!=null ? valueListLookup(this, row, fdef, target, isoLang)
+                                                    : row.GetClientFieldValueList(this, fdef, target, isoLang);
+
+              if (valueList==null && attr.HasValueList)
+                valueList = attr.ParseValueList();
+
+              if (valueList!=null)
+                result["LookupDict"] = valueList;
             }
-            
+
             if (attr.Kind!=DataKind.Text) result["Kind"] = MapCLRKindToJS(attr.Kind);
 
             if (attr.CharCase!=CharCase.AsIs) result["Case"] = MapCLRCharCaseToJS(attr.CharCase);
-        }
 
-        if (attr.Metadata!=null)
-        {
-            foreach(var fn in METADATA_FIELDS)
-            { 
-              var mv = attr.Metadata.AttrByName(fn).Value; 
-              if (mv.IsNullOrWhiteSpace()) continue;
-                
-              if (fn=="Description"||fn=="Placeholder"||fn=="LookupDict"||fn=="Hint")
-                mv = OnLocalizeString(schema, fn, mv, isoLang);
+            if (attr.Metadata!=null)
+            {
+                var sect = attr.Metadata[METADATA_CONFIG_FIELD];
+                if(sect.Exists)
+                    result[METADATA_CONFIG_FIELD] = sect.ToConfigurationJSONDataMap();
 
-              result[fn] = mv;
+                foreach(var mAt in attr.Metadata.Attributes)
+                {
+                  var fn = mAt.Name;
+                  if (!METADATA_FIELDS.Contains(fn)) continue;
+
+                  var mv = mAt.Value;
+                  if (mv.IsNullOrWhiteSpace()) continue;
+
+                  if (fn=="Description"||fn=="Placeholder"||fn=="LookupDict"||fn=="Hint")
+                    mv = OnLocalizeString(schema, fn, mv, isoLang);
+
+                  result[fn] = mv;
+                }
             }
         }
 

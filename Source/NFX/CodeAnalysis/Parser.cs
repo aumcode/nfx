@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ using System.Text;
 
 namespace NFX.CodeAnalysis
 {
-   
+
     /// <summary>
     /// Performs parsing of token streams provided by lexers
     /// </summary>
@@ -29,11 +29,11 @@ namespace NFX.CodeAnalysis
     {
         protected Parser(IAnalysisContext context, IEnumerable<TLexer> input,  MessageList messages = null, bool throwErrors = false) :
           base(context, messages, throwErrors)
-          
+
         {
               m_Input = input.ToList();
         }
-       
+
 
         private bool m_HasParsed;
         private List<TLexer> m_Input;
@@ -46,7 +46,7 @@ namespace NFX.CodeAnalysis
         /// <summary>
         /// Lists source lexers that supply token stream for parsing
         /// </summary>
-        public IEnumerable<ILexer> SourceInput { get { return (IEnumerable<ILexer>)m_Input; } } 
+        public IEnumerable<ILexer> SourceInput { get { return (IEnumerable<ILexer>)m_Input; } }
 
         /// <summary>
         /// Indicates whether Parse() already happened

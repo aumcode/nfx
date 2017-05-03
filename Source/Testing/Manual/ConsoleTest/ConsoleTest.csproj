@@ -77,15 +77,17 @@
     <Compile Include="CacheTest.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConsoleLog.cs" />
-    <Compile Include="CSTemplate.cs" />
+    <Compile Include="Templatization\CS\CSTemplate.cs" />
     <Compile Include="GoogleDrive\GoogleDriveFileSystem.cs" />
     <Compile Include="JokeServer.cs" />
+    <Compile Include="Templatization\JS\JSTemplate.cs" />
     <Compile Include="Markup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GlueServer.cs" />
     <Compile Include="S3\S3V4FileSystem.cs" />
     <Compile Include="Social\SocialTest.cs" />
+    <Compile Include="Templatization\NHT\NHTTemplate.cs" />
     <Compile Include="Throttling.cs" />
     <Compile Include="WebDAVTest\WebDAVClientTest.cs" />
   </ItemGroup>
@@ -132,10 +134,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Template1.htm" />
+    <EmbeddedResource Include="Templatization\CS\Template1.htm" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Template2.htm" />
+    <EmbeddedResource Include="Templatization\CS\Template2.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templatization\JS\_source.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templatization\JS\jsCompiler.test.html" />
+    <Content Include="Templatization\JS\compiled.js" />
+    <EmbeddedResource Include="Templatization\NHT\Template.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ namespace NFX.Log
 
 
             public Message LastWarning     { get {return null;}}
-            
+
             public Message LastError       { get {return null;}}
 
             public Message LastCatastrophy { get {return null;}}
@@ -63,15 +63,15 @@ namespace NFX.Log
 
         public void Write(Message msg)
         {
-        
+
         }
 
         public void Write(Message msg, bool urgent)
         {
-        
+
         }
 
-      
+
         public void Write(MessageType type, string text, string topic = null, string from = null)
         {
 

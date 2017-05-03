@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,18 +32,19 @@ namespace NFX.Log.Destinations
     {
        #region .ctor
 
-            public CompositeDestination()
+            public CompositeDestination() : base()
             {
             }
 
-            public CompositeDestination(params Destination[] inner)
+            public CompositeDestination(params Destination[] inner) : this(null, inner)
             {
-              m_Destinations.AddRange(inner);
             }
 
             public CompositeDestination(string name, params Destination[] inner) : base (name)
             {
-              m_Destinations.AddRange(inner);
+              if (inner==null) return;
+              foreach(var d in inner)
+                RegisterDestination(d);
             }
 
             protected override void Destructor()
@@ -71,7 +72,7 @@ namespace NFX.Log.Destinations
             }
 
        #endregion
-        
+
        #region Public
 
             public override void Open()
@@ -90,21 +91,6 @@ namespace NFX.Log.Destinations
                     dest.Close();
                 base.Close();
             }
-
-            public override void TimeChanged()
-            {
-               lock(m_Destinations)
-                 foreach(var dest in m_Destinations)
-                    dest.TimeChanged();
-            }
-
-            public override void SettingsChanged()
-            {
-                lock(m_Destinations)
-                 foreach(var dest in m_Destinations)
-                    dest.SettingsChanged();
-            }
-
 
             /// <summary>
             /// Adds a destination to this wrapper
@@ -137,12 +123,12 @@ namespace NFX.Log.Destinations
        #endregion
 
 
-      #region Protected  
+      #region Protected
 
             protected override void DoConfigure(Environment.IConfigSectionNode node)
             {
                 base.DoConfigure(node);
-               
+
                   foreach (var dnode in node.Children.Where(n => n.Name.EqualsIgnoreCase(LogServiceBase.CONFIG_DESTINATION_SECTION)))
                   {
                     var dest = FactoryUtils.MakeAndConfigure(dnode) as Destination;
@@ -151,7 +137,7 @@ namespace NFX.Log.Destinations
 
             }
 
-            
+
 
             protected internal override void DoSend(Message entry)
             {

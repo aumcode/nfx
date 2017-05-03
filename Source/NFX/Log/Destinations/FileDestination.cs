@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,224 +34,185 @@ namespace NFX.Log.Destinations
     /// </summary>
     public abstract class FileDestination : Destination
     {
-        #region CONSTS
+      #region CONSTS
+        private  const string DEF_FILENAME = "{0:yyyyMMdd}.log";
+      #endregion
 
-            private  const string DEF_FILENAME              = "$(::now fmt=yyyyMMdd)-$(~name)$(~extension)";
-            private  const string DEF_EXTENSION             = ".log";
-            private  const string DEF_LOG_TIME_FORMAT       = "yyyyMMdd-HHmmss.ffffff";
+      #region .ctor
+        protected FileDestination(string name) : base(name)
+        {
+        }
+      #endregion
 
-            private  const string CONFIG_CREATE_DIR_ATTR    = "create-dir";
-            private  const string CONFIG_FILENAME_ATTR      = "filename";
-            public   const string CONFIG_PATH_ATTR          = "path";
 
-            internal const string CONFIG_LOGTIMEFORMAT_ATTR = "log-time-format";
+      #region Pvt Fields
 
-        #endregion
+        protected string        m_Path;
+        protected string        m_FileName;
 
-        #region .ctor
+        protected FileStream    m_Stream;
+        private bool            m_Recreate;
 
-            /// <summary>
-            /// Creates a new instance of destination
-            /// </summary>
-            public FileDestination(string name = null) : base(name)
+      #endregion
+
+      #region Properties
+        /// <summary>
+        /// The name of the file without path may use {0} for date: {0:yyyyMMdd}-$($name).csv.log
+        /// </summary>
+        [Config]
+        public virtual string FileName
+        {
+            get { return m_FileName; }
+            set
             {
-                CreateDir = true;
+              if (m_FileName==value) return;
+              m_FileName = value;
+              m_Recreate = true;
+            }
+        }
+
+        /// <summary>
+        /// Directory where file should be created. Will create the directory chane if it doesn't exist
+        /// </summary>
+        [Config]
+        public virtual string Path
+        {
+            get { return m_Path; }
+            set
+            {
+              if (m_Path==value) return;
+              m_Path = value;
+              m_Recreate = true;
+            }
+        }
+
+      #endregion
+
+      #region Public
+
+        public override void Open()
+        {
+            base.Open();
+            ensureStream();
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            closeStream();
+        }
+
+      #endregion
+
+
+      #region Protected
+
+        private DateTime m_PrevDate;
+        protected internal override void DoPulse()
+        {
+          base.DoPulse();
+
+          if (m_Stream==null) return;
+
+          var utcNow = DateTime.UtcNow;
+          if ((utcNow - m_PrevDate).TotalSeconds < 10) return;
+          m_PrevDate = utcNow;
+
+          if (m_Stream.Name != GetDestinationFileName())
+          {
+            m_Recreate = true;
+            ensureStream();
+          }
+        }
+
+
+        /// <summary>
+        /// Called after output stream has been opened
+        /// </summary>
+        protected abstract void DoOpenStream();
+
+        /// <summary>
+        /// Called just before output stream is closed
+        /// </summary>
+        protected abstract void DoCloseStream();
+
+        /// <summary>
+        /// Called when message is to be written to stream
+        /// </summary>
+        protected abstract void DoWriteMessage(Message msg);
+
+        /// <summary>
+        /// Override DoFormatMessage() instead
+        /// </summary>
+        protected internal sealed override void DoSend(Message msg)
+        {
+          ensureStream();
+          DoWriteMessage(msg);
+        }
+
+        protected virtual string DefaultFileName  { get { return DEF_FILENAME;  } }
+
+
+        protected virtual string GetDestinationFileName()
+        {
+          var path = m_Path;
+          if (path.IsNotNullOrWhiteSpace())
+            try
+            {
+              path = path.Args( this.Service.LocalizedTime );
+            }
+            catch(Exception error)
+            {
+              throw new NFXException(StringConsts.LOGSVC_FILE_DESTINATION_PATH_ERROR.Args(Name, path, error.ToMessageWithType()), error);
             }
 
-            /// <summary>
-            /// Creates a new instance of destination
-            /// </summary>
-            public FileDestination(string name, string filename, string path = null) : this(name)
-            {
-                m_Filename = filename ?? string.Empty;
-                m_Path     = path ?? string.Empty;
-            }
+          var fn = m_FileName;
 
-        #endregion
+          if (fn.IsNullOrWhiteSpace())
+             fn = Name;
 
+          if (fn.IsNullOrWhiteSpace())
+             fn = DefaultFileName;
 
-        #region Pvt Fields
+          try
+          {
+            fn = fn.Args( this.Service.LocalizedTime );
+          }
+          catch(Exception error)
+          {
+            throw new NFXException(StringConsts.LOGSVC_FILE_DESTINATION_FILENAME_ERROR.Args(Name, fn, error.ToMessageWithType()), error);
+          }
 
-            protected string        m_Path;
-            protected string        m_Filename;
-            private string          m_LogTimeFormat = DEF_LOG_TIME_FORMAT;
+          if (path.IsNotNullOrWhiteSpace() && !Directory.Exists(path))
+             IOMiscUtils.EnsureAccessibleDirectory(path);
 
-            private FileStream      m_Stream;
+          var result = path.IsNullOrWhiteSpace() ? fn : System.IO.Path.Combine(path, fn);
+          return result;
+        }
 
-            private bool            m_Recreate = false;
-
-        #endregion
-
-        #region Properties
-
-            /// <summary>
-            /// File path and name. It may include environment variables (e.g. ~home),
-            /// and "$(~home)$(@::now fmt=yyyyMMdd utc=false)-$($name).log" to specify current time.
-            /// "utc=Bool" argument to the now function of time controls if the now time in filename
-            /// should be in UTC/local time
-            /// </summary>
-            [Config("$" + CONFIG_FILENAME_ATTR)]
-            public virtual string Filename
-            {
-                get { return m_Filename; }
-                set
-                {
-                    var s = string.IsNullOrWhiteSpace(value) ? DefaultFileName : value;
-                    if (m_Filename != s) { m_Filename = s; m_Recreate = true; }
-                }
-            }
-
-            [Config("$" + CONFIG_PATH_ATTR)]
-            public virtual string Path
-            {
-                get { return m_Filename; }
-                set { m_Path = value ?? string.Empty; }
-            }
-
-            /// <summary>
-            /// Indicates whether to create the directory to be written to if one doesn't exist
-            /// </summary>
-            [Config("$" + CONFIG_CREATE_DIR_ATTR, true)]
-            public bool CreateDir { get; set; }
-
-            /// <summary>
-            /// Time format for log line entries
-            /// </summary>
-            [Config("$" + CONFIG_LOGTIMEFORMAT_ATTR)]
-            public string LogTimeFormat
-            {
-                get { return m_LogTimeFormat; }
-                set { m_LogTimeFormat = string.IsNullOrWhiteSpace(value) ? DefaultLogTimeFormat : value; }
-            }
-
-            protected FileStream Stream { get { return m_Stream; } }
-
-        #endregion
-
-        #region Public
-
-            public override void TimeChanged()
-            {
-                m_Recreate = true;
-            }
-
-            public override void SettingsChanged()
-            {
-                m_Recreate = true;
-            }
-
-            public override void Open()
-            {
-                base.Open();
-                if (m_Stream==null)
-                    openStream();
-            }
-
-            public override void Close()
-            {
-                base.Close();
-                closeStream();
-            }
-
-        #endregion
+      #endregion
 
 
-        #region Protected
+      #region Private
 
-            protected override void DoConfigure(IConfigSectionNode node)
-            {
-                base.DoConfigure(node);
-                ConfigAttribute.Apply(this, node);
-            }
+        private void ensureStream()
+        {
+          if (m_Stream!=null && !m_Recreate) return;
+          closeStream();
+          m_Recreate = false;
+          var fn     = GetDestinationFileName();
 
-            /// <summary>
-            /// Called after output stream has been opened
-            /// </summary>
-            protected abstract void DoOnOpenStream();
+          m_Stream = new FileStream(fn, FileMode.Append, FileAccess.Write, FileShare.Read);
+          DoOpenStream();
+        }
 
-            /// <summary>
-            /// Called just before output stream is closed
-            /// </summary>
-            protected abstract void DoOnCloseStream();
+        private void closeStream()
+        {
+          DoCloseStream();
+          DisposableObject.DisposeAndNull(ref m_Stream);
+        }
 
-            /// <summary>
-            /// Called when message is to be written to stream
-            /// </summary>
-            protected abstract void DoWriteMessage(Message msg);
-
-            /// <summary>
-            /// Warning: don't override this method in derived destinations, use
-            /// DoFormatMessage() instead!
-            /// </summary>
-            protected internal override void DoSend(Message msg)
-            {
-                if (m_Stream == null)
-                    openStream();
-                
-                DoWriteMessage(msg);
-
-                if (m_Recreate)
-                {
-                    closeStream();
-                    m_Recreate = false;
-                }
-            }
-
-            /// <summary>
-            /// For backward compatibility
-            /// </summary>
-            protected virtual string DefaultFileName { get { return DEF_FILENAME; } }
-
-            /// <summary>
-            /// For backward compatibility
-            /// </summary>
-            protected virtual string DefaultExtension { get { return DEF_EXTENSION; } }
-
-            /// <summary>
-            /// For backward compatibility
-            /// </summary>
-            protected virtual string DefaultLogTimeFormat { get { return DEF_LOG_TIME_FORMAT; } }
-
-        #endregion
-
-
-        #region Private
-
-            private void openStream()
-            {
-                if (m_Filename.IsNullOrEmpty())
-                    Filename = string.IsNullOrEmpty(Name) ? string.Empty : DefaultFileName;
-
-                var fn =  m_Filename.EvaluateVars(new Vars { { "name", Name }, { "extension", DefaultExtension } });
-
-                m_Filename = (!m_Path.IsNullOrEmpty() && System.IO.Path.GetDirectoryName(fn).IsNullOrEmpty())
-                           ? System.IO.Path.Combine(m_Path, fn)
-                           : fn;
-
-                if (CreateDir)
-                {
-                    var path = System.IO.Path.GetDirectoryName(m_Filename);
-                    if (path != string.Empty && !Directory.Exists(path))
-                        IOMiscUtils.EnsureAccessibleDirectory(path);
-                }
-
-                m_Stream = new FileStream(m_Filename, FileMode.Append, FileAccess.Write, FileShare.Read);
-                DoOnOpenStream();
-                m_Recreate = false;
-            }
-
-            private void closeStream()
-            {
-                if (m_Stream != null)
-                {
-                    DoOnCloseStream();
-                    m_Stream.Dispose();
-
-                    m_Stream = null;
-                }
-            }
-
-        #endregion
+      #endregion
 
     }
 }

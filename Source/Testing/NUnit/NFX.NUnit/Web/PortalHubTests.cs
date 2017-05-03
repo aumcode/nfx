@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ app{
 
           var berlin = PortalHub.Instance.Portals["BERLIN"];
           Assert.IsNotNull(berlin);
-          
+
           var onlineDefault = PortalHub.Instance.DefaultOnline;
           Assert.IsNotNull(onlineDefault);
           Assert.IsTrue( onlineDefault.Name.EqualsOrdIgnoreCase("PARIS"));
@@ -101,7 +101,7 @@ app{
           Assert.AreEqual("Merkel", berlin.DefaultTheme.Name);
       }
     }
-     
+
   }
 
 
@@ -109,6 +109,8 @@ app{
   {
 
     protected MockPortalFrench(IConfigSectionNode conf) : base(conf){}
+
+    public override string DefaultISOCountry { get { return CoreConsts.ISO_COUNTRY_USA; } }
 
     public override string DefaultLanguageISOCode { get{ return CoreConsts.ISO_LANG_FRENCH;}}
 
@@ -142,6 +144,8 @@ app{
   {
 
     protected MockPortalGerman(IConfigSectionNode conf) : base(conf){}
+
+    public override string DefaultISOCountry { get { return CoreConsts.ISO_COUNTRY_USA; } }
 
     public override string DefaultLanguageISOCode { get{ return CoreConsts.ISO_LANG_GERMAN;}}
 

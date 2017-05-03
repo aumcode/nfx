@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,10 +33,10 @@ namespace NFX.Web.Social
         //do not localize
 
         public const string FACEBOOK_PUB_SERVICE_URL = "https://www.facebook.com";
-            
-        private const string LOGIN_LINK_TEMPLATE = "https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&response_type=code&scope=publish_stream+email";
 
-        private const string ACCESSTOKEN_BASEURL = "https://graph.facebook.com/oauth/access_token";
+        private const string LOGIN_LINK_TEMPLATE = "https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&response_type=code&scope={2}";
+
+        private const string ACCESSTOKEN_BASEURL = "https://graph.facebook.com/v2.8/oauth/access_token";
         private const string ACCESSTOKEN_CODE_PARAMNAME = "code";
         private const string ACCESSTOKEN_CLIENTID_PARAMNAME = "client_id";
         private const string ACCESSTOKEN_CLIENTSECRET_PARAMNAME = "client_secret";
@@ -46,7 +46,7 @@ namespace NFX.Web.Social
         private const string GRANTTYPE_PARAMNAME = "grant_type";
         private const string GRANTTYPE_FBEXCHANGETOKEN_PARAMVALUE = FBEXCHANGETOKEN_PARAMNAME;
 
-        private const string GETUSERINFO_BASEURL = "https://graph.facebook.com/me";
+        private const string GETUSERINFO_BASEURL = "https://graph.facebook.com/v2.8/me";
 
         private const string GETUSERINFO_FIELDS_PARAMNAME = "fields";
 
@@ -66,14 +66,15 @@ namespace NFX.Web.Social
           private const string USER_PICTURE_DATA_PARAMNAME = "data";
           private const string USER_PICTURE_URL_PARAMNAME = "url";
 
-        private const string PUBLISH_BASEURL_PATTERN = "https://graph.facebook.com/{0}/feed";
+        private const string PUBLISH_BASEURL_PATTERN = "https://graph.facebook.com/v2.8/{0}/feed";
+        private const string GET_USER_PICTURE_URL_PATTERN = "https://graph.facebook.com/v2.8/{0}/picture?type=large&redirect=false";
 
         private const string MESSAGE_PARAMNAME = "message";
 
       #endregion
-        
+
       #region Static
-            
+
         private static object s_Lock = new object();
         private static Facebook s_Instance;
 
@@ -96,7 +97,7 @@ namespace NFX.Web.Social
         private Facebook(string name = null, IConfigSectionNode cfg = null) : base(name, cfg) { }
 
       #endregion
-      
+
 
       #region Properties
 
@@ -122,7 +123,12 @@ namespace NFX.Web.Social
 
         public override string GetExternalLoginReference(string returnURL)
         {
-          return LOGIN_LINK_TEMPLATE.Args(AppID, PrepareReturnURLParameter(returnURL));
+          var sb = new StringBuilder();
+          if (GrantViewEmail)     sb.Append("email+");
+          if (GrantPost)          sb.Append("publish_actions+");
+          if (GrantAccessProfile) sb.Append("public_profile+");
+          if (GrantAccessFriends) sb.Append("user_friends+");
+          return LOGIN_LINK_TEMPLATE.Args(AppID, PrepareReturnURLParameter(returnURL), sb.Length > 0 ? sb.ToString(0, sb.Length - 1) : string.Empty);
         }
 
         protected override void DoObtainTokens(SocialUserInfo userInfo, JSONDataMap request, string returnPageURL)
@@ -165,7 +171,7 @@ namespace NFX.Web.Social
         /// Returns service description
         /// </summary>
         public override string Description { get { return "Facebook";} }
-            
+
         /// <summary>
         /// Specifies how service takes user credentials
         /// </summary>
@@ -184,13 +190,16 @@ namespace NFX.Web.Social
 
         private string getAccessToken(string code, string redirectURI)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
-            new Dictionary<string, string>() {
+          var response = WebClient.GetJson(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+          {
+            Method = HTTPRequestMethod.GET,
+            QueryParameters = new Dictionary<string, string>() {
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_REDIRECTURL_PARAMNAME, redirectURI},
               {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
               {ACCESSTOKEN_CODE_PARAMNAME, code}
-            });
+            }
+          });
 
           return response[ACCESSTOKEN_PARAMNAME].AsString();
         }
@@ -201,9 +210,13 @@ namespace NFX.Web.Social
             USER_LASTNAME_PARAMNAME, USER_MIDDLENAME_PARAMNAME, USER_GENDER_PARAMNAME, USER_BIRTHDAY_PARAMNAME,
             USER_LOCALE_PARAMNAME, USER_TIMEZONE_PARAMNAME, USER_PICTURE_PARAMNAME);
 
-          dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, this, HTTPRequestMethod.GET, new Dictionary<string, string>() {
-            {ACCESSTOKEN_PARAMNAME, userInfo.AccessToken},
-            {GETUSERINFO_FIELDS_PARAMNAME, fields}
+          dynamic responseObj = WebClient.GetJsonAsDynamic(GETUSERINFO_BASEURL, new WebClient.RequestParams(this)
+          {
+            Method = HTTPRequestMethod.GET,
+            QueryParameters = new Dictionary<string, string>() {
+              {ACCESSTOKEN_PARAMNAME, userInfo.AccessToken},
+              {GETUSERINFO_FIELDS_PARAMNAME, fields}
+            }
           });
 
           userInfo.LoginState = SocialLoginState.LoggedIn;
@@ -222,25 +235,28 @@ namespace NFX.Web.Social
 
           var birthDateStr = responseObj[USER_BIRTHDAY_PARAMNAME];
           DateTime birthDate;
-          if (DateTime.TryParseExact(birthDateStr, "MM/DD/YYYY", 
+          if (DateTime.TryParseExact(birthDateStr, "MM/DD/YYYY",
             System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out birthDate))
               userInfo.BirthDate = birthDate;
 
           userInfo.Locale = responseObj[USER_LOCALE_PARAMNAME];
           userInfo.TimezoneOffset = ((int)responseObj[USER_TIMEZONE_PARAMNAME]) * 60 * 60;
 
-          userInfo.PictureLink = responseObj[USER_PICTURE_PARAMNAME][USER_PICTURE_DATA_PARAMNAME][USER_PICTURE_URL_PARAMNAME];
+          dynamic picObj = WebClient.GetJsonAsDynamic(GET_USER_PICTURE_URL_PATTERN.Args(userInfo.ID), new WebClient.RequestParams(this));
+          userInfo.PictureLink = picObj[USER_PICTURE_DATA_PARAMNAME][USER_PICTURE_URL_PARAMNAME];
         }
 
         private string getLongTermAccessToken(string accessToken)
         {
-          var response = WebClient.GetValueMap(ACCESSTOKEN_BASEURL, this, HTTPRequestMethod.GET, 
-            new Dictionary<string, string>() {
+          var response = WebClient.GetJson(ACCESSTOKEN_BASEURL, new WebClient.RequestParams(this)
+          {
+            QueryParameters = new Dictionary<string, string>() {
               {GRANTTYPE_PARAMNAME, GRANTTYPE_FBEXCHANGETOKEN_PARAMVALUE},
               {ACCESSTOKEN_CLIENTID_PARAMNAME, AppID},
               {ACCESSTOKEN_CLIENTSECRET_PARAMNAME, ClientSecret},
               {FBEXCHANGETOKEN_PARAMNAME, accessToken}
-            });
+            }
+          });
 
           return response[ACCESSTOKEN_PARAMNAME].AsString();
         }
@@ -250,16 +266,18 @@ namespace NFX.Web.Social
         {
           string url = PUBLISH_BASEURL_PATTERN.Args(userId);
 
-          dynamic responseObj = WebClient.GetJsonAsDynamic(url, this, HTTPRequestMethod.POST, 
-            queryParameters: new Dictionary<string, string>() { 
+          dynamic responseObj = WebClient.GetJsonAsDynamic(url, new WebClient.RequestParams(this)
+          {
+            Method = HTTPRequestMethod.POST,
+            QueryParameters = new Dictionary<string, string>() {
               {MESSAGE_PARAMNAME, message},
-              {ACCESSTOKEN_PARAMNAME, accessToken} 
+              {ACCESSTOKEN_PARAMNAME, accessToken}
             }
-          );
+          });
         }
 
       #endregion
-          
+
     }
 
 
@@ -283,16 +301,16 @@ namespace NFX.Web.Social
     /// <summary>
     /// Token to perform Facebook operations like post (expires in two months)
     /// </summary>
-    public string LongTermAccessToken 
-    { 
-      get; 
-      internal set; 
+    public string LongTermAccessToken
+    {
+      get;
+      internal set;
     }
 
     public override string LongTermProviderToken
     {
       get { return LongTermAccessToken; }
-      internal set 
+      internal set
       {
         LongTermAccessToken = value;
         base.LongTermProviderToken = value;

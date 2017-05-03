@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ namespace NFX.Environment
 {
   /// <summary>
   /// Provides implementation of configuration based on arguments supplied from command line
-  ///  which is "string[]". Arguments start with either "/" or "-" prefix. If any argument is not 
+  ///  which is "string[]". Arguments start with either "/" or "-" prefix. If any argument is not
   ///  prefixed then it is written as an auto-named attribute node of the root with its value set, otherwise a section (under root) with
   ///   argument's name is created. Any argument may have options. Any option may either consist of name
   ///    or name value pair delimited by "=".
@@ -42,14 +42,14 @@ namespace NFX.Environment
   ///   <code>
   ///   c:\>dosomething.exe "c:\input.file" "d:\output.file" -compress level=100 method=zip -shadow fast -large
   ///   </code>
-  ///  The following configuration object will be created from the supplied args:  
+  ///  The following configuration object will be created from the supplied args:
   ///  <code>
   ///    [args ?1="c:\input.file" ?2="c:\output.file"]
   ///      [compress level="100" method="zip"]
   ///      [shadow ?1="fast"]
   ///      [large]
-  ///  </code>  
-  ///  
+  ///  </code>
+  ///
   ///  Use args:
   ///  <code>
   ///   var conf = new CmdArgsConfiguration(args);
@@ -60,29 +60,38 @@ namespace NFX.Environment
   ///   .....
   ///   var level = conf.Root["compress"].AttrByName("level").ValueAsInt(DEFAULT_COMPRESSION_LEVEL);
   ///   .....
-  ///  </code> 
-  /// 
+  ///  </code>
+  ///
   /// </example>
   [Serializable]
   public class CommandArgsConfiguration : Configuration
   {
     #region CONSTS
-       
-        public const string ARG_PREFIX1 = "/";
-        public const string ARG_PREFIX2 = "-";
+
+        public const string ARG_PREFIX_SLASH = "/";
+        public const string ARG_PREFIX_DASH  = "-";
         public const char OPTION_EQ = '=';
         public const string ROOT_NODE_NAME = "args";
 
     #endregion
 
     #region .ctor
+
       /// <summary>
       /// Creates an instance of the new configuration parsed from command line arguments
       /// </summary>
-      public CommandArgsConfiguration(string[] args)
-        : base()
+      public CommandArgsConfiguration(string[] args) : this(args, NFX.OS.Computer.OSFamily != OS.OSFamily.Windows)
+      {
+      }
+
+
+      /// <summary>
+      /// Creates an instance of the new configuration parsed from command line arguments
+      /// </summary>
+      public CommandArgsConfiguration(string[] args, bool inhibitSlashArg) : base()
       {
         m_Args = args;
+        m_InhibitSlashArg = inhibitSlashArg;
         parseArgs();
         m_Loaded = true;
       }
@@ -92,6 +101,7 @@ namespace NFX.Environment
 
     #region Private Fields
 
+      private bool m_InhibitSlashArg;
       private bool m_Loaded = false;
       private string[] m_Args;
 
@@ -106,6 +116,16 @@ namespace NFX.Environment
         {
             get { return m_Loaded; }
         }
+
+
+        /// <summary>
+        /// When true, disregards '/' as an argument delimiter
+        /// </summary>
+        public bool InhibitSlashArg
+        {
+           get{  return m_InhibitSlashArg;}
+        }
+
 
         /// <summary>
         /// Returns arguments array that this configuration was parsed from
@@ -133,7 +153,7 @@ namespace NFX.Environment
       {
         var argument = m_Args[i];
 
-        if (argument.Length > 1 && (argument.StartsWith(ARG_PREFIX1) || argument.StartsWith(ARG_PREFIX2)))
+        if (argument.Length > 1 && ((!m_InhibitSlashArg && argument.StartsWith(ARG_PREFIX_SLASH)) || argument.StartsWith(ARG_PREFIX_DASH)))
         {
           argument = argument.Remove(0, 1);//get rid of prefix
           var argNode = m_Root.AddChildNode(argument, null);
@@ -142,7 +162,7 @@ namespace NFX.Environment
           for (i++; i < m_Args.Length; )//read args's options
           {
             var option = m_Args[i];
-            if (option.StartsWith(ARG_PREFIX1) || option.StartsWith(ARG_PREFIX2)) break;
+            if ((!m_InhibitSlashArg && option.StartsWith(ARG_PREFIX_SLASH)) || option.StartsWith(ARG_PREFIX_DASH)) break;
             i++;
 
             var j = option.IndexOf(OPTION_EQ);

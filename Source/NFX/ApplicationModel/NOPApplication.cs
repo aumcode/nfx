@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace NFX.ApplicationModel
   /// <summary>
   /// Represents an application that consists of pure-nop providers, consequently
   ///  this application does not log, does not store data and does not do anything else
-  /// still satisfying its contract 
+  /// still satisfying its contract
   /// </summary>
   public class NOPApplication : IApplication
   {
@@ -52,9 +52,9 @@ namespace NFX.ApplicationModel
 
         m_StartTime = DateTime.Now;
      }
-     
 
-     
+
+
      /// <summary>
      /// Returns a singlelton instance of the NOPApplication
      /// </summary>
@@ -62,17 +62,17 @@ namespace NFX.ApplicationModel
      {
        get { return s_Instance; }
      }
-     
+
 
     private Guid m_InstanceID = Guid.NewGuid();
     private DateTime m_StartTime;
     protected MemoryConfiguration m_Configuration;
-    
 
-    
+
+
     #region IApplication Members
 
-        
+
         public bool IsUnitTest{ get{ return false;}}
 
         public Guid InstanceID
@@ -84,7 +84,7 @@ namespace NFX.ApplicationModel
         {
             get { return m_StartTime; }
         }
-        
+
         public bool Active
         {
           get { return false;}//20140128 DKh was true before
@@ -104,7 +104,7 @@ namespace NFX.ApplicationModel
         {
           get { return GetType().FullName; }
         }
-        
+
         public ILog Log
         {
           get { return NOPLog.Instance; }
@@ -195,7 +195,7 @@ namespace NFX.ApplicationModel
 
         public void NotifyAllConfigSettingsAboutChange()
         {
-            
+
         }
 
         public bool RegisterAppFinishNotifiable(IApplicationFinishNotifiable notifiable)

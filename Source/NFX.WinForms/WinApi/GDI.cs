@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using System.Drawing;
 namespace NFX.WinApi
 {
 
-  
+
   /// <summary>
   /// Provides managed wrappers to Windows Gdi.dll
   /// </summary>
@@ -187,12 +187,12 @@ namespace NFX.WinApi
 
     public enum PenStyle
     {
-      PS_SOLID = 0, //The pen is solid. 
-      PS_DASH = 1, //The pen is dashed. 
-      PS_DOT = 2, //The pen is dotted. 
-      PS_DASHDOT = 3, //The pen has alternating dashes and dots. 
-      PS_DASHDOTDOT = 4, //The pen has alternating dashes and double dots. 
-      PS_NULL = 5, //The pen is invisible. 
+      PS_SOLID = 0, //The pen is solid.
+      PS_DASH = 1, //The pen is dashed.
+      PS_DOT = 2, //The pen is dotted.
+      PS_DASHDOT = 3, //The pen has alternating dashes and dots.
+      PS_DASHDOTDOT = 4, //The pen has alternating dashes and double dots.
+      PS_NULL = 5, //The pen is invisible.
       PS_INSIDEFRAME = 6
     };
 
@@ -367,9 +367,9 @@ namespace NFX.WinApi
 
     [DllImport(GDI32)]
     static extern IntPtr CreateSolidBrush(UInt32 crColor);
-    
-    
-    
+
+
+
   }
 
 

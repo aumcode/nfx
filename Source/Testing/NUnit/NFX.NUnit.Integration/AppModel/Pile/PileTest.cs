@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           var pp = PilePointer.Invalid;
           for(ulong i=0; i<PileCacheTestCore.SEG_SIZE && ipile.SegmentCount < 2; i++)
           {
-            var ch = Charge.MakeFake(new GDID(1, i));
+            var ch = ChargeRow.MakeFake(new GDID(1, i));
             pp = ipile.Put(ch);
           }
 
@@ -63,7 +63,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
       public void Parallel_PutGet()
       {
         const int CNT = 1000000;
-        var tuples = new Tuple<PilePointer, Charge>[CNT];
+        var tuples = new Tuple<PilePointer, ChargeRow>[CNT];
 
         using (var pile = new DefaultPile())
         {
@@ -72,9 +72,9 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           var ipile = pile as IPile;
 
           Parallel.For(0, CNT, i => {
-            var ch = Charge.MakeFake(new GDID(0, (ulong)i));
+            var ch = ChargeRow.MakeFake(new GDID(0, (ulong)i));
             var pp = ipile.Put(ch);
-            tuples[i] = new Tuple<PilePointer,Charge>(pp, ch);
+            tuples[i] = new Tuple<PilePointer,ChargeRow>(pp, ch);
           });
 
           Assert.AreEqual(CNT, ipile.ObjectCount);
@@ -89,7 +89,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
       public void Parallel_PutDeleteGet_Checkerboard()
       {
         const int CNT = 1002030;//1000203;
-        var tuples = new Tuple<PilePointer, Charge>[CNT];
+        var tuples = new Tuple<PilePointer, ChargeRow>[CNT];
 
         using (var pile = new DefaultPile())
         {
@@ -98,9 +98,9 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           var ipile = pile as IPile;
 
           Parallel.For(0, CNT, i => {
-            var ch = Charge.MakeFake(new GDID(0, (ulong)i));
+            var ch = ChargeRow.MakeFake(new GDID(0, (ulong)i));
             var pp = ipile.Put(ch);
-            tuples[i] = new Tuple<PilePointer,Charge>(pp, ch);
+            tuples[i] = new Tuple<PilePointer,ChargeRow>(pp, ch);
           });
 
           Assert.AreEqual(CNT, ipile.ObjectCount);

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ namespace NFX.RelationalModel
     public class MySQLCompiler : RDBMSCompiler
     {
         #region .ctor
-            
+
             public MySQLCompiler(Schema schema) : base(schema)
             {
 
@@ -88,13 +88,24 @@ namespace NFX.RelationalModel
                 //if (chk.IsNotNullOrWhiteSpace())
                 //    result = "{0}{1}{2}".Args(result, " ".PadLeft(result.Length%TAB), chk);
 
-                
+
                 if (comment.IsNotNullOrWhiteSpace())
                     result = "{0}{1}{2}".Args(result, " ".PadLeft(result.Length%TAB), comment);
 
                 return result.TrimEnd();
             }
 
+
+            public override void TransformEntityName(RDBMSEntity entity)
+            {
+              base.TransformEntityName(entity);
+
+              if (entity.EntityType==RDBMSEntityType.Column)
+              {
+                entity.TransformedName = entity.TransformedName.ToUpperInvariant();
+                entity.TransformedShortName = entity.TransformedShortName.ToUpperInvariant();
+              }
+            }
         #endregion
 
     }

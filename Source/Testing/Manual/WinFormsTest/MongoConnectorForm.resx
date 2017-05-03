@@ -117,4 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="tbQuery.Text" xml:space="preserve">
+    <value>{
+  'aggregate': 't1',
+  'pipeline':
+[
+    { '$match': { vid: 123456789123011}  },
+    { '$project': { _id: 0, vid: 1, total: 1,  'lines.amnt': 1 } },
+    { '$unwind': '$lines' },
+    { '$group':  {
+           '_id': '$vid',
+           'count': { '$sum': 1 },
+           'amountLines': { '$sum': '$lines.amnt' }
+         }
+    }
+] 
+}</value>
+  </data>
 </root>

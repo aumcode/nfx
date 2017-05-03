@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,8 +67,8 @@ namespace NFX.Log
         /// Creates a new logging service instance
         /// </summary>
         public LogService() : base(null) {}
-        
-        
+
+
         /// <summary>
         /// Creates a new logging service instance
         /// </summary>
@@ -115,7 +115,7 @@ namespace NFX.Log
         public string FileExtension
         {
           get
-          {                
+          {
             return m_FileExtension ?? string.Empty;
           }
           set
@@ -153,13 +153,13 @@ namespace NFX.Log
             if (urgent && n == 1)
                 m_Wakeup.Set();
         }
-      
+
         protected override void DoStart()
         {
             try
             {
                 base.DoStart();
-                                
+
                 m_Wakeup = new AutoResetEvent(false);
 
                 m_Thread = new Thread(threadSpin);
@@ -203,7 +203,7 @@ namespace NFX.Log
                 Interlocked.Exchange(ref m_QueuedCount, 0);
                 write();
                 Pulse();
-                
+
                 var now = this.Now;
 
                 if (m_InstrumentationEnabled && (now-lastInstr).TotalMilliseconds > INSTRUMENTATION_GRANULARITY_MSEC)
@@ -230,31 +230,31 @@ namespace NFX.Log
 
         private void write()
         {
-            lock (m_Destinations) //the lock on destinations here is on purpose, so while write takes place no other thread can remove destinations
+          lock (m_Destinations) //the lock on destinations here is on purpose, so while write takes place no other thread can remove destinations
+          {
+            Message msg;
+            while (m_Queue.TryDequeue(out msg))
             {
-                Message msg;
-                while (m_Queue.TryDequeue(out msg))
+                if (m_InstrumentationEnabled)
                 {
-                    if (m_InstrumentationEnabled)
-                    {
-                      _stat s;
-                      if (!m_Stats.TryGetValue(msg.Type, out s))
-                      {
-                       s = new _stat();
-                       m_Stats[msg.Type] = s;
-                      }
-                      s.V++;
-                    }
+                  _stat s;
+                  if (!m_Stats.TryGetValue(msg.Type, out s))
+                  {
+                    s = new _stat();
+                    m_Stats[msg.Type] = s;
+                  }
+                  s.V++;
+                }
 
-                    foreach (var destination in m_Destinations)
-                    {
-                        //20130318 DKh
-                        if (!m_Reliable && !this.Running)
-                            return;
-                        destination.Send(msg);
-                    }
+                foreach (var destination in m_Destinations)
+                {
+                    //20130318 DKh
+                    if (!m_Reliable && !this.Running)
+                        return;
+                    destination.Send(msg);
                 }
             }
+          }
         }
 
         private void dumpStats()

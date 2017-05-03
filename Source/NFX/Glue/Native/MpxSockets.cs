@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -44,11 +44,11 @@ namespace NFX.Glue.Native
   /// </summary>
   public abstract class MpxSocket<TTransport> : DisposableObject where TTransport : Transport, IMpxTransport
   {
-      protected MpxSocket(TTransport transport, 
-                          IPEndPoint endPoint, 
+      protected MpxSocket(TTransport transport,
+                          IPEndPoint endPoint,
                           ClientSite clientSite,
                           MpxSocketReceiveAction<TTransport> receiveAction)
-      {          
+      {
         m_Transport = transport;
         m_EndPoint = endPoint;
         m_ClientSite = clientSite;
@@ -57,13 +57,6 @@ namespace NFX.Glue.Native
 
         m_SendChunk = ((IMpxTransport)transport).Binding.MakeOrReuseChunk();
         m_ReceiveChunk = ((IMpxTransport)transport).Binding.MakeOrReuseChunk();
-      }
-
-             private object ____disposeLock = new object();
-
-      public override void Dispose() //override needed because multiple threads may want to Dispose() in parallel
-      {
-        lock(____disposeLock) base.Dispose();
       }
 
       protected override void Destructor()
@@ -109,7 +102,7 @@ namespace NFX.Glue.Native
       protected DateTime? m_LastIdleManagerVisit;
 
 
-      protected Socket m_Socket; 
+      protected Socket m_Socket;
 
       /// <summary>
       /// Returns transport that this socket is under
@@ -121,8 +114,8 @@ namespace NFX.Glue.Native
       /// Returns IP End point that this socket services, remote server for client socket and remote client for server sockets
       /// </summary>
       public IPEndPoint EndPoint { get{ return m_EndPoint;}}
-      
-      
+
+
       /// <summary>
       /// Returns the underlying socket
       /// </summary>
@@ -151,8 +144,8 @@ namespace NFX.Glue.Native
       public DateTime? LastIdleManagerVisit{ get {return m_LastIdleManagerVisit; }}
 
       /// <summary>
-      /// Adds the specified socket msg to the outgoing stack. 
-      /// This is a synchronous blocking call that executes until the data is written 
+      /// Adds the specified socket msg to the outgoing stack.
+      /// This is a synchronous blocking call that executes until the data is written
       /// into socket stack (but not necessarily delivered). If send error occurs then socket is
       /// marked as !Active (Disposed)
       /// </summary>
@@ -214,8 +207,8 @@ namespace NFX.Glue.Native
         }
         catch(Exception error)
         {
-          Transport.Binding.WriteLog(this is MpxServerSocket ?  LogSrc.Server : LogSrc.Client, 
-                                     Log.MessageType.Error, 
+          Transport.Binding.WriteLog(this is MpxServerSocket ?  LogSrc.Server : LogSrc.Client,
+                                     Log.MessageType.Error,
                                      StringConsts.GLUE_MPX_SOCKET_RECEIVE_ACTION_ERROR + error.ToMessageWithType(),
                                        "{0}.processRecive()".Args(GetType().Name), error);
         }
@@ -228,19 +221,19 @@ namespace NFX.Glue.Native
   /// <summary>
   /// Represents client-side asynchronous socket. This socket initiates a connection to MpxServerSocket
   /// </summary>
-  public abstract class MpxClientSocket : MpxSocket<MpxClientTransport> 
+  public abstract class MpxClientSocket : MpxSocket<MpxClientTransport>
   {
       protected internal MpxClientSocket(MpxClientTransport transport,
                                 IPEndPoint remoteServer,
                                 ClientSite clientSite,
-                                MpxSocketReceiveAction<MpxClientTransport> receiveAction) 
+                                MpxSocketReceiveAction<MpxClientTransport> receiveAction)
                                 : base(transport, remoteServer, clientSite, receiveAction)
       {
       }
   }
 
 
-  
+
 
 
   /// <summary>
@@ -248,8 +241,8 @@ namespace NFX.Glue.Native
   /// </summary>
   public abstract class MpxServerSocket : MpxSocket<MpxServerTransport>
   {
-      
-      protected internal MpxServerSocket(MpxListener listener, 
+
+      protected internal MpxServerSocket(MpxListener listener,
                                 IPEndPoint clientEndPoint,
                                 ClientSite clientSite,
                                 MpxSocketReceiveAction<MpxServerTransport> receiveAction
@@ -265,9 +258,9 @@ namespace NFX.Glue.Native
         base.Destructor();
       }
 
-      
+
       private MpxListener m_Listener;
-     
+
 
       /// <summary>
       /// Returns listener socket that initiated/opened this server socket
@@ -283,23 +276,23 @@ namespace NFX.Glue.Native
         // and is not worth it. What will happen is socket.Active will become false and any ongong send/receives will fail
         var lastIdleVisit = m_LastIdleManagerVisit;//thread-safe copy
         if (lastIdleVisit.HasValue)
-        { 
+        {
           var tMs = Transport.Binding.ServerTransportIdleTimeoutMs;
           if (tMs>0)
           {
             if ((when - lastIdleVisit.Value).TotalMilliseconds > tMs)
             {
               Instrumentation.InactiveServerTransportClosedEvent.Happened(Transport.Node);
-              Transport.Binding.WriteLog(LogSrc.Server, Log.MessageType.TraceGlue, 
+              Transport.Binding.WriteLog(LogSrc.Server, Log.MessageType.TraceGlue,
                                         "Server transport on '{0}' closed idle client socket from '{1}'".Args(Transport.Node, ClientSite.Name),
-                                        GetType().Name+".AcceptManagerVisit(when)");  
+                                        GetType().Name+".AcceptManagerVisit(when)");
               m_Disposing = true;//just mark for removal/Dispose
             }
           }
         }
         base.AcceptManagerVisit(when);
       }
-      
+
   }
 
 
@@ -307,11 +300,11 @@ namespace NFX.Glue.Native
   /// <summary>
   /// Represents a server-side listener socket that accepts the calls
   /// </summary>
-  public abstract class MpxListener : DisposableObject 
+  public abstract class MpxListener : DisposableObject
   {
-      protected internal MpxListener(MpxServerTransport transport, 
-                                     IPEndPoint listenEndPoint, 
-                                     MpxSocketReceiveAction<MpxServerTransport> socketReceiveAction) 
+      protected internal MpxListener(MpxServerTransport transport,
+                                     IPEndPoint listenEndPoint,
+                                     MpxSocketReceiveAction<MpxServerTransport> socketReceiveAction)
       {
         m_Transport = transport;
         m_EndPoint = listenEndPoint;
@@ -341,15 +334,15 @@ namespace NFX.Glue.Native
   /// </summary>
   public abstract class MpxSocketFactory : IConfigurable
   {
-    
+
     public abstract MpxClientSocket
-           MakeClientSocket(MpxClientTransport transport, 
+           MakeClientSocket(MpxClientTransport transport,
                             IPEndPoint remoteServer,
                             ClientSite clientSite,
                             MpxSocketReceiveAction<MpxClientTransport> receiveAction);
 
     public abstract MpxListener
-           MakeListener(MpxServerTransport transport, 
+           MakeListener(MpxServerTransport transport,
                         IPEndPoint listenEndPoint,
                         MpxSocketReceiveAction<MpxServerTransport> socketReceiveAction);
 

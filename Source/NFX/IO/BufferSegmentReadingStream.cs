@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace NFX.IO
 
     protected override void Dispose(bool disposing)
     {
-      
+
     }
 
     private byte[] m_Buffer;
@@ -46,7 +46,7 @@ namespace NFX.IO
     /// Target stream that this stream wraps
     /// </summary>
     public  byte[] Buffer { get{ return m_Buffer;} }
-    
+
     /// <summary>
     /// Sets byte[] as stream source
     /// </summary>
@@ -60,6 +60,14 @@ namespace NFX.IO
           idxStart+count>buffer.LongLength)
       throw new NFXIOException(StringConsts.ARGUMENT_ERROR+GetType().Name+".BindBuffer(idxStart={0}, count={1})".Args(idxStart, count));
 
+      UnsafeBindBuffer(buffer, idxStart, count);
+    }
+
+    /// <summary>
+    /// Sets byte[] as stream source this method does the same as BindBuffer without extra if statements, correct data is expected to be supplied
+    /// </summary>
+    public void UnsafeBindBuffer(byte[] buffer, long idxStart, long count)
+    {
       m_Buffer = buffer;
       m_Offset = idxStart;
       m_Count = count;
@@ -69,9 +77,9 @@ namespace NFX.IO
 
     public override void Close()
     {
-      
+
     }
-    
+
     public override bool CanRead { get { return true;}}
 
     public override bool CanSeek { get { return true;}}
@@ -111,7 +119,7 @@ namespace NFX.IO
     }
 
     public override int Read(byte[] buffer, int offset, int count)
-    {           
+    {
       if (m_Position+count>m_Count) count = (int)(m_Count - m_Position);
       if (count<=0) return 0;//eof
       Array.Copy(m_Buffer, m_Offset+m_Position, buffer, (long)offset, (long)count);
@@ -120,11 +128,11 @@ namespace NFX.IO
     }
 
     public override long Seek(long offset, SeekOrigin origin)
-    {                   
+    {
       long position;
       switch (origin)
       {
-        case SeekOrigin.Begin:   { position = offset; break;}   
+        case SeekOrigin.Begin:   { position = offset; break;}
         case SeekOrigin.Current: { position = m_Position + offset; break;}
         default: { position = m_Count + offset; break;}
       }
@@ -142,7 +150,7 @@ namespace NFX.IO
       throw new NFXIOException(StringConsts.IO_STREAM_NOT_SUPPORTED_ERROR.Args(GetType().FullName, "Write()"));
     }
 
-    
+
 
   }
 }

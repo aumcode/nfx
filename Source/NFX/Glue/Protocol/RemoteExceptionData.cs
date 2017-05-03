@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2016 IT Adapter Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ namespace NFX.Glue.Protocol
     [Serializable]
     public sealed class RemoteExceptionData
     {
-       
+
        /// <summary>
        /// Initializes instance form local exception
        /// </summary>
@@ -39,19 +39,19 @@ namespace NFX.Glue.Protocol
          var tp = error.GetType();
          m_TypeName = tp.FullName;
          m_Message = error.Message;
-         if (error is NFXException) 
+         if (error is NFXException)
           m_Code = ((NFXException)error).Code;
 
          m_ApplicationName = ExecutionContext.Application.Name;
-         
+
          m_Source = error.Source;
          m_StackTrace = error.StackTrace;
-                       
+
          if (error.InnerException!=null)
           m_InnerException = new RemoteExceptionData(error.InnerException);
        }
-       
-       
+
+
        private string m_TypeName;
        private string m_Message;
        private int m_Code;

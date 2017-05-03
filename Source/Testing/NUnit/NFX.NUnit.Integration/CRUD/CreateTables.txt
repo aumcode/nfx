@@ -59,7 +59,8 @@ create table TBL_TYPES
 	BOOL_CHAR  char(1),
 	BOOL_BOOL  bool,
 	AMOUNT     DECIMAL(12,4),
-	DOB		   date,
+	DOB   date,
+	AGE   int, 
 	 
 	PRIMARY KEY (GDID)
 );
@@ -70,5 +71,13 @@ create table TBL_FULLGDID
 	VARGDID     VARBINARY(12) not null,
 	STRING_NAME   varchar(25) not null,
 	PRIMARY KEY (GDID)
+);
+
+
+create table TBL_TUPLE
+(
+    COUNTER   BIGINT  not null,
+    DATA  varchar(25) not null,
+    PRIMARY KEY (COUNTER)
 );
 

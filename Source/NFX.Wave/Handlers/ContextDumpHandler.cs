@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace NFX.Wave.Handlers
         var dump = new{
           About = work.About,
 
-          Server = new 
+          Server = new
           {
              Name = work.Server.Name,
              Type = work.Server.GetType().FullName,
@@ -52,7 +52,7 @@ namespace NFX.Wave.Handlers
              ShowDumpMatches = work.Server.ShowDumpMatches.OrderedValues.Select(m=>m.Name).ToList(),
              LogMatches = work.Server.LogMatches.OrderedValues.Select(m=>m.Name).ToList(),
           },//server
-          Request = new 
+          Request = new
           {
              AcceptTypes = work.Request.AcceptTypes,
              ContentEncoding = work.Request.ContentEncoding!= null?work.Request.ContentEncoding.EncodingName : SysConsts.NULL_STRING,
@@ -71,6 +71,7 @@ namespace NFX.Wave.Handlers
              Query = collToList(work.Request.QueryString),
              RawURL = work.Request.RawUrl,
              RemoteEndPoint = work.Request.RemoteEndPoint.ToString(),
+             EffectiveCallerRemoteEndPoint = work.EffectiveCallerIPEndPoint.ToString(),
              UserAgent = work.Request.UserAgent,
              UserHostAddress = work.Request.UserHostAddress,
              UserHostName = work.Request.UserHostName,
@@ -104,7 +105,7 @@ namespace NFX.Wave.Handlers
         for(var i=0; i<collection.Count; i++)
           result.Add("{0} = {1}".Args(collection.GetKey(i), collection[i]));
 
-        return result;  
+        return result;
      }
 
   }

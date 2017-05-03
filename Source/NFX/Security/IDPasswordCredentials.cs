@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,59 +24,122 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using NFX.Environment;
+using NFX.Serialization.JSON;
+
 namespace NFX.Security
 {
   /// <summary>
-  /// Represents simple ID/password textual credentials
+  /// Represents simple ID/password textual credentials.
+  /// Note: The password is stored as plain text
   /// </summary>
   [Serializable]
-  public class IDPasswordCredentials : Credentials
+  public class IDPasswordCredentials : Credentials, IStringRepresentableCredentials
   {
-     public IDPasswordCredentials(string id, string pwd)
-     {
-       m_ID = id; 
-       m_Password = pwd;
-     }
-     
-     
-     private string m_ID;
-     private string m_Password;
-     
-
-     public string ID
-     {
-       get { return m_ID ?? string.Empty; }
-     }
-
-     public string Password
-     {
-       get { return m_Password ?? string.Empty; }
-     }
-     
-        
-
-
-     /// <summary>
-     /// Deletes sensitive password information.
-     /// This method is mostly used on client (vs. server) to prevent process memory-inspection attack.
-     /// Its is usually called right after Login() was called.
-     /// Implementers may consider forcing post-factum GC.Collect() on all generations to make sure that orphaned 
-     /// memory buff with sensitive information, that remains in RAM even after all references are killed, gets
-     /// compacted. This class implementation DOES NOT call Gc.Collect();
-     /// </summary>
-     public override void Forget() //todo  Use SecureString to keep password
-     {
-       m_Password = string.Empty;
-       base.Forget();
-     }
+    /// <summary>
+    /// Obtains an unsecure string password as SecureBuffer.
+    /// Note: The IDPasswordCredentials class is purposely designed to store password as plain text.
+    /// This is needed for simple cases and HTTP application where login credentials are posted via plain text anyway
+    /// </summary>
+    public static SecureBuffer PlainPasswordToSecureBuffer(string password)
+    {
+      SecureBuffer buffer;
+      if (password.IsNullOrEmpty())
+        buffer = new SecureBuffer(0);
+      else
+      {
+        var bytes = Encoding.UTF8.GetBytes(password);
+        buffer = new SecureBuffer(bytes.Length);
+        foreach (var b in bytes)
+          buffer.Push(b);
+        Array.Clear(bytes, 0, bytes.Length);
+      }
+      buffer.Seal();
+      return buffer;
+    }
 
 
+    /// <summary>
+    /// Creates IDPass credentials from base64 encoded auth header content as provided by RepresentAsString() method.
+    /// Returns null if the content is unparsable
+    /// </summary>
+    public static IDPasswordCredentials FromBasicAuth(string basicAuth)
+    {
+      if (basicAuth.IsNullOrWhiteSpace()) return null;
 
-     public override string ToString()
-     {
-       return "{0}({1})".Args(GetType().Name, ID);
-     }
-  
-  
+      var bin = Convert.FromBase64String(basicAuth);
+      var concat = Encoding.UTF8.GetString(bin).Trim();
+
+      if (concat.IsNullOrWhiteSpace()) return null;
+
+      var i = concat.IndexOf(':');
+      if (i < 0) return new IDPasswordCredentials(concat, null);
+
+      var id = i == 0 ? null : concat.Substring(0, i);
+      var pwd = i == concat.Length - 1 ? null : concat.Substring(i + 1);
+
+      return new IDPasswordCredentials(id, pwd);
+    }
+
+    public IDPasswordCredentials(string id, string pwd)
+    {
+      m_ID = id;
+      m_Password = pwd;
+    }
+
+    /// <summary>
+    /// Warning: storing plain credentials in config file is not secure. Use this method for the most simplistic cases
+    /// like unit testing
+    /// </summary>
+    public IDPasswordCredentials(IConfigSectionNode cfg)
+    {
+      if (cfg == null || !cfg.Exists)
+        throw new SecurityException(StringConsts.ARGUMENT_ERROR + "IDPasswordCredentials.ctor(cfg=null|!exists)");
+
+      ConfigAttribute.Apply(this, cfg);
+    }
+
+    [Config] private string m_ID;
+    [Config] private string m_Password;
+
+    public string ID { get { return m_ID ?? string.Empty; } }
+    public string Password { get { return m_Password ?? string.Empty; } }
+
+    /// <summary>
+    /// Obtains an unsecure string password as SecureBuffer.
+    /// Note: The IDPasswordCredentials class is purposely designed to store password as plain text.
+    /// This is needed for simple cases and HTTP application where login credentials are posted via plain text anyway
+    /// </summary>
+    public SecureBuffer SecurePassword { get { return PlainPasswordToSecureBuffer(m_Password); } }
+
+    /// <summary>
+    /// Deletes sensitive password information.
+    /// This method is mostly used on client (vs. server) to prevent process memory-inspection attack.
+    /// Its is usually called right after Login() was called.
+    /// Implementers may consider forcing post-factum GC.Collect() on all generations to make sure that orphaned
+    /// memory buff with sensitive information, that remains in RAM even after all references are killed, gets
+    /// compacted. This class implementation DOES NOT call Gc.Collect();
+    /// </summary>
+    public override void Forget()
+    {
+      m_Password = string.Empty;
+      base.Forget();
+    }
+
+    public string RepresentAsString()
+    {
+      if (Forgotten)
+        throw new SecurityException(StringConsts.SECURITY_REPRESENT_CREDENTIALS_FORGOTTEN);
+
+      var concat = "{0}:{1}".Args(m_ID, m_Password);
+      var encoded = Encoding.UTF8.GetBytes(concat);
+
+      return Convert.ToBase64String(encoded, Base64FormattingOptions.None);
+    }
+
+    public override string ToString()
+    {
+      return "{0}({1})".Args(GetType().Name, ID);
+    }
   }
 }

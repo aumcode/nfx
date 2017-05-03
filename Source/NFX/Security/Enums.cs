@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,36 +22,35 @@
  */
 namespace NFX.Security
 {
-  
+
   /// <summary>
   /// User status enumeration -  super-permission levels
   /// </summary>
   public enum UserStatus
   {
-        
-        /// <summary>
-        /// Invalid user, not authenticated and not authorized
-        /// </summary>
-        Invalid = 0,
-        
-        /// <summary>
-        /// The lowest level of a user, bound by permissions inside their domain and domain section (such as facility)
-        /// </summary>
-        User = 1,  
-        Usr = User,
-        
-        /// <summary>
-        /// Administrators may run administration console, but always bound by their domain 
-        /// </summary>
-        Administrator = 1000,
+    /// <summary>
+    /// Invalid user, not authenticated and not authorized
+    /// </summary>
+    Invalid = 0,
 
-        Admin = Administrator,
-        Adm = Administrator,
-        
-        /// <summary>
-        /// Cross domain user, all restrictions are lifted
-        /// </summary>
-        System = 1000000,
-        Sys = System,
+    /// <summary>
+    /// The lowest level of a user, bound by permissions inside their domain and domain section (such as facility)
+    /// </summary>
+    User = 1,
+    Usr = User,
+
+    /// <summary>
+    /// Administrators may run administration console, but always bound by their domain
+    /// </summary>
+    Administrator = 1000,
+
+    Admin = Administrator,
+    Adm = Administrator,
+
+    /// <summary>
+    /// Cross domain user, all restrictions are lifted
+    /// </summary>
+    System = 1000000,
+    Sys = System,
   }
 }

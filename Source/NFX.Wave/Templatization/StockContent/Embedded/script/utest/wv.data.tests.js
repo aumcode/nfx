@@ -31,6 +31,9 @@
                                             );
                 }
 
+       
+
+
 
        run("Record", "allocbyId-load-recfld", function(){
          var rec = makeSimpleRecID();
@@ -256,6 +259,36 @@
          log( elog);
          assertTrue( "|data-changeLastNamebeforeBuchan|validateLastNameundefinedKorolev|validatedLastNameundefinedKorolev|data-changeLastNameafterKorolev"==elog);
        });
+
+
+       run("Record", "Script/ScriptType", function(){
+         var rec = new WAVE.RecordModel.Record(
+                                            {ID: 'REC-SCRIPT', 
+                                             fields: [
+                                              {def: {Name: 'StringField', Type: 'string'}, val: 'Sunil'},
+                                              {def: {Name: 'ScriptFieldWithoutType', Type: 'string', ControlType: 'script'}, val: 'some script'},
+                                              {def: {Name: 'ScriptFieldWithType',    Type: 'string', ControlType: 'script', ScriptType: 'laconic'}, val: 'nfx{ a=2}'}
+                                             ]}
+                                            );
+
+         assertTrue( rec.fldStringField.type()            === "string" );
+         assertTrue( rec.fldScriptFieldWithoutType.type() === "string" );
+         assertTrue( rec.fldScriptFieldWithType.type()    === "string" );
+
+         assertTrue( rec.fldStringField.controlType()            === WAVE.RecordModel.CTL_TP_AUTO );
+         assertTrue( rec.fldScriptFieldWithoutType.controlType() === "script" );
+         assertTrue( rec.fldScriptFieldWithType.controlType()    === "script" );
+
+         assertTrue( rec.fldStringField.getOrInferControlType()            === WAVE.RecordModel.CTL_TP_TEXT   , "ict1");
+         assertTrue( rec.fldScriptFieldWithoutType.getOrInferControlType() === WAVE.RecordModel.CTL_TP_SCRIPT , "ict2");
+         assertTrue( rec.fldScriptFieldWithType.getOrInferControlType()    === WAVE.RecordModel.CTL_TP_SCRIPT , "ict3");
+
+         assertTrue( rec.fldStringField.scriptType()            === null );
+         assertTrue( rec.fldScriptFieldWithoutType.scriptType() === null );
+         assertTrue( rec.fldScriptFieldWithType.scriptType()    === 'laconic' );
+       });
+
+
 
        run("Validation", "field-required-string", function(){
           var rec = new WAVE.RecordModel.Record("1", function(){

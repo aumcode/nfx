@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,17 +27,34 @@ using NFX.Templatization;
 
 namespace NFX.Wave.Templatization
 {
-    /// <summary>
-    /// Defines a base class for web-related templates
-    /// </summary>
-    public abstract class WaveTemplate : Template<WorkContext, IRenderingTarget, object>
-    {
+      /// <summary>
+      /// Defines a base class for web-related templates
+      /// </summary>
+      public abstract class WaveTemplate : Template<WorkContext, IRenderingTarget, object>
+      {
+         /// <summary>
+         /// Escapes JS literal, see NFX.Web.Utils.EscapeJSLiteral
+         /// </summary>
+         public static string EscapeJSLiteral(string value)
+         {
+           return value.EscapeJSLiteral();
+         }
+
+         /// <summary>
+         /// Converts string to HTML-encoded string
+         /// </summary>
+         public static string HTMLEncode(string value)
+         {
+           return WebUtility.HtmlEncode(value);
+         }
+
+
 
          public WaveTemplate() : base()
          {
 
          }
-         
+
          public WaveTemplate(WorkContext context) : base (context)
          {
 
@@ -45,9 +62,23 @@ namespace NFX.Wave.Templatization
 
          public Response Response { get { return Context.Response; } }
 
-         public ISession Session { get { return Context.Session; } }
+         /// <summary>
+         /// Returns session if it is available or null
+         /// </summary>
+         public WaveSession Session { get { return Context.Session; } }
 
-         
+         /// <summary>
+         /// Returns CSRF token for session if it is available or null
+         /// </summary>
+         public string CSRFToken
+         {
+           get
+           {
+             var session = this.Session;
+             if (session==null) return null;
+             return session.CSRFToken;
+           }
+         }
 
          /// <summary>
          /// Override to indicate whetner the instance of the template may be reused for processing of other requests
@@ -108,31 +139,16 @@ namespace NFX.Wave.Templatization
         }
 
 
-         protected override void DoContextBinding()
-         {
-             base.DoContextBinding();
-         }
-
-
-         protected override void DoPreRender()
-         {
-
-         }
-
-         protected override void DoRender()
-         {
-
-         }
-
-         protected override void DoPostRender(Exception error)
-         {
-
-         }
+        protected override bool DoPostRender(Exception error)
+        {
+          if (error==null) return false;
+          throw new WaveTemplateRenderingException("{0}.DoPostRender: {1}".Args(GetType().FullName, error.ToMessageWithType()), error);
+        }
 
     }
 
     /// <summary>
-    /// Wave template that is scoped to a TModel type for Model (Rendering Context) 
+    /// Wave template that is scoped to a TModel type for Model (Rendering Context)
     /// </summary>
     public class WaveTemplate<TModel> : WaveTemplate
     {
@@ -140,7 +156,7 @@ namespace NFX.Wave.Templatization
         {
 
         }
-         
+
         public WaveTemplate(WorkContext context) : base (context)
         {
 

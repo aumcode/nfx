@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -204,6 +204,17 @@ namespace NFX.NUnit.Erlang
       {
         var b = new byte[] { 131, 104, 3, 97, 1, 100, 0, 1, 97, 104, 2, 97, 10, 70, 63, 241, 247, 206, 217, 22, 135, 43 };
         var t = new ErlTuple(1, new ErlAtom("a"), new ErlTuple(10, 1.123));
+        var os = new ErlOutputStream(t);
+        Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
+        var es = new ErlInputStream(b);
+        Assert.AreEqual(t, es.Read());
+      }
+      {
+        var b = new byte[] { 131, 116, 0, 0, 0, 2, 100, 0, 1, 97, 97, 1, 107, 0, 3, 115, 116, 114, 70, 64, 0, 0, 0, 0, 0, 0, 0 };
+        var t = new ErlMap {
+          { new ErlAtom("a"), 1.ToErlObject() },
+          { new ErlString("str"), new ErlDouble(2.0) }
+        };
         var os = new ErlOutputStream(t);
         Assert.AreEqual(b, os.GetBuffer().TakeWhile((_, i) => i < b.Length).ToArray());
         var es = new ErlInputStream(b);

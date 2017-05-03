@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +27,7 @@ using System.Runtime.CompilerServices;
 
 namespace NFX.Serialization.BSON
 {
-  
+
   /// <summary>
   /// Represents template argument
   /// </summary>
@@ -24,8 +40,26 @@ namespace NFX.Serialization.BSON
       Value = value;
     }
 
+    public TemplateArg(BSONElement element)
+    {
+      if (element==null && element.IsArrayElement)
+        throw new BSONException(StringConsts.ARGUMENT_ERROR+"TemplateArg.ctor(element==null|IsArrayElement)");
+
+      Name = element.Name;
+      BSONType = element.ElementType;
+      Value = element.ObjectValue;
+    }
+
+    public TemplateArg(string name, object value)
+    {
+      Name = name;
+      BSONType = null;
+      Value = value;
+    }
+
+
     public readonly string Name;
-    public readonly BSONElementType BSONType;
+    public readonly BSONElementType? BSONType;
     public readonly object Value;
   }
 
@@ -46,6 +80,18 @@ namespace NFX.Serialization.BSON
       /// </summary>
       public BSONDocument()
       {
+      }
+
+      /// <summary>
+      /// Creates document from array containing BSON-encoded data
+      /// </summary>
+      public static BSONDocument FromArray(byte[] content)
+      {
+        if (content==null)
+           throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONDocument.ctor(content==null)");
+
+        using(var ms = new MemoryStream(content))
+          return new BSONDocument(ms);
       }
 
       /// <summary>
@@ -72,7 +118,7 @@ namespace NFX.Serialization.BSON
           throw new BSONException(StringConsts.BSON_EOD_ERROR);
       }
 
-             
+
       /// <summary>
       /// Creates an instance of the document from JSON template with parameters populated from args optionally caching the template internal
       /// representation. Do not cache templates that change often
@@ -104,7 +150,7 @@ namespace NFX.Serialization.BSON
         {
           if (name==null)
              throw new BSONException(StringConsts.ARGUMENT_ERROR+"BSONDocument[name: null]");
-        
+
           var idx = IndexOfName(name);
           return  idx >= 0 ? m_List[idx] : null;
         }
@@ -201,7 +247,7 @@ namespace NFX.Serialization.BSON
       /// </summary>
       public BSONDocument Set(BSONElement value, int atIndex = -1)
       {
-        bool added; 
+        bool added;
         this.Set(value, out added, atIndex);
         return this;
       }
@@ -213,7 +259,7 @@ namespace NFX.Serialization.BSON
       {
         if (value==null)
            throw new BSONException(StringConsts.ARGUMENT_ERROR+"Set(value==null)");
-        
+
         if (value.IsArrayElement)
          throw new BSONException(StringConsts.BSON_ARRAY_ELM_DOC_ERROR.Args(value));
 
@@ -232,7 +278,7 @@ namespace NFX.Serialization.BSON
         if (idx<0) return false;
 
         m_List.RemoveAt(idx);
-        if (m_Dict!=null) 
+        if (m_Dict!=null)
           m_Dict.Remove(name);
 
         return true;
@@ -257,16 +303,29 @@ namespace NFX.Serialization.BSON
         WriteAsBSONCore(stream);
       }
 
+      /// <summary>
+      /// Serializes BSON document to byte[]
+      /// </summary>
+      public byte[] WriteAsBSONToNewArray()
+      {
+        var sz = GetByteSize(true);
+        var result = new byte[sz];
+        using(var ms = new MemoryStream(result))
+          WriteAsBSONCore(ms);
+        return result;
+      }
+
+
       internal void WriteAsBSONCore(Stream stream)
       {
-        var docSize = this.GetByteSize(false);//gets cached value 
+        var docSize = this.GetByteSize(false);//gets cached value
         BinUtils.WriteInt32(stream, docSize);
         var cnt = m_List.Count;
         for(var i=0; i<cnt; i++)
         {
            var elm = m_List[i];
            elm.WriteToStream(stream);
-        } 
+        }
         BinUtils.WriteTerminator(stream); //x00
       }
 
@@ -315,7 +374,7 @@ namespace NFX.Serialization.BSON
           if (cnt>=IDX_THRESHOLD)
           {
              makeDict();//rebuild dict as indexes have shifted
-          } 
+          }
         }
         else
         {
@@ -324,11 +383,11 @@ namespace NFX.Serialization.BSON
           var idxNew = cnt-1;
           if (cnt>=IDX_THRESHOLD)
           {
-             if (m_Dict==null) 
+             if (m_Dict==null)
                makeDict();
              else
                m_Dict.Add(elm.Name, idxNew);
-          } 
+          }
         }
         return true;
       }
@@ -360,7 +419,7 @@ namespace NFX.Serialization.BSON
                   if (!s_TemplateCache.TryGetValue(template, out result))
                     lock(s_TemplateCacheLock)
                     {
-                      if (!s_TemplateCache.TryGetValue(template, out result)) 
+                      if (!s_TemplateCache.TryGetValue(template, out result))
                       {
                         result = compileTemplate(template);
                         var ncache = new Dictionary<string, JSONDataMap>(s_TemplateCache, StringComparer.Ordinal);
@@ -374,6 +433,7 @@ namespace NFX.Serialization.BSON
 
                 return result;
               }
+
 
               private JSONDataMap compileTemplate(string template)
               {
@@ -397,7 +457,27 @@ namespace NFX.Serialization.BSON
                   root.Set( jToB(kvp.Key, kvp.Value, args) );
               }
 
+
+              [ThreadStatic]
+              private static int ts_Depth;
+
               private BSONElement jToB(string name, object value, TemplateArg[] args)
+              {
+                try
+                {
+                  ts_Depth++;
+                  if (ts_Depth > 255) throw new BSONException(StringConsts.BSON_TEMPLATE_ARG_DEPTH_EXCEEDED);
+
+                  return jToBCore(name, value, args);
+                }
+                finally
+                {
+                  ts_Depth--;
+                }
+
+              }
+
+              private BSONElement jToBCore(string name, object value, TemplateArg[] args)
               {
                 if (name!=null)//array elm may be null
                   name = substName(name, args);
@@ -408,26 +488,36 @@ namespace NFX.Serialization.BSON
                     if (value is string)
                     {
                      var sv = (string)value;
-                     if (sv.Length>ARG_TPL_PREFIX.Length && sv.StartsWith(ARG_TPL_PREFIX))//parameter name
+                     if (args!=null && sv.Length>ARG_TPL_PREFIX.Length && sv.StartsWith(ARG_TPL_PREFIX))//parameter name
                      {
                       sv = sv.Substring(ARG_TPL_PREFIX.Length);//get rid of "$$"
                       var arg = args.FirstOrDefault(a=> a.Name.EqualsOrdIgnoreCase(sv));
                       if (arg.Name!=null)
                       {
-                        bType = arg.BSONType;
+                        if (!arg.BSONType.HasValue)
+                        {
+                          var be = jToB(arg.Name, arg.Value, null);
+                          return BSONElement.MakeOfType(be.ElementType, name, be.ObjectValue);
+                        }
+
+                        bType = arg.BSONType.Value;
                         value = arg.Value;
                       }
                       else
                        throw new BSONException("Template JSON parameter '{0}' not found in args".Args(sv));
                      }
-                     else 
+                     else
                       bType = BSONElementType.String;
                     }
                     else if (value is UInt64) bType = BSONElementType.Int64;
                     else if (value is Int32) bType = BSONElementType.Int32;
                     else if (value is Int64) bType = BSONElementType.Int64;
                     else if (value is bool) bType = BSONElementType.Boolean;
-                    else if (value is double || value is float || value is decimal) bType = BSONElementType.Double;
+                    else if (value is double || value is float) bType = BSONElementType.Double;
+                    else if (value is byte[])
+                    {
+                        return RowConverter.ByteBuffer_CLRtoBSON(name, (byte[])value);
+                    }
                     else if (value is JSONDataMap)
                     {
                         var doc = value as JSONDataMap;
@@ -436,11 +526,26 @@ namespace NFX.Serialization.BSON
                         value = subdoc;
                         bType = BSONElementType.Document;
                     }
-                    else if (value is JSONDataArray)
+                    else if (value is IEnumerable)
                     {
-                        var arr = value as JSONDataArray;
-                        value = arr.Select(e => jToB(null, e, args)).ToArray();
+                        var arr = value as IEnumerable;
+                        var list = new List<BSONElement>();
+                        foreach (var e in arr) list.Add(jToB(null, e, args));
+                        value = list.ToArray();
                         bType = BSONElementType.Array;
+                    }
+                    else if (value is NFX.DataAccess.Distributed.GDID)
+                    {
+                        return RowConverter.GDID_CLRtoBSON(name, (NFX.DataAccess.Distributed.GDID)value);
+                    }
+                    else if (value is decimal)
+                    {
+                        return RowConverter.Decimal_CLRtoBSON(name, (decimal)value);
+                    }
+
+                    else if (value is NFX.Financial.Amount)
+                    {
+                        return RowConverter.Amount_CLRtoBSON(name, (NFX.Financial.Amount)value);
                     }
                     else throw new BSONException("Template JSON value type '{0}' not supported in BSON binding".Args(value.GetType()));
                 }
@@ -450,7 +555,7 @@ namespace NFX.Serialization.BSON
 
               private string substName(string name, TemplateArg[] args)
               {
-                if (name.Length>ARG_TPL_PREFIX.Length && name.StartsWith(ARG_TPL_PREFIX))//parameter name
+                if (args!=null && name.Length>ARG_TPL_PREFIX.Length && name.StartsWith(ARG_TPL_PREFIX))//parameter name
                 {
                   var aname = name.Substring(ARG_TPL_PREFIX.Length);//get rid of "$$"
                   var arg = args.FirstOrDefault(a => a.Name.EqualsOrdIgnoreCase(aname));
@@ -463,6 +568,6 @@ namespace NFX.Serialization.BSON
 
 
     #endregion
-   
+
   }
 }

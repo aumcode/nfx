@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -240,20 +240,20 @@ namespace NFX.NUnit
         [TestCase]
         public void GetPrimeCapacityOfAtLeast_1()
         {
-          Assert.AreEqual(7  , IntMath.GetPrimeCapacityOfAtLeast( 4 ));    
-          Assert.AreEqual(59  , IntMath.GetPrimeCapacityOfAtLeast( 48 ));    
-          Assert.AreEqual(71  , IntMath.GetPrimeCapacityOfAtLeast( 64 )); 
-          
-           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 128 ));    
-           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 129 ));    
-           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 130 ));    
-           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 131 ));    
-           Assert.AreEqual(163  , IntMath.GetPrimeCapacityOfAtLeast( 132 ));
-           
-          Assert.AreEqual(672827  , IntMath.GetPrimeCapacityOfAtLeast( 672800 ));    
+          Assert.AreEqual(7  , IntMath.GetPrimeCapacityOfAtLeast( 4 ));
+          Assert.AreEqual(59  , IntMath.GetPrimeCapacityOfAtLeast( 48 ));
+          Assert.AreEqual(71  , IntMath.GetPrimeCapacityOfAtLeast( 64 ));
 
-          Assert.AreEqual(334231259  , IntMath.GetPrimeCapacityOfAtLeast( 334231259  ));    
-          Assert.AreEqual(334231291  , IntMath.GetPrimeCapacityOfAtLeast( 334231260  ));    
+           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 128 ));
+           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 129 ));
+           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 130 ));
+           Assert.AreEqual(131  , IntMath.GetPrimeCapacityOfAtLeast( 131 ));
+           Assert.AreEqual(163  , IntMath.GetPrimeCapacityOfAtLeast( 132 ));
+
+          Assert.AreEqual(672827  , IntMath.GetPrimeCapacityOfAtLeast( 672800 ));
+
+          Assert.AreEqual(334231259  , IntMath.GetPrimeCapacityOfAtLeast( 334231259  ));
+          Assert.AreEqual(334231291  , IntMath.GetPrimeCapacityOfAtLeast( 334231260  ));
         }
 
         [TestCase]

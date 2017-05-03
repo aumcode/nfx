@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,18 +33,18 @@ namespace NFX.Wave.Handlers
   {
     public StockContentSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
                           : base(dispatcher, name, order, match){}
-     
+
 
     public StockContentSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode)
                           : base(dispatcher, confNode) {}
-    
-    
+
+
     public override string RootResourcePath
     {
       get { return "NFX.Wave.Templatization.StockContent.Embedded"; }
     }
 
-    public override bool SupportsEnvironmentBranching 
+    public override bool SupportsEnvironmentBranching
     {
       get { return false; }
     }

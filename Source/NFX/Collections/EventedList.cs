@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -55,33 +55,33 @@ namespace NFX.Collections
 
 
         #region .ctor
-            
+
             /// <summary>
             ///  Initializes a new instance that is empty and has the default initial capacity.
-            /// </summary>    
+            /// </summary>
             public EventedList() : base () { m_List = new List<TData>(); }
 
             /// <summary>
             ///  Initializes a new instance that is empty and has the default initial capacity.
-            /// </summary>    
+            /// </summary>
             public EventedList(TContext context, bool contextReadOnly) : base (context, contextReadOnly) { m_List = new List<TData>(); }
-        
+
             ///<summary>
             /// Initializes a new instance that contains elements copied from the specified collection and has sufficient
             ///  capacity to accommodate the number of elements copied.
             ///</summary>
             public EventedList(TContext context, bool contextReadOnly, IEnumerable<TData> collection) : base (context, contextReadOnly) { m_List = new List<TData>(collection);}
-        
+
             ///<summary>
             /// Initializes a new instance that is empty and has the specified initial capacity.
             ///</summary>
-            public EventedList(TContext context, bool contextReadOnly, int capacity): base (context, contextReadOnly)  { m_List = new List<TData>(capacity); } 
+            public EventedList(TContext context, bool contextReadOnly, int capacity): base (context, contextReadOnly)  { m_List = new List<TData>(capacity); }
 
         #endregion
 
 
         #region Private Fields
-            
+
             private List<TData> m_List;
 
         #endregion

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ namespace rsc
 
 
         private static void run(string[] args)
-        {  
+        {
           var config = new CommandArgsConfiguration(args);
 
-          
+
           ConsoleUtils.WriteMarkupContent( typeof(Program).GetText("Welcome.txt") );
 
           if (config.Root["?", "h", "help"].Exists)
@@ -88,8 +88,8 @@ namespace rsc
 
           if (compiler==null) throw new Exception("Could not create compiler type");
 
-         
-          
+
+
           compiler.OutputPath = Path.GetDirectoryName(schemaFileName);
 
           var options = config.Root["o","opt","options"];
@@ -104,16 +104,16 @@ namespace rsc
             Console.WriteLine("   DomainsSearchPath={0}".Args(((RDBMSCompiler)compiler).DomainSearchPaths) );
           Console.WriteLine("   OutPath={0}".Args(compiler.OutputPath) );
           Console.WriteLine("   OutPrefix={0}".Args(compiler.OutputPrefix) );
-          Console.WriteLine("   CaseSensitive={0}".Args(compiler.CaseSensitiveNames) );
-          
+          Console.WriteLine("   CaseSensitivity={0}".Args(compiler.NameCaseSensitivity) );
+
           compiler.Compile();
 
 
-          
+
           foreach(var error in compiler.CompileErrors)
             ConsoleUtils.Error(error.ToMessageWithType());
 
-          
+
           if (compiler.CompileException!=null)
           {
             ConsoleUtils.Warning("Compile exception thrown");

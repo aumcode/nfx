@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ namespace NFX.Health
     [Config("/health-checks")]
     public abstract class BaseCheck : IConfigurable
     {
-       
-       
+
+
        /// <summary>
        /// Results property bag may be used for reporting of additional
        /// health-check parameters i.e. latency, content size etc...
        /// </summary>
        public readonly CheckResult Result = new CheckResult();
-       
-       
+
+
        /// <summary>
        /// Indicates whether this check will be executed
        /// </summary>

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,18 +24,18 @@ namespace NFX.IO.FileSystem.Local
 {
   internal class LocalFileSystemStream : FileSystemStream
   {
-    
+
     public LocalFileSystemStream(FileSystemFile file, Action<FileSystemStream> disposeAction) : base(file, disposeAction)
     {
       var fa = FileAccess.ReadWrite;
-      
+
       var hndl = file.Handle as LocalFileSystem.FSH;
       if (hndl!=null)
       {
         if (((FileInfo)hndl.m_Info).IsReadOnly)
           fa = FileAccess.Read;
       }
-      m_FS = new FileStream(file.Path, FileMode.OpenOrCreate, fa, FileShare.ReadWrite); 
+      m_FS = new FileStream(file.Path, FileMode.OpenOrCreate, fa, FileShare.ReadWrite);
     }
 
     protected override void Dispose(bool disposing)
@@ -44,9 +44,9 @@ namespace NFX.IO.FileSystem.Local
       base.Dispose(disposing);
     }
 
-    private FileStream m_FS; 
+    private FileStream m_FS;
 
-    
+
     protected override void DoFlush()
     {
       m_FS.Flush();

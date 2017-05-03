@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -72,9 +72,9 @@ namespace NFX.WinApi
             this.Left, this.Top, this.Right - this.Left, this.Bottom - this.Top);
       }
     }
-  
-  
-  
+
+
+
     public delegate int EnumDelegate(IntPtr hwnd, int LParam);
 
     [DllImport(USER32)]
@@ -86,12 +86,14 @@ namespace NFX.WinApi
     [DllImport(USER32)]
     public extern static int GetWindowText(IntPtr hWnd, StringBuilder lpString, int cch);
 
+    public const int SW_SCROLLCHILDREN = 0x01;
+    public const int SW_INVALIDATE     = 0x02;
+    public const int SW_ERASE          = 0x04;
+    public const int SW_SMOOTHSCROLL   = 0x10;
 
-
-    public const Int32 SW_SCROLLCHILDREN = 0x01;
-    public const Int32 SW_INVALIDATE = 0x02;
-    public const Int32 SW_ERASE = 0x04;
-    public const Int32 SW_SMOOTHSCROLL = 0x10;
+    public const int WM_SETTEXT        = 0X000C;
+    public const int WM_KEYDOWN        = 0x0100;
+    public const int WM_KEYUP          = 0x0101;
 
     [DllImport(USER32)]
     public static extern int ScrollWindowEx(
@@ -103,17 +105,19 @@ namespace NFX.WinApi
         ref RECT lprcUpdate,
         int fuScroll);
 
-
     [DllImport(USER32)]
     public static extern bool MessageBeep(int uType);
 
     [DllImport(USER32)]
-    public static extern IntPtr GetFocus(); 
+    public static extern IntPtr GetFocus();
 
 
-    
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
 
     // Find window by Caption only. Note you must pass IntPtr.Zero as the first parameter.
 
@@ -126,6 +130,13 @@ namespace NFX.WinApi
     [return: MarshalAs(UnmanagedType.Bool)]
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool PostMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(HandleRef hWnd,  uint uMsg, int wParam, string lParam);
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(HandleRef hWnd,  uint uMsg, int wParam, int lParam);
+    [DllImport("user32.dll")]
+    public static extern int SendMessage(HandleRef hWnd,  uint uMsg, IntPtr wParam, IntPtr lParam);
 
     [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Auto)]
     public static extern uint RegisterWindowMessage(string lpString);

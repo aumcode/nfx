@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ using NFX.ApplicationModel;
 
 namespace NFX.Time
 {
-    
+
     /// <summary>
     /// Describes an entity that provides the localized time
     /// </summary>
     public interface ILocalizedTimeProvider
-    {              
+    {
         /// <summary>
         /// Returns the location
         /// </summary>
@@ -62,7 +62,7 @@ namespace NFX.Time
         /// Returns local time stamp, Alias to this.LocalizedTime
         /// </summary>
         DateTime Now { get; }
-        
+
         /// <summary>
         /// Returns current UTC time stamp
         /// </summary>

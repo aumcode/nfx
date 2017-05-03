@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace NFX.DataAccess
   public sealed class NOPDataStore : ApplicationComponent, IDataStoreImplementation
   {
     private static NOPDataStore s_Instance = new NOPDataStore();
-  
+
 
     private NOPDataStore(): base(){}
 
@@ -50,7 +50,7 @@ namespace NFX.DataAccess
 
     public string TargetName{ get{ return NFX.DataAccess.CRUD.TargetedAttribute.ANY_TARGET;}}
 
-    
+
          public bool InstrumentationEnabled{ get{return false;} set{}}
          public IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get{ return null;}}
          public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups){ return null;}

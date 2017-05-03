@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,16 +34,16 @@ namespace NFX.Security
   {
      public SocialNetTokenCredentials(string netName, string token, string userName = null)
      {
-       m_NetName = netName; 
+       m_NetName = netName;
        m_Token = token;
        m_UserName = userName;
      }
-     
-     
+
+
      private string m_NetName;
      private string m_Token;
      private string m_UserName;
-     
+
      /// <summary>
      /// Name of social network that returned the token
      /// </summary>
@@ -67,23 +67,16 @@ namespace NFX.Security
      {
        get { return m_UserName ?? string.Empty; }
      }
-     
-        
 
-
-     public override void Forget() 
+     public override void Forget()
      {
        m_Token = string.Empty;
        base.Forget();
      }
 
-
-
      public override string ToString()
      {
        return "{0}({1}:{2})".Args(GetType().Name, NetName, UserName);
      }
-  
-  
   }
 }

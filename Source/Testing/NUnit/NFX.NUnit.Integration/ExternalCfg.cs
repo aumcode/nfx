@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ namespace NFX.NUnit.Integration
         public string Email;
         public string Web;
 
-        public static PersonInfo[]  Persons = new PersonInfo[] 
+        public static PersonInfo[]  Persons = new PersonInfo[]
         {
           new PersonInfo() {FirstName="James", LastName="Butt", Company="Benton, John B Jr", Address="6649 N Blue Gum St",City="New Orleans",County="Orleans",State="LA",Zip="70116",Phone1="504-845-1427",Phone2="504-621-8927",Email="jbutt@gmail.com",Web="504-621-8927"},
           new PersonInfo() {FirstName="Josephine", LastName="Darakjy", Company="Chanay, Jeffrey A Esq", Address="4 B Blue Ridge Blvd",City="Brighton",County="Livingston",State="MI",Zip="48116",Phone1="810-374-9840",Phone2="810-292-9388",Email="josephine_darakjy@darakjy.org",Web="810-292-9388"},
@@ -559,374 +559,7 @@ namespace NFX.NUnit.Integration
 
     #region LACONF
 
-      protected string LACONF = @"nfx 
-{
-  starters
-  {
-    starter
-    {
-      name='File Systems'
-      type='NFX.IO.FileSystem.FileSystemStarter, NFX'
-    }
-
-    starter
-    {
-      name='Payment Processing 1'
-      type='NFX.Web.Pay.PaySystemStarter, NFX.Web'
-      application-start-break-on-exception=true
-    }
-
-    starter
-    {
-      name='Social Processing'
-      type='NFX.Web.Social.SocialNetworkStarter, NFX.Web'
-      application-start-break-on-exception=true
-    }
-
-    starter
-    {
-      name='Tax Processing'
-      type='NFX.Web.Pay.Tax.TaxCalculatorStarter, NFX.Web'
-      application-start-break-on-exception=true
-    }
-  }  
-
-  file-systems
-  {
-  /*
-    file-system 
-    { 
-      name='NFX-Local'
-      type='NFX.IO.FileSystem.Local.LocalFileSystem, NFX'
-    }*/
-
-    file-system 
-    { 
-      name='NFX-SVN' type='NFX.IO.FileSystem.SVN.SVNFileSystem, NFX.Web' auto-start=true
-
-      default-session-connect-params
-      {
-        server-url='[SVN_SERVER_URL]' 
-        user-name='[SVN_USER_NAME]' 
-        user-password='[SVN_USER_PASSWORD]'
-      }
-    }
-
-    file-system 
-    { 
-      name='[S3_FS_NAME]' type='NFX.IO.FileSystem.S3.V4.S3V4FileSystem, NFX.Web' auto-start=true
-
-      default-session-connect-params
-      {
-        bucket='[S3_BUCKET]' 
-        region='[S3_REGION]' 
-        access-key='[S3_ACCESSKEY]' 
-        secret-key='[S3_SECRETKEY]'
-      }
-    }
-
-    file-system 
-    { 
-      name='NFX_GOOGLE_DRIVE' type='NFX.IO.FileSystem.GoogleDrive.V2.GoogleDriveFileSystem, NFX.Web' auto-start=true
-
-      default-session-connect-params
-      {
-        email='[GOOGLE_DRIVE_EMAIL]' 
-        cert-path=$'[GOOGLE_DRIVE_CERT_PATH]' 
-      }
-    }
-  }
-
-  web-settings
-  {
-    service-point-manager 
-    { 
-      service-point 
-      { 
-        uri='[PAYPAL_SERVER_URL]' 
-  
-        expect-100-continue=false
-      }
-
-      policy
-      {
-        default-certificate-validation
-        {
-          case { uri='[SVN_SERVER_URL]' trusted=true}
-          case { uri='[S3_SERVER_URL]' trusted=true}
-          case { uri='[STRIPE_SERVER_URL]' trusted=true}
-          case { uri='[PAYPAL_SERVER_URL]' trusted=true}
-          case { uri='[TAXJAR_SERVER_URL]' trusted=true}
-        }
-      }
-    } 
-
-    payment-processing
-    {
-      pay-system-host
-      {
-        name='StripePrimary'
-        type='NFX.NUnit.Integration.Web.Pay.FakePaySystemHost, NFX.NUnit.Integration'
-
-        paypal-valid-account='[PAYPAL_VALID_ACCOUNT]'
-      }
-
-      pay-system
-      {
-        name='Stripe'
-        type='NFX.Web.Pay.Stripe.StripeSystem, NFX.Web'
-        auto-start=true
-
-        default-session-connect-params
-        {
-          name='StripePrimary'
-          type='NFX.Web.Pay.Stripe.StripeConnectionParameters, NFX.Web'
-
-          secret-key='[STRIPE_SECRET_KEY]'
-          email='stripe_user@mail.com'
-        }
-      }
-
-      pay-system
-      {
-        name='PayPal'
-        type='NFX.Web.Pay.PayPal.PayPalSystem, NFX.Web'
-        auto-start=true
-
-        api-uri='[PAYPAL_SERVER_URL]'
-
-        default-session-connect-params
-        {
-          name='PayPalPayoutsPrimary'
-          type='NFX.Web.Pay.PayPal.PayPalConnectionParameters, NFX.Web'
-
-          email='[PAYPAL_EMAIL]'
-          client-id='[PAYPAL_CLIENT_ID]'
-          client-secret='[PAYPAL_CLIENT_SECRET]'
-        }
-      }
-
-      pay-system
-      {
-        name='Mock'
-        type='NFX.Web.Pay.Mock.MockSystem, NFX.Web'
-        auto-start=true
-
-        accounts
-        {
-          credit-card-correct
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4242424242424242'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='123'  
-            }
-          }
-
-          credit-card-declined
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4000000000000002'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='123'  
-            }
-          }
-
-          credit-card-luhn-error
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4242424242424241'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='123'  
-            }
-          }
-
-          credit-card-cvc-error
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4242424242424242'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='99'  
-            }
-          }
-
-          credit-card-correct-with-addr
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4242424242424242'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='123'
-                
-              BillingAddress1='5844 South Oak Street'
-              BillingAddress2='1234 Lemon Street'
-              BillingCountry='US'
-              BillingCity='Chicago'
-              BillingPostalCode='60667'
-              BillingRegion='IL'
-              BillingEmail='vpupkin@mail.com'
-              BillingPhone='(309) 123-4567'
-            }
-          }
-
-          debit-bank-correct
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='000123456789'
-              RoutingNumber='110000000'
-              BillingCountry='US'
-            }
-          }
-
-          debit-card-correct
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4000056655665556'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='123'
-            }
-          }
-
-          debit-card-correct-with-address
-          {
-            account-data
-            {
-              FirstName='Vasya'
-              LastName='Pupkin'
-              MiddleName='S'
-
-              AccountNumber='4000056655665556'
-              CardExpirationYear=2016
-              CardExpirationMonth=11
-              CardVC='123'
-
-              BillingAddress1='5844 South Oak Street'
-              BillingAddress2='1234 Lemon Street'
-              BillingCountry='US'
-              BillingCity='Chicago'
-              BillingPostalCode='60667'
-              BillingRegion='IL'
-              BillingEmail='vpupkin@mail.com'
-              BillingPhone='(309) 123-4567'
-            }
-          }
-        }
-
-        default-session-connect-params
-        {
-          type='NFX.Web.Pay.Mock.MockConnectionParameters, NFX.Web'
-          email='mock_user@mail.com'
-        }
-      }
-
-    }
-
-    social
-    {
-      provider {name='GooglePlusTest' type='NFX.Web.Social.GooglePlus, NFX.Web' auto-start=true
-                  client-code='[SN_GP_CLIENT_CODE]' client-secret='[SN_GP_CLIENT_SECRET]' 
-                  web-service-call-timeout-ms='20000' keep-alive='false' pipelined='false'}
-
-      provider { name='FacebookTest' type='NFX.Web.Social.Facebook, NFX.Web' auto-start=true
-                  client-code='[SN_FB_CLIENT_CODE]' client-secret='[SN_FB_CLIENT_SECRET]' app-accesstoken='[SN_FB_APP_ACCESSTOKEN]' }
-
-      provider {name='TwitterTest' type='NFX.Web.Social.Twitter, NFX.Web' auto-start=true 
-                  client-code='[SN_TWT_CLIENT_CODE]' client-secret='[SN_TWT_CLIENT_SECRET]'}
-
-      provider {name='LinkedInTest' type='NFX.Web.Social.LinkedIn, NFX.Web' auto-start=true 
-                  api-key='[SN_LIN_API_KEY]' secret-key='[SN_LIN_SECRET_KEY]'}
-
-      provider {name='VKontakteTest' type='NFX.Web.Social.VKontakte, NFX.Web' auto-start=true 
-                  client-code='[SN_VK_CLIENT_CODE]' client-secret='[SN_VK_CLIENT_SECRET]'} 
-    }                                    
-
-    tax
-    {
-      calculator 
-      {
-        name='NOPCalculator'
-        type='NFX.Web.Pay.Tax.NOP.NOPTaxCalculator, NFX.Web' 
-        auto-start=true
-
-        default-session-connect-params
-        {
-          type='NFX.Web.Pay.Tax.NOP.NOPConnectionParameters, NFX.Web'
-          email='tax_nop_user@mail.com'
-        }
-      }
-
-      calculator 
-      {
-        name='TaxJar'
-        type='NFX.Web.Pay.Tax.TaxJar.TaxJarCalculator, NFX.Web' 
-        auto-start=true
-
-        default-session-connect-params
-        {
-          type='NFX.Web.Pay.Tax.TaxJar.TaxJarConnectionParameters, NFX.Web'
-          email='[TAX_TAXJAR_EMAIL]'
-          api-key='[TAX_TAXJAR_APIKEY]'
-        }
-      }
-    }
-
-    web-dav
-    {
-      log-type='Log.MessageType.TraceZ'
-    }
-
-    session
-    {
-      timeout-ms='30001'
-      web-strategy
-      {
-        cookie-name='kalabashka'
-      }
-    }
-  }
-
-}
-";
+      protected string LACONF = typeof(ExternalCfg).GetText("ExternalCfg.laconf");
 
     #endregion
 
@@ -972,7 +605,7 @@ namespace NFX.NUnit.Integration
 
       protected const string S3_FN1 = "nfxtest01.txt";
 
-      protected const string S3_CONTENTSTR1 = "Amazon S3 is storage for the Internet. It is designed to make web-scale computing easier for developers."; 
+      protected const string S3_CONTENTSTR1 = "Amazon S3 is storage for the Internet. It is designed to make web-scale computing easier for developers.";
       protected static byte[] S3_CONTENTBYTES1 = Encoding.UTF8.GetBytes(S3_CONTENTSTR1);
       protected static System.IO.Stream S3_CONTENTSTREAM1 = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(S3_CONTENTSTR1));
 
@@ -984,7 +617,7 @@ namespace NFX.NUnit.Integration
 
       protected string GOOGLE_DRIVE_EMAIL;
       protected string GOOGLE_DRIVE_CERT_PATH;
-      
+
     #endregion
 
     protected const string NFX_STRIPE = "NFX_STRIPE";
@@ -1000,44 +633,11 @@ namespace NFX.NUnit.Integration
 
     public ExternalCfg()
     {
-            initTax();
-            initSocial();
+            //initSocial();
             initSVNConsts();
-            initS3V4Consts();
-            initGoogleDriveConsts();
-            initStripeConsts();
-            initPayPalConsts();
-    }
-
-    private void initTax()
-    {
-      try
-      {
-        var envVarStr = System.Environment.GetEnvironmentVariable(NFX_TAX);
-
-        var cfg = envVarStr.AsLaconicConfig();
-
-        var providersCfg = cfg.Children.Where(c => c.IsSameName(WebSettings.CONFIG_TAX_CALCULATOR_SECTION));
-
-        var taxJarCfg = providersCfg.Single(p => p.IsSameNameAttr(NFX_TAX_CALCULATOR_TAXJAR));
-
-        var dfltSessionCfg = taxJarCfg.Children.Single(c => c.IsSameName(NFX_TAX_DFLT_SESS_PRMS));
-
-        LACONF = LACONF
-          .Replace("[TAX_TAXJAR_EMAIL]", dfltSessionCfg.AttrByName("email").Value)
-          .Replace("[TAX_TAXJAR_APIKEY]", dfltSessionCfg.AttrByName("api-key").Value);
-
-        LACONF = LACONF.Replace("[STRIPE_SECRET_KEY]", STRIPE_SECRET_KEY)
-          .Replace("[TAXJAR_SERVER_URL]", NFX.Web.Pay.Tax.TaxJar.TaxJarCalculator.BASE_URI);
-      }
-      catch (Exception ex)
-      {
-        throw new Exception( string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added", 
-              NFX_TAX, 
-              "tax { calculator { name='NOPCalculator' type='NFX.Web.Pay.Tax.NOP.NOPTaxCalculator, NFX.Web' ..."), 
-          ex);
-      }
+            //initS3V4Consts();
+            //initGoogleDriveConsts();
+            //initStripeConsts();
     }
 
     private void initSocial()
@@ -1050,7 +650,7 @@ namespace NFX.NUnit.Integration
 
         var providersCfg = cfg.Children.Where(c => c.IsSameName(WebSettings.CONFIG_SOCIAL_PROVIDER_SECTION));
 
-        
+
         var gpCfg = providersCfg.Single(p => p.IsSameNameAttr(NFX_SOCIAL_PROVIDER_FB));
         LACONF = LACONF
           .Replace("[SN_GP_CLIENT_CODE]", gpCfg.AttrByName("client-code").Value)
@@ -1076,15 +676,15 @@ namespace NFX.NUnit.Integration
         LACONF = LACONF
           .Replace("[SN_VK_CLIENT_CODE]", vkCfg.AttrByName("client-code").Value)
           .Replace("[SN_VK_CLIENT_SECRET]", vkCfg.AttrByName("client-secret").Value);
-        
+
       }
       catch (Exception ex)
       {
-        
+
         throw new Exception( string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added", 
-              NFX_SOCIAL, 
-              "social { provider {name='Facebook' type='NFX.Web.Social.Facebook, NFX.Web' client-code='[CLIENT_CODE]' client-secret='[CLIENT_SECRET]' app-accesstoken='[SN_FB_APP_ACCESSTOKEN]'}"), 
+            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
+              NFX_SOCIAL,
+              "social { provider {name='Facebook' type='NFX.Web.Social.Facebook, NFX.Web' client-code='[CLIENT_CODE]' client-secret='[CLIENT_SECRET]' app-accesstoken='[SN_FB_APP_ACCESSTOKEN]'}"),
           ex);
       }
     }
@@ -1117,9 +717,9 @@ namespace NFX.NUnit.Integration
       catch (Exception ex)
       {
         throw new Exception( string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added", 
-              NFX_S3, 
-              "s3{ bucket='bucket01' region='us-west-2' access-key='XXXXXXXXXXXXXXXXXXXX' secret-key='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'}"), 
+            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
+              NFX_S3,
+              "s3{ bucket='bucket01' region='us-west-2' access-key='XXXXXXXXXXXXXXXXXXXX' secret-key='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'}"),
           ex);
       }
     }
@@ -1172,9 +772,9 @@ namespace NFX.NUnit.Integration
       catch (Exception ex)
       {
         throw new Exception( string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added", 
-              NFX_SVN, 
-              "svn{ server-url='https://somehost.com/svn/XXX' user-name='XXXX' user-password='XXXXXXXXXXXX' }"), 
+            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
+              NFX_SVN,
+              "svn{ server-url='https://somehost.com/svn/XXX' user-name='XXXX' user-password='XXXXXXXXXXXX' }"),
           ex);
       }
     }
@@ -1196,39 +796,9 @@ namespace NFX.NUnit.Integration
       catch (Exception ex)
       {
         throw new Exception( string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added", 
-              NFX_STRIPE, 
-              "stripe{ type='NFX.Web.Pay.Stripe.StripeConnParams' secret-key='sk_xxxx_xXxXXxXXXXXXXxxXXxXXXxxx' publishable-key='pk_xxxx_xXXXxxXXXXxxxXxxxxxxxxXx'}"), 
-          ex);
-      }
-    }
-
-    private void initPayPalConsts()
-    {  
-      try
-      {                             
-        var payPalEnvironmentString = System.Environment.GetEnvironmentVariable(NFX_PAYPAL);
-        var cfg = Configuration.ProviderLoadFromString(payPalEnvironmentString, Configuration.CONFIG_LACONIC_FORMAT).Root;
-        
-        PAYPAL_SERVER_URL = cfg.AttrByName(PAYPAL_SYSTEM.CFG_API_URI).Value;
-        PAYPAL_EMAIL = cfg.AttrByName(PAYPAL_CONN_PARAMS.CFG_EMAIL).Value;
-        PAYPAL_CLIENT_ID = cfg.AttrByName(PAYPAL_CONN_PARAMS.CFG_CLIENT_ID).Value;
-        PAYPAL_CLIENT_SECRET = cfg.AttrByName(PAYPAL_CONN_PARAMS.CFG_CLIENT_SECRET).Value;
-        
-        var payPalValidAccount = cfg.AttrByName("user-email").Value;
-        
-        LACONF = LACONF.Replace("[PAYPAL_SERVER_URL]", PAYPAL_SERVER_URL)
-                       .Replace("[PAYPAL_EMAIL]", PAYPAL_EMAIL)
-                       .Replace("[PAYPAL_CLIENT_ID]", PAYPAL_CLIENT_ID)
-                       .Replace("[PAYPAL_CLIENT_SECRET]", PAYPAL_CLIENT_SECRET)
-                       .Replace("[PAYPAL_VALID_ACCOUNT]", payPalValidAccount);
-      }
-      catch (Exception ex)
-      {  
-        throw new Exception(string.Format(
-            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added", 
-              NFX_PAYPAL, 
-              "paypal { api-uri='https://api.sandbox.paypal.com' email='your_paypal_test_business_account@mail.com' client-id='YourPayPalSandboxApplID' client-secret='YourPayPalSandboxApplSecret' }"), 
+            "May be environment variable \"{0}\" of format like \"{1}\" isn't present.\nDon't forget to reload VS after variable is added",
+              NFX_STRIPE,
+              "stripe{ type='NFX.Web.Pay.Stripe.StripeConnParams' secret-key='sk_xxxx_xXxXXxXXXXXXXxxXXxXXXxxx' publishable-key='pk_xxxx_xXXXxxXXXXxxxXxxxxxxxxXx'}"),
           ex);
       }
     }

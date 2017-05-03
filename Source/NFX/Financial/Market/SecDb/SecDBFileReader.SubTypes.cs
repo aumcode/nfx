@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +33,7 @@ namespace NFX.Financial.Market.SecDb
       /// <summary>
       /// Contains data from the REQUIRED/system protion of the file header
       /// </summary>
-      public struct FileRequiredHeader 
+      public struct FileRequiredHeader
       {
         internal FileRequiredHeader(string shebang, IDictionary<string, string> headers)
         {
@@ -28,13 +44,13 @@ namespace NFX.Financial.Market.SecDb
           {
             this.Shebang    = shebang;
             this.Version    = headers[HDR_VERSION].AsInt(handling: ConvertErrorHandling.Throw);
-            
+
             var sdt = headers[HDR_DATE].Trim();
             try
             {
                 var i = sdt.IndexOf('(');
                 if (i<1 || i==sdt.Length-1) throw new FinancialException("missing '(' | empty");
-            
+
                 this.Date = sdt.Substring(0, i).AsDateTime(DateTime.MaxValue, handling: ConvertErrorHandling.Throw);
                 sdt = sdt.Substring(i+1);
                 i = sdt.IndexOf(' ');
@@ -52,7 +68,7 @@ namespace NFX.Financial.Market.SecDb
 
 
                 sdt = sdt.Substring(i+1);
-            
+
                 if (!sdt.EndsWith(")")) throw new FinancialException("missing ')'");
                 this.OriginLocalTimeName = sdt.TrimEnd(')');
             }
@@ -170,11 +186,11 @@ namespace NFX.Financial.Market.SecDb
         internal StreamMeta(StreamID id) { ID = id;}
         public readonly StreamID ID;
       }
-      
+
       public struct CandlesMeta
       {
         internal CandlesMeta(SecDBFileReader file, CandleHeader[] candles) { File = file; Candles = candles;}
-        
+
         public readonly SecDBFileReader File;
         public readonly CandleHeader[] Candles;
 
@@ -204,7 +220,7 @@ namespace NFX.Financial.Market.SecDb
           CandleCount = count;
           DataOffset = offset;
         }
-        
+
         /// <summary>
         /// File that the header is from
         /// </summary>
@@ -215,7 +231,7 @@ namespace NFX.Financial.Market.SecDb
         /// </summary>
         public bool IsAssigned{ get{ return File!=null;} }
 
-        
+
         /// <summary>
         /// Size of candle in seconds
         /// </summary>
@@ -261,28 +277,28 @@ namespace NFX.Financial.Market.SecDb
       /// <summary>
       /// Represents OHLC sample from the file
       /// </summary>
-      public struct CandleData 
+      public struct CandleData
       {
         public const int BYTE_SIZE = (6 * 4) + 8;
-        
+
         internal CandleData(SecDBFileReader file, int sampleNumber, DateTime timestamp, Stream stream)
         {
           File = file;
 
           SampleNumber = sampleNumber;
           TimeStamp = timestamp;
-          
+
           OpenSteps  = SecDBPrimitives.ReadInt32( stream );
           HighSteps  = SecDBPrimitives.ReadInt32( stream );
           LowSteps   = SecDBPrimitives.ReadInt32( stream );
           CloseSteps = SecDBPrimitives.ReadInt32( stream );
-          
+
           BuyVolume  = SecDBPrimitives.ReadInt32( stream );
           SellVolume = SecDBPrimitives.ReadInt32( stream );
 
           FirstStreamOffset = SecDBPrimitives.ReadUInt64( stream );
         }
-        
+
         /// <summary>
         /// File that the header is from
         /// </summary>
@@ -296,19 +312,19 @@ namespace NFX.Financial.Market.SecDb
 
         public readonly int SampleNumber;
         public readonly DateTime TimeStamp;
-      
-        public readonly int OpenSteps; 
-        public readonly int HighSteps; 
-        public readonly int LowSteps; 
+
+        public readonly int OpenSteps;
+        public readonly int HighSteps;
+        public readonly int LowSteps;
         public readonly int CloseSteps;
 
-        public float Open { get{ return OpenSteps  * File.SystemHeader.PriceStep;} } 
-        public float High { get{ return HighSteps  * File.SystemHeader.PriceStep;} } 
-        public float Low  { get{ return LowSteps   * File.SystemHeader.PriceStep;} } 
+        public float Open { get{ return OpenSteps  * File.SystemHeader.PriceStep;} }
+        public float High { get{ return HighSteps  * File.SystemHeader.PriceStep;} }
+        public float Low  { get{ return LowSteps   * File.SystemHeader.PriceStep;} }
         public float Close{ get{ return CloseSteps * File.SystemHeader.PriceStep;} }
 
-        public readonly int BuyVolume; 
-        public readonly int SellVolume; 
+        public readonly int BuyVolume;
+        public readonly int SellVolume;
 
         public readonly ulong FirstStreamOffset;
 
@@ -342,7 +358,7 @@ namespace NFX.Financial.Market.SecDb
       public sealed class SecondSample : StreamSample
       {
         internal SecondSample(DateTime ts) : base(ts) {}
-      } 
+      }
 
 
       public class QuoteSample : StreamSample
@@ -354,7 +370,7 @@ namespace NFX.Financial.Market.SecDb
               public long Quantity;
             }
 
-        
+
         internal QuoteSample(SecDBFileReader file, QuoteSample ps, DateTime ts, Stream stream) : base(ts)
         {
           var bt = SecDBPrimitives.ReadByte(stream);
@@ -402,14 +418,14 @@ namespace NFX.Financial.Market.SecDb
         public IEnumerable<PxLevel> Bids{ get{ return PriceLevels.Take(BidCount);}}
         public IEnumerable<PxLevel> Asks{ get{ return PriceLevels.Skip(BidCount);}}
 
-      } 
+      }
 
       public class TradeSample : StreamSample
       {
-        
+
         public enum AggressorType{Undef=0, Agressor=1, Passive=2}
         public enum SideType{Buy=0, Sell=1}
-        
+
         internal TradeSample(SecDBFileReader file, TradeSample ps, DateTime ts, Stream stream) : base(ts)
         {
            var flags = SecDBPrimitives.ReadByte(stream);
@@ -453,14 +469,14 @@ namespace NFX.Financial.Market.SecDb
         public readonly ulong   OrderID;
 
       }
-      
+
 
 
 
       public class OrderSample : StreamSample
       {
         public enum SideType{Buy=0, Sell=1}
-        
+
         internal OrderSample(SecDBFileReader file, OrderSample ps, DateTime ts, Stream stream) : base(ts)
         {
            var flags = SecDBPrimitives.ReadByte(stream);
@@ -473,7 +489,7 @@ namespace NFX.Financial.Market.SecDb
              IsActive =       (flags >> 2) !=0;
              IsReplacement =  (flags >> 3) !=0;
              Side = (SideType)((flags >> 4)&0x1);
-             
+
              IsTakeProfit =   (flags >> 5) !=0;
              IsStopLoss    =   (flags >> 6) !=0;
 
@@ -492,7 +508,7 @@ namespace NFX.Financial.Market.SecDb
                  Qty  = SecDBPrimitives.ReadSLEB128(stream);
              }
 
-             if (IsReplacement)  
+             if (IsReplacement)
               OldOrderID = SecDBPrimitives.ReadSLEB128(stream);
            }
         }
@@ -514,7 +530,7 @@ namespace NFX.Financial.Market.SecDb
         public readonly long Qty;
         public readonly long OldOrderID;
       }
-      
+
 
 
 
@@ -546,7 +562,7 @@ namespace NFX.Financial.Market.SecDb
         public readonly long   Positions;
         public readonly double RiskAmt;
       }
-      
+
       public class InfoSample : StreamSample
       {
         internal InfoSample(DateTime ts, Stream stream) : base(ts)
@@ -565,7 +581,7 @@ namespace NFX.Financial.Market.SecDb
 
         public readonly string Body;
         public readonly ulong ResID;
-      } 
+      }
 
 
 

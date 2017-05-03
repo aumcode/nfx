@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +42,7 @@ namespace NFX.Log.Bin
     public const int PAGE_HEADER_SZ = 16;
 
     public enum PageHeaderReadStatus{OK = 0, EOF, Corruption}
-    
+
     public static void WritePageHeader(Stream stream, DateTime ts)
     {
       stream.WriteBEUInt64(PAGE_HEADER);
@@ -51,7 +67,7 @@ namespace NFX.Log.Bin
       return PageHeaderReadStatus.OK;
     }
 
-    
+
     public static void WriteTimeStamp(Stream stream, DateTime ts)
     {
       var nix = ts.ToMicrosecondsSinceUnixEpochStart();
@@ -89,7 +105,7 @@ namespace NFX.Log.Bin
 
     #region buf readers
       [ThreadStatic] private static byte[] ts_Buff32;
-                       
+
       [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
       internal static byte[] getBuff32()
       {
@@ -117,7 +133,7 @@ namespace NFX.Log.Bin
         }while(total<count);
 
         return total;
-      } 
+      }
     #endregion
 
   }

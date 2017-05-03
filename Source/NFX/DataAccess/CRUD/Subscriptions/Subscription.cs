@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -11,11 +27,12 @@ namespace NFX.DataAccess.CRUD.Subscriptions
   /// <summary>
   /// Thrown by provider to indicate that such a subscribtion can not be established in principle,
   /// i.e. you may have passed a zero size of populus group, the server may respond with this error
-  /// to indicate the principal error in request 
+  /// to indicate the principal error in request
   /// </summary>
+  [Serializable]
   public class InvalidSubscriptionRequestException : CRUDException
   {
-    public InvalidSubscriptionRequestException(string message, Exception inner) : base(message, inner) {} 
+    public InvalidSubscriptionRequestException(string message, Exception inner) : base(message, inner) {}
     protected InvalidSubscriptionRequestException(SerializationInfo info, StreamingContext context) : base(info, context) {}
   }
 
@@ -29,7 +46,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     {
       if (store==null ||
           query==null||
-          mailbox==null) 
+          mailbox==null)
         throw new CRUDException(StringConsts.ARGUMENT_ERROR+GetType().FullName+".ctor(args...null)");
 
       if (mailbox.Store!=store)
@@ -53,7 +70,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
     {
       if (m_Mailbox!=null)
        ((Registry<Subscription>)m_Mailbox.Subscriptions).Unregister(this);
-      
+
       if (m_Store!=null)
        ((Registry<Subscription>)m_Store.Subscriptions).Unregister(this);
 

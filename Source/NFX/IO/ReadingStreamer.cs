@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using System.IO;
 using System.Reflection;
 
 using NFX.Inventorization;
+using NFX.Serialization.JSON;
 
 
 
@@ -31,7 +32,7 @@ namespace NFX.IO
     /// Reads primitives from stream
     /// </summary>
     [Inventory(Concerns=SystemConcerns.Testing | SystemConcerns.MissionCriticality)]
-    public abstract class ReadingStreamer : Streamer 
+    public abstract class ReadingStreamer : Streamer
     {
        #region .ctor
             protected ReadingStreamer(Encoding encoding=null) : base(encoding)
@@ -55,26 +56,26 @@ namespace NFX.IO
            }while(total<count);
 
            return total;
-         } 
+         }
 
 
        #endregion
 
        #region Public
-        
+
           public abstract bool ReadBool();
-          
+
 
               public abstract bool? ReadNullableBool();
-             
+
 
 
           public abstract byte ReadByte();
-          
+
 
               public abstract byte? ReadNullableByte();
-              
-        
+
+
 
           public abstract byte[] ReadByteArray();
 
@@ -83,118 +84,123 @@ namespace NFX.IO
           public abstract long[] ReadLongArray();
 
           public abstract double[] ReadDoubleArray();
-          
-  
+
+          public abstract float[] ReadFloatArray();
+
+          public abstract decimal[] ReadDecimalArray();
+
+
+
           public abstract char ReadChar();
-          
+
               public abstract char? ReadNullableChar();
-              
 
 
-  
+
+
           public abstract char[] ReadCharArray();
-          
+
 
 
           public abstract string[] ReadStringArray();
-          
-          
+
+
 
           public abstract decimal ReadDecimal();
-          
+
               public abstract decimal? ReadNullableDecimal();
-              
-        
+
+
 
           public abstract double ReadDouble();
-          
+
               public abstract double? ReadNullableDouble();
-              
+
 
 
           public abstract float ReadFloat();
-          
+
               public abstract float? ReadNullableFloat();
-        
+
 
           public abstract int ReadInt();
 
 
               public abstract int? ReadNullableInt();
-              
+
 
           public abstract long ReadLong();
-          
+
 
 
               public abstract long? ReadNullableLong();
 
-        
+
           public abstract sbyte ReadSByte();
 
               public abstract sbyte? ReadNullableSByte();
-        
+
 
           public abstract short ReadShort();
-          
+
               public abstract short? ReadNullableShort();
-              
-        
-          
+
+
+
           public abstract string ReadString();
 
-         
+
 
 
           public abstract uint ReadUInt();
-          
+
 
               public abstract uint? ReadNullableUInt();
-              
 
 
-        
+
+
           public abstract ulong ReadULong();
-          
+
 
               public abstract ulong? ReadNullableULong();
-              
+
 
           public abstract ushort ReadUShort();
-          
+
 
               public abstract ushort? ReadNullableUShort();
-              
-          
+
+
 
           public abstract MetaHandle ReadMetaHandle();
-          
-            
+
+
 
               public abstract MetaHandle? ReadNullableMetaHandle();
-              
-          
+
+
 
 
           public abstract DateTime ReadDateTime();
-          
+
 
               public abstract DateTime? ReadNullableDateTime();
-              
+
 
 
           public abstract TimeSpan ReadTimeSpan();
-          
+
 
               public abstract TimeSpan? ReadNullableTimeSpan();
-              
+
 
 
           public abstract Guid ReadGuid();
-          
+
 
               public abstract Guid? ReadNullableGuid();
-              
+
 
           public abstract NFX.DataAccess.Distributed.GDID ReadGDID();
 
@@ -206,21 +212,31 @@ namespace NFX.IO
 
 
              public abstract FID ReadFID();
-          
+
 
               public abstract FID? ReadNullableFID();
 
             public abstract NFX.ApplicationModel.Pile.PilePointer ReadPilePointer();
-          
+
 
               public abstract NFX.ApplicationModel.Pile.PilePointer? ReadNullablePilePointer();
 
 
              public abstract VarIntStr ReadVarIntStr();
-          
+
 
               public abstract VarIntStr? ReadNullableVarIntStr();
 
+         public abstract NLSMap ReadNLSMap();
+
+             public abstract NLSMap? ReadNullableNLSMap();
+
+         public abstract Financial.Amount ReadAmount();
+
+             public abstract Financial.Amount? ReadNullableAmount();
+
+
+         public abstract Collections.StringMap  ReadStringMap();
 
         #endregion
 

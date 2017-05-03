@@ -17,6 +17,12 @@
             background-color: #f4f4f4;
         }
 
+        .wvIBoxDivThumb:hover {
+            border: 1px solid black; 
+            box-sizing: border-box; 
+            -webkit-box-sizing: border-box;
+        }
+
         /*.wvIBoxDivThumbsContainer {
           outline: 1px solid coral;
       }
@@ -27,10 +33,6 @@
 
       .wvIBoxDivThumbsImagesContainer {
           outline: 1px solid yellowgreen;
-      }
-
-      .wvIBoxDivThumb {
-          outline: 1px solid black;
       }
 
       .wvIBoxDivThumbCrop {
@@ -79,6 +81,7 @@
     <div style="margin:20px; font-size: 20pt;">Big images test (needs server to be started)</div>
     <div id="divIBox2"></div>
 
+    <textarea id="logArea" style="resize: none; height:500px; margin-top: 30px; width: 100%;" readonly></textarea>
 
     <script>
 
@@ -138,7 +141,7 @@
 
             var imageBox1 = new WAVE.GUI.IBox('divIBox1', init1);
 
-            imageBox1.eventBind("image-changed", function(sender, url) {
+            imageBox1.eventBind(WAVE.GUI.EVT_IBOX_IMAGE_CHANGED, function (sender, url) {
                 var divImageChangedEventBox = WAVE.id('divImageChangedEventBox');
                 divImageChangedEventBox.innerText = 'EVENT TEST: image changed to ' + url;
             });

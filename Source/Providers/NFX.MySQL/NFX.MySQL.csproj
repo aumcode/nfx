@@ -60,11 +60,13 @@
     <DocumentationFile>..\..\..\Output\Release\NFX.MySQL.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>MySQLDriver\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -82,12 +84,12 @@
   <ItemGroup>
     <Compile Include="MySQLCRUDQueryExecutionContext.cs" />
     <Compile Include="MySQLCRUDScriptQueryHandler.cs" />
+    <Compile Include="MySQLCursor.cs" />
     <Compile Include="MySQLDataStore.cs" />
     <Compile Include="Generator\CRUDGenerator.cs" />
     <Compile Include="Generator\GeneratorUtils.cs" />
     <Compile Include="MySQLDataAccessException.cs" />
     <Compile Include="MySQLDataStoreBase.cs" />
-    <Compile Include="Generator\RecordModelGenerator.cs" />
     <Compile Include="MySQLCRUDTransaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringConsts.cs" />

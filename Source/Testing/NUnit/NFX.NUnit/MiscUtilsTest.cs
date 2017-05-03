@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,6 +29,102 @@ namespace NFX.NUnit
     [TestFixture]
     public class MiscUtilsTest
     {
+         private class Tezt
+         {
+            public int A;
+            public string B;
+            public double C;
+         }
+
+        [TestCase]
+        public void FirstMin()
+        {
+          var data = new []{ new Tezt{A=0, B="Car", C=12.1d},
+                             new Tezt{A=2, B="Tzar", C=-21.7d},
+                             new Tezt{A=-3, B="Zuma", C=10000d},
+                           };
+
+          var min = data.FirstMin(d => d.A);
+          Assert.AreEqual(-3, min.A);
+          Assert.AreEqual("Zuma", min.B);
+          Assert.AreEqual(10000d, min.C);
+
+          min = data.FirstMin(d => d.B);
+          Assert.AreEqual(0, min.A);
+          Assert.AreEqual("Car", min.B);
+          Assert.AreEqual(12.1d, min.C);
+
+          min = data.FirstMin(d => d.C);
+          Assert.AreEqual(2, min.A);
+          Assert.AreEqual("Tzar", min.B);
+          Assert.AreEqual(-21.7d, min.C);
+
+          double c;
+          min = data.FirstMin(d => d.C, out c);
+          Assert.AreEqual(2, min.A);
+          Assert.AreEqual("Tzar", min.B);
+          Assert.AreEqual(-21.7d, min.C);
+          Assert.AreEqual(-21.7d, c);
+
+        }
+
+        [TestCase]
+        public void FirstMax()
+        {
+          var data = new []{ new Tezt{A=0, B="Car", C=12.1d},
+                             new Tezt{A=2, B="Tzar", C=-21.7d},
+                             new Tezt{A=-3, B="Zuma", C=10000d},
+                           };
+
+          var max = data.FirstMax(d => d.A);
+          Assert.AreEqual(2, max.A);
+          Assert.AreEqual("Tzar", max.B);
+          Assert.AreEqual(-21.7d, max.C);
+
+          max = data.FirstMax(d => d.B);
+          Assert.AreEqual(-3, max.A);
+          Assert.AreEqual("Zuma", max.B);
+          Assert.AreEqual(10000d, max.C);
+
+          max = data.FirstMax(d => d.C);
+          Assert.AreEqual(-3, max.A);
+          Assert.AreEqual("Zuma", max.B);
+          Assert.AreEqual(10000d, max.C);
+
+          double c;
+          max = data.FirstMax(d => d.C, out c);
+          Assert.AreEqual(-3, max.A);
+          Assert.AreEqual("Zuma", max.B);
+          Assert.AreEqual(10000d, max.C);
+          Assert.AreEqual(10000d, c);
+        }
+
+        [TestCase]
+        public void FirstOrAnyOrDefault()
+        {
+          var data = new []{ new Tezt{A=0, B="Car", C=12.1d},
+                             new Tezt{A=2, B="Tzar", C=-21.7d},
+                             new Tezt{A=-3, B="Zuma", C=10000d},
+                           };
+
+          var m = data.FirstOrAnyOrDefault(elm => elm.B=="Tzar");
+          Assert.AreEqual(2, m.A);
+
+          m = data.FirstOrAnyOrDefault(elm => elm.B=="Sidor");
+          Assert.AreEqual(0, m.A);
+
+          data = null;
+          m = data.FirstOrAnyOrDefault(elm => elm.B=="Sidor");
+          Assert.IsNull(m);
+
+          data = new Tezt[0];
+          m = data.FirstOrAnyOrDefault(elm => elm.B=="Sidor");
+          Assert.IsNull(m);
+        }
+
+
+
+
         [TestCase]
         public void SkipLastTest()
         {
@@ -52,6 +148,25 @@ namespace NFX.NUnit
         }
 
         [TestCase]
+        public void ReadWriteLEShortTestStream()
+        {
+            var ms = new MemoryStream();
+            ms.WriteLEShort(789);
+            Assert.AreEqual(2, ms.Position);
+            Assert.AreEqual(new byte[] { 21, 3 }, ms.ToArray());
+
+            ms.Position = 0;
+            Assert.AreEqual(789, ms.ReadLEShort());
+
+            ms.Position = 0;
+            ms.WriteLEUShort(789);
+            Assert.AreEqual(2, ms.Position);
+            Assert.AreEqual(new byte[] { 21, 3 }, ms.ToArray());
+            ms.Position = 0;
+            Assert.AreEqual(789, ms.ReadLEUShort());
+        }
+
+        [TestCase]
         public void ReadWriteBEShortTestArray()
         {
             var buf = new byte[2];
@@ -63,6 +178,17 @@ namespace NFX.NUnit
             Assert.AreEqual(2, idx);
         }
 
+        [TestCase]
+        public void ReadWriteLEShortTestArray()
+        {
+            var buf = new byte[2];
+            buf.WriteLEShort(0, 770);
+            Assert.AreEqual(new byte[] { 2, 3 }, buf);
+
+            var idx = 0;
+            Assert.AreEqual(770, buf.ReadLEShort(ref idx));
+            Assert.AreEqual(2, idx);
+        }
 
         [TestCase]
         public void ReadWriteBEInt32TestStream()
@@ -77,11 +203,23 @@ namespace NFX.NUnit
         }
 
         [TestCase]
+        public void ReadWriteLEInt32TestStream()
+        {
+            var ms = new MemoryStream();
+            ms.WriteLEInt32(16909060);
+            Assert.AreEqual(4, ms.Position);
+            Assert.AreEqual(new byte[] { 4, 3, 2, 1 }, ms.ToArray());
+
+            ms.Position = 0;
+            Assert.AreEqual(16909060, ms.ReadLEInt32());
+        }
+
+        [TestCase]
         public void ReadWriteBEInt32TestArray()
         {
             var buf = new byte[4];
             buf.WriteBEInt32(16909060);
-            
+
             Assert.AreEqual(new byte[] { 1, 2, 3, 4 }, buf);
 
             Assert.AreEqual(16909060, buf.ReadBEInt32());
@@ -89,6 +227,21 @@ namespace NFX.NUnit
             var idx = 0;
             Assert.AreEqual(16909060, buf.ReadBEInt32(ref idx));
             Assert.AreEqual(4,idx);
+        }
+
+        [TestCase]
+        public void ReadWriteLEInt32TestArray()
+        {
+            var buf = new byte[4];
+            buf.WriteLEInt32(67305985);
+
+            Assert.AreEqual(new byte[] { 1, 2, 3, 4 }, buf);
+
+            Assert.AreEqual(67305985, buf.ReadLEInt32());
+
+            var idx = 0;
+            Assert.AreEqual(67305985, buf.ReadLEInt32(ref idx));
+            Assert.AreEqual(4, idx);
         }
 
         [TestCase]
@@ -101,6 +254,20 @@ namespace NFX.NUnit
 
             ms.Position = 0;
             Assert.AreEqual(0xFACACA07EBEDDAFE, ms.ReadBEUInt64());
+            ms.Position = 0;
+            Assert.AreEqual(0xFEDAEDEB07CACAFA, ms.ReadLEUInt64());
+        }
+
+        [TestCase]
+        public void ReadWriteLEInt64TestStream()
+        {
+            var ms = new MemoryStream();
+            ms.WriteLEUInt64(0xFACACA07EBEDDAFE);
+            Assert.AreEqual(8, ms.Position);
+            Assert.AreEqual(new byte[] { 0xFE, 0xDA, 0xED, 0xEB, 0x07, 0xCA, 0xCA, 0xFA }, ms.ToArray());
+
+            ms.Position = 0;
+            Assert.AreEqual(0xFACACA07EBEDDAFE, ms.ReadLEUInt64());
         }
 
         [TestCase]
@@ -108,7 +275,7 @@ namespace NFX.NUnit
         {
             var buf = new byte[8];
             buf.WriteBEUInt64(0xFACACA07EBEDDAFE);
-            
+
             Assert.AreEqual(new byte[] { 0xFA, 0xCA, 0xCA, 0x07, 0xEB, 0xED, 0xDA, 0xFE }, buf);
             Assert.AreEqual(0xFACACA07EBEDDAFE, buf.ReadBEUInt64());
             var idx = 0;
@@ -116,11 +283,24 @@ namespace NFX.NUnit
             Assert.AreEqual(8,idx);
         }
 
+        [TestCase]
+        public void ReadWriteLEInt64TestArray()
+        {
+            var buf = new byte[8];
+            buf.WriteLEUInt64(72057615580070401);
+
+            Assert.AreEqual(new byte[] { 1, 2, 3, 4, 5, 0, 0, 1 }, buf);
+            Assert.AreEqual(72057615580070401, buf.ReadLEUInt64());
+            var idx = 0;
+            Assert.AreEqual(72057615580070401, buf.ReadLEUInt64(ref idx));
+            Assert.AreEqual(8,idx);
+        }
+
 
         [TestCase]
         public void StringLines()
         {
-            var txt = 
+            var txt =
 @"A,b,
 c,d,e
 f
@@ -141,7 +321,7 @@ f
         public void Type_FullNameWithExpandedGenericArgs1()
         {
             var t = typeof(List<string>);
-            
+
             Assert.AreEqual("System.Collections.Generic.List<System.String>", t.FullNameWithExpandedGenericArgs(false));
             Assert.AreEqual("@System.@Collections.@Generic.@List<@System.@String>", t.FullNameWithExpandedGenericArgs(true));
             Assert.AreEqual("@System.@Collections.@Generic.@List<@System.@String>", t.FullNameWithExpandedGenericArgs());
@@ -175,12 +355,42 @@ f
             Assert.AreEqual("@System.@DateTime", t.FullNameWithExpandedGenericArgs());
         }
 
+        internal class ClazzA
+        {
+          public struct StructB{}
+          public class ClB{}
+        }
+
+
+        [TestCase]
+        public void Type_FullNameWithExpandedGenericArgs5()
+        {
+            Aver.AreEqual("NFX.NUnit.MiscUtilsTest.ClazzA.StructB", typeof(ClazzA.StructB).FullNameWithExpandedGenericArgs(false));
+            Aver.AreEqual("@NFX.@NUnit.@MiscUtilsTest.@ClazzA.@StructB", typeof(ClazzA.StructB).FullNameWithExpandedGenericArgs(true));
+
+            Aver.AreEqual("NFX.NUnit.MiscUtilsTest.ClazzA.ClB", typeof(ClazzA.ClB).FullNameWithExpandedGenericArgs(false));
+            Aver.AreEqual("@NFX.@NUnit.@MiscUtilsTest.@ClazzA.@ClB", typeof(ClazzA.ClB).FullNameWithExpandedGenericArgs(true));
+        }
+
+        [TestCase]
+        public void Type_FullNestedTypeName()
+        {
+            Aver.AreEqual("MiscUtilsTest", typeof(MiscUtilsTest).FullNestedTypeName(false));
+            Aver.AreEqual("@MiscUtilsTest", typeof(MiscUtilsTest).FullNestedTypeName(true));
+            Aver.AreEqual("MiscUtilsTest.ClazzA", typeof(ClazzA).FullNestedTypeName(false));
+            Aver.AreEqual("@MiscUtilsTest.@ClazzA", typeof(ClazzA).FullNestedTypeName(true));
+            Aver.AreEqual("MiscUtilsTest.ClazzA.StructB", typeof(ClazzA.StructB).FullNestedTypeName(false));
+            Aver.AreEqual("@MiscUtilsTest.@ClazzA.@StructB", typeof(ClazzA.StructB).FullNestedTypeName(true));
+        }
+
+
+
 
         [TestCase]
         public void Type_DisplayNameWithExpandedGenericArgs1()
         {
             var t = typeof(List<string>);
-            
+
             Assert.AreEqual("List<String>", t.DisplayNameWithExpandedGenericArgs());
         }
 
@@ -188,7 +398,7 @@ f
         public void Type_DisplayNameWithExpandedGenericArgs2()
         {
             var t = typeof(List<Dictionary<string, List<DateTime?>>>);
-            
+
             Assert.AreEqual("List<Dictionary<String, List<Nullable<DateTime>>>>", t.DisplayNameWithExpandedGenericArgs());
         }
 
@@ -373,16 +583,16 @@ f
           var sw = System.Diagnostics.Stopwatch.StartNew();
           for(var i = 0; i<CNT; i++)
             Assert.IsTrue( b1.MemBufferEquals(b2) );
-          
+
           sw.Stop();
-          
+
           Console.WriteLine("Fast Compared {0} in {1}ms at {2} ops/sec", CNT, sw.ElapsedMilliseconds, CNT / (sw.ElapsedMilliseconds / 1000d));
 
           sw = System.Diagnostics.Stopwatch.StartNew();
           for(var i = 0; i<CNT; i++)
            Assert.IsTrue( compareSlow(b1, b2) );
           sw.Stop();
-          
+
           Console.WriteLine("Slow Compared {0} in {1}ms at {2} ops/sec", CNT, sw.ElapsedMilliseconds, CNT / (sw.ElapsedMilliseconds / 1000d));
 
         }
@@ -411,6 +621,248 @@ f
           Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs("      /static/","site","\\content"));
           Assert.AreEqual("/static/site/content", URIUtils.JoinPathSegs(" ", null, "      /static/","site","\\content"));
           Assert.AreEqual("static/site/content",  URIUtils.JoinPathSegs("static", null, "site","", "", "\\content"));
+        }
+
+        [Test]
+        public void ComposeURLQueryString_Empty()
+        {
+          Dictionary<string, object> pars = null;
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual(string.Empty, result);
+
+          pars = new Dictionary<string, object>();
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual(string.Empty, result);
+        }
+
+        [Test]
+        public void ComposeURLQueryString_NullOrEmptyQueryParts()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "name", null }
+          };
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name", result);
+
+          pars = new Dictionary<string, object>
+          {
+            { "name", string.Empty },
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name=", result);
+
+          pars = new Dictionary<string, object>
+          {
+            { string.Empty, "ABBA" }
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual(string.Empty, result);
+
+          pars = new Dictionary<string, object>
+          {
+            { "name1", null },
+            { "name2", string.Empty },
+            { string.Empty, "ABBA" }
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name1&name2=", result);
+
+          pars = new Dictionary<string, object>
+          {
+            { "name1", string.Empty },
+            { "name2", null },
+            { string.Empty, "ABBA" },
+            { "name3", "John" }
+          };
+          result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name1=&name2&name3=John", result);
+        }
+
+        [Test]
+        public void ComposeURLQueryString_SpecSymbols()
+        {
+          var pars = new Dictionary<string, object> { { "name", "Petrov" }, { "age", 19 }, { "spec", @" -y~!@#$%^&*()_?><|';:\/=+" } };
+
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("name=Petrov&age=19&spec=%20-y%7E%21%40%23%24%25%5E%26%2A%28%29_%3F%3E%3C%7C%27%3B%3A%5C%2F%3D%2B", result);
+        }
+
+        [Test]
+        public void ComposeURLQueryString_Types()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "int", -257 },
+            { "bool", true },
+            { "double", 1.9D },
+            { "string", "data&data" },
+            { "dec", 23.45M },
+            { "float", -12.34F }
+          };
+
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("int=-257&bool=True&double=1.9&string=data%26data&dec=23.45&float=-12.34", result);
+        }
+
+        [Test]
+        public void ComposeURLQueryString_UTF8()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "eng", "Hello!" },
+            { "jap", "こんにちは" },
+            { "chi", "久有归天愿"},
+            { "chi2", "你好" },
+            { "fra", "Allô" },
+            { "привет", "rus" },
+            { "नमस्कार", "hind" }
+          };
+
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("eng=Hello%21&jap=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF&chi=%E4%B9%85%E6%9C%89%E5%BD%92%E5%A4%A9%E6%84%BF&chi2=%E4%BD%A0%E5%A5%BD&fra=All%C3%B4&%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82=rus&%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0=hind", result);
+        }
+
+        [Test]
+        public void ComposeURLQueryString_Mixed()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "eng", "Hello!" },
+            { "jap", null },
+            { "chi", "久有归天愿"},
+            { "chi2", 12 },
+            { "", -123456 },
+            { "привет", string.Empty },
+            { "नमस्कार", null }
+          };
+
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("eng=Hello%21&jap&chi=%E4%B9%85%E6%9C%89%E5%BD%92%E5%A4%A9%E6%84%BF&chi2=12&%D0%BF%D1%80%D0%B8%D0%B2%D0%B5%D1%82=&%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A4%BE%E0%A4%B0", result);
+        }
+
+        [Test]
+        public void ComposeURLQueryString_PlusAndSpaces()
+        {
+          var pars = new Dictionary<string, object>
+          {
+            { "eng", "Hello Lenin!" },
+            { "rus", "Привет Ленин!" }
+          };
+
+          var result = URIUtils.ComposeURLQueryString(pars);
+          Assert.AreEqual("eng=Hello%20Lenin%21&rus=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%20%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%21", result);
+        }
+
+        [Test]
+        public void RoundToWeekDay()
+        {
+          var now = DateTime.Now;
+          checkDayOfWeek(now, DayOfWeek.Sunday);
+          checkDayOfWeek(now, DayOfWeek.Monday);
+          checkDayOfWeek(now, DayOfWeek.Tuesday);
+          checkDayOfWeek(now, DayOfWeek.Wednesday);
+          checkDayOfWeek(now, DayOfWeek.Thursday);
+          checkDayOfWeek(now, DayOfWeek.Friday);
+          checkDayOfWeek(now, DayOfWeek.Saturday);
+        }
+
+        private void checkDayOfWeek(DateTime now, DayOfWeek dayOfWeek)
+        {
+          var day = now.RoundToWeekDay(dayOfWeek);
+          var dt = (day - now.Date);
+          Assert.True(day.DayOfWeek == dayOfWeek && (TimeSpan.FromDays(0) <= dt) && (dt <= TimeSpan.FromDays(6)));
+        }
+
+        [Test]
+        public void RoundToNextWeekDay()
+        {
+          var now = DateTime.Now;
+          checkNextDayOfWeek(now, DayOfWeek.Sunday);
+          checkNextDayOfWeek(now, DayOfWeek.Monday);
+          checkNextDayOfWeek(now, DayOfWeek.Tuesday);
+          checkNextDayOfWeek(now, DayOfWeek.Wednesday);
+          checkNextDayOfWeek(now, DayOfWeek.Thursday);
+          checkNextDayOfWeek(now, DayOfWeek.Friday);
+          checkNextDayOfWeek(now, DayOfWeek.Saturday);
+        }
+
+        [Test]
+        public void EscapeURIStringWithPlus()
+        {
+          var goodURL = "https://shippo-delivery-east.s3.amazonaws.com/fff5ec643c2c44539e5a26940d29e917.pdf?Signature=UUd8Pyuki6EDp8RJ/JtEIcSm524=&Expires=1505468405&AWSAccessKeyId=AKIAJGLCC5MYLLWIG42A";
+          var badURL  = "https://shippo-delivery-east.s3.amazonaws.com/6dcf1e56f4fe49b892716393de92dd7e.pdf?Signature=/4iTy32xguuMX7Eba+5qc8TFCbs=&Expires=1505468476&AWSAccessKeyId=AKIAJGLCC5MYLLWIG42A";
+
+          var escapedGoodURL = goodURL.EscapeURIStringWithPlus();
+          var escapedBadURL = badURL.EscapeURIStringWithPlus();
+
+          Assert.AreEqual(goodURL, escapedGoodURL);
+          Assert.AreEqual("https://shippo-delivery-east.s3.amazonaws.com/6dcf1e56f4fe49b892716393de92dd7e.pdf?Signature=/4iTy32xguuMX7Eba%2B5qc8TFCbs=&Expires=1505468476&AWSAccessKeyId=AKIAJGLCC5MYLLWIG42A", escapedBadURL);
+        }
+
+        private void checkNextDayOfWeek(DateTime now, DayOfWeek dayOfWeek)
+        {
+          var day = now.RoundToNextWeekDay(dayOfWeek);
+          var dt = (day - now.Date);
+          Assert.True(day.DayOfWeek == dayOfWeek && (TimeSpan.FromDays(0) < dt) && (dt <= TimeSpan.FromDays(7)));
+        }
+
+        [Test]
+        public void PackISO3CodeToInt()
+        {
+          var p = IOMiscUtils.PackISO3CodeToInt("abc");
+          Aver.AreEqual(0,   (p & 0xff000000));
+          Aver.AreEqual('C', (p & 0x00ff0000) >> 16);
+          Aver.AreEqual('B', (p & 0x0000ff00) >> 8);
+          Aver.AreEqual('A', (p & 0x000000ff) >> 0);
+
+          p = IOMiscUtils.PackISO3CodeToInt("us");
+          Aver.AreEqual(0,   (p & 0xff000000));
+          Aver.AreEqual(0,   (p & 0x00ff0000));
+          Aver.AreEqual('S', (p & 0x0000ff00) >> 8);
+          Aver.AreEqual('U', (p & 0x000000ff) >> 0);
+
+          p = IOMiscUtils.PackISO3CodeToInt("z");
+          Aver.AreEqual(0,   (p & 0xff000000));
+          Aver.AreEqual(0,   (p & 0x00ff0000));
+          Aver.AreEqual(0,   (p & 0x0000ff00));
+          Aver.AreEqual('Z', (p & 0x000000ff) >> 0);
+        }
+
+        [Test]
+        public void PackISO3CodeToInt_Null()
+        {
+          Aver.AreEqual(0, IOMiscUtils.PackISO3CodeToInt(null));
+        }
+
+        [Test]
+        public void PackISO3CodeToInt_Empty()
+        {
+          Aver.AreEqual(0, IOMiscUtils.PackISO3CodeToInt(""));
+          Aver.AreEqual(0, IOMiscUtils.PackISO3CodeToInt("                    "));
+        }
+
+        [Test]
+        [ExpectedException(typeof(NFXException), ExpectedMessage = "iso>3", MatchType = MessageMatch.Contains)]
+        public void PackISO3CodeToInt_Bad3()
+        {
+          IOMiscUtils.PackISO3CodeToInt("1234");
+        }
+
+        [Test]
+        public void UnpackISO3CodeFromInt()
+        {
+          var p = 0;
+          Aver.IsNull( IOMiscUtils.UnpackISO3CodeFromInt(p) );
+
+          p = IOMiscUtils.PackISO3CodeToInt("abc");
+          Aver.AreEqual("ABC", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
+
+          p = IOMiscUtils.PackISO3CodeToInt("Us");
+          Aver.AreEqual("US", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
+
+          p = IOMiscUtils.PackISO3CodeToInt("Z");
+          Aver.AreEqual("Z", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
         }
 
     }

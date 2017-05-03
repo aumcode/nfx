@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,39 +22,18 @@
  */
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace NFX.Financial
 {
-
   /// <summary>
   /// Base exception thrown by the financial-related framework
   /// </summary>
   [Serializable]
   public class FinancialException : NFXException
   {
-    public FinancialException()
-    {
-    }
-
-    public FinancialException(string message)
-      : base(message)
-    {
-    }
-
-    public FinancialException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected FinancialException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public FinancialException() { }
+    public FinancialException(string message) : base(message) { }
+    public FinancialException(string message, Exception inner) : base(message, inner) { }
+    protected FinancialException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
-
 }

@@ -1,19 +1,35 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.IO;
 using System.Text;
 
 namespace NFX.Serialization.BSON
 {
   /// <summary>
-  /// Facilitates read.writing binary BSON primitives. Developers shopuld not normallu use this class
+  /// Facilitates read.writing binary BSON primitives. Developers should not normally use this class
   /// as it is used by serializers and socket low-level code
   /// </summary>
   public static class BinUtils
   {
     #region CONST
       public const byte TERMINATOR = 0x00;
-      private const int BUFFER_LENGTH = 512;
-      private const int MAX_CHARS_IN_BUFFER = BUFFER_LENGTH;
+      private const int BUFFER_LENGTH = 1024;
+      private const int MAX_CHARS_IN_BUFFER = (BUFFER_LENGTH / 3 /*UTF8 max bytes per char*/) - 16/* BOM etc. */;
     #endregion
 
     #region Fields
@@ -31,33 +47,33 @@ namespace NFX.Serialization.BSON
       {
         stream.WriteByte(TERMINATOR);
       }
-      
+
       /// <summary>
       ///  Writes BSON cstring to stream
       /// </summary>
       public static void WriteCString(Stream stream, string value)
       {
         var buffer = ensureBuffer();
-       
-        var maxByteCount = value.Length * 2; // UTF8 string length in UNICODE16 pairs
-        if (maxByteCount < BUFFER_LENGTH)
+
+        var len = value.Length;
+        if (len <= MAX_CHARS_IN_BUFFER)
         {
-          var actual = s_UTF8Encoding.GetBytes(value, 0, value.Length, buffer, 0);
+          var actual = s_UTF8Encoding.GetBytes(value, 0, len, buffer, 0);
           stream.Write(buffer, 0, actual);
         }
         else
         {
           int charCount;
           var totalCharsWritten = 0;
-          while (totalCharsWritten < value.Length)
+          while (totalCharsWritten < len)
           {
-            charCount = Math.Min(MAX_CHARS_IN_BUFFER, value.Length - totalCharsWritten);
+            charCount = Math.Min(MAX_CHARS_IN_BUFFER, len - totalCharsWritten);
             var count = s_UTF8Encoding.GetBytes(value, totalCharsWritten, charCount, buffer, 0);
             stream.Write(buffer, 0, count);
             totalCharsWritten += charCount;
           }
         }
-      
+
         WriteTerminator(stream);
       }
 
@@ -73,7 +89,7 @@ namespace NFX.Serialization.BSON
         }
       }
 
-      
+
       /// <summary>
       /// Writes byte to stream
       /// </summary>
@@ -86,7 +102,7 @@ namespace NFX.Serialization.BSON
       {
         stream.Write(value, 0 , value.Length);
       }
-      
+
       /// <summary>
       /// Writes double to stream
       /// </summary>
@@ -103,7 +119,7 @@ namespace NFX.Serialization.BSON
         stream.WriteByte((byte)(core >> 48));
         stream.WriteByte((byte)(core >> 56));
       }
-      
+
       /// <summary>
       /// Writes 16-bit int to stream
       /// </summary>
@@ -112,16 +128,16 @@ namespace NFX.Serialization.BSON
         stream.WriteByte((byte)value);
         stream.WriteByte((byte)(value >> 8));
       }
-    
+
       /// <summary>
       /// Writes 16-bit int to byte array
       /// </summary>
       public static void WriteInt16(byte[] buffer, short value, int startIdx = 0)
       {
         buffer[startIdx] = (byte)value;
-        buffer[startIdx + 1] = (byte)(value >> 8); 
+        buffer[startIdx + 1] = (byte)(value >> 8);
       }
-      
+
       /// <summary>
       /// Writes unsigned 16-bit int to stream
       /// </summary>
@@ -137,7 +153,7 @@ namespace NFX.Serialization.BSON
       {
         WriteInt16(buffer, (short)value, startIdx);
       }
-      
+
       /// <summary>
       /// Writes 32-bit int to stream
       /// </summary>
@@ -148,17 +164,17 @@ namespace NFX.Serialization.BSON
         stream.WriteByte((byte)(value >> 16));
         stream.WriteByte((byte)(value >> 24));
       }
-    
+
       /// <summary>
       /// Writes 32bit int to byte array
       /// </summary>
       public static void WriteInt32(byte[] buffer, int value, int startIdx = 0)
       {
         buffer[startIdx] = (byte)value;
-        buffer[startIdx + 1] = (byte)(value >> 8); 
-        buffer[startIdx + 2] = (byte)(value >> 16); 
+        buffer[startIdx + 1] = (byte)(value >> 8);
+        buffer[startIdx + 2] = (byte)(value >> 16);
         buffer[startIdx + 3] = (byte)(value >> 24);
-      } 
+      }
 
       /// <summary>
       /// Writes unsigned 24bit int (less than 2^24) to byte array
@@ -166,10 +182,10 @@ namespace NFX.Serialization.BSON
       public static void WriteUInt24(byte[] buffer, uint value, int startIdx = 0)
       {
         buffer[startIdx] = (byte)value;
-        buffer[startIdx + 1] = (byte)(value >> 8); 
-        buffer[startIdx + 2] = (byte)(value >> 16); 
+        buffer[startIdx + 1] = (byte)(value >> 8);
+        buffer[startIdx + 2] = (byte)(value >> 16);
       }
-      
+
       /// <summary>
       /// Writes unsigned 32-bit int to stream
       /// </summary>
@@ -177,7 +193,7 @@ namespace NFX.Serialization.BSON
       {
         WriteInt32(stream, (int)value);
       }
-    
+
       /// <summary>
       /// Writes unsigned 32bit int to byte array
       /// </summary>
@@ -185,7 +201,7 @@ namespace NFX.Serialization.BSON
       {
         WriteInt32(buffer, (int)value, startIdx);
       }
-      
+
       /// <summary>
       /// Writes 64-bit int to stream
       /// </summary>
@@ -207,15 +223,15 @@ namespace NFX.Serialization.BSON
       public static void WriteInt64(byte[] buffer, long value, int startIdx = 0)
       {
         buffer[startIdx] = (byte)value;
-        buffer[startIdx + 1] = (byte)(value >> 8); 
-        buffer[startIdx + 2] = (byte)(value >> 16); 
+        buffer[startIdx + 1] = (byte)(value >> 8);
+        buffer[startIdx + 2] = (byte)(value >> 16);
         buffer[startIdx + 3] = (byte)(value >> 24);
         buffer[startIdx + 4] = (byte)(value >> 32);
         buffer[startIdx + 5] = (byte)(value >> 40);
         buffer[startIdx + 6] = (byte)(value >> 48);
         buffer[startIdx + 7] = (byte)(value >> 56);
       }
-       
+
       /// <summary>
       /// Writes unsigned 64-bit int to stream
       /// </summary>
@@ -244,7 +260,7 @@ namespace NFX.Serialization.BSON
         //The method CAN return bad JSON type, but the later logic will not be able to map it and will throw
         return (BSONElementType)b;
       }
-       
+
       /// <summary>
       /// Reads 16-bit int from stream
       /// </summary>
@@ -261,7 +277,7 @@ namespace NFX.Serialization.BSON
       {
         return (short)(bytes[startIdx] | (bytes[startIdx + 1] << 8));
       }
-       
+
       /// <summary>
       /// Reads unsigned 16-bit int from stream
       /// </summary>
@@ -277,7 +293,7 @@ namespace NFX.Serialization.BSON
       {
         return (ushort)ReadInt16(bytes, startIdx);
       }
-       
+
       /// <summary>
       /// Reads 32-bit int from stream
       /// </summary>
@@ -289,7 +305,7 @@ namespace NFX.Serialization.BSON
                (buf[2] << 16) |
                (buf[3] << 24);
       }
-       
+
       /// <summary>
       /// Reads 32-bit int from byte array
       /// </summary>
@@ -300,7 +316,7 @@ namespace NFX.Serialization.BSON
                (bytes[startIdx + 2] << 16) |
                (bytes[startIdx + 3] << 24);
       }
-       
+
       /// <summary>
       /// Reads 24-bit int (less than 2^24) from byte array
       /// </summary>
@@ -309,23 +325,23 @@ namespace NFX.Serialization.BSON
         return (uint)(bytes[startIdx] |
                      (bytes[startIdx + 1] << 8) |
                      (bytes[startIdx + 2] << 16));
-      }   
-       
+      }
+
       /// <summary>
       /// Reads unsigned 32-bit int from stream
       /// </summary>
       public static UInt32 ReadUInt32(Stream stream)
       {
         return (UInt32)ReadInt32(stream);
-      } 
-         
+      }
+
       /// <summary>
       /// Reads unsigned 32-bit int from byte array
       /// </summary>
       public static UInt32 ReadUInt32(byte[] bytes, int startIdx = 0)
       {
         return (UInt32)ReadInt32(bytes, startIdx);
-      } 
+      }
 
       /// <summary>
       /// Reads 64-bit int from stream
@@ -342,7 +358,7 @@ namespace NFX.Serialization.BSON
                ((long)buf[6] << 48) |
                ((long)buf[7] << 56);
       }
-    
+
       /// <summary>
       /// Reads 64-bit int from byte array
       /// </summary>
@@ -357,15 +373,15 @@ namespace NFX.Serialization.BSON
                ((long)bytes[startIdx + 6] << 48) |
                ((long)bytes[startIdx + 7] << 56);
       }
-        
+
       /// <summary>
       /// Reads unsigned 64-bit int from stream
       /// </summary>
       public static UInt64 ReadUInt64(Stream stream)
       {
         return (UInt64)ReadInt64(stream);
-      }  
-    
+      }
+
       /// <summary>
       /// Reads unsigned 64-bit int from byte array
       /// </summary>
@@ -373,7 +389,7 @@ namespace NFX.Serialization.BSON
       {
         return (UInt64)ReadInt64(bytes, startIdx);
       }
-      
+
       public static byte ReadByte(Stream stream)
       {
         return (byte)stream.ReadByte();
@@ -392,7 +408,7 @@ namespace NFX.Serialization.BSON
 
         var buffer = new byte[length - 1];
         stream.Read(buffer, 0, length - 1);
-      
+
         var terminator = BinUtils.ReadByte(stream);
         if (terminator != TERMINATOR)
           throw new BSONException(StringConsts.BSON_UNEXPECTED_END_OF_STRING_ERROR);
@@ -407,7 +423,7 @@ namespace NFX.Serialization.BSON
       {
         int size = 1;
         long position = stream.Position;
-        var buffer = readFromStream(stream, 1, "ReadCString"); 
+        var buffer = readFromStream(stream, 1, "ReadCString");
         do
         {
           stream.Read(buffer, 0, 1);
@@ -426,14 +442,14 @@ namespace NFX.Serialization.BSON
       public unsafe static double ReadDouble(Stream stream)
       {
         var buffer = readFromStream(stream, 8, "ReadDouble");
-        uint seg1 = (uint)((int)buffer[0] | 
-                           (int)buffer[1] << 8 | 
-                           (int)buffer[2] << 16 | 
+        uint seg1 = (uint)((int)buffer[0] |
+                           (int)buffer[1] << 8 |
+                           (int)buffer[2] << 16 |
                            (int)buffer[3] << 24);
-                                    
-	      uint seg2 = (uint)((int)buffer[4] | 
+
+	      uint seg2 = (uint)((int)buffer[4] |
                            (int)buffer[5] << 8 |
-                           (int)buffer[6] << 16 | 
+                           (int)buffer[6] << 16 |
                            (int)buffer[7] << 24);
 
 	      ulong core = (ulong)seg2 << 32 | (ulong)seg1;
@@ -452,7 +468,7 @@ namespace NFX.Serialization.BSON
            value = value / 10;
            d++;
          } while (value != 0);
-         
+
          return d;
       }
 
@@ -477,7 +493,7 @@ namespace NFX.Serialization.BSON
       private static byte[] readFromStream(Stream stream, int count, string op)
       {
         var buffer = ensureBuffer(count);
-      
+
         var total = 0;
         do
         {
@@ -486,7 +502,7 @@ namespace NFX.Serialization.BSON
             throw new BSONException(StringConsts.BSON_READ_PREMATURE_EOF_ERROR.Args(op));
           total += got;
         } while (total < count);
-      
+
         return buffer;
       }
 

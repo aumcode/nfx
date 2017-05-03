@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,23 +24,19 @@ namespace NFX.Web.Pay.Mock
 {
   public class MockSession: PaySession
   {
-    public MockSession(PaySystem paySystem, MockConnectionParameters cParams)
-      : base(paySystem, cParams) 
-    {
-      //AccountActualDatas = cParams.AccountActualDatas;
-    }
+    public MockSession(PaySystem paySystem, MockConnectionParameters cParams, IPaySessionContext context = null)
+      : base(paySystem, cParams, context) {}
 
     public string Email
     {
       get
       {
-        if (m_User == null || m_User == NFX.Security.User.Fake) return string.Empty;
-        var cred = m_User.Credentials as MockCredentials;
+        if (!IsValid) return string.Empty;
+        var cred = User.Credentials as MockCredentials;
         if (cred == null) return string.Empty;
         return cred.Email;
       }
     }
 
-    //public readonly IEnumerable<MockActualAccountData> AccountActualDatas;
   }
 }

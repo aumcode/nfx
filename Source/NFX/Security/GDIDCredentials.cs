@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,29 +36,27 @@ namespace NFX.Security
   {
      public GDIDCredentials(GDID gdid)
      {
-       m_GDID = gdid; 
+       m_GDID = gdid;
      }
-     
-     
+
+
      private GDID m_GDID;
-     
+
 
      public GDID GDID
      {
        get { return m_GDID; }
      }
 
-     public override void Forget() 
+     public override void Forget()
      {
      }
-
-
 
      public override string ToString()
      {
        return "{0}({1})".Args(GetType().Name, GDID);
      }
-  
-  
+
+
   }
 }

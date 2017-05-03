@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ using NFX.Serialization.Slim;
 namespace NFX.ApplicationModel.Volatile
 {
   /// <summary>
-  /// Defines a provider that does not do anything - does not store object anywhere but memory 
+  /// Defines a provider that does not do anything - does not store object anywhere but memory
   /// </summary>
   public class NOPObjectStoreProvider : ObjectStoreProvider
   {
@@ -67,12 +67,12 @@ namespace NFX.ApplicationModel.Volatile
 
         public override void Write(ObjectStoreEntry entry)
         {
-          
+
         }
 
         public override void Delete(ObjectStoreEntry entry)
         {
-         
+
         }
 
 

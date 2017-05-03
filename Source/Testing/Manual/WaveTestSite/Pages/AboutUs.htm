@@ -35,6 +35,8 @@
 
 @[}]
 
+        @@[ throw new ArgumentException("KAKAKAKAKA!");]
+
 
  <a href="welcome">Welcome Page</a> |
  <a href="subtopic/latest">SubTopic::Latest Page</a>
@@ -53,6 +55,20 @@ File:      <input type="file" name="Picture"> <br>
 </form> 
 <hr>
 <form id="frmMultipart2" action="/mvc/tester/multipartrow?map=true" method="post" enctype="multipart/form-data">
+Customer:     <input type="text" name="CustomerNumber"><br>
+File:      <input type="file" name="Picture"> <br>
+      <input type="submit" value="Submit">
+</form> 
+
+<hr>
+<form id="frmMultipart3" action="/mvc/tester/multipartbytearray" method="post" enctype="multipart/form-data">
+Customer:     <input type="text" name="CustomerNumber"><br>
+File:      <input type="file" name="Picture"> <br>
+      <input type="submit" value="Submit">
+</form> 
+
+<hr>
+<form id="Form1" action="/mvc/tester/multipartstream" method="post" enctype="multipart/form-data">
 Customer:     <input type="text" name="CustomerNumber"><br>
 File:      <input type="file" name="Picture"> <br>
       <input type="submit" value="Submit">

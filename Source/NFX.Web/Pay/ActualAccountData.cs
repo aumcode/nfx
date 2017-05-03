@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,12 +31,20 @@ namespace NFX.Web.Pay
 
   /// <summary>
   /// Represents actual data for supplied account object.
-  /// Data represented by this interface is ALWAYS TRANSITIVE in memory as 
+  /// Data represented by this interface is ALWAYS TRANSITIVE in memory as
   /// some fields are either never stored permanently (i.e. CVC) or ciphered in the store (account number)
   /// </summary>
   public interface IActualAccountData
   {
     Account Account { get; }
+
+    string Identity { get; }
+
+    bool IsNew { get; }
+    object IdentityID { get; }
+
+    bool IsWebTerminal { get; }
+    object AccountID { get; }
 
     string FirstName { get; }
     string MiddleName { get; }
@@ -44,25 +52,29 @@ namespace NFX.Web.Pay
 
     string AccountTitle { get; }
 
-    AccountType AccountType { get; set; }
+    AccountType AccountType { get; }
 
     bool HadSuccessfullTransactions { get; }
+
     string IssuerID { get; }
     string IssuerName { get; }
     string IssuerPhone { get; }
     string IssuerEMail { get; }
-    string AccountNumber { get; }
+    string IssuerUri { get; }
+
     string RoutingNumber { get; }
-    int CardExpirationYear { get; }
-    int CardExpirationMonth { get; }
+
+    string CardMaskedName { get; }
+    string CardHolder { get; }
+    DateTime? CardExpirationDate { get; }
     string CardVC { get; }
 
     bool IsCard { get; }
 
-    string PrimaryEMail { get; }
+    string Phone { get; }
+    string EMail { get; }
 
     IAddress BillingAddress { get; }
-
     IAddress ShippingAddress { get; }
   }
 
@@ -77,6 +89,8 @@ namespace NFX.Web.Pay
     string Region { get; }
     string PostalCode { get; }
     string Country { get; }
+
+    string Company { get; }
 
     string Phone { get; }
     string EMail { get; }
@@ -99,6 +113,8 @@ namespace NFX.Web.Pay
 
     public string Country { get; set; }
 
+    public string Company { get; set; }
+
     public string Phone { get; set; }
 
     public string EMail { get; set; }
@@ -107,11 +123,16 @@ namespace NFX.Web.Pay
     {
       var other = obj as IAddress;
       if (other == null) return false;
-      
+
       return PostalCode.EqualsIgnoreCase(other.PostalCode)
-        && Phone.EqualsIgnoreCase(other.Phone) && EMail.EqualsIgnoreCase(other.EMail) 
-        && Country.EqualsIgnoreCase(other.Country) && City.EqualsIgnoreCase(other.City) && Region.EqualsIgnoreCase(other.Region) 
-        && Address1.EqualsIgnoreCase(other.Address1) && Address2.EqualsIgnoreCase(other.Address2);
+        && Phone.EqualsIgnoreCase(other.Phone)
+        && EMail.EqualsIgnoreCase(other.EMail)
+        && Company.EqualsIgnoreCase(other.Company)
+        && Country.EqualsIgnoreCase(other.Country)
+        && City.EqualsIgnoreCase(other.City)
+        && Region.EqualsIgnoreCase(other.Region)
+        && Address1.EqualsIgnoreCase(other.Address1)
+        && Address2.EqualsIgnoreCase(other.Address2);
     }
 
     public override int GetHashCode()
@@ -127,49 +148,45 @@ namespace NFX.Web.Pay
 
   public class ActualAccountData : IActualAccountData
   {
-    private readonly Lazy<Address> m_BillingAddress = new Lazy<Address>();
+    public ActualAccountData(Account account) { m_Account = account; }
 
-    private readonly Lazy<Address> m_ShippingAddress = new Lazy<Address>();
+    private readonly Account m_Account;
 
-    public Account Account { get; set; }
+    public Account Account { get { return m_Account; } }
+
+    public string Identity { get; set; }
+    public bool IsNew { get; set; }
+    public object IdentityID { get; set; }
+    public bool IsWebTerminal { get; set; }
+    public object AccountID { get; set; }
 
     public string FirstName { get; set; }
     public string MiddleName { get; set; }
     public string LastName { get; set; }
+    public string AccountTitle { get { return string.Join(" ", new string[] { FirstName, MiddleName, LastName }.Where(s => s.IsNotNullOrWhiteSpace())); } }
 
-    public string AccountTitle 
-    { 
-      get 
-      {
-        return string.Join(" ", new string[] { FirstName, MiddleName, LastName }.Where(s => s.IsNotNullOrWhiteSpace()));
-      }
-    }
+    public string Phone { get; set; }
+    public string EMail { get; set; }
+
+    public IAddress BillingAddress { get; set; }
+    public IAddress ShippingAddress { get; set; }
 
     public AccountType AccountType { get; set; }
-    
+
     public bool HadSuccessfullTransactions { get; set; }
+
     public string IssuerID { get; set; }
     public string IssuerName { get; set; }
     public string IssuerPhone { get; set; }
     public string IssuerEMail { get; set; }
-    public string AccountNumber { get; set; }
+    public string IssuerUri { get; set; }
+
     public string RoutingNumber { get; set; }
-    public int CardExpirationYear { get; set; }
-    public int CardExpirationMonth { get; set; }
+
+    public string CardMaskedName { get; set; }
+    public string CardHolder { get; set; }
+    public DateTime? CardExpirationDate { get; set; }
     public string CardVC { get; set; }
-
     public bool IsCard { get { return RoutingNumber.IsNullOrWhiteSpace(); } }
-    
-    public string PrimaryEMail { get; set; }
-
-    public IAddress BillingAddress 
-    { 
-      get { return m_BillingAddress.Value; }
-    }
-
-    public IAddress ShippingAddress
-    { 
-      get { return m_ShippingAddress.Value; }
-    }
   }
 }

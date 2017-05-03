@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace NFX.Serialization.JSON
     {
     }
 
-    
+
     /// <summary>
     /// Represents a data transfer object (DTO) JSON map, that associates keys with values
     /// </summary>
@@ -41,39 +41,61 @@ namespace NFX.Serialization.JSON
         /// <summary>
         /// Turns URL encoded content into JSONDataMap
         /// </summary>
-        public static JSONDataMap FromURLEncodedStream(Stream stream, Encoding encoding = null)
+        public static JSONDataMap FromURLEncodedStream(Stream stream, Encoding encoding = null, bool caseSensitive = false)
         {
           using(var reader = encoding==null ? new StreamReader(stream) : new StreamReader(stream, encoding))
           {
-            return FromURLEncodedString(reader.ReadToEnd());
+            return FromURLEncodedString(reader.ReadToEnd(), caseSensitive);
           }
         }
 
         /// <summary>
         /// Turns URL encoded content into JSONDataMap
         /// </summary>
-        public static JSONDataMap FromURLEncodedString(string content)
+        public static JSONDataMap FromURLEncodedString(string content, bool caseSensitive = false)
         {
-          var result = new JSONDataMap(false);
+          var result = new JSONDataMap(caseSensitive);
 
           if (content.IsNullOrWhiteSpace()) return result;
 
-          var segs = content.Split('&');
+          int queryLen = content.Length;
+          int idx = 0;
 
-          foreach(var seg in segs)
+          while (idx < queryLen)
           {
-            if (seg.IsNullOrWhiteSpace()) continue;
+            int ampIdx = content.IndexOf('&', idx);
+            int kvLen = (ampIdx != -1) ? ampIdx - idx : queryLen - idx;
 
-            var ieq = seg.IndexOf('=');
-            if (ieq<=0) continue;
-            var name = seg.Substring(0,ieq);
-            var val = ieq<seg.Length-1 ? seg.Substring(ieq+1) : string.Empty;
-              
-            result[Uri.UnescapeDataString(name.Replace('+',' '))] = Uri.UnescapeDataString(val.Replace('+',' '));                
+            if (kvLen < 1)
+            {
+              idx = ampIdx + 1;
+              continue;
+            }
+
+            int eqIdx = content.IndexOf('=', idx, kvLen);
+            if (eqIdx == -1)
+            {
+              var key = Uri.UnescapeDataString(content.Substring(idx, kvLen).Replace('+',' '));
+              result.Add(key, null);
+            }
+            else
+            {
+              int keyLen = eqIdx - idx;
+              if (keyLen > 0)
+              {
+                var key = Uri.UnescapeDataString(content.Substring(idx, keyLen).Replace('+',' '));
+                var val = Uri.UnescapeDataString(content.Substring(eqIdx + 1, kvLen - keyLen - 1).Replace('+',' '));
+
+                result.Add(key, val);
+              }
+            }
+
+            idx += kvLen + 1;
           }
+
           return result;
         }
-        
+
 
         public JSONDataMap(): base(StringComparer.InvariantCulture)
         {
@@ -90,12 +112,12 @@ namespace NFX.Serialization.JSON
 
         }
 
-        
+
         public readonly bool CaseSensitive;
 
         public new object this[string key]
         {
-          get 
+          get
           {
             object result;
             if (base.TryGetValue(key, out result)) return result;
@@ -115,7 +137,7 @@ namespace NFX.Serialization.JSON
         public JSONDataMap Append(JSONDataMap other, bool deep = false)
         {
           if (other==null) return this;
-        
+
           foreach(var kvp in other)
           {
             var here = this[kvp.Key];
@@ -126,6 +148,11 @@ namespace NFX.Serialization.JSON
           }
 
           return this;
+        }
+
+        public override string ToString()
+        {
+          return this.ToJSON(JSONWritingOptions.Compact);
         }
 
         /// <summary>
@@ -149,12 +176,12 @@ namespace NFX.Serialization.JSON
            if (cmap!=null)
             buildNode( node.AddChildNode(kvp.Key), cmap);
            else
-            node.AddAttributeNode(kvp.Key, kvp.Value);   
+            node.AddAttributeNode(kvp.Key, kvp.Value);
           }
         }
 
     }
-    
+
     /// <summary>
     /// Represents a data transfer object (DTO) JSON array, that holds a list of values
     /// </summary>
@@ -163,6 +190,11 @@ namespace NFX.Serialization.JSON
       public JSONDataArray() {}
       public JSONDataArray(IEnumerable<object> other) : base(other) {}
       public JSONDataArray(int capacity) : base(capacity) {}
+
+      public override string ToString()
+      {
+        return this.ToJSON(JSONWritingOptions.Compact);
+      }
     }
 
 }

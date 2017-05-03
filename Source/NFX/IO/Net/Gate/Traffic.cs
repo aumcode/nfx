@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ using System.Net;
 
 namespace NFX.IO.Net.Gate
 {
-  
+
   public enum TrafficDirection { Incoming=0, Outgoing}
-  
+
   /// <summary>
   /// Represents a traffic that passes through network gate
   /// </summary>
@@ -38,25 +38,35 @@ namespace NFX.IO.Net.Gate
     string RequestURL {get;}
     IDictionary<string, object> Items {get;}
   }
-  
+
 
   /// <summary>
   /// Represents HTTP traffic that arrives via HttpListener
   /// </summary>
   public struct HTTPIncomingTraffic : ITraffic
   {
-    public HTTPIncomingTraffic(HttpListenerRequest request)
+    public HTTPIncomingTraffic(HttpListenerRequest request, string realRemoteAddressHdr = null)
     {
       m_Request = request;
-      m_Items = null; 
+      m_Items = null;
+      m_RealRemoteAddressHdr = realRemoteAddressHdr;
     }
 
     private HttpListenerRequest m_Request;
     private Dictionary<string,object> m_Items;
+    private string m_RealRemoteAddressHdr;
 
     public TrafficDirection Direction { get{ return TrafficDirection.Incoming;}}
 
-    public string FromAddress{ get{ return m_Request.RemoteEndPoint.Address.ToString();} }
+    public string FromAddress
+    {
+      get
+      {
+         return m_RealRemoteAddressHdr.IsNullOrWhiteSpace() ?
+                      m_Request.RemoteEndPoint.Address.ToString() :
+                      m_Request.Headers[m_RealRemoteAddressHdr] ?? m_Request.RemoteEndPoint.Address.ToString();
+      }
+    }
 
     public string ToAddress{ get{ return m_Request.LocalEndPoint.Address.ToString();} }
 
@@ -69,14 +79,14 @@ namespace NFX.IO.Net.Gate
     public IDictionary<string, object> Items
     {
       get
-      { 
+      {
         if (m_Items==null)
         {
           m_Items = new Dictionary<string,object>();
           foreach(var key in m_Request.QueryString.AllKeys.Where(k=>k.IsNotNullOrWhiteSpace()))
             m_Items[key] = m_Request.QueryString.Get(key);
         }
-       
+
         return m_Items;
       }
     }

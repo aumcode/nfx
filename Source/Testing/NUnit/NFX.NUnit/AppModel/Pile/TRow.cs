@@ -1,4 +1,20 @@
-﻿using System;
+/*<FILE_LICENSE>
+* NFX (.NET Framework Extension) Unistack Library
+* Copyright 2003-2017 ITAdapter Corp. Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+</FILE_LICENSE>*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +24,7 @@ using NFX;
 using NFX.Financial;
 using NFX.DataAccess.CRUD;
 using NFX.DataAccess.Distributed;
+using NFX.Serialization.JSON;
 
 namespace NFX.NUnit.AppModel.Pile
 {
@@ -17,6 +34,8 @@ namespace NFX.NUnit.AppModel.Pile
   {
     [Field(backendName: "_id")] public GDID ID { get; set; }
 
+    [Field(backendName: "g_c")] public PersonRow Customer { get; set; }
+
     [Field(backendName: "fn")] public string FileName { get; set; }
     [Field(backendName: "dt")] public DateTime Date { get; set; }
     [Field(backendName: "of")] public ulong StartOffset { get; set; }
@@ -25,42 +44,49 @@ namespace NFX.NUnit.AppModel.Pile
     [Field(backendName: "a1")] public string Address1 { get; set; }
     [Field(backendName: "a2")] public string Address2 { get; set; }
 
-    [Field(backendName: "chs")] public Charge[] Charges { get; set; }
+    [Field(backendName: "chs")] public ChargeRow[] Charges { get; set; }
 
     public static CheckoutRow MakeFake(GDID gdid)
     {
       var ch = new CheckoutRow()
       {
         ID = gdid,
+        Customer = PersonRow.MakeFake(gdid),
         FileName = "myface_" + gdid.ID.ToString(),
         Date = DateTime.Now,
         StartOffset = gdid.ID * 20,
         G_Block = gdid,
-        
+
         Address1 = NFX.Parsing.NaturalTextGenerator.GenerateAddressLine(),
         Address2 = (gdid.ID % 7) == 0 ? NFX.Parsing.NaturalTextGenerator.GenerateAddressLine() : null
       };
 
       var chCnt = (int)(gdid.ID % 10);
-      ch.Charges = new Charge[chCnt];
+      ch.Charges = new ChargeRow[chCnt];
 
       for (int i = 0; i < chCnt; i++)
-        ch.Charges[i] = Charge.MakeFake(gdid);
+        ch.Charges[i] = ChargeRow.MakeFake(gdid);
 
       return ch;
     }
+
+    public override bool Equals(Row other)
+    {
+      if (other==null) return false;
+      return this.ToJSON() == other.ToJSON();
+    }
   }
 
-  public class Charge: TypedRow
+  public class ChargeRow: TypedRow
   {
     [Field(backendName: "amt")] public Amount Amount { get; set; }
     [Field(backendName: "qty")] public int Qty { get; set; }
     [Field(backendName: "g_p")] public GDID G_Product  { get; set; }
     [Field(backendName: "n")] public string Notes { get; set; }
 
-    public static Charge MakeFake(GDID gdid)
+    public static ChargeRow MakeFake(GDID gdid)
     {
-      var c = new Charge() 
+      var c = new ChargeRow()
       {
         Amount = new Amount("usd", gdid.ID % 1897),
         Qty = (int)(gdid.ID % 29),
@@ -70,49 +96,6 @@ namespace NFX.NUnit.AppModel.Pile
 
       return c;
     }
-  }
-
-  public class PurchaseRow: TypedRow
-  {
-    [Field(backendName: "_id")] public GDID ID { get; set; }
-
-    [Field(backendName: "fn")] public string FileName { get; set; }
-    [Field(backendName: "dt")] public DateTime Date { get; set; }
-    [Field(backendName: "of")] public ulong StartOffset { get; set; }
-    [Field(backendName: "g_b")] public GDID G_Block  { get; set; }
-
-    [Field(backendName: "cust")] public PersonRow Customer { get; set; }
-    [Field(backendName: "amt")] public Amount Amount { get; set; }
-    [Field(backendName: "sp")] public PersonRow SalesPerson { get; set; }
-    [Field(backendName: "g_prod")] public GDID G_Product { get; set; }
-
-    public static PurchaseRow MakeFake(GDID gdid)
-    {
-      var purch = new PurchaseRow()
-      {
-        ID = gdid,
-        Customer = PersonRow.MakeFake(gdid),
-        Date = DateTime.Now,
-        Amount = new Amount("usd", gdid.ID % 1897),
-        SalesPerson = (gdid.ID % 2) == 0 ? null : PersonRow.MakeFake(gdid),
-        G_Product = new GDID(0, gdid.ID + 157)
-      };
-
-      return purch;
-    }
-
-    //public static PurchaseRow MakeFake(GDID gdid)
-    //{
-    //  var purch = new PurchaseRow()
-    //  {
-    //    ID = gdid,
-    //    FileName = "myface_" + gdid.ID.ToString(),
-    //    StartOffset = gdid.ID * 20,
-    //    G_Block = gdid
-    //  };
-
-    //  return purch;
-    //}
   }
 
   public class PersonRow: TypedRow

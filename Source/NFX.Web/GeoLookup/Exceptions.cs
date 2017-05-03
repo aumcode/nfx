@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,42 +14,20 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 </FILE_LICENSE>*/
-
-
 using System;
 using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace NFX.Web.GeoLookup
 {
-
   /// <summary>
   /// Base exception class thrown by geo-related logic
   /// </summary>
   [Serializable]
   public class GeoException : WebException
   {
-    public GeoException()
-    {
-    }
-
-    public GeoException(string message)
-      : base(message)
-    {
-    }
-
-    public GeoException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected GeoException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
-
+    public GeoException() { }
+    public GeoException(string message) : base(message) { }
+    public GeoException(string message, Exception inner) : base(message, inner) { }
+    protected GeoException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
-
 }

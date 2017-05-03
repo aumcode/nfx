@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,13 +30,13 @@ namespace NFX.DataAccess.Distributed
     {
         /// <summary>
         /// Provides the information about this version of data that this isntance represents.
-        /// Usually this object contains the name of the user who made a change, server/cluster node ID and/or machine name  
+        /// Usually this object contains the name of the user who made a change, server/cluster node ID and/or machine name
         /// </summary>
         IReplicationVersionInfo ReplicationVersionInfo { get; }
 
 
         /// <summary>
-        /// Returns the relative priority of replication, where 0=highest priority 
+        /// Returns the relative priority of replication, where 0=highest priority
         /// </summary>
         int ReplicationPriority { get;}
     }

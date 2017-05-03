@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using NFX.Environment;
 
@@ -31,6 +29,7 @@ namespace NFX.Wave.Filters
   {
     #region CONSTS
       public const string VAR_REDIRECT_URL = "redirect-url";
+      public const string VAR_REDIRECT_TARGET = "redirect-target";
 
     #endregion
 
@@ -54,40 +53,51 @@ namespace NFX.Wave.Filters
       /// Returns matches used by the filter to determine whether redirect should be issued
       /// </summary>
       public OrderedRegistry<WorkMatch> RedirectMatches { get{ return m_RedirectMatches;}}
-      
+
     #endregion
 
     #region Protected
 
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         foreach(var match in m_RedirectMatches.OrderedValues)
         {
           var matched = match.Make(work);
           if (matched==null) continue;
-          
+
           var url = matched[VAR_REDIRECT_URL].AsString();
           if (url.IsNotNullOrWhiteSpace())
           {
-             work.Response.RedirectAndAbort(url);
-             return;
+            var target = matched[VAR_REDIRECT_TARGET].AsString();
+            if (target.IsNotNullOrWhiteSpace())
+            {
+              var partsA = url.Split('#');
+              var parts = partsA[0].Split('?');
+              var query = parts.Length > 1 ? parts[0] + "&" : string.Empty;
+              url = "{0}?{1}{2}={3}{4}".Args(parts[0], query,
+                target, Uri.EscapeDataString(work.Request.Url.PathAndQuery),
+                partsA.Length > 1 ? "#" + partsA[1] : string.Empty);
+            }
+
+            work.Response.RedirectAndAbort(url);
+            return;
           }
-        } 
-          
+        }
+
         this.InvokeNextWorker(work, filters, thisFilterIndex);
       }
 
-    #endregion 
-    
+    #endregion
+
     #region .pvt
      private void configureMatches(IConfigSectionNode confNode)
       {
         foreach(var cn in confNode.Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_RedirectMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
-            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName))); 
+            throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR.Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value, "{0}".Args(GetType().FullName)));
       }
-    
-    #endregion  
+
+    #endregion
   }
 
 }

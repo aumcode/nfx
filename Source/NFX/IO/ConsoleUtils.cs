@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
 using NFX.Parsing;
-using System.Net;
+using NFX.Security;
+
 
 namespace NFX.IO
 {
@@ -53,7 +55,36 @@ namespace NFX.IO
           Console.Write(substitute);
 
       }
+    }
 
+    /// <summary>
+    /// Reads password from console displaying substitute characters instead of real ones
+    /// into a sealed SecureBuffer
+    /// </summary>
+    public static SecureBuffer ReadPasswordToSecureBuffer(char substitute)
+    {
+      var result = new SecureBuffer();
+
+      while (true)
+      {
+        char c = Console.ReadKey(true).KeyChar;
+        if (Char.IsControl(c))
+        {
+          result.Seal();
+          return result;
+        }
+
+        var buf = Encoding.UTF8.GetBytes(new char[]{ c });
+
+        for(var i=0; i< buf.Length; i++)
+          result.Push(buf[i]);
+
+        Array.Clear(buf, 0, buf.Length);
+
+        if (substitute != (char)0)
+          Console.Write(substitute);
+
+      }
     }
 
 
@@ -70,7 +101,7 @@ namespace NFX.IO
 
 
     public static string WriteMarkupContentAsHTML(
-                                                string content, 
+                                                string content,
                                                 Encoding encoding = null,  // UTF8 if null
                                                 char open = '<', char close = '>',
                                                 string mkpPRE = "pre",
@@ -87,7 +118,7 @@ namespace NFX.IO
     }
 
     public static void WriteMarkupContentAsHTML(System.IO.Stream output,
-                                                string content, 
+                                                string content,
                                                 Encoding encoding = null,  // UTF8 if null
                                                 char open = '<', char close = '>',
                                                 string mkpPRE = "pre",
@@ -104,7 +135,7 @@ namespace NFX.IO
 
 
     public static void WriteMarkupContentAsHTML(System.IO.TextWriter output,
-                                                string content, 
+                                                string content,
                                                 Encoding encoding = null,  // UTF8 if null
                                                 char open = '<', char close = '>',
                                                 string mkpPRE = "pre",
@@ -443,8 +474,8 @@ namespace NFX.IO
     {
        var f = Console.ForegroundColor;
        var b = Console.BackgroundColor;
-       
-       
+
+
         Console.ForegroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.Red;
         if (ln==0)
@@ -458,15 +489,15 @@ namespace NFX.IO
       Console.ForegroundColor = f;
       Console.BackgroundColor = b;
     }
-    
+
     /// <summary>
     /// Shows message with colored warning header
     /// </summary>
     public static void Warning(string msg, int ln = 0)
     {
        var f = Console.ForegroundColor;
-       var b = Console.BackgroundColor; 
-       
+       var b = Console.BackgroundColor;
+
         Console.ForegroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.Yellow;
         if (ln==0)
@@ -488,7 +519,7 @@ namespace NFX.IO
     {
        var f = Console.ForegroundColor;
        var b = Console.BackgroundColor;
-        
+
         Console.ForegroundColor = ConsoleColor.Black;
         Console.BackgroundColor = ConsoleColor.Green;
         if (ln==0)

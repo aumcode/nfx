@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,32 +26,15 @@ using System.Collections.Generic;
 
 namespace NFX.IO.Net.Gate
 {
-
   /// <summary>
   /// Throw by NetGate
   /// </summary>
   [Serializable]
   public class NetGateException : NFXException
   {
-    public NetGateException()
-    {
-    }
-
-    public NetGateException(string message)
-      : base(message)
-    {
-    }
-
-    public NetGateException(string message, Exception inner)
-      : base(message, inner)
-    {
-    }
-
-    protected NetGateException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-
-    }
+    public NetGateException() { }
+    public NetGateException(string message) : base(message) { }
+    public NetGateException(string message, Exception inner) : base(message, inner) { }
+    protected NetGateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
   }
-
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@ using System.Text;
 
 namespace NFX.CodeAnalysis
 {
-    
+
     /// <summary>
-    /// A context that can hold analysis result as TObject. 
+    /// A context that can hold analysis result as TObject.
     /// This class is useful for cases like dynamic language parsers (i.e. JSON)
     /// </summary>
     public abstract class ObjectResultAnalysisContext<TObject> : CommonCodeProcessor, IAnalysisContext where TObject : class
     {
         protected ObjectResultAnalysisContext(IAnalysisContext context, MessageList messages = null, bool throwErrors = false):
-                                               base(context, messages, throwErrors) 
+                                               base(context, messages, throwErrors)
         {
 
         }

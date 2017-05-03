@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
     #region .ctor
 
       public GoogleDriveFileSystem(string name, IConfigSectionNode node = null)
-        : base(name, node) 
+        : base(name, node)
       {
 
       }
@@ -58,8 +58,8 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
       public GoogleDriveSession StartSession(GoogleDriveParameters cParams = null)
       {
         var gdParams = cParams ?? (DefaultSessionConnectParams as GoogleDriveParameters);
-          
-        if (gdParams == null) 
+
+        if (gdParams == null)
         {
           throw new NFXException(NFX.Web.StringConsts.FS_SESSION_BAD_PARAMS_ERROR + this.GetType() + ".StartSession");
         }
@@ -91,17 +91,17 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
 
       protected internal override FileSystemSessionItem DoNavigate(FileSystemSession session, string path)
       {
-        if (path.IsNullOrEmpty()) 
-        { 
+        if (path.IsNullOrEmpty())
+        {
           return null;
         }
 
         var gds = (GoogleDriveSession)session;
-          
+
         var client = gds.Client;
 
         var handle = client.GetHandle(path);
-          
+
         if (handle == null)
         {
           return null;
@@ -214,7 +214,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
       }
 
       protected internal override DateTime? DoGetCreationTimestamp(FileSystemSessionItem item)
-      {          
+      {
         return GetHandle(item).CreatedDate;
       }
 
@@ -237,7 +237,7 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
       {
         var session = GetSession(item);
         var handle = GetHandle(item);
-          
+
         session.Client.SetModifiedDate(handle.Id, timestamp);
 
         handle.ModifiedDate = timestamp;

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,13 +23,56 @@ using System.IO;
 using NUnit.Framework;
 
 using NFX.IO;
+using NFX.Serialization.JSON;
+using NFX.Collections;
 
 namespace NFX.NUnit.IO
 {
-    [TestFixture]  
+    [TestFixture]
     public class SlimFormatReadWrite
     {
-        
+
+
+        [TestCase(10)]
+        [TestCase(20)]
+        [TestCase(250)]
+        [TestCase(512)]
+        [TestCase(1024)]
+        [TestCase(16000)]
+        [TestCase(64000)]
+        [TestCase(95000)]
+        [TestCase(98000)]
+        [TestCase(128000)]
+        [TestCase(512000)]
+        public void StringOfWideChars(int cnt)
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+            var builder = new StringBuilder();
+            for(var i=0; i<cnt; i++)
+              builder.Append( i%3==0 ?  '久' : i%7==0 ? 'ﺉ' :  i%16==0 ? 'Ж' : '1' );
+            var original = builder.ToString();
+
+            Console.WriteLine(original.TakeFirstChars(125));
+
+            w.Write( original );
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+
+            var got = r.ReadString();
+
+            Aver.AreEqual(original, got);
+          }
+        }
+
+
         [TestCase]
         public void PositiveInt()
         {
@@ -40,7 +83,7 @@ namespace NFX.NUnit.IO
 
             r.BindStream(ms);
             w.BindStream(ms);
-             
+
             w.Write(0);  //1 byte
             w.Write(127); //2 byte
             w.Write(128); //2 bytes
@@ -53,7 +96,7 @@ namespace NFX.NUnit.IO
              Assert.AreEqual(128, r.ReadInt());
              Assert.AreEqual(int.MaxValue, r.ReadInt());
 
-             Assert.AreEqual(10, ms.Length);  
+             Assert.AreEqual(10, ms.Length);
           }
         }
 
@@ -64,7 +107,7 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
             r.BindStream(ms);
             w.BindStream(ms);
 
@@ -80,7 +123,7 @@ namespace NFX.NUnit.IO
              Assert.AreEqual(-128, r.ReadInt());
              Assert.AreEqual(int.MinValue, r.ReadInt());
 
-             Assert.AreEqual(10, ms.Length);  
+             Assert.AreEqual(10, ms.Length);
           }
         }
 
@@ -91,7 +134,7 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
              r.BindStream(ms);
             w.BindStream(ms);
 
@@ -107,7 +150,7 @@ namespace NFX.NUnit.IO
              Assert.AreEqual(false, r.ReadNullableInt().HasValue);
              Assert.AreEqual(255, r.ReadNullableInt().Value);
 
-             Assert.AreEqual(9, ms.Length);  
+             Assert.AreEqual(9, ms.Length);
           }
         }
 
@@ -121,7 +164,7 @@ namespace NFX.NUnit.IO
                                       {
                                         var r = SlimFormat.Instance.MakeReadingStreamer();
                                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                                           r.BindStream(ms);
                                         w.BindStream(ms);
 
@@ -137,7 +180,7 @@ namespace NFX.NUnit.IO
                                          Assert.AreEqual(128L, r.ReadLong());
                                          Assert.AreEqual(long.MaxValue, r.ReadLong());
 
-                                         Assert.AreEqual(15, ms.Length);  
+                                         Assert.AreEqual(15, ms.Length);
                                       }
                                     }
 
@@ -151,7 +194,7 @@ namespace NFX.NUnit.IO
 
                                          r.BindStream(ms);
                                         w.BindStream(ms);
-             
+
                                         w.Write(0L);  //1 byte
                                         w.Write(-127L); //2 byte
                                         w.Write(-128L); //2 bytes
@@ -164,7 +207,7 @@ namespace NFX.NUnit.IO
                                          Assert.AreEqual(-128L, r.ReadLong());
                                          Assert.AreEqual(long.MinValue, r.ReadLong());
 
-                                         Assert.AreEqual(15, ms.Length);  
+                                         Assert.AreEqual(15, ms.Length);
                                       }
                                     }
 
@@ -175,7 +218,7 @@ namespace NFX.NUnit.IO
                                       {
                                         var r = SlimFormat.Instance.MakeReadingStreamer();
                                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                                           r.BindStream(ms);
                                         w.BindStream(ms);
 
@@ -191,7 +234,7 @@ namespace NFX.NUnit.IO
                                          Assert.AreEqual(false, r.ReadNullableLong().HasValue);
                                          Assert.AreEqual(long.MaxValue, r.ReadNullableLong().Value);
 
-                                         Assert.AreEqual(17, ms.Length);  
+                                         Assert.AreEqual(17, ms.Length);
                                       }
                                     }
 
@@ -203,7 +246,7 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -219,7 +262,7 @@ namespace NFX.NUnit.IO
              Assert.AreEqual(128, r.ReadUInt());
              Assert.AreEqual(uint.MaxValue, r.ReadUInt());
 
-             Assert.AreEqual(9, ms.Length);  
+             Assert.AreEqual(9, ms.Length);
           }
         }
 
@@ -230,7 +273,7 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -246,11 +289,11 @@ namespace NFX.NUnit.IO
              Assert.AreEqual(false, r.ReadNullableUInt().HasValue);
              Assert.AreEqual(255, r.ReadNullableUInt().Value);
 
-             Assert.AreEqual(8, ms.Length);  
+             Assert.AreEqual(8, ms.Length);
           }
         }
 
-           
+
                         [TestCase]
                         public void ULong()
                         {
@@ -258,7 +301,7 @@ namespace NFX.NUnit.IO
                           {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                               r.BindStream(ms);
                             w.BindStream(ms);
 
@@ -274,7 +317,7 @@ namespace NFX.NUnit.IO
                              Assert.AreEqual(128, r.ReadULong());
                              Assert.AreEqual(ulong.MaxValue, r.ReadULong());
 
-                             Assert.AreEqual(14, ms.Length);  
+                             Assert.AreEqual(14, ms.Length);
                           }
                         }
 
@@ -285,7 +328,7 @@ namespace NFX.NUnit.IO
                           {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                               r.BindStream(ms);
                             w.BindStream(ms);
 
@@ -301,10 +344,10 @@ namespace NFX.NUnit.IO
                              Assert.AreEqual(false, r.ReadNullableULong().HasValue);
                              Assert.AreEqual(255, r.ReadNullableULong().Value);
 
-                             Assert.AreEqual(8, ms.Length);  
+                             Assert.AreEqual(8, ms.Length);
                           }
                         }
-        
+
         [TestCase]
         public void UShort()
         {
@@ -312,7 +355,7 @@ namespace NFX.NUnit.IO
             {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -328,7 +371,7 @@ namespace NFX.NUnit.IO
                 Assert.AreEqual(128, r.ReadUShort());
                 Assert.AreEqual(ushort.MaxValue, r.ReadUShort());
 
-                Assert.AreEqual(7, ms.Length);  
+                Assert.AreEqual(7, ms.Length);
             }
         }
 
@@ -339,7 +382,7 @@ namespace NFX.NUnit.IO
             {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -355,7 +398,7 @@ namespace NFX.NUnit.IO
                 Assert.AreEqual(false, r.ReadNullableUShort().HasValue);
                 Assert.AreEqual(255, r.ReadNullableUShort().Value);
 
-                Assert.AreEqual(8, ms.Length);  
+                Assert.AreEqual(8, ms.Length);
             }
         }
 
@@ -368,7 +411,7 @@ namespace NFX.NUnit.IO
                                                                       {
                                                                         var r = SlimFormat.Instance.MakeReadingStreamer();
                                                                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                                                                         r.BindStream(ms);
                                                                       w.BindStream(ms);
 
@@ -384,7 +427,7 @@ namespace NFX.NUnit.IO
                                                                          Assert.AreEqual(128, r.ReadShort());
                                                                          Assert.AreEqual(short.MaxValue, r.ReadShort());
 
-                                                                         Assert.AreEqual(8, ms.Length);  
+                                                                         Assert.AreEqual(8, ms.Length);
                                                                       }
                                                                     }
 
@@ -395,7 +438,7 @@ namespace NFX.NUnit.IO
                                                                       {
                                                                         var r = SlimFormat.Instance.MakeReadingStreamer();
                                                                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                                                                           r.BindStream(ms);
                                                                         w.BindStream(ms);
 
@@ -411,7 +454,7 @@ namespace NFX.NUnit.IO
                                                                          Assert.AreEqual(-128, r.ReadShort());
                                                                          Assert.AreEqual(short.MinValue, r.ReadShort());
 
-                                                                         Assert.AreEqual(8, ms.Length);  
+                                                                         Assert.AreEqual(8, ms.Length);
                                                                       }
                                                                     }
 
@@ -422,7 +465,7 @@ namespace NFX.NUnit.IO
                                                                       {
                                                                         var r = SlimFormat.Instance.MakeReadingStreamer();
                                                                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
                                                                             r.BindStream(ms);
                                                                           w.BindStream(ms);
 
@@ -438,7 +481,7 @@ namespace NFX.NUnit.IO
                                                                          Assert.AreEqual(false, r.ReadNullableShort().HasValue);
                                                                          Assert.AreEqual(255, r.ReadNullableShort().Value);
 
-                                                                         Assert.AreEqual(9, ms.Length);  
+                                                                         Assert.AreEqual(9, ms.Length);
                                                                       }
                                                                     }
 
@@ -461,9 +504,9 @@ namespace NFX.NUnit.IO
                 var now = App.LocalizedTime;
 
                 w.Write(now);
-                
+
                 ms.Seek(0, SeekOrigin.Begin);
-                
+
                 Assert.AreEqual(now, r.ReadDateTime());
             }
         }
@@ -483,11 +526,11 @@ namespace NFX.NUnit.IO
 
                 w.Write((DateTime?)null);
                 w.Write((DateTime?)now);
-                
+
                 ms.Seek(0, SeekOrigin.Begin);
-                
-                Assert.AreEqual(false, r.ReadNullableDateTime().HasValue); 
-                Assert.AreEqual(now, r.ReadNullableDateTime().Value); 
+
+                Assert.AreEqual(false, r.ReadNullableDateTime().HasValue);
+                Assert.AreEqual(now, r.ReadNullableDateTime().Value);
             }
         }
 
@@ -503,13 +546,13 @@ namespace NFX.NUnit.IO
 
                  r.BindStream(ms);
             w.BindStream(ms);
-             
+
                 var ts = TimeSpan.FromMilliseconds(25467);
 
                 w.Write(ts);
-                
+
                 ms.Seek(0, SeekOrigin.Begin);
-                
+
                 Assert.AreEqual(ts, r.ReadTimeSpan());
             }
         }
@@ -524,16 +567,16 @@ namespace NFX.NUnit.IO
 
                  r.BindStream(ms);
             w.BindStream(ms);
-             
+
                 var ts = TimeSpan.FromMilliseconds(25467);
 
                 w.Write((TimeSpan?)null);
                 w.Write((TimeSpan?)ts);
-                
+
                 ms.Seek(0, SeekOrigin.Begin);
-                
-                Assert.AreEqual(false, r.ReadNullableTimeSpan().HasValue); 
-                Assert.AreEqual(ts, r.ReadNullableTimeSpan().Value); 
+
+                Assert.AreEqual(false, r.ReadNullableTimeSpan().HasValue);
+                Assert.AreEqual(ts, r.ReadNullableTimeSpan().Value);
             }
         }
 
@@ -546,16 +589,16 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                             var guid = Guid.NewGuid();
 
                             w.Write(guid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(guid, r.ReadGuid());
                         }
                     }
@@ -567,7 +610,7 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -575,14 +618,14 @@ namespace NFX.NUnit.IO
 
                             w.Write((Guid?)null);
                             w.Write((Guid?)guid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
-                            Assert.AreEqual(false, r.ReadNullableGuid().HasValue); 
-                            Assert.AreEqual(guid, r.ReadNullableGuid().Value); 
+
+                            Assert.AreEqual(false, r.ReadNullableGuid().HasValue);
+                            Assert.AreEqual(guid, r.ReadNullableGuid().Value);
                         }
                     }
-                    
+
 
                     [TestCase]
                     public void _GDID_1()
@@ -591,16 +634,16 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                             var gdid = new NFX.DataAccess.Distributed.GDID(5, 123);
 
                             w.Write(gdid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(gdid, r.ReadGDID());
                         }
                     }
@@ -612,16 +655,16 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                             var gdid = new NFX.DataAccess.Distributed.GDID(11, 0xffffffffffffffe0);
 
                             w.Write(gdid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(gdid, r.ReadGDID());
                         }
                     }
@@ -633,7 +676,7 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -641,11 +684,11 @@ namespace NFX.NUnit.IO
 
                             w.Write((NFX.DataAccess.Distributed.GDID?)null);
                             w.Write((NFX.DataAccess.Distributed.GDID?)gdid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
-                            Assert.AreEqual(false, r.ReadNullableGDID().HasValue); 
-                            Assert.AreEqual(gdid, r.ReadNullableGDID().Value); 
+
+                            Assert.AreEqual(false, r.ReadNullableGDID().HasValue);
+                            Assert.AreEqual(gdid, r.ReadNullableGDID().Value);
                         }
                     }
 
@@ -656,7 +699,7 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -664,11 +707,11 @@ namespace NFX.NUnit.IO
 
                             w.Write((NFX.DataAccess.Distributed.GDID?)null);
                             w.Write((NFX.DataAccess.Distributed.GDID?)gdid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
-                            Assert.AreEqual(false, r.ReadNullableGDID().HasValue); 
-                            Assert.AreEqual(gdid, r.ReadNullableGDID().Value); 
+
+                            Assert.AreEqual(false, r.ReadNullableGDID().HasValue);
+                            Assert.AreEqual(gdid, r.ReadNullableGDID().Value);
                         }
                     }
 
@@ -683,16 +726,16 @@ namespace NFX.NUnit.IO
             {
                 var r = SlimFormat.Instance.MakeReadingStreamer();
                 var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
-                
+
                 w.Write(true);
                 w.Write(false);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                
+
                 Assert.AreEqual(true, r.ReadBool());
                 Assert.AreEqual(false, r.ReadBool());
             }
@@ -705,17 +748,17 @@ namespace NFX.NUnit.IO
             {
                 var r = SlimFormat.Instance.MakeReadingStreamer();
                 var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                 w.Write((bool?)null);
                 w.Write((bool?)true);
-                
+
                 ms.Seek(0, SeekOrigin.Begin);
-                
-                Assert.AreEqual(false, r.ReadNullableBool().HasValue); 
-                Assert.AreEqual(true, r.ReadNullableBool().Value); 
+
+                Assert.AreEqual(false, r.ReadNullableBool().HasValue);
+                Assert.AreEqual(true, r.ReadNullableBool().Value);
             }
         }
 
@@ -727,16 +770,16 @@ namespace NFX.NUnit.IO
             {
                 var r = SlimFormat.Instance.MakeReadingStreamer();
                 var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
 
               r.BindStream(ms);
             w.BindStream(ms);
-                
+
                 w.Write((byte)2);
                 w.Write((byte)0xff);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                
+
                 Assert.AreEqual(2, r.ReadByte());
                 Assert.AreEqual(0xff, r.ReadByte());
             }
@@ -749,17 +792,17 @@ namespace NFX.NUnit.IO
             {
                 var r = SlimFormat.Instance.MakeReadingStreamer();
                 var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                 w.Write((byte?)null);
                 w.Write((byte?)19);
-                
+
                 ms.Seek(0, SeekOrigin.Begin);
-                
-                Assert.AreEqual(false, r.ReadNullableByte().HasValue); 
-                Assert.AreEqual(19, r.ReadNullableByte().Value); 
+
+                Assert.AreEqual(false, r.ReadNullableByte().HasValue);
+                Assert.AreEqual(19, r.ReadNullableByte().Value);
             }
         }
 
@@ -772,16 +815,16 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
-                
+
                             w.Write((sbyte)-2);
                             w.Write((sbyte)0x4e);
 
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(-2, r.ReadSByte());
                             Assert.AreEqual(0x4e, r.ReadSByte());
                         }
@@ -794,18 +837,18 @@ namespace NFX.NUnit.IO
                         {
                             var r = SlimFormat.Instance.MakeReadingStreamer();
                             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
 
               r.BindStream(ms);
             w.BindStream(ms);
 
                             w.Write((sbyte?)null);
                             w.Write((sbyte?)-19);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
-                            Assert.AreEqual(false, r.ReadNullableSByte().HasValue); 
-                            Assert.AreEqual(-19, r.ReadNullableSByte().Value); 
+
+                            Assert.AreEqual(false, r.ReadNullableSByte().HasValue);
+                            Assert.AreEqual(-19, r.ReadNullableSByte().Value);
                         }
                     }
 
@@ -817,16 +860,16 @@ namespace NFX.NUnit.IO
                 {
                     var r = SlimFormat.Instance.MakeReadingStreamer();
                     var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
 
               r.BindStream(ms);
             w.BindStream(ms);
-                
+
                     w.Write((float)-2);
                     w.Write((float)0.1234);
 
                     ms.Seek(0, SeekOrigin.Begin);
-                
+
                     Assert.AreEqual(-2f, r.ReadFloat());
                     Assert.AreEqual(0.1234f, r.ReadFloat());
                 }
@@ -839,17 +882,17 @@ namespace NFX.NUnit.IO
                 {
                     var r = SlimFormat.Instance.MakeReadingStreamer();
                     var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                     w.Write((float?)null);
                     w.Write((float?)0.6789);
-                
+
                     ms.Seek(0, SeekOrigin.Begin);
-                
-                    Assert.AreEqual(false, r.ReadNullableFloat().HasValue); 
-                    Assert.AreEqual(0.6789f, r.ReadNullableFloat().Value); 
+
+                    Assert.AreEqual(false, r.ReadNullableFloat().HasValue);
+                    Assert.AreEqual(0.6789f, r.ReadNullableFloat().Value);
                 }
             }
 
@@ -861,16 +904,16 @@ namespace NFX.NUnit.IO
                 {
                     var r = SlimFormat.Instance.MakeReadingStreamer();
                     var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
-                
+
                     w.Write((double)-2);
                     w.Write((double)0.1234);
 
                     ms.Seek(0, SeekOrigin.Begin);
-                
+
                     Assert.AreEqual(-2, r.ReadDouble());
                     Assert.AreEqual(0.1234, r.ReadDouble());
                 }
@@ -883,17 +926,17 @@ namespace NFX.NUnit.IO
                 {
                     var r = SlimFormat.Instance.MakeReadingStreamer();
                     var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                     w.Write((double?)null);
                     w.Write((double?)0.6789);
-                
+
                     ms.Seek(0, SeekOrigin.Begin);
-                
-                    Assert.AreEqual(false, r.ReadNullableDouble().HasValue); 
-                    Assert.AreEqual(0.6789, r.ReadNullableDouble().Value); 
+
+                    Assert.AreEqual(false, r.ReadNullableDouble().HasValue);
+                    Assert.AreEqual(0.6789, r.ReadNullableDouble().Value);
                 }
             }
 
@@ -906,18 +949,42 @@ namespace NFX.NUnit.IO
                     {
                         var r = SlimFormat.Instance.MakeReadingStreamer();
                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
-                
-                        w.Write((decimal)-2);
-                        w.Write((decimal)0.1234);
+
+                        w.Write(-2m);
+                        w.Write(0.1234m);
+
+                        w.Write(789123612637621332.2390m);
+                        w.Write(-789123612637621332.2390m);
+
+                        w.Write(23123123213789123612637621332.001237182738m);
+                        w.Write(-23123123213789123612637621332.001237182738m);
+
+                        w.Write(0.123123213789123612637621332001237182738m);
+                        w.Write(-0.123123213789123612637621332001237182738m);
+
+                        w.Write(0.0000000000000000000000000073m);
+                        w.Write(-0.0000000000000000000000000073m);
 
                         ms.Seek(0, SeekOrigin.Begin);
-                
-                        Assert.AreEqual(-2, r.ReadDecimal());
-                        Assert.AreEqual(0.1234, r.ReadDecimal());
+
+                        Assert.AreEqual(-2m, r.ReadDecimal());
+                        Assert.AreEqual(0.1234m, r.ReadDecimal());
+
+                        Assert.AreEqual(789123612637621332.2390m, r.ReadDecimal());
+                        Assert.AreEqual(-789123612637621332.2390m, r.ReadDecimal());
+
+                        Assert.AreEqual(23123123213789123612637621332.001237182738m, r.ReadDecimal());
+                        Assert.AreEqual(-23123123213789123612637621332.001237182738m, r.ReadDecimal());
+
+                        Assert.AreEqual(0.123123213789123612637621332001237182738m, r.ReadDecimal());
+                        Assert.AreEqual(-0.123123213789123612637621332001237182738m, r.ReadDecimal());
+
+                        Assert.AreEqual(0.0000000000000000000000000073m, r.ReadDecimal());
+                        Assert.AreEqual(-0.0000000000000000000000000073m, r.ReadDecimal());
                     }
                 }
 
@@ -928,17 +995,17 @@ namespace NFX.NUnit.IO
                     {
                         var r = SlimFormat.Instance.MakeReadingStreamer();
                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                         w.Write((decimal?)null);
                         w.Write((decimal?)0.6789);
-                
+
                         ms.Seek(0, SeekOrigin.Begin);
-                
-                        Assert.AreEqual(false, r.ReadNullableDecimal().HasValue); 
-                        Assert.AreEqual(0.6789, r.ReadNullableDecimal().Value); 
+
+                        Assert.AreEqual(false, r.ReadNullableDecimal().HasValue);
+                        Assert.AreEqual(0.6789, r.ReadNullableDecimal().Value);
                     }
                 }
 
@@ -951,16 +1018,16 @@ namespace NFX.NUnit.IO
                                 {
                                     var r = SlimFormat.Instance.MakeReadingStreamer();
                                     var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
-                
+
                                     w.Write('a');
                                     w.Write('b');
 
                                     ms.Seek(0, SeekOrigin.Begin);
-                
+
                                     Assert.AreEqual('a', r.ReadChar());
                                     Assert.AreEqual('b', r.ReadChar());
                                 }
@@ -973,17 +1040,17 @@ namespace NFX.NUnit.IO
                                 {
                                     var r = SlimFormat.Instance.MakeReadingStreamer();
                                     var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                                     w.Write((char?)null);
                                     w.Write((char?)'Z');
-                
+
                                     ms.Seek(0, SeekOrigin.Begin);
-                
-                                    Assert.AreEqual(false, r.ReadNullableChar().HasValue); 
-                                    Assert.AreEqual('Z', r.ReadNullableChar().Value); 
+
+                                    Assert.AreEqual(false, r.ReadNullableChar().HasValue);
+                                    Assert.AreEqual('Z', r.ReadNullableChar().Value);
                                 }
                             }
 
@@ -995,16 +1062,16 @@ namespace NFX.NUnit.IO
                     {
                         var r = SlimFormat.Instance.MakeReadingStreamer();
                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
-                
+
                         w.Write(new MetaHandle(1));// 1 byte
                         w.Write(new MetaHandle(0xffff));// 3 byte
                         w.Write(new MetaHandle(0xffff, new VarIntStr("0123456789")));// 3 byte + 2 len + 10 byte  = 19
                         ms.Seek(0, SeekOrigin.Begin);
-                
+
                         Assert.AreEqual(1, r.ReadMetaHandle().Handle);
                         Assert.AreEqual(0xffff, r.ReadMetaHandle().Handle);
 
@@ -1019,21 +1086,21 @@ namespace NFX.NUnit.IO
                     {
                         var r = SlimFormat.Instance.MakeReadingStreamer();
                         var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
                         w.Write((MetaHandle?)null); //1 byte
                         w.Write((MetaHandle?)new MetaHandle(12, new VarIntStr("It works")));// 1(nnul) + 1(12) + 2(strlen) + 8(It works) = 12 bytes
                         ms.Seek(0, SeekOrigin.Begin);
-                
-                        Assert.AreEqual(false, r.ReadNullableMetaHandle().HasValue); 
-                       
+
+                        Assert.AreEqual(false, r.ReadNullableMetaHandle().HasValue);
+
                         var mh = r.ReadNullableMetaHandle().Value;
                         Assert.AreEqual(12, mh.Handle);
                         Assert.AreEqual("It works", mh.Metadata.Value.StringValue);
 
-                        Assert.AreEqual(13,  ms.Length); 
+                        Assert.AreEqual(13,  ms.Length);
                     }
                 }
 
@@ -1046,7 +1113,7 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -1083,7 +1150,7 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-             
+
               r.BindStream(ms);
             w.BindStream(ms);
 
@@ -1117,9 +1184,9 @@ namespace NFX.NUnit.IO
           {
             var r = SlimFormat.Instance.MakeReadingStreamer();
             var w = SlimFormat.Instance.MakeWritingStreamer();
-          
+
             r.BindStream(ms);
-            w.BindStream(ms); 
+            w.BindStream(ms);
 
 
             var arr1 = new char[]{'a','b','c','z'};
@@ -1146,6 +1213,147 @@ namespace NFX.NUnit.IO
         }
 
 
+        [TestCase]
+        public void IntArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new int[]{1, 280, 4564};
+            var arr2 = new int[]{};
+            int[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadIntArray();
+            var r2 = r.ReadIntArray();
+            var r3 = r.ReadIntArray();
+
+            Aver.AreEqual(1, r1[0]);
+            Aver.AreEqual(4564, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+        [TestCase]
+        public void FloatArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new float[]{1f, 280f, 4564.34f};
+            var arr2 = new float[]{};
+            float[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadFloatArray();
+            var r2 = r.ReadFloatArray();
+            var r3 = r.ReadFloatArray();
+
+            Aver.AreEqual(1f, r1[0]);
+            Aver.AreEqual(4564.34f, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+        [TestCase]
+        public void DoubleArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new double[]{1d, 280d, 4564.34d};
+            var arr2 = new double[]{};
+            float[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadDoubleArray();
+            var r2 = r.ReadDoubleArray();
+            var r3 = r.ReadDoubleArray();
+
+            Aver.AreEqual(1d, r1[0]);
+            Aver.AreEqual(4564.34d, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+        [TestCase]
+        public void DecimalArray()
+        {
+          using(var ms = new MemoryStream())
+          {
+            var r = SlimFormat.Instance.MakeReadingStreamer();
+            var w = SlimFormat.Instance.MakeWritingStreamer();
+
+            r.BindStream(ms);
+            w.BindStream(ms);
+
+
+            var arr1 = new decimal[]{1m, 280m, 4564.34m};
+            var arr2 = new decimal[]{};
+            float[] arr3 = null;
+
+
+            w.Write(arr1);
+            w.Write(arr2);
+            w.Write(arr3);
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var r1 = r.ReadDecimalArray();
+            var r2 = r.ReadDecimalArray();
+            var r3 = r.ReadDecimalArray();
+
+            Aver.AreEqual(1m, r1[0]);
+            Aver.AreEqual(4564.34m, r1[2]);
+            Aver.AreEqual(arr1.Length, r1.Length);
+            Aver.AreEqual(arr2.Length, r2.Length);
+            Aver.IsNull(r3);
+          }
+        }
+
+
                     [TestCase]
                     public void TypeSpec()
                     {
@@ -1155,14 +1363,14 @@ namespace NFX.NUnit.IO
                             var w = SlimFormat.Instance.MakeWritingStreamer();
 
                             r.BindStream(ms);
-                            w.BindStream(ms); 
-             
+                            w.BindStream(ms);
+
                             var spec = new NFX.Glue.Protocol.TypeSpec(typeof(System.Collections.Generic.List<int>));
 
                             w.Write(spec);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(spec, r.ReadTypeSpec());
                         }
                     }
@@ -1176,14 +1384,14 @@ namespace NFX.NUnit.IO
                             var w = SlimFormat.Instance.MakeWritingStreamer();
 
                             r.BindStream(ms);
-                            w.BindStream(ms); 
-             
+                            w.BindStream(ms);
+
                             var spec = new NFX.Glue.Protocol.MethodSpec(typeof(System.Collections.Generic.List<int>).GetMethod("Clear"));
 
                             w.Write(spec);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(spec, r.ReadMethodSpec());
                         }
                     }
@@ -1197,14 +1405,14 @@ namespace NFX.NUnit.IO
                             var w = SlimFormat.Instance.MakeWritingStreamer();
 
                             r.BindStream(ms);
-                            w.BindStream(ms); 
-             
+                            w.BindStream(ms);
+
                             var fid = NFX.FID.Generate();
 
                             w.Write(fid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(fid, r.ReadFID());
                         }
                     }
@@ -1218,15 +1426,15 @@ namespace NFX.NUnit.IO
                             var w = SlimFormat.Instance.MakeWritingStreamer();
 
                             r.BindStream(ms);
-                            w.BindStream(ms); 
-             
+                            w.BindStream(ms);
+
                             var fid = NFX.FID.Generate();
 
                             w.Write((NFX.FID?)null);
                             w.Write(fid);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(false, r.ReadNullableFID().HasValue);
                             Assert.AreEqual(fid, r.ReadFID());
                         }
@@ -1242,14 +1450,14 @@ namespace NFX.NUnit.IO
                             var w = SlimFormat.Instance.MakeWritingStreamer();
 
                             r.BindStream(ms);
-                            w.BindStream(ms); 
-             
+                            w.BindStream(ms);
+
                             var pp = new NFX.ApplicationModel.Pile.PilePointer(10,20,30);
 
                             w.Write(pp);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(pp, r.ReadPilePointer());
                         }
                     }
@@ -1263,19 +1471,201 @@ namespace NFX.NUnit.IO
                             var w = SlimFormat.Instance.MakeWritingStreamer();
 
                             r.BindStream(ms);
-                            w.BindStream(ms); 
-             
+                            w.BindStream(ms);
+
                             var pp = new NFX.ApplicationModel.Pile.PilePointer(10,20,30);
 
                             w.Write((NFX.ApplicationModel.Pile.PilePointer?)null);
                             w.Write(pp);
-                
+
                             ms.Seek(0, SeekOrigin.Begin);
-                
+
                             Assert.AreEqual(false, r.ReadNullablePilePointer().HasValue);
                             Assert.AreEqual(pp, r.ReadPilePointer());
                         }
                     }
+
+
+        [TestCase]
+        public void NLSMap()
+        {
+            using(var ms = new MemoryStream())
+            {
+                var r = SlimFormat.Instance.MakeReadingStreamer();
+                var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                r.BindStream(ms);
+                w.BindStream(ms);
+
+                var map = new NLSMap(
+        @"nls{
+            eng{n='Cream>Serum>Day' d='Daily Serum Care'}
+            rus{n='Крем>Серум>Дневной' d='Дневной Уход Серум'}
+            deu{n='Ein Drek'}
+          }".AsLaconicConfig(handling: ConvertErrorHandling.Throw));
+
+                w.Write(map);
+
+                ms.Position = 0;
+
+                var map2 = r.ReadNLSMap();
+
+                Assert.IsNotNull(map2);
+                Assert.AreEqual(3, map2.Count);
+                Assert.AreEqual("Cream>Serum>Day", map2["ENG"].Name);
+                Assert.AreEqual("Крем>Серум>Дневной", map2["rus"].Name);
+                Assert.AreEqual("Ein Drek", map2["dEu"].Name);
+
+                Assert.AreEqual("Daily Serum Care", map2["ENG"].Description);
+                Assert.AreEqual("Дневной Уход Серум", map2["rus"].Description);
+                Assert.AreEqual(null, map2["dEu"].Description);
+
+                ms.Position = 0;
+                NLSMap nullmap = new NLSMap();
+                w.Write(nullmap);
+                ms.Position = 0;
+
+                var map3 = r.ReadNLSMap();
+                Assert.IsNull( map3.m_Data);
+                Assert.AreEqual(0 , map3.Count);
+
+
+            }
+        }
+
+                [TestCase]
+                public void _NLSMap()
+                {
+                    using(var ms = new MemoryStream())
+                    {
+                        var r = SlimFormat.Instance.MakeReadingStreamer();
+                        var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                        r.BindStream(ms);
+                        w.BindStream(ms);
+
+                        NLSMap? map = new NLSMap(
+                @"nls{
+                    eng{n='Cream>Serum>Day' d='Daily Serum Care'}
+                    rus{n='Крем>Серум>Дневной' d='Дневной Уход Серум'}
+                    deu{n='Ein Drek'}
+                  }".AsLaconicConfig(handling: ConvertErrorHandling.Throw));
+
+                        w.Write(map);
+
+                        ms.Position = 0;
+
+                        var map2 = r.ReadNullableNLSMap();
+
+                        Assert.IsTrue(map2.HasValue);
+                        Assert.AreEqual(3, map2.Value.Count);
+                        Assert.AreEqual("Cream>Serum>Day", map2.Value["ENG"].Name);
+                        Assert.AreEqual("Крем>Серум>Дневной", map2.Value["rus"].Name);
+                        Assert.AreEqual("Ein Drek", map2.Value["dEu"].Name);
+
+
+                        ms.Position = 0;
+                        NLSMap? nullmap = null;
+                        w.Write(nullmap);
+                        ms.Position = 0;
+
+                        var map3 = r.ReadNullableNLSMap();
+                        Assert.IsFalse( map3.HasValue );
+                    }
+                }
+
+
+                [TestCase]
+                public void StringMap()
+                {
+                    using(var ms = new MemoryStream())
+                    {
+                        var r = SlimFormat.Instance.MakeReadingStreamer();
+                        var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                        r.BindStream(ms);
+                        w.BindStream(ms);
+
+                        var mapS = new StringMap(true)
+                        {
+                           {"a", "Alex"},
+                           {"b","Boris"}
+                        };
+
+                        var mapI = new StringMap(false)
+                        {
+                           {"a", "Alex"},
+                           {"b","Boris"},
+                           {"c","Chuck"}
+                        };
+
+
+
+                        w.Write(mapS);
+                        w.Write(mapI);
+
+                        ms.Seek(0, SeekOrigin.Begin);
+
+
+                        var mapS2 = r.ReadStringMap();
+                        Assert.IsTrue(mapS2.CaseSensitive);
+                        Assert.AreEqual(2, mapS2.Count);
+                        Assert.AreEqual("Alex", mapS2["a"]);
+                        Assert.AreEqual("Boris", mapS2["b"]);
+
+                        var mapI2 = r.ReadStringMap();
+                        Assert.IsFalse(mapI2.CaseSensitive);
+                        Assert.AreEqual(3, mapI2.Count);
+                        Assert.AreEqual("Alex", mapI2["a"]);
+                        Assert.AreEqual("Boris", mapI2["b"]);
+                        Assert.AreEqual("Chuck", mapI2["c"]);
+                    }
+                }
+
+
+        [TestCase]
+        public void Amount()
+        {
+            using(var ms = new MemoryStream())
+            {
+                var r = SlimFormat.Instance.MakeReadingStreamer();
+                var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                r.BindStream(ms);
+                w.BindStream(ms);
+
+                var a1 = new NFX.Financial.Amount("usd", 23672209.243m);
+
+                w.Write(a1);
+
+                ms.Seek(0, SeekOrigin.Begin);
+
+                Aver.AreEqual(a1, r.ReadAmount());
+            }
+        }
+
+        [TestCase]
+        public void NullableAmount()
+        {
+            using(var ms = new MemoryStream())
+            {
+                var r = SlimFormat.Instance.MakeReadingStreamer();
+                var w = SlimFormat.Instance.MakeWritingStreamer();
+
+                r.BindStream(ms);
+                w.BindStream(ms);
+
+                var a1 = new NFX.Financial.Amount("usd", 23672209.243m);
+
+                w.Write((NFX.Financial.Amount?)null);
+                w.Write((NFX.Financial.Amount?)a1);
+
+                ms.Seek(0, SeekOrigin.Begin);
+
+                Aver.IsFalse( r.ReadNullableAmount().HasValue );
+                Aver.AreEqual(a1, r.ReadNullableAmount());
+            }
+        }
 
     }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -225,6 +225,8 @@ namespace NFX.NUnit.Config
 
            Assert.AreEqual(true, conf.Root.Navigate("a/b/c").Exists);
            Assert.AreEqual(false, conf.Root.Navigate("a/b/c/d").Exists);
+           Assert.AreEqual(false, conf.Root.Navigate("GGG/b/c").Exists); //non existing section is in the beginning
+           Assert.AreEqual(false, conf.Root.Navigate("a/GGG/c").Exists); //non existing section is in the middle
 
            Assert.AreEqual(true, conf.Root.Navigate("/a/b/$cool").ValueAsBool());
            Assert.AreEqual(false, conf.Root.Navigate("/a/b/$snake").ValueAsBool());

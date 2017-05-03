@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ using System.Linq;
 using System.Text;
 
 using System.Drawing;
-using NFX.WinForms.Themes;
 
 namespace NFX.WinForms.Elements
 {
@@ -86,20 +85,20 @@ namespace NFX.WinForms.Elements
       protected internal override void Paint(System.Drawing.Graphics gr)
       {
         base.Paint(gr);
-        
-        BaseApplication.Theme.PartRenderer.LabelText(gr,
-                                  Region,
-                                  m_IsHyperlink ? MouseIsOver : false,
-                                  Host.Font,
-                                  FieldControlContext,
-                                  Text,
-                                  m_Alignment);
+
+        //BaseApplication.Theme.PartRenderer.LabelText(gr,
+        //                          Region,
+        //                          m_IsHyperlink ? MouseIsOver : false,
+        //                          Host.Font,
+        //                          FieldControlContext,
+        //                          Text,
+        //                          m_Alignment);
       }
 
       protected internal override void OnMouseEnter(EventArgs e)
       {
         base.OnMouseEnter(e);
-        
+
         if (m_IsHyperlink)
           Invalidate();
       }
@@ -107,7 +106,7 @@ namespace NFX.WinForms.Elements
       protected internal override void OnMouseLeave(EventArgs e)
       {
         base.OnMouseLeave(e);
-        
+
         if (m_IsHyperlink)
           Invalidate();
       }
@@ -115,18 +114,18 @@ namespace NFX.WinForms.Elements
       protected internal override void OnMouseClick(System.Windows.Forms.MouseEventArgs e)
       {
         base.OnMouseClick(e);
-        
-        if (m_IsHyperlink) 
+
+        if (m_IsHyperlink)
              OnHyperlink(EventArgs.Empty);
       }
-      
+
       protected virtual void OnHyperlink(EventArgs e)
       {
         if (Hyperlink!=null)
                  Hyperlink(this, e);
       }
-     
-     
+
+
     #endregion
 
 

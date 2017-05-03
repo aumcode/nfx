@@ -1,7 +1,7 @@
 
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ namespace NFX.IO.FileSystem.S3.V4
 	    {
         var cred = new S3Credentials(accessKey, secretKey);
         var at = new AuthenticationToken(Bucket, accessKey);
-        User = new User(cred, at, UserStatus.User, accessKey, accessKey, Rights.None); 
+        User = new User(cred, at, UserStatus.User, accessKey, accessKey, Rights.None);
 	    }
     }
   }
@@ -96,7 +96,7 @@ namespace NFX.IO.FileSystem.S3.V4
   /// </summary>
   public class S3V4FileSystemSession : FileSystemSession
   {
-    protected internal S3V4FileSystemSession(S3V4FileSystem fs, IFileSystemHandle handle, S3V4FileSystemSessionConnectParams cParams) 
+    protected internal S3V4FileSystemSession(S3V4FileSystem fs, IFileSystemHandle handle, S3V4FileSystemSessionConnectParams cParams)
                       : base(fs, handle, cParams)
     {
       m_Bucket = cParams.Bucket;

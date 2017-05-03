@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,10 +28,10 @@ namespace NFX.Instrumentation
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited=false)]
     public sealed class InstrumentViewGroup : Attribute { public InstrumentViewGroup(){}}
-                                                                            
-    
-    
-    
+
+
+
+
     /// <summary>
     /// Root marker interface for instrumentation data classification.
     /// Instruments are primarily classified by their derivation from Datum ancestor, however this interface-based
@@ -49,7 +49,7 @@ namespace NFX.Instrumentation
             /// </summary>
             [InstrumentViewGroup]
             public interface IWarningInstrument : IProblemClass { }
-     
+
 
             /// <summary>
             /// Data of this class indicates a definite abnormality, however the system is going to continue functioning
@@ -60,7 +60,7 @@ namespace NFX.Instrumentation
             /// <summary>
             /// Data of this class indicates an abnormality that will most likely lead to system inability to continue functioning as expected
             /// </summary>
-            [InstrumentViewGroup] 
+            [InstrumentViewGroup]
             public interface ICatastropyInstrument : IProblemClass {  }
 
 
@@ -70,7 +70,7 @@ namespace NFX.Instrumentation
         /// A class of operations that instrument measures
         /// </summary>
         public interface IOperationClass : IInstrumentClass { }
-            
+
             /// <summary>
             /// IO-related operations
             /// </summary>
@@ -85,20 +85,20 @@ namespace NFX.Instrumentation
                 /// <summary>
                 /// Network operations (i.e. sockets)
                 /// </summary>
-                [InstrumentViewGroup] 
+                [InstrumentViewGroup]
                 public interface INetInstrument : IIOInstrumentClass { }
 
             /// <summary>
             /// Instruments that measure instrumentation itself
             /// </summary>
-            [InstrumentViewGroup] 
+            [InstrumentViewGroup]
             public interface IInstrumentationInstrument : IOperationClass { }
 
-                
+
             /// <summary>
             /// CPU-related operations
             /// </summary>
-            [InstrumentViewGroup] 
+            [InstrumentViewGroup]
             public interface ICPUInstrument : IOperationClass { }
 
             /// <summary>
@@ -146,14 +146,27 @@ namespace NFX.Instrumentation
             /// </summary>
             [InstrumentViewGroup]
             public interface IGDIDInstrument : IOperationClass { }
-    
+
             /// <summary>
             /// Timer/scheduling-related operations
             /// </summary>
             [InstrumentViewGroup]
             public interface ISchedulingInstrument : IOperationClass { }
 
-            
+
+            /// <summary>
+            /// Queue-related operations
+            /// </summary>
+            [InstrumentViewGroup]
+            public interface IQueueInstrument : IOperationClass { }
+
+            /// <summary>
+            /// Worker-related operations i.e. Todo queue
+            /// </summary>
+            [InstrumentViewGroup]
+            public interface IWorkerInstrument : IOperationClass { }
+
+
 
 
             /// <summary>
@@ -174,6 +187,6 @@ namespace NFX.Instrumentation
                 [InstrumentViewGroup]
                 public interface ISocialLogic : IBusinessLogic { }
 
-    
-   
+
+
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ namespace NFX.WinForms.Elements
      public bool Checked
      {
       get { return m_Checked;}
-      set 
+      set
       {
         m_Checked = value;
         OnCheckedChanged(EventArgs.Empty);
@@ -57,9 +57,9 @@ namespace NFX.WinForms.Elements
 
     #endregion
 
-    
+
     #region Events
-    
+
      public event EventHandler CheckedChanged;
     #endregion
 
@@ -75,7 +75,7 @@ namespace NFX.WinForms.Elements
       {
         if (CheckedChanged!=null) CheckedChanged(this, e);
       }
-    
+
     #endregion
 
 
@@ -85,5 +85,5 @@ namespace NFX.WinForms.Elements
     #endregion
 
   }
-  
+
 }

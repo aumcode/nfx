@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ namespace NFX.Wave.Filters
   public class StopFilter : BeforeAfterFilterBase
   {
     #region CONSTS
+      public const string VAR_CODE = "code";
       public const string VAR_ERROR = "error";
     #endregion
 
@@ -44,27 +45,27 @@ namespace NFX.Wave.Filters
     #endregion
 
     #region Protected
-     
       protected override void DoBeforeWork(WorkContext work, JSONDataMap matched)
       {
-        var txt = matched[VAR_ERROR].AsString();
-        if (txt.IsNotNullOrWhiteSpace())
-            throw new WaveException(txt);
+        var code = matched[VAR_CODE].AsInt();
+        var error = matched[VAR_ERROR].AsString();
+        if (code > 0)
+          throw new HTTPStatusException(code, error);
         else
-         work.Aborted = true;
+          work.Aborted = true;
       }
 
       protected override void DoAfterWork(WorkContext work, JSONDataMap matched)
       {
-        var txt = matched[VAR_ERROR].AsString();
-        if (txt.IsNotNullOrWhiteSpace())
-            throw new WaveException(txt);
+        var code = matched[VAR_CODE].AsInt();
+        var error = matched[VAR_ERROR].AsString();
+        if (code > 0)
+          throw new HTTPStatusException(code, error);
         else
-         work.Aborted = true;
+          work.Aborted = true;
       }
-
     #endregion
-          
+
   }
 
 }

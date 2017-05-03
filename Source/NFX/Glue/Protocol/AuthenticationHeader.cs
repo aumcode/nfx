@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ using NFX.Security;
 namespace NFX.Glue.Protocol
 {
     /// <summary>
-    /// Marshalls user authentication information 
+    /// Marshalls user authentication information
     /// </summary>
     [Serializable]
     public sealed class AuthenticationHeader : Header
@@ -36,8 +36,8 @@ namespace NFX.Glue.Protocol
         /// Returns AuthenticationToken
         /// </summary>
         public AuthenticationToken Token { get { return m_Token;} }
-        
-        
+
+
         /// <summary>
         /// Returns Credentials
         /// </summary>
@@ -46,17 +46,17 @@ namespace NFX.Glue.Protocol
 
         public AuthenticationHeader(AuthenticationToken token)
         {
-            m_Token = token; 
+            m_Token = token;
         }
 
         /// <summary>
-        /// Inits header with Credentials instance. 
+        /// Inits header with Credentials instance.
         /// Note: passing IDPasswordCredentials over public wire is not a good practice,
-        /// pass AuthenticationToken instead 
+        /// pass AuthenticationToken instead
         /// </summary>
         public AuthenticationHeader(Credentials credentials)
         {
-            m_Credentials = credentials; 
+            m_Credentials = credentials;
         }
 
     }

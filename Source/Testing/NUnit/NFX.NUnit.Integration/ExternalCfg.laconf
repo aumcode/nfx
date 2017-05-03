@@ -1,0 +1,336 @@
+nfx
+{
+  starters
+  {
+    starter
+    {
+      name='File Systems'
+      type='NFX.IO.FileSystem.FileSystemStarter, NFX'
+    }
+/*
+    starter
+    {
+      name='Payment Processing 1'
+      type='NFX.Web.Pay.PaySystemStarter, NFX.Web'
+      application-start-break-on-exception=true
+    }
+
+    starter
+    {
+      name='Social Processing'
+      type='NFX.Web.Social.SocialNetworkStarter, NFX.Web'
+      application-start-break-on-exception=true
+    }
+*/
+  }
+  file-systems
+  {
+/*
+    file-system
+    {
+      name='NFX-Local'
+      type='NFX.IO.FileSystem.Local.LocalFileSystem, NFX'
+    }
+*/
+
+    file-system
+    {
+      name='NFX-SVN' type='NFX.IO.FileSystem.SVN.SVNFileSystem, NFX.Web' auto-start=true
+
+      default-session-connect-params
+      {
+        server-url='[SVN_SERVER_URL]'
+        user-name='[SVN_USER_NAME]'
+        user-password='[SVN_USER_PASSWORD]'
+      }
+    }
+/*
+    file-system
+    {
+      name='[S3_FS_NAME]' type='NFX.IO.FileSystem.S3.V4.S3V4FileSystem, NFX.Web' auto-start=true
+
+      default-session-connect-params
+      {
+        bucket='[S3_BUCKET]'
+        region='[S3_REGION]'
+        access-key='[S3_ACCESSKEY]'
+        secret-key='[S3_SECRETKEY]'
+      }
+    }
+
+    file-system
+    {
+      name='NFX_GOOGLE_DRIVE' type='NFX.IO.FileSystem.GoogleDrive.V2.GoogleDriveFileSystem, NFX.Web' auto-start=true
+
+      default-session-connect-params
+      {
+        email='[GOOGLE_DRIVE_EMAIL]'
+        cert-path=$'[GOOGLE_DRIVE_CERT_PATH]'
+      }
+    }
+*/
+  }
+
+  web-settings
+  {
+    service-point-manager
+    {
+      security-protocol=Tls12    //20160802 spol https://devblog.paypal.com/upcoming-security-changes-notice/ - PP security-related changes
+/*
+      service-point
+      {
+        uri='[PAYPAL_SERVER_URL]'
+
+        expect-100-continue=true
+      }
+*/
+      policy
+      {
+        default-certificate-validation
+        {
+          case { uri='[SVN_SERVER_URL]' trusted=true}
+/*
+          case { uri='[S3_SERVER_URL]' trusted=true}
+          case { uri='[STRIPE_SERVER_URL]' trusted=true}
+          case { uri='[PAYPAL_SERVER_URL]' trusted=true}
+          case { uri='[TAXJAR_SERVER_URL]' trusted=true}
+*/
+        }
+      }
+    }
+/*
+    payment-processing
+    {
+      pay-system-host
+      {
+        name='StripePrimary'
+        type='NFX.NUnit.Integration.Web.Pay.FakePaySystemHost, NFX.NUnit.Integration'
+
+        paypal-valid-account='[PAYPAL_VALID_ACCOUNT]'
+      }
+
+      pay-system
+      {
+        name='Stripe'
+        type='NFX.Web.Pay.Stripe.StripeSystem, NFX.Web'
+        auto-start=true
+
+        default-session-connect-params
+        {
+          name='StripePrimary'
+          type='NFX.Web.Pay.Stripe.StripeConnectionParameters, NFX.Web'
+
+          secret-key='[STRIPE_SECRET_KEY]'
+          email='stripe_user@mail.com'
+        }
+      }
+
+      pay-system
+      {
+        name='PayPal'
+        type='NFX.Web.Pay.PayPal.PayPalSystem, NFX.Web'
+        auto-start=true
+
+        api-uri='[PAYPAL_SERVER_URL]'
+
+        default-session-connect-params
+        {
+          name='PayPalPayoutsPrimary'
+          type='NFX.Web.Pay.PayPal.PayPalConnectionParameters, NFX.Web'
+
+          email='[PAYPAL_EMAIL]'
+          client-id='[PAYPAL_CLIENT_ID]'
+          client-secret='[PAYPAL_CLIENT_SECRET]'
+        }
+      }
+
+      pay-system
+      {
+        name='Mock'
+        type='NFX.Web.Pay.Mock.MockSystem, NFX.Web'
+        auto-start=true
+
+        accounts
+        {
+          credit-card-correct
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4242424242424242'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='123'
+            }
+          }
+
+          credit-card-declined
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4000000000000002'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='123'
+            }
+          }
+
+          credit-card-luhn-error
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4242424242424241'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='123'
+            }
+          }
+
+          credit-card-cvc-error
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4242424242424242'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='99'
+            }
+          }
+
+          credit-card-correct-with-addr
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4242424242424242'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='123'
+
+              BillingAddress1='5844 South Oak Street'
+              BillingAddress2='1234 Lemon Street'
+              BillingCountry='US'
+              BillingCity='Chicago'
+              BillingPostalCode='60667'
+              BillingRegion='IL'
+              BillingEmail='vpupkin@mail.com'
+              BillingPhone='(309) 123-4567'
+            }
+          }
+
+          debit-bank-correct
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='000123456789'
+              RoutingNumber='110000000'
+              BillingCountry='US'
+            }
+          }
+
+          debit-card-correct
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4000056655665556'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='123'
+            }
+          }
+
+          debit-card-correct-with-address
+          {
+            account-data
+            {
+              FirstName='Vasya'
+              LastName='Pupkin'
+              MiddleName='S'
+
+              AccountNumber='4000056655665556'
+              CardExpirationYear=2016
+              CardExpirationMonth=11
+              CardVC='123'
+
+              BillingAddress1='5844 South Oak Street'
+              BillingAddress2='1234 Lemon Street'
+              BillingCountry='US'
+              BillingCity='Chicago'
+              BillingPostalCode='60667'
+              BillingRegion='IL'
+              BillingEmail='vpupkin@mail.com'
+              BillingPhone='(309) 123-4567'
+            }
+          }
+        }
+
+        default-session-connect-params
+        {
+          type='NFX.Web.Pay.Mock.MockConnectionParameters, NFX.Web'
+          email='mock_user@mail.com'
+        }
+      }
+
+    }
+*/
+/*
+    social
+    {
+      provider {name='GooglePlusTest' type='NFX.Web.Social.GooglePlus, NFX.Web' auto-start=true
+                  client-code='[SN_GP_CLIENT_CODE]' client-secret='[SN_GP_CLIENT_SECRET]'
+                  web-service-call-timeout-ms='20000' keep-alive='false' pipelined='false'}
+
+      provider { name='FacebookTest' type='NFX.Web.Social.Facebook, NFX.Web' auto-start=true
+                  client-code='[SN_FB_CLIENT_CODE]' client-secret='[SN_FB_CLIENT_SECRET]' app-accesstoken='[SN_FB_APP_ACCESSTOKEN]' }
+
+      provider {name='TwitterTest' type='NFX.Web.Social.Twitter, NFX.Web' auto-start=true
+                  client-code='[SN_TWT_CLIENT_CODE]' client-secret='[SN_TWT_CLIENT_SECRET]'}
+
+      provider {name='LinkedInTest' type='NFX.Web.Social.LinkedIn, NFX.Web' auto-start=true
+                  api-key='[SN_LIN_API_KEY]' secret-key='[SN_LIN_SECRET_KEY]'}
+
+      provider {name='VKontakteTest' type='NFX.Web.Social.VKontakte, NFX.Web' auto-start=true
+                  client-code='[SN_VK_CLIENT_CODE]' client-secret='[SN_VK_CLIENT_SECRET]'}
+    }
+*/
+    web-dav
+    {
+      log-type='Log.MessageType.TraceZ'
+    }
+
+    session
+    {
+      timeout-ms='30001'
+      web-strategy
+      {
+        cookie-name='kalabashka'
+      }
+    }
+  }
+}

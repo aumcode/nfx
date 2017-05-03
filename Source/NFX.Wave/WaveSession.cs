@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,17 +32,18 @@ namespace NFX.Wave
     public class WaveSession : BaseSession
     {
         protected WaveSession():base(){} //used by serializer
-        public WaveSession(Guid id) : base(id) 
+        public WaveSession(Guid id) : base(id)
         {
            m_CSRFToken = ExternalRandomGenerator.Instance.NextRandomWebSafeString();
         }
 
         private string m_CSRFToken;
 
-        
+
         /// <summary>
         /// Stores user Geographical/Location information
         /// </summary>
+        [NonSerialized]
         public GeoEntity GeoEntity;
 
         /// <summary>

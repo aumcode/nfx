@@ -1,0 +1,4 @@
+﻿#pragma
+modify=MyPerzon
+
+{'_id': '$$id', '$NFX-QUERY-PROJECTION': {'Age': 1, '_id': 0}}

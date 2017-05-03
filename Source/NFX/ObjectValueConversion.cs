@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace NFX
     /// Specifies how to handle errors during object value conversion
     /// </summary>
     public enum ConvertErrorHandling { ReturnDefault=0, Throw}
-    
+
     /// <summary>
     /// Provides extension methods for converting object values to different scalar types
     /// </summary>
@@ -38,7 +38,7 @@ namespace NFX
         public const string RADIX_BIN = "0b";
         public const string RADIX_HEX = "0x";
 
-        
+
          public static string AsString(this object val, string dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
               try
@@ -58,12 +58,12 @@ namespace NFX
               try
               {
                 if (val==null) throw new NFXException("arg = null");
-                
+
                 var result = Convert.ToString(val);
-                
+
                 if (result.IsNullOrWhiteSpace())
                   throw new NFXException("result = null|empty");
-                
+
                 return result;
               }
               catch(Exception error)
@@ -97,6 +97,42 @@ namespace NFX
                   try
                   {
                     return LaconicConfiguration.CreateFromString(wrapRootName + "\n{\n" + content + "\n}").Root;
+                  }
+                  catch
+                  {
+                    if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                    return dflt;
+                  }
+
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
+         }
+
+         public static ConfigSectionNode AsJSONConfig(this object val, ConfigSectionNode dflt = null, string wrapRootName = "nfx", ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+              string content;
+              try
+              {
+                if (val==null) return dflt;
+                content = val.ToString();
+              }
+              catch
+              {
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
+
+              try
+              {
+                return JSONConfiguration.CreateFromJSON(content).Root;
+              }
+              catch
+              {
+                if (wrapRootName.IsNotNullOrWhiteSpace())
+                  try
+                  {
+                    return JSONConfiguration.CreateFromJSON("{'"+ wrapRootName +"':\n" + content + "\n}").Root;
                   }
                   catch
                   {
@@ -598,13 +634,26 @@ namespace NFX
          }
 
 
+         /// <summary>
+         /// A "hack" enum used to provide tri-state checkbox functionality in some systems, i.e. HTML checkmarks
+         /// do not understand "nulls". This is a surrogate type not used in server-side programming
+         /// </summary>
+         public enum TriStateBool { Unspecified = 0, False = 1, True = 2}
+
+         public static bool? AsNullableBool(this TriStateBool val)
+         {
+           return val==TriStateBool.Unspecified ? null : val==TriStateBool.True ? (bool?)true : (bool?)false;
+         }
+
+
          public static bool AsBool(this object val, bool dflt = false, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
               try
               {
                 if (val==null) return dflt;
 
-                if (val is string)
+                if (val is bool) return (bool)val;
+                else if (val is string)
                 {
                     var sval = ((string)val).Trim();
 
@@ -612,6 +661,7 @@ namespace NFX
                         string.Equals("yes",  sval, StringComparison.InvariantCultureIgnoreCase)||
                         string.Equals("t",    sval, StringComparison.InvariantCultureIgnoreCase)||
                         string.Equals("y",    sval, StringComparison.InvariantCultureIgnoreCase)||
+                        string.Equals("on",   sval, StringComparison.InvariantCultureIgnoreCase)||
                         string.Equals("ok",   sval, StringComparison.InvariantCultureIgnoreCase)||
                         string.Equals("pass", sval, StringComparison.InvariantCultureIgnoreCase)||
                         string.Equals("1", sval, StringComparison.InvariantCultureIgnoreCase)
@@ -626,6 +676,8 @@ namespace NFX
                     decimal dcval;
                     if (decimal.TryParse(sval, out dcval)) return dcval!=0;
                 }
+                else if (val is TriStateBool) { return ((TriStateBool)val)==TriStateBool.True; }
+                else if (val is char)   { var c = (char)val; if ( c=='T' || c=='t' || c=='Y' || c=='y' || c=='1')  return true; }
                 else if (val is int)    { if ( (int)val != 0)     return true; }
                 else if (val is double) { if ( (double)val != 0)  return true; }
                 else if (val is decimal){ if ( (decimal)val != 0) return true; }
@@ -642,12 +694,14 @@ namespace NFX
               }
          }
 
-
          public static bool? AsNullableBool(this object val, bool? dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
          {
               try
               {
                 if (val==null) return null;
+
+                if (val is TriStateBool) return ((TriStateBool)val).AsNullableBool();
+
                 return val.AsBool(false, ConvertErrorHandling.Throw);
               }
               catch
@@ -682,9 +736,9 @@ namespace NFX
                 else if (val is byte[])
                 {
                     var arr = (byte[])val;
-                    return new Guid(arr); 
+                    return new Guid(arr);
                 }
-                else 
+                else
                     return (Guid)val;
               }
               catch
@@ -700,7 +754,7 @@ namespace NFX
               try
               {
                 if (val==null) return null;
-                return val.AsGUID(dflt.Value, ConvertErrorHandling.Throw);
+                return val.AsGUID(dflt ?? Guid.Empty, ConvertErrorHandling.Throw);
               }
               catch
               {
@@ -737,9 +791,9 @@ namespace NFX
                     if (double.TryParse(sval, out dval)) return new DateTime((long)dval);
 
                     decimal dcval;
-                    if (decimal.TryParse(sval, out dcval)) return new DateTime((long)dcval);  
+                    if (decimal.TryParse(sval, out dcval)) return new DateTime((long)dcval);
             }
-            
+
             if (val is int) { return new DateTime((int)val); }
             if (val is long) { return new DateTime((long)val); }
             if (val is double) { return new DateTime((long)((double)val)); }
@@ -780,6 +834,8 @@ namespace NFX
 
          public static GDID AsGDID(this object val)
          {
+            if (val==null) return GDID.Zero;
+
             if (val is GDID) return (GDID)val;
 
             if (val is ELink) return ((ELink)val).GDID;
@@ -799,7 +855,7 @@ namespace NFX
                 }
                 catch{}
             }
-            
+
             if (val is ulong) { return new GDID(0,(ulong)val); }
             if (val is byte[]) { return new GDID((byte[])val); }
             return new GDID(0, Convert.ToUInt64(val));
@@ -833,6 +889,68 @@ namespace NFX
               }
          }
 
+         //20160622 DKh
+         public static GDIDSymbol AsGDIDSymbol(this object val)
+         {
+            if (val==null) return new GDIDSymbol();
+
+            if (val is GDIDSymbol) return (GDIDSymbol)val;
+            if (val is GDID) return new GDIDSymbol((GDID)val, val.ToString());
+
+            if (val is ELink) return ((ELink)val).AsGDIDSymbol;
+
+            if (val is string)
+            {
+                var sval = ((string)val).Trim();
+
+                GDID gdid;
+                if (GDID.TryParse(sval, out gdid)) return new GDIDSymbol(gdid, sval);
+
+                try
+                {
+                  var elink = new ELink(sval);
+                  return elink.AsGDIDSymbol;
+                }
+                catch{}
+            }
+
+            if (val is ulong) { return new GDIDSymbol( new GDID(0,(ulong)val), val.ToString()); }
+            if (val is byte[])
+            {
+              var buf = (byte[])val;
+              return new GDIDSymbol( new GDID(buf), buf.ToDumpString(DumpFormat.Hex));
+            }
+            return new GDIDSymbol(new GDID(0, Convert.ToUInt64(val)), val.ToString());
+         }
+
+
+         public static GDIDSymbol AsGDIDSymbol(this object val, GDIDSymbol dflt, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+              try
+              {
+                if (val==null) return dflt;
+                return val.AsGDIDSymbol();
+              }
+              catch
+              {
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
+         }
+
+         public static GDIDSymbol? AsNullableGDIDSymbol(this object val, GDIDSymbol? dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+              try
+              {
+                if (val==null) return null;
+                return val.AsGDIDSymbol();
+              }
+              catch
+              {
+                if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+                return dflt;
+              }
+         }
 
 
 
@@ -858,14 +976,14 @@ namespace NFX
                     if (double.TryParse(sval, out dval)) return new TimeSpan((long)dval);
 
                     decimal dcval;
-                    if (decimal.TryParse(sval, out dcval)) return new TimeSpan((long)dcval); 
+                    if (decimal.TryParse(sval, out dcval)) return new TimeSpan((long)dcval);
 
                     TimeSpan tsval;
                     if (TimeSpan.TryParse(sval, out tsval)) return tsval;
                 }
-               
+
                 var ticks = Convert.ToInt64(val);
-               
+
                 return new TimeSpan(ticks);
               }
               catch
@@ -903,7 +1021,7 @@ namespace NFX
 
                     return (TEnum)Enum.Parse(typeof(TEnum), sval, true);
                 }
-               
+
                 val = Convert.ToInt32(val);
                 return (TEnum)val;
               }
@@ -930,6 +1048,25 @@ namespace NFX
               }
          }
 
-
+         public static Uri AsUri(this object val, Uri dflt = null, ConvertErrorHandling handling = ConvertErrorHandling.ReturnDefault)
+         {
+           try
+           {
+             if (val == null) return null;
+             if (val is Uri) return (Uri)val;
+             if (val is string)
+             {
+               var uri = (string)val;
+               if (uri.IsNullOrWhiteSpace()) return null;
+               return new Uri(uri);
+             }
+             throw new NFXException("{0}.AsUri".Args(val.GetType().Name));
+           }
+           catch
+           {
+             if (handling!=ConvertErrorHandling.ReturnDefault) throw;
+             return dflt;
+           }
+         }
     }
 }

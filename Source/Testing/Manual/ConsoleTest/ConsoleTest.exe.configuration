@@ -14,35 +14,36 @@
 
     <log name="Logger">
 
-      <Ztime-location  utc-offset="3:22:00" description="Gde-to v sibiri" /> 
+      <Ztime-location  utc-offset="3:22:00" description="Gde-to v sibiri" />
 
         <destination  type="$(/$log-csv)"
              name="$(/$app-name)"
-             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
+             path="$(/$log-root)"
+             file-name="{0:yyyyMMdd}-$($name).csv.log"
              create-dir="true"
              min-level="Info"
         />
 
         <destination  type="$(/$log-csv)"
              name="$(/$app-name)-perf"
-             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).csv.log"
-             create-dir="true"
+             path="$(/$log-root)"
+             file-name="{0:yyyyMMdd}-$($name).csv.log"
              min-level="PerformanceInstrumentation"
              max-level="PerformanceInstrumentation"
         />
 
         <destination type="$(/$log-debug)"
              name="$(/$app-name)-debug"
-             filename="$(@/$log-root)$(::now fmt=yyyyMMdd)-$($name).log"
-             log-time-format="HHmmss.ffffff"
+             path="$(/$log-root)"
+             file-name="{0:yyyyMMdd}-$($name).csv.log"
              max-level="TraceZ"
         />
     </log>
 
     <!--
-  <data-store type="NFX.RecordModel.DataAccess.MongoDB.MongoDBModelDataStore, NFX.MongoDB" 
+  <data-store type="NFX.RecordModel.DataAccess.MongoDB.MongoDBModelDataStore, NFX.MongoDB"
               connect-string="mongodb://localhost"
-              db-name="test"  
+              db-name="test"
   />
 
 
@@ -88,7 +89,7 @@
       <providers>
             <!--provider name="zmq" type="NFX.ZeroMQ.ZeroMQProvider, NFX.ZeroMQ" max-sockets="2048"/-->
         </providers>
-        
+
         <bindings>
             <binding name="sync" type="NFX.Glue.Native.SyncBinding"
                 Zserver-dump="Wire,Message" dump-wire-format="Decimal" dump-path="$(@/$log-root)msg.dump"
@@ -123,7 +124,7 @@
                     snd-timeout="10000"
                     rcv-hwm="0"
             </binding-->
-           
+
             <binding name="inproc" type="NFX.Glue.Native.InProcBinding, NFX"/>
         </bindings>
 
@@ -142,9 +143,9 @@
             </server-->
 
             <!--server name="s3" node="zmq-slim://0.0.0.0:9001" contract-servers="ConsoleTest.JokeServer, ConsoleTest; ConsoleTest.JokeCalculatorServer, ConsoleTest"/-->
-            
+
         </servers>
-              
+
 
     </glue>
 
@@ -157,7 +158,7 @@
             id="glb_system"
             password="0000000000000">
         <rights>
-                                   
+
         </rights>
 
       </user>
@@ -198,10 +199,10 @@
         </rights>
 
       </user>
-      
-     
+
+
     </users>
-  
+
   </security>
 
 </nfx>

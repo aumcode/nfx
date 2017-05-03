@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ using NFX.Security;
 
 namespace NFX.Web.Pay
 {
-  public class PayConnectionParameters: INamed, IConfigurable
+  public class ConnectionParameters: INamed, IConfigurable
   {
     #region Static
 
@@ -43,13 +43,13 @@ namespace NFX.Web.Pay
       }
 
 
-      public static TParams Make<TParams>(IConfigSectionNode node) where TParams: PayConnectionParameters
+      public static TParams Make<TParams>(IConfigSectionNode node) where TParams: ConnectionParameters
       {
         return FactoryUtils.MakeAndConfigure<TParams>(node, typeof(TParams), args: new object[] {node});
       }
 
       public static TParams Make<TParams>(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
-        where TParams: PayConnectionParameters
+        where TParams: ConnectionParameters
       {
         var cfg = Configuration.ProviderLoadFromString(connStr, format).Root;
         return Make<TParams>(cfg);
@@ -59,33 +59,33 @@ namespace NFX.Web.Pay
 
     #region ctor
 
-		  public PayConnectionParameters() {}
+      public ConnectionParameters() {}
 
-      public PayConnectionParameters(IConfigSectionNode node) { Configure(node); }
+      public ConnectionParameters(IConfigSectionNode node) { Configure(node); }
 
-      public PayConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
+      public ConnectionParameters(string connStr, string format = Configuration.CONFIG_LACONIC_FORMAT)
       {
         var conf = Configuration.ProviderLoadFromString(connStr, format).Root;
-      } 
+      }
 
-	  #endregion
+    #endregion
 
     #region Properties
 
-		  [Config] public string Name { get; set; }
+      [Config] public string Name { get; set; }
 
-      public User User {get; set;} 
+      public User User {get; set;}
 
-	  #endregion
+    #endregion
 
     #region Protected
 
-		  public virtual void Configure(IConfigSectionNode node)
+      public virtual void Configure(IConfigSectionNode node)
       {
         ConfigAttribute.Apply(this, node);
       }
 
-	  #endregion
+    #endregion
   } //PayConnectionParameters
 
 }

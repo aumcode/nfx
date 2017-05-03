@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ using System.Text;
 namespace NFX.Serialization.JSON
 {
     /// <summary>
-    /// Denotes a CLR type-safe entity (class or struct) that can directly write itself as JSON content string. 
+    /// Denotes a CLR type-safe entity (class or struct) that can directly write itself as JSON content string.
     /// This mechanism bypasses all of the reflection/dynamic code.
-    /// This approach may be far more performant for some classes that need to serialize their state/data in JSON format, 
+    /// This approach may be far more performant for some classes that need to serialize their state/data in JSON format,
     /// than relying on general-purpose JSON serializer that can serialize any type but is slower
     /// </summary>
     public interface IJSONWritable
@@ -51,7 +51,7 @@ namespace NFX.Serialization.JSON
     /// <summary>
     /// Denotes a CLR type-safe entity (class or struct) that can directly read itself from IJSONDataObject which is supplied by JSON parser.
     /// This mechanism bypasses all of the reflection/dynamic code.
-    /// This approach may be far more performant for some classes that need to de-serialize their state/data from JSON format, 
+    /// This approach may be far more performant for some classes that need to de-serialize their state/data from JSON format,
     /// than relying on general-purpose JSON serializer that can deserialize any type but is slower.
     /// The particular type has to be allocated first, then it's instance can be hydrated with data/state using this method
     /// </summary>

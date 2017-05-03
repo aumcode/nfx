@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -81,9 +81,9 @@ namespace NFX.ApplicationModel
 
         public virtual Throttling.IThrottling Throttling { get; set; }
 
-        public virtual Environment.ConfigSectionNode ConfigRoot 
+        public virtual Environment.ConfigSectionNode ConfigRoot
         {
-           get{return m_ConfigRoot;} 
+           get{return m_ConfigRoot;}
            set
            {
              if (value==null)
@@ -93,7 +93,7 @@ namespace NFX.ApplicationModel
                 value = conf.Root;
              }
              m_ConfigRoot = value;
-           } 
+           }
          }
 
         public virtual DataAccess.IDataStore DataStore { get; set; }

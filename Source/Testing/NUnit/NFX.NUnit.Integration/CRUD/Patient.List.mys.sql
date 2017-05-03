@@ -9,8 +9,8 @@ ignore=marker
 
 select 
  'X' as Marker,
- t1.`counter`,                    
- t1.`ssn`,                   
+ t1.`counter`,
+ t1.`ssn`,
  t1.`lname` as last_name,
  t1.`fname` as first_name,
  t1.`DOB`,
@@ -25,7 +25,7 @@ select
   
  t1.`c_doctor`, 
  t2.`phone` as doctor_phone, 
- t2.`NPI`	as doctor_id       
+ t2.`NPI`	as doctor_id
 from
  tbl_patient t1
   left outer join tbl_doctor t2 on t1.c_doctor = t2.counter

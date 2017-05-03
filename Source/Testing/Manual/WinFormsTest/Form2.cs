@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -210,13 +210,13 @@ namespace WinFormsTest
 
     private void button4_Click(object sender, EventArgs e)
     {
-      grid.Configure(NFX.WinForms.BaseApplication.ConfRoot);
+      grid.Configure(App.ConfigRoot);
     }
 
     private void button5_Click(object sender, EventArgs e)
     {
-      grid.PersistConfiguration(NFX.WinForms.BaseApplication.ConfRoot);
-      NFX.WinForms.BaseApplication.ConfRoot.Configuration.Save();
+      grid.PersistConfiguration(App.ConfigRoot);
+      App.ConfigRoot.Configuration.Save();
       //MessageBox.Show(NFX.WinForms.BaseApplication.ConfRoot.Configuration.ToString());
     }
 

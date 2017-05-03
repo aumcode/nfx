@@ -1,7 +1,7 @@
 
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ namespace NFX.IO.ErrorHandling
       private readonly int m_Primitive;
       private readonly int m_GeneratorBase;
       private bool m_Initialized;
-    
+
     #endregion
 
     #region Properties
@@ -95,7 +95,7 @@ namespace NFX.IO.ErrorHandling
           return m_Polynomial1;
         }
       }
-    
+
     #endregion
 
     #region Public
@@ -157,7 +157,7 @@ namespace NFX.IO.ErrorHandling
         int expIndex = logSum % (m_Size - 1);
         return m_ExpTable[expIndex];
       }
-    
+
     #endregion
 
     #region .pvt. impl.

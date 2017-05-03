@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace NFX.Web.Pay
 {
   /// <summary>
   /// Represents a web terminal for pay systems that tokenize sensitive CC data via a call to provider
-  /// so that actual CC numbers never touch our servers in a plain form, instead tokens/nonces are supplied 
+  /// so that actual CC numbers never touch our servers in a plain form, instead tokens/nonces are supplied
   /// back by the provider tokenizer. This is needed for PCI compliance.
   /// </summary>
   public interface IPayWebTerminal
@@ -35,21 +35,10 @@ namespace NFX.Web.Pay
     IPaySystem PaySystem { get; }
 
     /// <summary>
-    /// Returns the names of scripts that should be included in client web page in the order of return.
-    /// </summary>
-    IEnumerable<string> GetIncludeScripts(PaySession session);
-
-    /// <summary>
-    /// Returns client script body that initializes WAVE.Pay by calling WAVE.Pay.init(...) to perform operation 
+    /// Returns client script body that initializes WAVE.Pay by calling WAVE.Pay.init(...) to perform operation
     /// against the provider.
-    /// </summary>                                                                     
-    string GetPayInitScript(PaySession session);
-
-    /// <summary>
-    /// Performs necessary conversions (if any) of the token returned by IPayWebTerminal to account
-    /// so it can be used by Charge/Refund methods  
     /// </summary>
-    Account ConvertWebTerminalTokenToAccount(ITransactionContext context, object token);
+    object GetPayInit();
   }
 
 
@@ -58,22 +47,22 @@ namespace NFX.Web.Pay
   /// </summary>
   public interface IPaySystem: INamed
   {
-    // /// <summary>
-    // /// Returns a pay terminal is this payment provider supports it or null
-    // /// </summary>
-    //todo: IPayWebTerminal WebTerminal { get; }
+    /// <summary>
+    /// Returns a pay terminal is this payment provider supports it or null
+    /// </summary>
+    IPayWebTerminal WebTerminal { get; }
 
     /// <summary>
-    /// Config node of params used inside <see cref="StartSession(PayConnectionParameters)"/> method
-    /// if PayConnectionParameters parameter is null 
+    /// Config node of params used inside <see cref="StartSession(ConnectionParameters, IPaySessionContext)"/> method
+    /// if PayConnectionParameters parameter is null
     /// </summary>
-    IConfigSectionNode DefaultSesssionConnectParamsCfg { get; set; }
+    IConfigSectionNode DefaultSessionConnectParamsCfg { get; set; }
 
     /// <summary>
     /// Processing fee types, such as: included in amount and surcharged.
     /// </summary>
     ProcessingFeeKind ChargeFeeKind { get; }
-               
+
     /// <summary>
     /// Processing fee types, such as: included in amount and surcharged.
     /// </summary>
@@ -89,43 +78,12 @@ namespace NFX.Web.Pay
     /// Returns true if this system supports transaction type in the specified currency (optional)
     /// </summary>
     bool IsTransactionTypeSupported(TransactionType type, string currencyISO = null);
-    
+
     /// <summary>
     /// Starts new pay session of system-specific type.
-    /// If cParams parameter is null <see cref="DefaultSesssionConnectParamsCfg"/> is used
+    /// If cParams parameter is null <see cref="DefaultSessionConnectParamsCfg"/> is used
     /// </summary>
-    PaySession StartSession(PayConnectionParameters cParams = null);
-
-    /// <summary>
-    /// Preliminarily checks possibility of given transaction.
-    /// Is not implemented in some providers (e.g. Stripe)
-    /// </summary>
-    PaymentException VerifyPotentialTransaction(PaySession session, ITransactionContext context, bool transfer, IActualAccountData from, IActualAccountData to, Amount amount);
-
-    /// <summary>
-    /// Charges funds from one account to another
-    /// </summary>
-    Transaction Charge(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, bool capture = true, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Completely or partialy refunds previuosly charged funds
-    /// </summary>
-    Transaction Refund(PaySession session, ITransactionContext context, ref Transaction charge, Amount? amount = null, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Transfers funds from one account to another.
-    /// </summary>
-    Transaction Transfer(PaySession session, ITransactionContext context, Account from, Account to, Amount amount, string description = null, object extraData = null);
-
-    /// <summary>
-    /// Returns a fee for transaction regardless of its size.
-    /// </summary>
-    Amount GetTransactionFee(string currencyISO, TransactionType type);
-
-    /// <summary>
-    /// Returns transaction percent as N * 10000, e.g. 75% = 750000.
-    /// </summary>
-    int GetTransactionPct(string currencyISO, TransactionType type);
+    PaySession StartSession(ConnectionParameters cParams = null, IPaySessionContext context = null);
   }
 
   /// <summary>

@@ -85,7 +85,7 @@ WAVE.Pay.Providers.Stripe = (function () {
               "expirationYear": card.exp_year,
               "fundingType": card.funding,
               "last4": card.last4,
-              "holder": card.name,
+              "holder": card.name
             };
         return result;
     }
@@ -109,7 +109,7 @@ WAVE.Pay.Providers.Stripe = (function () {
         var stripeCardData = 
             { 
                 number: paymentData.cardNumber.replace(/\s+|-/g, ""), 
-                exp_month: paymentData.cardExpMonth.length == 2 ? "0" + paymentData.cardExpMonth : paymentData.cardExpMonth,
+                exp_month: paymentData.cardExpMonth.length === 2 ? "0" + paymentData.cardExpMonth : paymentData.cardExpMonth,
                 exp_year: paymentData.cardExpYear
             };
         if (!WAVE.strEmpty(paymentData.cardCVC))

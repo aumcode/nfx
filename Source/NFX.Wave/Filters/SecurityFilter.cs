@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace NFX.Wave.Filters
   public sealed class SecurityFilter : WorkFilter
   {
     public const string CONFIG_BYPASS_SECTION = "bypass";
-    
+
     #region .ctor
       public SecurityFilter(WorkDispatcher dispatcher, string name, int order) : base(dispatcher, name, order) {}
       public SecurityFilter(WorkDispatcher dispatcher, IConfigSectionNode confNode): base(dispatcher, confNode) { ctor(confNode); }
@@ -43,12 +43,12 @@ namespace NFX.Wave.Filters
        var permsNode = confNode[Permission.CONFIG_PERMISSIONS_SECTION];
         if (permsNode.Exists)
           m_Permissions = Permission.MultipleFromConf(permsNode);
-       
+
        foreach(var cn in confNode[CONFIG_BYPASS_SECTION].Children.Where(cn=>cn.IsSameName(WorkMatch.CONFIG_MATCH_SECTION)))
           if(!m_BypassMatches.Register( FactoryUtils.Make<WorkMatch>(cn, typeof(WorkMatch), args: new object[]{ cn })) )
             throw new WaveException(StringConsts.CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR
                                          .Args(cn.AttrByName(Configuration.CONFIG_NAME_ATTR).Value,
-                                                             "{0}".Args(GetType().FullName))); 
+                                                             "{0}".Args(GetType().FullName)));
       }
 
     #endregion
@@ -77,7 +77,7 @@ namespace NFX.Wave.Filters
     #region Protected
 
       protected override void DoFilterWork(WorkContext work, IList<WorkFilter> filters, int thisFilterIndex)
-      {     
+      {
         if (m_Permissions!=null && m_Permissions.Any())
         {
           if (!m_BypassMatches.Any(match => match.Make(work)!=null))
@@ -90,8 +90,8 @@ namespace NFX.Wave.Filters
         this.InvokeNextWorker(work, filters, thisFilterIndex);
       }
 
-    #endregion  
-    
+    #endregion
+
   }
 
 }

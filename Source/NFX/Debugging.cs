@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ namespace NFX
         /// <summary>Default to the value of Debugging.DefaultDebugAction</summary>
         Default = 0,
         /// <summary>Throw exception</summary>
-        Throw,
+        Throw = 1 << 0,
         /// <summary>Write message to log</summary>
-        Log,
+        Log   = 1 << 1,
         /// <summary>Shortcut for throwing exception and writing a message to log</summary>
         ThrowAndLog = Throw | Log
     }
@@ -224,7 +224,7 @@ namespace NFX
     public static class Debugging
     {
         #region CONSTS
-            
+
             public const string CONFIG_DEFAULT_DEBUG_ACTION_ATTR = "debug-default-action";
             public const string CONFIG_DEBUG_CONF_REFRESH_ATTR   = "debug-conf-refresh";
             public const string CONFIG_TRACE_DISABLE_ATTR        = "trace-disable";
@@ -250,7 +250,7 @@ namespace NFX
                     s_ConfRefresh = App.ConfigRoot.AttrByName(CONFIG_DEBUG_CONF_REFRESH_ATTR).ValueAsBool(false);
 
                 DebugAction action = (s_ConfRefresh.Value) ? ReadDefaultDebugActionFromConfig() : s_DefaultDebugAction;
-    
+
                 return (action == DebugAction.Default) ? DebugAction.ThrowAndLog : action;
             }
             set

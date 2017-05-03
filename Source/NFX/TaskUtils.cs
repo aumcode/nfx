@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -37,11 +37,11 @@ namespace NFX
 
       first.ContinueWith(_ =>
       {
-        if (first.IsCanceled) 
+        if (first.IsCanceled)
         {
           tcs.TrySetCanceled();
         }
-        else if (first.IsFaulted) 
+        else if (first.IsFaulted)
         {
           tcs.TrySetException(first.Exception.InnerExceptions);
         }
@@ -78,7 +78,7 @@ namespace NFX
         }
         else if (first.IsCanceled)
         {
-          tcs.TrySetCanceled();            
+          tcs.TrySetCanceled();
         }
         else
         {
@@ -101,8 +101,8 @@ namespace NFX
     /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes
     /// </summary>
-    public static Task OnOk<T1>(this Task<T1> first, Func<T1, Task> next, 
-                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
+    public static Task OnOk<T1>(this Task<T1> first, Func<T1, Task> next,
+                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously,
                                 TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<object>();
@@ -112,7 +112,7 @@ namespace NFX
         if (first.IsFaulted)
           tcs.TrySetException(first.Exception.InnerExceptions);
         else if (first.IsCanceled)
-          tcs.TrySetCanceled();            
+          tcs.TrySetCanceled();
         else
         {
           try
@@ -127,7 +127,7 @@ namespace NFX
                 if (t.IsFaulted)
                   tcs.TrySetException(first.Exception.InnerExceptions);
                 else if (t.IsCanceled)
-                  tcs.TrySetCanceled();            
+                  tcs.TrySetCanceled();
                 else
                   tcs.TrySetResult(null);
               }, nextOptions);
@@ -137,7 +137,7 @@ namespace NFX
           {
             tcs.TrySetException(ex);
           }
-        }  
+        }
       }, firstOptions);
 
       return tcs.Task;
@@ -147,8 +147,8 @@ namespace NFX
     /// Chains task 'first' with task returned by 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes with result from 'next' task
     /// </summary>
-    public static Task<T1> OnOk<T1>(this Task first, Func<Task<T1>> next, 
-                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
+    public static Task<T1> OnOk<T1>(this Task first, Func<Task<T1>> next,
+                                TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously,
                                 TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<T1>();
@@ -173,7 +173,7 @@ namespace NFX
                 if (t.IsFaulted)
                   tcs.TrySetException(first.Exception.InnerExceptions);
                 else if (t.IsCanceled)
-                  tcs.TrySetCanceled();            
+                  tcs.TrySetCanceled();
                 else
                   tcs.TrySetResult(t.Result);
               }, nextOptions);
@@ -193,8 +193,8 @@ namespace NFX
     /// Chains task 'first' with task returned by 'next' passing result of 'first' to 'next' if first is completed, not cancelled and not faulted.
     /// Returns task that completes after task returned by 'next' completes with result from 'next' task
     /// </summary>
-    public static Task<T2> OnOk<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next, 
-                                        TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously, 
+    public static Task<T2> OnOk<T1, T2>(this Task<T1> first, Func<T1, Task<T2>> next,
+                                        TaskContinuationOptions firstOptions = TaskContinuationOptions.ExecuteSynchronously,
                                         TaskContinuationOptions nextOptions = TaskContinuationOptions.ExecuteSynchronously)
     {
       var tcs = new TaskCompletionSource<T2>();
@@ -219,7 +219,7 @@ namespace NFX
                 if (t.IsFaulted)
                   tcs.TrySetException(first.Exception.InnerExceptions);
                 else if (t.IsCanceled)
-                  tcs.TrySetCanceled();            
+                  tcs.TrySetCanceled();
                 else
                   tcs.TrySetResult(t.Result);
               }, nextOptions);
@@ -228,7 +228,7 @@ namespace NFX
           catch (Exception ex)
           {
             tcs.TrySetException(ex);
-          }            
+          }
         }
       }, firstOptions);
 
@@ -243,7 +243,7 @@ namespace NFX
       var tcs = new TaskCompletionSource<object>();
 
       task.ContinueWith(_ => {
-        
+
         if (task.IsFaulted || task.IsCanceled)
         {
           try
@@ -254,7 +254,7 @@ namespace NFX
           {
             tcs.TrySetException(ex);
             return;
-          }		 
+          }
         }
 
         if (task.IsFaulted)
@@ -286,7 +286,7 @@ namespace NFX
         {
           tcs.TrySetException(ex);
           return;
-        }		 
+        }
 
         if (task.IsFaulted)
           tcs.TrySetException(task.Exception.InnerExceptions);
@@ -317,7 +317,7 @@ namespace NFX
         {
           tcs.TrySetException(ex);
           return;
-        }		 
+        }
 
         if (task.IsFaulted)
           tcs.TrySetException(task.Exception.InnerExceptions);
@@ -335,7 +335,7 @@ namespace NFX
     /// Non-generic version of <see cref="AsCompletedTask{T}(Func{T})"/>
     /// </summary>
     /// <remarks>
-    /// Because there is no non-generic <see cref="System.Threading.Tasks.TaskCompletionSource{T}"/> version 
+    /// Because there is no non-generic <see cref="System.Threading.Tasks.TaskCompletionSource{T}"/> version
     /// generic version typed by <see cref="System.Object"/> is used (<see cref="System.Threading.Tasks.Task{T}"/> inherits from <see cref="System.Threading.Tasks.Task"/>)
     /// </remarks>
     public static Task AsCompletedTask(this Action act)
@@ -364,6 +364,47 @@ namespace NFX
       }
 
       return tcs.Task;
-    } 
+    }
+
+    /// <summary>
+    /// Returns the count of items in work segment along with the start index of the first item to be processed
+    /// by a particular worker in the worker set
+    /// </summary>
+    /// <param name="totalItemCount">Total item count in the set processed by all workers</param>
+    /// <param name="totalWorkerCount">Total number of workers int the set operating over the totalItemCount</param>
+    /// <param name="thisWorkerIndex">The index of THIS worker in the whole worker set</param>
+    /// <param name="startIndex">Returns the index of the first item in the assigned segment</param>
+    /// <returns>The count of items in the assigned segment</returns>
+    public static int AssignWorkSegment(int totalItemCount,
+                                        int totalWorkerCount,
+                                        int thisWorkerIndex,
+                                        out int startIndex)
+    {
+      if (totalItemCount  <= 0 ||
+          totalWorkerCount<= 0 ||
+          thisWorkerIndex <  0 ||
+          thisWorkerIndex >= totalWorkerCount)
+      {
+        startIndex = -1;
+        return 0;
+      }
+
+      var div = totalItemCount / totalWorkerCount;
+      var mod = totalItemCount % totalWorkerCount;
+
+      if (thisWorkerIndex < mod)
+      {
+        var count = div + 1;
+        startIndex = thisWorkerIndex * count;
+        return count;
+      }
+      else
+      {
+        var count = div;
+        startIndex = (mod * (div + 1))  +  ((thisWorkerIndex - mod) * count);
+        return count;
+      }
+    }
+
   }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,24 +29,44 @@ using NFX.Security;
 
 namespace NFX.ApplicationModel
 {
-  
   /// <summary>
-  /// Describes user session 
+  /// Denotes types of session login
+  /// </summary>
+  public enum SessionLoginType
+  {
+     /// <summary>
+     /// Not known
+     /// </summary>
+     Unspecified = 0,
+
+     /// <summary>
+     /// A human user has entered/supplied/provided the credentials
+     /// </summary>
+     Human,
+
+     /// <summary>
+     /// A robot/computer/process/API caller
+     /// </summary>
+     Robot
+  }
+
+  /// <summary>
+  /// Describes user session
   /// </summary>
   public interface ISession : IEndableInstance
   {
      /// <summary>
-     /// Gets unique session identifier 
+     /// Gets unique session identifier
      /// </summary>
      Guid ID { get; }
-    
-    
+
+
      /// <summary>
      /// References a user this session is for
      /// </summary>
      User  User { get; set;}
-     
-     
+
+
      /// <summary>
      /// Returns user's language preference or null
      /// </summary>
@@ -59,7 +79,7 @@ namespace NFX.ApplicationModel
      bool IsNew { get;}
 
      /// <summary>
-     /// Indicates that user login happened in current request processing cycle. This flag is 
+     /// Indicates that user login happened in current request processing cycle. This flag is
      /// useful for long term token assignment on release
      /// </summary>
      bool IsJustLoggedIn { get;}
@@ -70,7 +90,12 @@ namespace NFX.ApplicationModel
      DateTime? LastLoginUTC { get; }
 
      /// <summary>
-     /// References item dictionary that may be used to persist object graphs per session  
+     /// Returns last login type
+     /// </summary>
+     SessionLoginType LastLoginType { get; }
+
+     /// <summary>
+     /// References item dictionary that may be used to persist object graphs per session
      /// </summary>
      IDictionary<object, object> Items { get; }
 
@@ -100,7 +125,7 @@ namespace NFX.ApplicationModel
      /// Sets IsJustLoggedIn to true to indicate that user has supplied credentials/got checked via security manager.
      /// The caller of this method is implementation-specific and depends on what is considered to be "proof of users' identity"
      /// </summary>
-     void HasJustLoggedIn();
+     void HasJustLoggedIn(SessionLoginType loginType);
 
      /// <summary>
      /// Generates new GUID and stores it in ID storing old ID value in OldID property which is not serializable.
@@ -109,5 +134,5 @@ namespace NFX.ApplicationModel
      /// </summary>
      void RegenerateID();
   }
-  
+
 }

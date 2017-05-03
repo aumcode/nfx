@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -68,6 +68,9 @@ namespace NFX.DataAccess.CRUD
         Row        LoadOneRow(Query query);
         Task<Row>  LoadOneRowAsync(Query query);
 
+        Cursor OpenCursor(Query query);
+        Task<Cursor> OpenCursorAsync(Query query);
+
         int Save(params RowsetBase[] rowsets);
         Task<int> SaveAsync(params RowsetBase[] rowsets);
 
@@ -97,21 +100,21 @@ namespace NFX.DataAccess.CRUD
         ///  in which case statements may not be sent to destination until a call to Commit()
         /// </summary>
         bool SupportsTransactions { get;}
-       
+
        /// <summary>
        /// Returns a transaction object for backend. Even if backend does not support transactions internally, CRUDTransactions save changes
        ///  into the store on commit only
        /// </summary>
-       CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose); 
-        
+       CRUDTransaction BeginTransaction(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose);
+
        /// <summary>
        /// Returns a transaction object for backend. Even if backend does not support transactions internally, CRUDTransactions save changes
        ///  into the store on commit only
        /// </summary>
-       Task<CRUDTransaction> BeginTransactionAsync(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose); 
+       Task<CRUDTransaction> BeginTransactionAsync(IsolationLevel iso = IsolationLevel.ReadCommitted, TransactionDisposeBehavior behavior = TransactionDisposeBehavior.CommitOnDispose);
     }
 
-    
+
     /// <summary>
     /// Represents a DataStore that supports CRUD operations
     /// </summary>
@@ -127,18 +130,18 @@ namespace NFX.DataAccess.CRUD
         /// <summary>
         /// Provides classification for the underlying store
         /// </summary>
-        CRUDDataStoreType StoreType { get;} 
-        
+        CRUDDataStoreType StoreType { get;}
+
         /// <summary>
         /// Reolver that turns query into handler
         /// </summary>
-        ICRUDQueryResolver QueryResolver { get; } 
+        ICRUDQueryResolver QueryResolver { get; }
     }
 
 
     public interface ICRUDDataStoreImplementation : ICRUDDataStore, IDataStoreImplementation
     {
-        ICRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource);
+        CRUDQueryHandler MakeScriptQueryHandler(QuerySource querySource);
     }
 
     /// <summary>
@@ -149,70 +152,26 @@ namespace NFX.DataAccess.CRUD
         /// <summary>
         /// Retrieves a handler for supplied query. The implementation must be thread-safe
         /// </summary>
-        ICRUDQueryHandler Resolve(Query query);
+        CRUDQueryHandler Resolve(Query query);
 
         string ScriptAssembly { get; set; }
 
         IList<string> HandlerLocations { get; }
 
-        IRegistry<ICRUDQueryHandler> Handlers { get; }
+        IRegistry<CRUDQueryHandler> Handlers { get; }
 
         /// <summary>
         /// Registers handler location.
         /// The Resolver must be not started yet. This method is NOT thread safe
         /// </summary>
         void RegisterHandlerLocation(string location);
-        
+
         /// <summary>
         /// Unregisters handler location returning true if it was found and removed.
         /// The Resolve must be not started yet. This method is NOT thread safe
         /// </summary>
         bool UnregisterHandlerLocation(string location);
-        
-    }
 
-    /// <summary>
-    /// Represents an entity that can execute a query. The implementation may be called by multiple threads and must be safe
-    /// </summary>
-    public interface ICRUDQueryHandler : INamed
-    {
-        /// <summary>
-        /// Store instance that handler is under
-        /// </summary>
-        ICRUDDataStore Store { get;}
-        
-        
-        /// <summary>
-        /// Executes query without fetching any data but schema. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Schema GetSchema(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query without fetching any data but schema. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Task<Schema> GetSchemaAsync(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        RowsetBase Execute(ICRUDQueryExecutionContext context, Query query, bool oneRow = false);
-
-        /// <summary>
-        /// Executes query. The implementation may be called by multiple threads and must be safe
-        /// </summary>
-        Task<RowsetBase> ExecuteAsync(ICRUDQueryExecutionContext context, Query query, bool oneRow = false);
-
-        /// <summary>
-        /// Executes query that dows not return results. The implementation may be called by multiple threads and must be safe.
-        /// Returns rows affected
-        /// </summary>
-        int ExecuteWithoutFetch(ICRUDQueryExecutionContext context, Query query);
-
-        /// <summary>
-        /// Executes query that dows not return results. The implementation may be called by multiple threads and must be safe.
-        /// Returns rows affected
-        /// </summary>
-        Task<int> ExecuteWithoutFetchAsync(ICRUDQueryExecutionContext context, Query query);
     }
 
     /// <summary>
@@ -234,13 +193,13 @@ namespace NFX.DataAccess.CRUD
         /// </summary>
         Exception Validate(string targetName);
     }
-     
+
 
     /// <summary>
-    /// Denotes an entity, which is typically a row-derivative, that has extra data fields that are not 
+    /// Denotes an entity, which is typically a row-derivative, that has extra data fields that are not
     /// defined by particular schema and get represented as {name:value} map instead (schema-less data).
     /// This interface is usually implemented by rows that support version changing between releases, i.e. when
-    /// structured storage (such as Mongo DB) stores more fields than are currently declared in the row the extra fields will be placed 
+    /// structured storage (such as Mongo DB) stores more fields than are currently declared in the row the extra fields will be placed
     ///  in the AmorphousData collection. This interface also provides hook BeforeSave()/AfterLoad() that allow for transforms between
     ///  Amorphous and "hard-schema" data models
     /// </summary>
@@ -252,8 +211,8 @@ namespace NFX.DataAccess.CRUD
         /// This is needed for security, i.e. on the web returning false will prevent injection via posted forms
         /// </summary>
         bool AmorphousDataEnabled { get;}
-        
-        
+
+
         /// <summary>
         /// Returns data that does not comply with known schema (dynamic data).
         /// The field names are NOT case-sensitive
@@ -274,7 +233,7 @@ namespace NFX.DataAccess.CRUD
         /// The operation is performed per particular targetName (name of physical backend).
         /// Simply put, this method allows business code to "specify what to do after object gets loaded from THE PARTICULAR TARGET backend store".
         /// An example: suppose current MongoDB collection stores 3 fields for name, and we want to collapse First/Last/Middle name fields into one field.
-        /// If we change rowschema then it will only contain 1 field which is not present in the database, however those 'older' fields will get populated 
+        /// If we change rowschema then it will only contain 1 field which is not present in the database, however those 'older' fields will get populated
         /// into AmorphousData giving us an option to merge older 3 fields into 1 within AfterLoad() implementation
         /// </summary>
         void AfterLoad(string targetName);
@@ -305,6 +264,11 @@ namespace NFX.DataAccess.CRUD
         /// Relative cache priority which is used when WriteCacheMaxAgeSec>=0
         /// </summary>
         int WriteCachePriority{ get; }
+
+        /// <summary>
+        /// When true would cache the instance of AbsentData to signify the absence of data in the backend for key
+        /// </summary>
+        bool CacheAbsentData { get;}
     }
 
 }

@@ -55,6 +55,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NFX.Erlang\NFX.Erlang.csproj">
+      <Project>{f4cc3692-4836-429b-9f43-908d9e99b458}</Project>
+      <Name>NFX.Erlang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NFX\NFX.csproj">
       <Project>{e6bfa4d5-d2be-4be1-80fe-4536a22f5c45}</Project>
       <Name>NFX</Name>

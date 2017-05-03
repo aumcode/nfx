@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,14 +29,14 @@ namespace NFX.Environment
     public interface IEnvironmentVariableResolver
     {
         /// <summary>
-        /// Turns named variable into its value or null 
+        /// Turns named variable into its value or null
         /// </summary>
         string ResolveEnvironmentVariable(string name);
     }
 
 
     /// <summary>
-    /// Resolves variables using Windows environment variables. 
+    /// Resolves variables using Windows environment variables.
     /// NOTE: When serialized a new instance is created which will not equal by reference to static.Instance property
     /// </summary>
     [Serializable]//but there is nothing to serialize
@@ -69,7 +69,7 @@ namespace NFX.Environment
     [Serializable]
     public sealed class Vars : Dictionary<string, string>, IEnvironmentVariableResolver
     {
-        
+
         public Vars() : base(StringComparer.InvariantCultureIgnoreCase)
         {
 

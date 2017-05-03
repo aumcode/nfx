@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using NFX.CodeAnalysis.Source;
 
 namespace NFX.CodeAnalysis
 {
-    
+
     /// <summary>
     /// Defines various languages
     /// </summary>
@@ -60,16 +60,16 @@ namespace NFX.CodeAnalysis
                     IEnumerable<Language> result;
                     lock(s_Languages)
                         result = s_Languages.ToList();
-                    return result;     
+                    return result;
                 }
             }
 
             /// <summary>
-            /// Tries to find a language by file extension or returns UnspecifiedLanguage 
+            /// Tries to find a language by file extension or returns UnspecifiedLanguage
             /// </summary>
             public static Language TryFindLanguageByFileExtension(string fileExtension)
             {
-                return All.FirstOrDefault( 
+                return All.FirstOrDefault(
                             lng => lng.FileExtensions.Contains( fileExtension, StringComparer.InvariantCultureIgnoreCase)
                            ) ?? UnspecifiedLanguage.Instance;
             }
@@ -138,7 +138,7 @@ namespace NFX.CodeAnalysis
         {
             throw new NotSupportedException("UnspecifiedLanguage.MakeLexer()");
         }
-    } 
+    }
 
 
 }

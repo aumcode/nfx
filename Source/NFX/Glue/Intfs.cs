@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ using NFX.Glue.Protocol;
 namespace NFX.Glue
 {
     /// <summary>
-    /// Represents a contract for Glue - a technology that provides asynchronous distributed component interconnection 
+    /// Represents a contract for Glue - a technology that provides asynchronous distributed component interconnection
     /// </summary>
     public interface IGlue : IApplicationComponent, ILocalizedTimeProvider
     {
@@ -117,7 +117,7 @@ namespace NFX.Glue
         void ClientDispatchedRequest(ClientEndPoint client, RequestMsg request, CallSlot callSlot);
 
         void ClientDeliverAsyncResponse(ResponseMsg response);
-       
+
         /// <summary>
         /// Asynchronously dispatch client request
         /// </summary>

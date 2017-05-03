@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace NFX.CodeAnalysis.JSON
   /// <summary>
   /// Denotes JSON token types.
   /// NOTE: Although called JSON, this is really a JSON superset implementation that includes extra features:
-  ///  comments, directives, verbatim strings(start with $), ' or " string escapes, unquoted object key names 
+  ///  comments, directives, verbatim strings(start with $), ' or " string escapes, unquoted object key names
   /// </summary>
   public enum JSONTokenType
   {
@@ -36,34 +36,34 @@ namespace NFX.CodeAnalysis.JSON
         NONLANG_END,
 
             tComment,
-         
-        SYMBOLS_START,    
+
+        SYMBOLS_START,
             tComma,
-   
+
             tBraceOpen,
             tBraceClose,
-   
+
             tSqBracketOpen,
             tSqBracketClose,
             tDot,
         SYMBOLS_END,
 
             tIdentifier,
-    
+
             tPlus,
             tMinus,
             tColon,
 
-            
+
         LITERALS_START,
             NUMLITERALS_START,
                 tIntLiteral,
                 tLongIntLiteral,
                 tDoubleLiteral,
             NUMLITERALS_END,
-       
+
                 tStringLiteral,
-    
+
                 tTrue,
                 tFalse,
 

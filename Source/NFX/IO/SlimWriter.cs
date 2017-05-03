@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,19 +23,20 @@ using System.Reflection;
 
 
 using NFX.Inventorization;
+using NFX.Serialization.JSON;
 
 namespace NFX.IO
 {
-    
+
     /// <summary>
-    /// Writes primitives and other supported types to Slim-format stream. Use factory method of SlimFormat intance to create a new instance of SlimWriter class
+    /// Writes primitives and other supported types to Slim-format stream. Use factory method of SlimFormat instance to create a new instance of SlimWriter class
     /// </summary>
     [Inventory(Concerns=SystemConcerns.Testing | SystemConcerns.MissionCriticality)]
-    public class SlimWriter : WritingStreamer 
+    public class SlimWriter : WritingStreamer
     {
         #region .ctor
 
-            protected internal SlimWriter(Encoding encoding = null) : base(encoding)
+            protected internal SlimWriter() : base(null)
             {
             }
         #endregion
@@ -69,10 +70,10 @@ namespace NFX.IO
               m_Stream.Flush();
             }
 
-         
-         
-          
-        
+
+
+
+
           public override void Write(bool value)
           {
             m_Stream.WriteByte( value ? (byte)0xff : (byte)0);
@@ -88,7 +89,7 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
+
 
           public override void Write(byte value)
           {
@@ -105,7 +106,7 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
+
 
           public override void Write(byte[] buffer)
           {
@@ -174,10 +175,44 @@ namespace NFX.IO
 
             this.Write(len);
             for(int i=0; i<len; i++)
-              this.Write(value[i]); 
+              this.Write(value[i]);
           }
 
-  
+          public override void Write(float[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_FLOAT_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "floats", SlimFormat.MAX_FLOAT_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]);
+          }
+
+          public override void Write(decimal[] value)
+          {
+            if (value==null)
+            {
+              this.Write(false);
+              return;
+            }
+            this.Write(true);
+            var len = value.Length;
+            if (len>SlimFormat.MAX_DECIMAL_ARRAY_LEN)
+              throw new NFXIOException(StringConsts.SLIM_WRITE_X_ARRAY_MAX_SIZE_ERROR.Args(len, "decimals", SlimFormat.MAX_DECIMAL_ARRAY_LEN));
+
+            this.Write(len);
+            for(int i=0; i<len; i++)
+              this.Write(value[i]);
+          }
+
+
           public override void Write(char ch)
           {
             this.Write((short)ch);
@@ -194,7 +229,7 @@ namespace NFX.IO
               }
 
 
-  
+
           public override void Write(char[] buffer)
           {
             if (buffer==null)
@@ -202,7 +237,7 @@ namespace NFX.IO
               this.Write(false);
               return;
             }
-            
+
             var buf = m_Encoding.GetBytes(buffer);
             this.Write(buf);
           }
@@ -222,9 +257,18 @@ namespace NFX.IO
 
             this.Write(len);
             for(int i=0; i<len; i++)
-             this.Write(array[i]); 
+             this.Write(array[i]);
           }
-          
+
+          //DKh 20160418
+          //public override void Write(decimal value)
+          //{
+          //  var bits = decimal.GetBits(value);
+          //  this.Write( bits[0] );
+          //  this.Write( bits[1] );
+          //  this.Write( bits[2] );
+          //  this.Write( bits[3] );
+          //}
 
           public override void Write(decimal value)
           {
@@ -232,7 +276,11 @@ namespace NFX.IO
             this.Write( bits[0] );
             this.Write( bits[1] );
             this.Write( bits[2] );
-            this.Write( bits[3] );
+
+            byte sign = (bits[3] & 0x80000000) != 0 ? (byte)0x80 : (byte)0x00;
+            byte scale = (byte) ((bits[3] >> 16) & 0x7F);
+
+            this.Write( (byte)(sign | scale) );
           }
               public override void Write(decimal? value)
               {
@@ -244,12 +292,12 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
+
 
           public unsafe override void Write(double value)
           {
             ulong core = *(ulong*)(&value);
-	          
+
             m_Buff32[0] = (byte)core;
 	          m_Buff32[1] = (byte)(core >> 8);
 	          m_Buff32[2] = (byte)(core >> 16);
@@ -258,10 +306,10 @@ namespace NFX.IO
 	          m_Buff32[5] = (byte)(core >> 40);
 	          m_Buff32[6] = (byte)(core >> 48);
 	          m_Buff32[7] = (byte)(core >> 56);
-	          
+
             m_Stream.Write(m_Buff32, 0, 8);
           }
-  
+
               public override void Write(double? value)
               {
                 if (value.HasValue)
@@ -294,18 +342,18 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
+
 
           public override void Write(int value)
           {
             byte b = 0;
-            
+
             if (value<0)
             {
              b = 1;
              value = ~value;//turn off minus bit but dont +1
             }
-                       
+
             b = (byte)(b | ((value & 0x3f) << 1));
             value = value >> 6;
             var has = value != 0;
@@ -337,13 +385,13 @@ namespace NFX.IO
           public override void Write(long value)
           {
             byte b = 0;
-            
+
             if (value<0)
             {
              b = 1;
              value = ~value;//turn off minus bit but dont +1
             }
-                       
+
             b = (byte)(b | ((value & 0x3f) << 1));
             value = value >> 6;
             var has = value != 0;
@@ -371,10 +419,10 @@ namespace NFX.IO
                 this.Write(false);
               }
 
-        
+
           public override void Write(sbyte value)
           {
-            m_Stream.WriteByte((byte)value); 
+            m_Stream.WriteByte((byte)value);
           }
 
               public override void Write(sbyte? value)
@@ -387,18 +435,18 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
+
 
           public override void Write(short value)
           {
             byte b = 0;
-            
+
             if (value<0)
             {
              b = 1;
              value = (short)~value;//turn off minus bit but dont +1
             }
-                       
+
             b = (byte)(b | ((value & 0x3f) << 1));
             value = (short)(value >> 6);
             var has = value != 0;
@@ -426,51 +474,35 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
-          private const int STR_BUF_SZ = 32 * 1024;
 
-          private const int MAX_STR_LEN = STR_BUF_SZ / 2; //2 bytes per UTF16 character
-                                                          //this is done on purpose NOT to call
-                                                          //Encoding.GetByteCount()
-          [ThreadStatic]
-          private static byte[] s_StrBuff;
 
           public override void Write(string value)
           {
-            //20150626 DKh
-            //if (value==null)
-            //{
-            //  this.Write(false);
-            //  return;
-            //}
-            //var buf = m_Encoding.GetBytes(value);
-            //this.Write(buf);
-            
             if (value==null)
             {
               this.Write(false);
               return;
             }
-              
-            this.Write(true);  
-                      
+
+            this.Write(true);
+
             var len = value.Length;
-            if (len>MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
+            if (len>SlimFormat.MAX_STR_LEN)//This is much faster than Encoding.GetByteCount()
             {
               var buf = m_Encoding.GetBytes(value);
               this.Write(buf.Length);
               m_Stream.Write(buf, 0, buf.Length);
               return;
             }
-          
+
             //try to reuse pre-allocated buffer
-            if (s_StrBuff==null) s_StrBuff = new byte[STR_BUF_SZ];
-            var bcnt = m_Encoding.GetBytes(value, 0, len, s_StrBuff, 0);
+            if (SlimFormat.ts_StrBuff==null) SlimFormat.ts_StrBuff = new byte[SlimFormat.STR_BUF_SZ];
+            var bcnt = m_Encoding.GetBytes(value, 0, len, SlimFormat.ts_StrBuff, 0);
 
             this.Write(bcnt);
-            m_Stream.Write(s_StrBuff, 0, bcnt);
+            m_Stream.Write(SlimFormat.ts_StrBuff, 0, bcnt);
           }
-         
+
           public override void Write(uint value)
           {
             var has = true;
@@ -482,7 +514,7 @@ namespace NFX.IO
               if (has)
                b = (byte)(b | 0x80);
               m_Stream.WriteByte(b);
-            } 
+            }
           }
 
               public override void Write(uint? value)
@@ -495,7 +527,7 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-        
+
           public override void Write(ulong value)
           {
             var has = true;
@@ -521,7 +553,7 @@ namespace NFX.IO
                 this.Write(false);
               }
 
-        
+
           public override void Write(ushort value)
           {
             var has = true;
@@ -551,13 +583,13 @@ namespace NFX.IO
           public override void Write(MetaHandle value)
           {
             var meta = value.Metadata.HasValue;
-           
-            var handle = value.m_Handle; 
+
+            var handle = value.m_Handle;
 
             byte b = 0;
-            
+
             if (meta) b = 1;
-                                    
+
             b = (byte)(b | ((handle & 0x3f) << 1));
             handle = (handle >> 6);
             var has = handle != 0;
@@ -578,13 +610,13 @@ namespace NFX.IO
             {
               var vis = value.Metadata.Value;
               this.Write( vis.StringValue );
-              
+
               if (vis.StringValue==null)
                 this.Write( vis.IntValue );
             }
           }
 
-            
+
               public override void Write(MetaHandle? value)
               {
                 if (value.HasValue)
@@ -598,12 +630,12 @@ namespace NFX.IO
 
 
 
-        
+
           //public override void Write(byte[] buffer, int index, int count)
           //{
           //  m_Writer.Write(buffer, index, count);
           //}
-        
+
           //public override void Write(char[] chars, int index, int count)
           //{
           //  m_Writer.Write(chars, index, count);
@@ -632,7 +664,7 @@ namespace NFX.IO
 
 
           public override void Write(TimeSpan value)
-          {                       
+          {
             this.Write(value.Ticks);
           }
 
@@ -679,7 +711,7 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-         
+
 
           public override void Write(NFX.Glue.Protocol.TypeSpec spec)
           {
@@ -729,7 +761,7 @@ namespace NFX.IO
                 }
                 this.Write(false);
               }
-         
+
           public override void Write(VarIntStr value)
           {
             this.Write(value.StringValue);
@@ -748,7 +780,72 @@ namespace NFX.IO
                 this.Write(false);
               }
 
+          public override void Write(NLSMap map)
+          {
+            if (map.m_Data==null)
+            {
+              this.Write((ushort)0);
+              return;
+            }
 
+            this.Write((ushort)map.m_Data.Length);
+            for(var i=0; i<map.m_Data.Length; i++)
+            {
+              var nd = map.m_Data[i];
+              this.Write((byte)((nd.ISO & 0xff0000)>>16));
+              this.Write((byte)((nd.ISO & 0x00ff00)>>08));
+              this.Write((byte)((nd.ISO & 0xFF)));
+              this.Write(nd.Name);
+              this.Write(nd.Description);
+            }
+          }
+
+              public override void Write(NLSMap? value)
+              {
+                if (value.HasValue)
+                {
+                  this.Write(true);
+                  Write(value.Value);
+                  return;
+                }
+                this.Write(false);
+              }
+
+          public override void Write(Financial.Amount value)
+          {
+            this.Write(value.CurrencyISO);
+            this.Write(value.Value);
+          }
+
+              public override void Write(Financial.Amount? value)
+              {
+                if (value.HasValue)
+                {
+                  this.Write(true);
+                  Write(value.Value);
+                  return;
+                }
+                this.Write(false);
+              }
+
+          public override void Write(Collections.StringMap map)
+          {
+            if (map==null)
+            {
+              this.Write(false);
+              return;
+            }
+
+            this.Write(true);
+            this.Write(map.CaseSensitive);
+            this.Write((int)map.Count);
+
+            foreach(var kvp in map)
+            {
+              this.Write(kvp.Key);
+              this.Write(kvp.Value);
+            }
+          }
         #endregion
 
     }

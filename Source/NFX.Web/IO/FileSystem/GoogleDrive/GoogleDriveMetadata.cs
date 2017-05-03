@@ -1,6 +1,6 @@
-﻿/*<FILE_LICENSE>
+/*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,12 +32,12 @@ namespace NFX.IO.FileSystem.GoogleDrive.V2
     public static readonly string PARENTS       = "parents";
     public static readonly string EDITABLE      = "editable";
     public static readonly string MIME_TYPE     = "mimeType";
-    public static readonly string FILE_SIZE     = "fileSize";    
+    public static readonly string FILE_SIZE     = "fileSize";
     public static readonly string CREATED_DATE  = "createdDate";
     public static readonly string MODIFIED_DATE = "modifiedDate";
 
-    public static readonly string ASSERTION     = "assertion";  
-    public static readonly string GRANT_TYPE    = "grant_type"; 
+    public static readonly string ASSERTION     = "assertion";
+    public static readonly string GRANT_TYPE    = "grant_type";
     public static readonly string ACCESS_TOKEN  = "access_token";
   }
 }

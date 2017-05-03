@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,23 +30,46 @@ namespace NFX.Parsing
 {
   public static class Utils
   {
+    private const char SPACE = ' ';
+    private static readonly char[] FIELD_NAME_DELIMETERS = new char[] {' ', '-', '_'};
 
     /// <summary>
     /// Parses database field names (column names) and converts parts to human-readable description
     ///  like:
-    ///  "FIRST_NAME" -> "First Name",    
+    ///  "FIRST_NAME" -> "First Name",
     ///  "FirstName" -> "First Name",
     ///  "CHART_OF_ACCOUNTS" -> "Chart of Accounts"
     /// </summary>
     public static string ParseFieldNameToDescription(this string fieldName, bool capitalize)
     {
-      string result = fieldName;
-      var segs = fieldName.Split(' ', '-', '_');
+      if (fieldName.IsNullOrWhiteSpace()) return string.Empty;
 
-      if (capitalize)
-        result = segs.Select(s => s.Trim().ToLowerInvariant().CapitalizeFirstChar()).Aggregate( (s1,s2) => s1+" "+s2);
-      else
-        result = segs.Select(s => s.Trim().ToLowerInvariant()).Aggregate( (s1,s2) => s1+" "+s2);
+      var builder = new StringBuilder();
+      char prev = fieldName[0];
+      builder.Append(prev);
+
+      var length = fieldName.Length;
+      for (int i = 1; i < length; i++)
+      {
+        var curr = fieldName[i];
+        if (
+            !FIELD_NAME_DELIMETERS.Contains(prev) &&
+            !FIELD_NAME_DELIMETERS.Contains(curr) &&
+            (charCaseTransition(prev, curr) || charDigitTransition(prev, curr))
+           )
+        {
+            builder.Append(SPACE);
+        }
+
+        builder.Append(curr);
+        prev = curr;
+      }
+
+      var name = builder.ToString();
+      var segs = name.Split(FIELD_NAME_DELIMETERS, StringSplitOptions.RemoveEmptyEntries);
+      var result = capitalize ?
+                      segs.Select(s => s.Trim().ToLowerInvariant().CapitalizeFirstChar()).Aggregate((s1,s2) => s1+SPACE+s2) :
+                      segs.Select(s => s.Trim().ToLowerInvariant()).Aggregate((s1,s2) => s1+SPACE+s2);
 
       return result;
     }
@@ -102,7 +125,7 @@ namespace NFX.Parsing
     public static string CapturePatternMatch(this string str,     //     Pages/Dima/Welcome
                                                   string pattern,
                                                   char wc ='*',
-                                                  StringComparison comparisonType = StringComparison.InvariantCultureIgnoreCase) 
+                                                  StringComparison comparisonType = StringComparison.InvariantCultureIgnoreCase)
 
     {
        var i = pattern.IndexOf(wc);
@@ -134,7 +157,7 @@ namespace NFX.Parsing
                                          string pattern, //     some*e?s
                                          char wc ='*',
                                          char wsc ='?',
-                                         bool senseCase = false) 
+                                         bool senseCase = false)
     {
        if (str.IsNullOrWhiteSpace() && pattern.IsNullOrWhiteSpace()) return true;
 
@@ -153,7 +176,7 @@ namespace NFX.Parsing
        {
           var pc = pattern[ipat];
           if (pc==wsc)//?
-            continue; 
+            continue;
 
           if (pc==wc)//*
           {
@@ -163,7 +186,7 @@ namespace NFX.Parsing
             pattern = pattern.Substring(ipat+1);
             return MatchPattern(str.Substring(str.Length-pattern.Length), pattern, wc, wsc, senseCase);
           }
-           
+
           var sc = str[istr];
           if (!charEqual(sc, pc, senseCase)) return false;
        }
@@ -176,8 +199,14 @@ namespace NFX.Parsing
       return senseCase ? a==b : Char.ToUpperInvariant(a)==Char.ToUpperInvariant(b);
     }
 
+    private static bool charCaseTransition(char prev, char curr)
+    {
+      return  char.IsLower(prev) & char.IsUpper(curr);
+    }
 
-
-
+    private static bool charDigitTransition(char prev, char curr)
+    {
+      return char.IsDigit(prev) ^ char.IsDigit(curr);
+    }
   }
 }

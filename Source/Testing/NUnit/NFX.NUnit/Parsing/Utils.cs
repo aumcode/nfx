@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -38,6 +38,18 @@ namespace NFX.NUnit.Parsing
 
           Assert.AreEqual("First Name 2", "FIRST-NAME_2".ParseFieldNameToDescription(true));
           Assert.AreEqual("first name 2", "FIRST-NAME_2".ParseFieldNameToDescription(false));
+
+          Assert.AreEqual("First Name 013 S", "FirstName013S".ParseFieldNameToDescription(true));
+          Assert.AreEqual("first name 013 s", "FirstName013S".ParseFieldNameToDescription(false));
+
+          Assert.AreEqual("turn off", "TurnOFF".ParseFieldNameToDescription(false));
+          Assert.AreEqual("Turn Off", "TurnOFF".ParseFieldNameToDescription(true));
+
+          Assert.AreEqual("first name", "__FIRST__Name".ParseFieldNameToDescription(false));
+          Assert.AreEqual("First Name", "__FIRST__Name__".ParseFieldNameToDescription(true));
+
+          Assert.AreEqual("field 0 1", "field_0_1".ParseFieldNameToDescription(false));
+          Assert.AreEqual("Field 0 1", "field_0_1".ParseFieldNameToDescription(true));
         }
 
 

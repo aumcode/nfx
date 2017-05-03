@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2014 IT Adapter Inc / 2015 Aum Code LLC
+* Copyright 2003-2017 ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ namespace NFX.Environment
         {
           if (!clone.Exists)
             throw new ConfigException(StringConsts.CONFIGURATION_CLONE_EMPTY_NODE_ERROR);
-         
+
           m_Configuration = conf;
           m_Parent = parent;
           m_Name = conf.CheckAndAdjustNodeName(clone.Name);
@@ -99,8 +99,8 @@ namespace NFX.Environment
             {
                get { return m_Configuration;}
             }
-    
-    
+
+
             /// <summary>
             /// Determines whether this node really exists in configuration or is just a sentinel empty node
             /// </summary>
@@ -146,7 +146,7 @@ namespace NFX.Environment
               get
               {
                 if (string.IsNullOrEmpty(m_Value)) return null;
-                
+
                 var section = this as ConfigSectionNode;
                 if (section != null)
                   return section.EvaluateValueVariables(m_Value);
@@ -155,7 +155,7 @@ namespace NFX.Environment
               }
             }
 
-            
+
             /// <summary>
             /// Retrieves node value or null. The value getter performs evaluation of variables, while setter sets the value verbatim
             /// </summary>
@@ -164,7 +164,7 @@ namespace NFX.Environment
               get { return EvaluatedValue; }
               set
               {
-                checkCanModify();          
+                checkCanModify();
                 if (m_Value != value)
                 {
                   m_Value = value;
@@ -206,7 +206,7 @@ namespace NFX.Environment
             {
               get { return this.RootPath; }
             }
-    
+
             /// <summary>
             /// Returns path from root to this node
             /// </summary>
@@ -215,9 +215,9 @@ namespace NFX.Environment
               get
               {
                  if (!Parent.Exists) return "/";
-             
+
                  var children = Parent.Children.Where(cn=> cn.IsSameName(Name)).ToList();
-             
+
                  var idx = -1;
                  if (children.Count>1)
                  {
@@ -227,12 +227,12 @@ namespace NFX.Environment
                        idx = i;
                        break;
                      }
-                 } 
+                 }
 
                  string path = object.ReferenceEquals(Parent, m_Configuration.Root) ? string.Empty : Parent.RootPath;
 
-                                  
-                 
+
+
                  path += "/{0}{1}".Args(
                                         (this is ConfigAttrNode) ? "$" : string.Empty,
                                         (idx>=0) ? "[{0}]".Args(idx) : Name
@@ -253,9 +253,9 @@ namespace NFX.Environment
     {
       m_Modified = false;
     }
-    
+
     public abstract void Delete();
-    
+
 
     #region Value Accessors
 
@@ -278,7 +278,7 @@ namespace NFX.Environment
               return val.AsShort(dflt);
             }
 
-            
+
             public short? ValueAsNullableShort(short? dflt = 0, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -292,7 +292,7 @@ namespace NFX.Environment
               return val.AsUShort(dflt);
             }
 
-            
+
             public ushort? ValueAsNullableUShort(ushort? dflt = 0, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -339,7 +339,7 @@ namespace NFX.Environment
               return val.AsInt(dflt);
             }
 
-            
+
             public int? ValueAsNullableInt(int? dflt = 0, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -356,7 +356,7 @@ namespace NFX.Environment
               return val.AsUInt(dflt);
             }
 
-            
+
             public uint? ValueAsNullableUInt(uint? dflt = 0, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -373,7 +373,7 @@ namespace NFX.Environment
               return val.AsLong(dflt);
             }
 
-            
+
             public long? ValueAsNullableLong(long? dflt = 0, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -390,7 +390,7 @@ namespace NFX.Environment
               return val.AsULong(dflt);
             }
 
-            
+
             public ulong? ValueAsNullableULong(ulong? dflt = 0, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -407,7 +407,7 @@ namespace NFX.Environment
               return val.AsDouble(dflt);
             }
 
-            
+
             public double? ValueAsNullableDouble(double? dflt = 0d, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -423,7 +423,7 @@ namespace NFX.Environment
               return val.AsFloat(dflt);
             }
 
-            
+
             public float? ValueAsNullableFloat(float? dflt = 0f, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -439,7 +439,7 @@ namespace NFX.Environment
               return val.AsDecimal(dflt);
             }
 
-            
+
             public decimal? ValueAsNullableDecimal(decimal? dflt = 0m, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -456,7 +456,7 @@ namespace NFX.Environment
               return val.AsBool(dflt);
             }
 
-            
+
             public bool? ValueAsNullableBool(bool? dflt = false, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -473,7 +473,7 @@ namespace NFX.Environment
               return val.AsGUID(dflt);
             }
 
-            
+
             public Guid? ValueAsNullableGUID(Guid? dflt = null, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -488,7 +488,7 @@ namespace NFX.Environment
               return val.AsGDID(dflt);
             }
 
-            
+
             public GDID? ValueAsNullableGDID(GDID? dflt = null, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -505,7 +505,7 @@ namespace NFX.Environment
               return val.AsDateTime(dflt);
             }
 
-            
+
             public DateTime? ValueAsNullableDateTime(DateTime? dflt = null, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -523,7 +523,7 @@ namespace NFX.Environment
               return val.AsTimeSpan(dflt);
             }
 
-            
+
             public TimeSpan? ValueAsNullableTimeSpan(TimeSpan? dflt = null, bool verbatim = false)
             {
               var val = verbatim ? VerbatimValue : Value;
@@ -538,7 +538,7 @@ namespace NFX.Environment
             public TEnum ValueAsEnum<TEnum>(TEnum dflt = default(TEnum), bool verbatim = false) where TEnum : struct
             {
               var val = verbatim ? VerbatimValue : Value;
-              
+
               return val.AsEnum<TEnum>(dflt);
             }
 
@@ -555,16 +555,16 @@ namespace NFX.Environment
               /// Tries to get value as specified type or throws if it can not be converted
               /// </summary>
               public object ValueAsType(Type tp, bool verbatim = false, bool strict = true)
-              {        
+              {
                 try
-                {                                      
+                {
                   var val = verbatim ? VerbatimValue : Value;
 
                   return val.AsType(tp, strict);
                 }
                 catch(Exception error)
                 {
-                  throw new ConfigException(string.Format(StringConsts.CONFIGURATION_VALUE_COULD_NOT_BE_GOTTEN_AS_TYPE_ERROR, this.Name, tp.FullName), error); 
+                  throw new ConfigException(string.Format(StringConsts.CONFIGURATION_VALUE_COULD_NOT_BE_GOTTEN_AS_TYPE_ERROR, this.Name, tp.FullName), error);
                 }
               }
 
@@ -602,9 +602,9 @@ namespace NFX.Environment
 
 
     #region Private utils
-    
+
         internal void checkCanModify()
-        {  
+        {
           if (m_Configuration.IsReadOnly)
             throw new ConfigException(StringConsts.CONFIGURATION_READONLY_ERROR);
           if (!Exists)
@@ -691,13 +691,13 @@ namespace NFX.Environment
     #region Properties
 
         /// <summary>
-        /// Indicates whether this node has any child section nodes 
+        /// Indicates whether this node has any child section nodes
         /// </summary>
         public bool HasChildren
         {
           get { lock (m_Children) return m_Children.Count > 0; }
         }
-        
+
         /// <summary>
         /// Returns number of child section nodes
         /// </summary>
@@ -749,7 +749,7 @@ namespace NFX.Environment
         {
           get { return this.Children; }
         }
-        
+
         /// <summary>
         /// Enumerates all child nodes
         /// </summary>
@@ -772,14 +772,14 @@ namespace NFX.Environment
           get { lock (m_Attributes) return m_Attributes.ToList(); }
         }
 
-        
-        
+
+
         IConfigSectionNode IConfigSectionNode.this[params string[] names]
         {
           get { return this[names]; }
         }
-        
-        
+
+
         /// <summary>
         /// Retrieves section node by names, from left to right until existing node is found.
         /// If no existing node could be found then empty node instance is returned
@@ -790,7 +790,7 @@ namespace NFX.Environment
           {
             if (names==null || names.Length<1)
              throw new ConfigException(StringConsts.CONFIGURATION_SECTION_INDEXER_EMPTY_ERROR);
-            
+
             ConfigSectionNode result = null;
 
             lock (m_Children)
@@ -828,7 +828,7 @@ namespace NFX.Environment
           }
         }
 
-        
+
 
 
     #endregion
@@ -846,11 +846,11 @@ namespace NFX.Environment
           else
           {
             lock(Parent.m_Children)
-            {       
+            {
               Parent.m_Children.Remove(this);
             }
             Parent.m_Modified = true;
-          } 
+          }
         }
 
         /// <summary>
@@ -859,9 +859,9 @@ namespace NFX.Environment
         public void DeleteAllChildren()
         {
           checkCanModify();
-          
+
             lock(m_Children)
-            {       
+            {
               m_Children.Clear();
               m_Modified = true;
             }
@@ -873,14 +873,14 @@ namespace NFX.Environment
         public void DeleteAllAttributes()
         {
           checkCanModify();
-          
+
             lock(m_Attributes)
-            {       
+            {
               m_Attributes.Clear();
               m_Modified = true;
             }
         }
-    
+
 
         public ConfigSectionNode AddChildNode(string name)
         {
@@ -892,7 +892,7 @@ namespace NFX.Environment
           return AddChildNode(name, value == null ? null : value.ToString());
         }
 
-        
+
 
         /// <summary>
         /// Adds a new child section node to this node
@@ -900,7 +900,7 @@ namespace NFX.Environment
         public ConfigSectionNode AddChildNode(string name, string value)
         {
           checkCanModify();
-      
+
           lock (m_Children)
           {
             ConfigSectionNode node = new ConfigSectionNode(m_Configuration, this, name, value);
@@ -916,7 +916,7 @@ namespace NFX.Environment
         public ConfigSectionNode AddChildNode(IConfigSectionNode clone)
         {
           checkCanModify();
-      
+
           lock (m_Children)
           {
             var node = new ConfigSectionNode(m_Configuration, this, clone);
@@ -936,11 +936,11 @@ namespace NFX.Environment
         public ConfigSectionNode AddChildNodeFromMerge(IConfigSectionNode baseNode, IConfigSectionNode overrideNode, NodeOverrideRules rules = null)
         {
           checkCanModify();
-          
+
           var newNode = new ConfigSectionNode(m_Configuration, this, baseNode);
-          
+
           newNode.OverrideBy(overrideNode, rules);
-         
+
           lock (m_Children)
           {
             m_Children.Add(newNode);
@@ -963,13 +963,14 @@ namespace NFX.Environment
           if (rules==null) rules = NodeOverrideRules.Default;
 
           if (!IsSameName(other)) return false;
-          
+
           var ospec = rules.StringToOverrideSpec(this.AttrByName(rules.OverrideAttrName).Value);
-          
+
           switch(ospec)
           {
             case OverrideSpec.Stop: return false;
-            case OverrideSpec.All: 
+            case OverrideSpec.All:
+                                         if (other[rules.SectionDeleteName].Exists) { this.Delete(); return true; }
                                          MergeAttributes(other, rules);
                                          MergeSections(other, rules);
                                          Value = other.VerbatimValue;
@@ -977,11 +978,11 @@ namespace NFX.Environment
 
             case OverrideSpec.Attributes:
                                          MergeAttributes(other, rules);
-                                         break; 
+                                         break;
 
             case OverrideSpec.Sections:
                                          MergeSections(other, rules);
-                                         break; 
+                                         break;
 
             case OverrideSpec.Replace:
                                          ReplaceBy(other);
@@ -1003,20 +1004,24 @@ namespace NFX.Environment
         public void MergeAttributes(IConfigSectionNode other, NodeOverrideRules rules = null)
         {
           if (other==null || !other.Exists) return;
-         
+
           checkCanModify();
-         
+
           if (rules==null) rules = NodeOverrideRules.Default;
 
           var oattrs = other.Attributes;//thread safe
+          if (other.AttrByName(rules.AttributeClearName).ValueAsBool()) this.DeleteAllAttributes();
           foreach(var oatr in oattrs)
           {
+            if (oatr.IsSameName(rules.AttributeClearName))
+              continue;
+
             var existing = this.AttrByName(oatr.Name);
 
             if (existing.Exists)
-             existing.Value = oatr.VerbatimValue;
+              existing.Value = oatr.VerbatimValue;
             else
-             AddAttributeNode(oatr.Name, oatr.VerbatimValue);
+              AddAttributeNode(oatr.Name, oatr.VerbatimValue);
           }
         }
 
@@ -1027,33 +1032,51 @@ namespace NFX.Environment
         public void MergeSections(IConfigSectionNode other, NodeOverrideRules rules = null)
         {
           if (other==null || !other.Exists) return;
-         
+
           checkCanModify();
-         
+
           if (rules==null) rules = NodeOverrideRules.Default;
 
           var children = this.Children;//thread safe
           var osects = other.Children;//thread safe
+          var clear = other[rules.SectionClearName].Exists;
+          if (clear) this.DeleteAllChildren();
           foreach(var osect in osects)
           {
             if (osect.IsSameName(rules.SectionClearName))
-            {
-              this.DeleteAllChildren();
               continue;
-            }
-            
-            
-            var matches = children.Where(child => child.IsSameName(osect)).ToList();
-            if (matches.Count>1)
-            {
-              matches = matches.Where(child => child.AttrByName( rules.SectionMatchAttrName).ValueAsString()
-                                                                  .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).ValueAsString())).ToList();
-            }
 
-            if (matches.Count>0)
-             matches[0].OverrideBy(osect, rules);
+            //var matches = children.Where(child => child.IsSameName(osect)).ToList();
+            //if (matches.Count>1)
+            //{
+            //  matches = matches.Where(child => child.AttrByName( rules.SectionMatchAttrName).ValueAsString()
+            //                                                      .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).ValueAsString())).ToList();
+            //}
+
+            //if (matches.Count>0)
+            // matches[0].OverrideBy(osect, rules);
+            //else
+            // AddChildNode(osect.Name, osect.VerbatimValue).OverrideBy(osect, rules);
+
+            //20160329 DKh
+            var match = children.Where(child =>
+                                 child.IsSameName(osect) &&
+                                 child.AttrByName( rules.SectionMatchAttrName ).Value
+                                 .EqualsIgnoreCase(osect.AttrByName(rules.SectionMatchAttrName).Value)).FirstOrDefault();
+
+            var append = match == null;
+
+            if (!append)
+             append = rules.AppendSectionsWithoutMatchAttr &&
+                      osect.AttrByName(rules.SectionMatchAttrName).Value.IsNullOrWhiteSpace();
+
+            if (append)
+              AddChildNode(osect.Name, osect.VerbatimValue).OverrideBy(osect, rules);
             else
-             AddChildNode(osect.Name, osect.VerbatimValue).OverrideBy(osect, rules);
+              match.OverrideBy(osect, rules);
+
+
+
           }
         }
 
@@ -1064,9 +1087,9 @@ namespace NFX.Environment
         public void ReplaceBy(IConfigSectionNode other)
         {
           if (other==null) return;  //does not check for empty, as replace by empty basically deletes all children and attrs
-         
+
           checkCanModify();
-           
+
           Value = other.VerbatimValue;
 
           var ochildren = other.Children;//thread safe
@@ -1089,7 +1112,7 @@ namespace NFX.Environment
           m_Modified = true;
         }
 
-       
+
         public ConfigAttrNode AddAttributeNode(string name)
         {
           return AddAttributeNode(name, null);
@@ -1154,8 +1177,8 @@ namespace NFX.Environment
             else
               return m_Configuration.m_EmptyAttrNode;
         }
-    
-    
+
+
 
         /// <summary>
         /// Resets modification of this an all child nodes
@@ -1185,13 +1208,13 @@ namespace NFX.Environment
         /// Navigates the path and return the appropriate node. Example: '!/nfx/logger/destination/$file-name'
         /// </summary>
         /// <param name="path">If path starts from '!' then exception will be thrown if such a node does not exist;
-        ///  Use '/' as leading char for root, 
+        ///  Use '/' as leading char for root,
         ///  '..' for step up,
         ///  '$' for attribute name,
         ///  [int] for access to subsection or attribute by index,
         ///  section[value] for access using value comparison of named section,
         ///  section[attr=value] for access using value of sections named attr
-        /// Multiple paths may be coalesed using '|' or ';' 
+        /// Multiple paths may be coalesced  using '|' or ';'
         /// </param>
         /// <example>
         ///     Navigate("/vars/[3]"); Navigate("/tables/table[resident]"); Navigate("/vars/var1/$[2]");  Navigate("/tables/table[name=patient]");
@@ -1226,7 +1249,7 @@ namespace NFX.Environment
             else
              throw new ConfigException(StringConsts.CONFIGURATION_NAVIGATION_BAD_PATH_ERROR + path ?? StringConsts.NULL_STRING);
           }
-        } 
+        }
 
 
         IConfigSectionNode IConfigSectionNode.NavigateSection(string path)
@@ -1238,7 +1261,7 @@ namespace NFX.Environment
         /// Navigates the path and return the appropriate section node. Example '!/nfx/logger/destination'
         /// </summary>
         /// <param name="path">If path starts from '!' then exception will be thrown if such a section node does not exist;
-        ///  Use '/' as leading char for root, 
+        ///  Use '/' as leading char for root,
         ///  '..' for step up. Multiple paths may be coalesced using '|' or ';'
         /// </param>
         public ConfigSectionNode NavigateSection(string path)
@@ -1277,23 +1300,23 @@ namespace NFX.Environment
 
         [ThreadStatic]
         private static int ts_Count;
-        
+
         /// <summary>
         /// Evaluates a value string expanding all variables with var-paths relative to this node.
         /// Evaluates configuration variables such as "$(varname)" or "$(@varname)". Varnames are paths
-        /// to other config nodes from the same configuration or variable names when prefixed with "~". If varname starts with "@" then it gets combined 
+        /// to other config nodes from the same configuration or variable names when prefixed with "~". If varname starts with "@" then it gets combined
         ///  with input as path string. "~" is used to qualify environment vars that get resolved through Configuration.EnvironmentVarResolver
         ///  Example: `....add key="Schema.$(/A/B/C/$attr)" value="$(@~HOME)bin\Transforms\"...`
         /// </summary>
         public string EvaluateValueVariables(string value)
         {
           if (value == null) return null;
-                            
+
           var VAR_ESCAPE = m_Configuration.Variable_ESCAPE;
           if (value.IndexOf(VAR_ESCAPE)==0)
-           return value.Length > VAR_ESCAPE.Length ? value.Substring(VAR_ESCAPE.Length) : string.Empty;                  
-                            
-                                               
+           return value.Length > VAR_ESCAPE.Length ? value.Substring(VAR_ESCAPE.Length) : string.Empty;
+
+
           HashSet<string> vlist;
 
           if (ts_Count==0)
@@ -1301,7 +1324,7 @@ namespace NFX.Environment
             vlist = new HashSet<string>();
             ts_VarNames = vlist;
           }
-          else 
+          else
             vlist = ts_VarNames;
 
           ts_Count++;
@@ -1314,15 +1337,15 @@ namespace NFX.Environment
                        while(true)
                        {
                          var idxs = value.IndexOf(VAR_START);
-                         if (idxs<0) break; 
+                         if (idxs<0) break;
                          var idxe = value.IndexOf(VAR_END, idxs);
                          if (idxe<=idxs) break;
-             
+
                          var vname = value.Substring(idxs + VAR_START.Length, 1 + idxe - idxs - VAR_START.Length - VAR_END.Length).Trim();
 
                          if (vlist.Contains(vname))
                            throw new ConfigException(string.Format(StringConsts.CONFIG_RECURSIVE_VARS_ERROR, value));
-                         
+
                          vlist.Add(vname);
                          try
                          {
@@ -1378,11 +1401,20 @@ namespace NFX.Environment
           return NFX.CodeAnalysis.Laconfig.LaconfigWriter.Write(this, options);
         }
 
+        /// <summary>
+        /// Serializes configuration tree rooted at this node into JSON configuration format and returns it as a string
+        /// </summary>
+        public string ToJSONString(NFX.Serialization.JSON.JSONWritingOptions options = null)
+        {
+          return this.ToConfigurationJSONDataMap().ToJSON(options);
+        }
+
 
         /// <summary>
         /// Replaces all include pragmas - sections with specified names ('_include' by default), with pointed to configuration file content
         /// as obtained via the call to file system specified in every pragma.
-        /// If no FS specified then LocalFileStsrem is used. Returns true if include pragmas were found.
+        /// If no FS specified then LocalFileSystem is used. If no file name specified when try to allocate config node provider.
+        /// Returns true if include pragmas were found.
         /// Note: this method does not process new include pragmas that may have fetched during this call.
         /// Caution: the file system used in the operation may rely on the App container that may need to be set-up for the call to succeed,
         /// therefore calling this method before app has activated may fail, in such cases a temp app container may be set to get the config file
@@ -1398,7 +1430,7 @@ namespace NFX.Environment
         ///    sectionA{ a=2 b=3}
         ///    _include
         ///    {
-        ///      name=secret // '_include' will be replaced by 'secret' with sub-nodes from referenced file     
+        ///      name=secret // '_include' will be replaced by 'secret' with sub-nodes from referenced file
         ///      file="/etc/cluster/mysecret.laconf" //would come from local FS
         ///      required=false //if file is not found then nothing will be included instead of '_include' which will be just removed
         ///    }
@@ -1409,15 +1441,15 @@ namespace NFX.Environment
         ///      session { server-url="https://myhost.com/mySvnRepo/trunk/configs" user-name="user1" user-password="******"}
         ///    }
         ///  }
-        /// </example>      
+        /// </example>
         public bool ProcessIncludePragmas(bool recurse, string includePragma = null)
         {
-          if (includePragma.IsNullOrWhiteSpace()) 
+          if (includePragma.IsNullOrWhiteSpace())
             includePragma = Configuration.DEFAULT_CONFIG_INCLUDE_PRAGMA;
 
           var result = false;
           checkCanModify();
-          
+
           foreach(var child in Children)//Children does snapshot
           {
             if (child.IsSameName(includePragma))
@@ -1425,7 +1457,7 @@ namespace NFX.Environment
               var included = getIncludedNode(child);
               if (included!=null)
               {
-                child.include( included ); 
+                child.include( included );
                 result = true;
               }
               else
@@ -1442,18 +1474,36 @@ namespace NFX.Environment
         }
 
         /// <summary>
-        /// Converts this ConfigSectionNode to JSONDataMap.
-        /// Be carefull: that this operation can "loose" data from ConfigSectionNode.
-        /// In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap
+        /// Returns attribute values as string map
+        /// </summary>
+        public Collections.StringMap AttrsToStringMap(bool verbatim = false)
+        {
+          var result = new Collections.StringMap();
+
+          foreach(var atr in this.Attributes)
+           result[atr.Name] = verbatim ? atr.VerbatimValue : atr.Value;
+
+          return result;
+        }
+
+
+        /// <summary>
+        /// Converts this ConfigSectionNode to JSONDataMap. Contrast with ToConfigurationJSONDataMap
+        /// Be carefull: that this operation can "lose" data from ConfigSectionNode.
+        /// In other words some ConfigSectionNode information can not be reflected in corresponding JSONDataMap, for example
+        ///  this method overwrites duplicate key names and does not support section values
         /// </summary>
         public JSONDataMap ToJSONDataMap()
         {
           var map = new JSONDataMap();
-          buildMap(this, map);
+
+          if (this.Exists)
+            buildSectionMap(this, map);
+
           return map;
         }
 
-                  private void buildMap(ConfigSectionNode node, JSONDataMap map)
+                  private static void buildSectionMap(ConfigSectionNode node, JSONDataMap map)
                   {
                     foreach (var attr in node.Attributes)
                     {
@@ -1464,74 +1514,80 @@ namespace NFX.Environment
                     {
                       var childMap = new JSONDataMap();
                       map[childNode.Name] = childMap;
-                      buildMap(childNode, childMap);
+                      buildSectionMap(childNode, childMap);
                     }
                   }
 
+         /// <summary>
+         /// Returns this config node as JSON data map suitable for making JSONConfiguration.
+         /// Contrast with ToJSONDataMap
+         /// </summary>
+         public JSONDataMap ToConfigurationJSONDataMap()
+         {
+           var root = new JSONDataMap(false);
+
+           if (this.Exists)
+             root[this.Name] = buildSectionConfigJSONDataMap(this);
+
+           return root;
+         }
+
+               private static JSONDataMap buildSectionConfigJSONDataMap(ConfigSectionNode sect)
+               {
+                 var result = new JSONDataMap(false);
+
+                 if (sect.VerbatimValue.IsNotNullOrWhiteSpace())
+                   result[JSONConfiguration.SECTION_VALUE_ATTR] = sect.VerbatimValue;
+
+                 foreach(var atr in sect.Attributes)
+                   result[atr.Name] = atr.VerbatimValue;
+
+                 foreach(var cs in sect.Children)
+                 {
+                   var subSection = buildSectionConfigJSONDataMap(cs);
+                   var existing = result[cs.Name];
+                   if (existing==null)
+                     result[cs.Name] = subSection;
+                   else
+                   {
+                     if (existing is JSONDataMap)
+                     {
+                       var lst =  new List<JSONDataMap>();
+                       lst.Add((JSONDataMap)existing);
+                       lst.Add(subSection);
+                       result[cs.Name] = lst;
+                     }
+                     else
+                      ((List<JSONDataMap>)existing).Add(subSection);
+                   }
+                 }
+                 return result;
+               }
 
     #endregion
-         
+
     #region .pvt .impl
-       
 
         private ConfigSectionNode getIncludedNode(ConfigSectionNode pragma)
         {
           try
           {
-              var fileName = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR).ValueAsString();
-              if (fileName.IsNullOrWhiteSpace())
-                throw new ConfigException("missing '{0}'".Args(Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR));
+            var root = getIncludedNodeRoot(pragma);
 
-              var required = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_REQUIRED_ATTR).ValueAsBool(true);
+            if (root == null)
+              return null;
 
-              var ndFs = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_FS_SECTION];
-           
-              using(var fs = FactoryUtils.MakeAndConfigure<FileSystem>(ndFs, typeof(NFX.IO.FileSystem.Local.LocalFileSystem)))
-              {
-                FileSystemSessionConnectParams cParams;
+            //name section wrap
+            var asname = pragma.AttrByName(Configuration.CONFIG_NAME_ATTR).ValueAsString();
+            if (asname.IsNotNullOrWhiteSpace())
+            {
+              var wrap = new MemoryConfiguration();
+              wrap.Create();
+              wrap.Root.AddChildNode( root ).Name = asname;
+              root = wrap.Root;
+            }
 
-                var ndSession = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_SESSION_SECTION];
-            
-                if (ndSession.Exists)
-                  cParams = FileSystemSessionConnectParams.Make<FileSystemSessionConnectParams>(ndSession);
-                else 
-                  cParams = new FileSystemSessionConnectParams(){ User = NFX.Security.User.Fake};
-            
-                string source = "";
-                using(var fsSession = fs.StartSession(cParams)) 
-                {
-                   var file = fsSession[fileName] as NFX.IO.FileSystem.FileSystemFile;
-
-                   if (file==null)
-                   {
-                     if (required) throw new ConfigException("Referenced file '{0}' does not exist".Args(fileName));
-                     return null;
-                   }
-
-
-                   source = file.ReadAllText();
-
-                   string fmt = null;
-                   var j = fileName.LastIndexOf('.');
-                   if (j>0&&j<fileName.Length-1) fmt = fileName.Substring(j+1);                   
-                   
-                   if (fmt.IsNullOrWhiteSpace()) fmt = Configuration.CONFIG_LACONIC_FORMAT;
-
-                   var root = Configuration.ProviderLoadFromString(source, fmt).Root;
-                   
-                   //name section wrap
-                   var asname = pragma.AttrByName(Configuration.CONFIG_NAME_ATTR).ValueAsString();
-                   if (asname.IsNotNullOrWhiteSpace())
-                   {
-                     var wrap = new MemoryConfiguration();
-                     wrap.Create();
-                     wrap.Root.AddChildNode( root ).Name = asname;
-                     root = wrap.Root;
-                   }
-
-                   return root;
-                }
-              }
+            return root;
           }
           catch(Exception inner)
           {
@@ -1539,18 +1595,87 @@ namespace NFX.Environment
           }
         }
 
-       
+
+        private ConfigSectionNode getIncludedNodeRoot(ConfigSectionNode pragma)
+        {
+          var ndProvider = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION];
+
+          var fileName = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR).ValueAsString();
+          if (fileName.IsNullOrWhiteSpace() && !ndProvider.Exists)
+            throw new ConfigException("missing '{0}' or '{1}'".Args(Configuration.CONFIG_INCLUDE_PRAGMA_PROVIDER_SECTION,
+                                                                    Configuration.CONFIG_INCLUDE_PRAGMA_FILE_ATTR));
+
+          var required = pragma.AttrByName(Configuration.CONFIG_INCLUDE_PRAGMA_REQUIRED_ATTR).ValueAsBool(true);
+
+          //1  Try to get content form IConfigNodeProvider
+          if (ndProvider.Exists)
+          {
+            var provider = FactoryUtils.MakeAndConfigure<IConfigNodeProvider>(ndProvider, Configuration.ProcesswideConfigNodeProviderType);
+            try
+            {
+              var root = provider.ProvideConfigNode(this);
+
+              if (required && root==null) throw new ConfigException("'{0}'.ProvideConfigNode() returned null".Args(provider.GetType().FullName));
+
+              return root;
+            }
+            finally
+            {
+              var disposable = provider as IDisposable;
+              if (disposable!=null) disposable.Dispose();
+            }
+          }
+
+          //2 Try to get content form the file system
+          var ndFs = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_FS_SECTION];
+
+          using(var fs = FactoryUtils.MakeAndConfigure<IFileSystemImplementation>(ndFs, typeof(NFX.IO.FileSystem.Local.LocalFileSystem)))
+          {
+            FileSystemSessionConnectParams cParams;
+
+            var ndSession = pragma[Configuration.CONFIG_INCLUDE_PRAGMA_SESSION_SECTION];
+
+            if (ndSession.Exists)
+              cParams = FileSystemSessionConnectParams.Make<FileSystemSessionConnectParams>(ndSession);
+            else
+              cParams = new FileSystemSessionConnectParams(){ User = NFX.Security.User.Fake};
+
+            string source = "";
+            using(var fsSession = fs.StartSession(cParams))
+            {
+              var file = fsSession[fileName] as NFX.IO.FileSystem.FileSystemFile;
+
+              if (file==null)
+              {
+                if (required) throw new ConfigException("Referenced file '{0}' does not exist".Args(fileName));
+                return null;
+              }
+
+              source = file.ReadAllText();
+
+              string fmt = null;
+              var j = fileName.LastIndexOf('.');
+              if (j>0&&j<fileName.Length-1) fmt = fileName.Substring(j+1);
+
+              var root = Configuration.ProviderLoadFromString(source, fmt, Configuration.CONFIG_LACONIC_FORMAT).Root;
+
+              return root;
+            }
+          }
+        }
+
+
         internal void include(ConfigSectionNode other)
         {
           checkCanModify();
-         
+
           var oattrs = other.Attributes;
           var ochildren = other.Children;
 
           var parentChildren = Parent.m_Children;
 
           lock(parentChildren)
-          {       
+          {
               var idx = parentChildren.IndexOf(this);
               parentChildren.Remove(this);
 
@@ -1595,7 +1720,7 @@ namespace NFX.Environment
              path = string.Empty;
           }
 
-          
+
           if (path.StartsWith("/") || path.StartsWith("\\"))
           {
             if (path.Length>1)
@@ -1605,12 +1730,15 @@ namespace NFX.Environment
 
             result = this.Configuration.Root;
           }
-          
-          
+
+
           var segs = path.Split('/', '\\');
-          
+
           foreach(var s in segs)
           {
+               //20160319 DKh
+               if (!result.Exists) break;
+
                var seg = s.Trim();
 
                if (seg=="..")
@@ -1618,11 +1746,11 @@ namespace NFX.Environment
                     result = result.Parent;
                     continue;
                }
-              
+
                if (!(result is ConfigSectionNode))
                  throw new ConfigException(StringConsts.CONFIGURATION_PATH_SEGMENT_NOT_SECTION_ERROR.Args(seg, path));
 
-               var section = (ConfigSectionNode)result; 
+               var section = (ConfigSectionNode)result;
 
                var isAttr = false;
                if (seg.StartsWith("$")) //attribute
@@ -1630,11 +1758,11 @@ namespace NFX.Environment
                     seg = seg.Substring(1).Trim();
                     isAttr = true;
                }
-              
+
                if (seg.StartsWith("[")) //indexer like:   ../[0]  or  ../$[1] (attribute of section by index)
                {
                     var icl = seg.LastIndexOf(']');
-                                                    
+
                     if (icl<2)
                         throw new ConfigException(StringConsts.CONFIGURATION_PATH_INDEXER_SYNTAX_ERROR.Args(path));
 
@@ -1652,9 +1780,9 @@ namespace NFX.Environment
                {
                     if (isAttr)
                         throw new ConfigException(StringConsts.CONFIGURATION_PATH_VALUE_INDEXER_CAN_NOT_USE_WITH_ATTRS_ERROR.Args(path));
-                    
+
                     var iop = seg.IndexOf('[');
-                    
+
                     if (iop<1 || iop>=seg.Length-2)
                         throw new ConfigException(StringConsts.CONFIGURATION_PATH_VALUE_INDEXER_SYNTAX_ERROR.Args(path));
 
@@ -1663,22 +1791,22 @@ namespace NFX.Environment
                     var vstr = seg.Substring(iop+1, seg.Length - iop - 2);
 
                     var ieq = vstr.IndexOf('=');
-                    
+
                     if (ieq<0 || ieq==0 || ieq==vstr.Length-1)
-                      result = section.Children.FirstOrDefault(c =>  
+                      result = section.Children.FirstOrDefault(c =>
                                         c.IsSameName(name) &&
-                                        vstr.EqualsIgnoreCase( c.Value) ) 
+                                        vstr.EqualsIgnoreCase( c.Value) )
                                      ?? m_Configuration.m_EmptySectionNode;
                     else
                     {
                         var atr = vstr.Substring(0, ieq);
                         var val = vstr.Substring(ieq+1);
 
-                        result = section.Children.FirstOrDefault(c =>  
+                        result = section.Children.FirstOrDefault(c =>
                                         c.IsSameName(name) &&
-                                        val.EqualsIgnoreCase(c.AttrByName(atr).Value) ) 
+                                        val.EqualsIgnoreCase(c.AttrByName(atr).Value) )
                                      ?? m_Configuration.m_EmptySectionNode;
-                         
+
                     }
                }
                else
@@ -1693,17 +1821,17 @@ namespace NFX.Environment
           if (required && !result.Exists)
            throw new ConfigException(StringConsts.CONFIGURATION_NAVIGATION_REQUIRED_ERROR.Args(path));
 
-          return result; 
+          return result;
         }
 
 
-          
-          
-        private string getValueFromMacroOrEnvVarOrNavigationWithCheck(string name) 
-		    {
+
+
+        private string getValueFromMacroOrEnvVarOrNavigationWithCheck(string name)
+        {
                try
                {
-                    return getValueFromMacroOrEnvVarOrNavigation(name);     
+                    return getValueFromMacroOrEnvVarOrNavigation(name);
                }
                catch(Exception error)
                {
@@ -1712,44 +1840,44 @@ namespace NFX.Environment
         }
 
             private string getValueFromMacroOrEnvVarOrNavigation(string name)
-            {  
+            {
                 const char CO = (char)0xab;
                 const char CC = (char)0xbb;
-                
+
                 if (string.IsNullOrWhiteSpace(name)) return string.Empty;
-                
+
                 var MACRO_START = m_Configuration.Variable_MACRO_START;
-               
+
                 var midx = name.IndexOf(MACRO_START);
-                if ((midx<0)|| 
+                if ((midx<0)||
                     (midx+MACRO_START.Length >= name.Length)) return getValueFromEnvVarOrNavigation(name);
 
-                var macroSrc = CO + name.Substring(midx + MACRO_START.Length) + CC; 
+                var macroSrc = CO + name.Substring(midx + MACRO_START.Length) + CC;
                 name = name.Substring(0, midx);
-                
+
                 var value = getValueFromEnvVarOrNavigation(name);
                 var macro = new TokenParser(macroSrc, CO, CC)[0];
-                
+
                 value = runMacro(value, macro);
 
                 return value;
             }
 
-        private string getValueFromEnvVarOrNavigation(string name) 
-		    {
-			    if (string.IsNullOrWhiteSpace(name)) return string.Empty;
+            private string getValueFromEnvVarOrNavigation(string name)
+            {
+              if (string.IsNullOrWhiteSpace(name)) return string.Empty;
 
-                var ENV_MOD = m_Configuration.Variable_ENV_MOD;
+                    var ENV_MOD = m_Configuration.Variable_ENV_MOD;
 
-                if (name.StartsWith(ENV_MOD))
-                {
-                  name = name.Replace(ENV_MOD, string.Empty);
-                  return m_Configuration.ResolveEnvironmentVar(name) ?? string.Empty;
-                }
-                else
- 			     return  Navigate(name).Value ?? string.Empty;
-		    }
-          
+                    if (name.StartsWith(ENV_MOD))
+                    {
+                      name = name.Replace(ENV_MOD, string.Empty);
+                      return m_Configuration.ResolveEnvironmentVar(name) ?? string.Empty;
+                    }
+                    else
+               return  Navigate(name).Value ?? string.Empty;
+            }
+
 
             private string runMacro(string value, TokenParser.Token macro)
             {
@@ -1760,7 +1888,7 @@ namespace NFX.Environment
                 if (key!=null)
                 {
                  var attr = macro[key] as TokenParser.Token.Attribute;
-                 if (attr!=null) 
+                 if (attr!=null)
                    config.Root.AddAttributeNode( attr.Name, attr.Value );
                 }
                return m_Configuration.RunMacro(this, value, macro.Name, config.Root);
@@ -1778,7 +1906,7 @@ namespace NFX.Environment
                  var path = addPath(line.Substring(0, idx), newValue);
                      start = path.Length - 1;
                      path = addPath(path, line.Substring(idx+oldValue.Length));
-          
+
                  line = path;
                }
 
@@ -1795,11 +1923,11 @@ namespace NFX.Environment
               if (p2.Length==0) return p1;
 
 
-              if (p1.EndsWith("\\", StringComparison.OrdinalIgnoreCase) || 
+              if (p1.EndsWith("\\", StringComparison.OrdinalIgnoreCase) ||
                   p1.EndsWith("/", StringComparison.OrdinalIgnoreCase))
               {
                if (p1.Length>1)
-                p1 = p1.Remove(p1.Length-1); 
+                p1 = p1.Remove(p1.Length-1);
                else
                 p1 = string.Empty;
               }
@@ -1808,7 +1936,7 @@ namespace NFX.Environment
                   p2.StartsWith("/", StringComparison.OrdinalIgnoreCase))
               {
                if (p2.Length>1)
-                p2 = p2.Remove(0, 1); 
+                p2 = p2.Remove(0, 1);
                else
                 p2 = string.Empty;
               }
@@ -1830,7 +1958,7 @@ namespace NFX.Environment
   public sealed class ConfigAttrNode : ConfigNode, IConfigAttrNode
   {
     #region .ctor
-     
+
         internal ConfigAttrNode(Configuration conf, ConfigSectionNode parent) : base(conf, parent)
         {
 
@@ -1858,12 +1986,12 @@ namespace NFX.Environment
       {
         checkCanModify();
         if (!Parent.Exists) return;//this is safeguard
-        
+
         lock (Parent.m_Attributes)
         {
-          Parent.m_Attributes.Remove(this); 
+          Parent.m_Attributes.Remove(this);
         }
-       
+
         Parent.m_Modified = true;
       }
     #endregion
