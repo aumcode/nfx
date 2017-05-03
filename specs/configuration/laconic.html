@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Laconic Configuration Specification </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
+    <meta name="title" content="Laconic Configuration Specification ">
     <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -64,10 +64,65 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="laconic-configuration-specification">Laconic Configuration Specification</h1>
               
-              <p>Laconic Configuration</p>
-<p>...</p>
+<p>Laconic Configuration (Laconfig) is text data format like json or xml.
+Every laconfic file has root section with any number of subsections (named logical block delimeted with curly brackets)
+and attributes in it (named literal values)</p>
+<pre><code class="lang-js">root
+{
+  sec-a
+  {
+    attr1=1
+    attr2=&#39;xyz&#39;
+  }
 
+  sec-b
+  {
+    attr3=123
+    sec-c {}
+  }
+}
+</code></pre><p>Section and attributes names can be arbitrary string (even arbitrary Unicode character sequence).</p>
+<p>Laconfic admits commenting of a single lines or line blocks in a c#-like manner</p>
+<pre><code class="lang-js">root
+{
+  age=32 // single line comment
+
+  /* another one */
+
+  /* 
+    multiline 
+    comment 
+  */
+}
+</code></pre><p>An <code>_override</code> attribute is used for more sofisticated control over configuration section merge process.
+It has the following valid values:</p>
+<ul>
+<li>attributes - attributes-only override</li>
+<li>sections - sections-only override</li>
+<li>all - sections and attributes override</li>
+<li>replace - overriding section replaces base completely</li>
+<li>stop - no section can modify anything in this one</li>
+<li>fail - an exception is thrown when a child tries to override this section</li>
+</ul>
+<pre><code class="lang-js">root
+{
+  sec-a
+  {
+    _override=&#39;attributes&#39;
+    attr1=1
+    attr2=&#39;xyz&#39;
+  }
+
+  sec-b
+  {
+    _override=&#39;sections&#39;
+    attr3=123
+    sec-c {}
+  }
+}
+</code></pre>
             </article>
           </div>
           
