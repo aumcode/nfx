@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Naming/Coding Standarts </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Naming/Coding Standarts ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse nfx-navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="../index.html">
+                <img id="nfx-logo" src="../images/NFX.Logo.Source.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="namingcoding-standarts">Naming/Coding Standarts</h1>
+              
+<p><strong>NFX</strong> does not use any 3rd party components but for some DB-access (MongoDB and MySQL are primary targets). 
+<strong>NFX</strong> uses very BCL:</p>
+<ul>
+<li>Basic/primitive types: string, ints, doubles, decimal, dates, +Math</li>
+<li>Parallel task library: 25% of features - create, run, wait for completion, Task, Parallel.For/Each</li>
+<li>Collections: List, Dictionary, ConcurrentDictionary, HashSet, Queue</li>
+<li>Threading: Thread, lock()/Monitor, Interlocked*, AutoresetEvent</li>
+<li>Various: Stopwatch, Console, WinForms is used for SOME interactive tests(not needed for operation)</li>
+<li>Some ADO references (Reader/SQLStatement) in segregated data-access components</li>
+<li>Reflection API</li>
+<li>Drawing 2D (Graphics)</li>
+</ul>
+<p><strong>Avoid all non-BCL classes.</strong></p>
+<h2 id="naming-conventions">Naming Conventions</h2>
+<ul>
+<li><p>Instance non-pub fields must begin with m_ i.e. <code>m_BoxColor</code></p>
+</li>
+<li><p>Static non-pub fields must begin with s_ i.e. <code>s_ServerInstance</code></p>
+</li>
+<li><p>Thread-static non-pub fields must begin with ts_ i.e. <code>ts_LockList</code></p>
+</li>
+<li><p>Pub fields: PascalCase and preferably read-only i.e. <code>BoxColor</code></p>
+</li>
+<li><p>Pub properties: PascalCase i.e. <code>BoxColor</code></p>
+</li>
+<li><p>Pub Methods: PascalCase i.e. <code>GetPriority()</code></p>
+</li>
+<li><p>Protected Methods: PascalCase, core virtual overrides Do i.e. : pub <code>Open()</code> calls protected virtual <code>DoOpen()</code></p>
+</li>
+<li><p>Localizable stirng constants must be moved to StringConsts.cs. <strong>Do not use .NET localization mechanisms</strong></p>
+</li>
+<li><p>Non-localizable string constants must be declared in CONSTS region:</p>
+</li>
+<li><p>Numeric Time span values must end with _MS, _SEC, _MIN specifier. NFX does not use TimeSpan type for storing intervals in props/configs</p>
+</li>
+<li><p>Configuration Section names: CONFIG_SECT, Configuration attr names: CONFIG_ATTR</p>
+</li>
+<li><p>Default values constants should start from DEFAULT_*</p>
+</li>
+<li><p>MIN/MAX value bounds should be prefixed with MIN_/MAX_</p>
+</li>
+<li><p>Members prefixed with &quot;__&quot; are signifying a hack behaviour which is sometimes needed (see below). Business developers should never call these methods/members</p>
+</li>
+</ul>
+<h2 id="code-file-structure">Code File Structure</h2>
+<p>Try to organize code file structure per the spec below, in the particular order:</p>
+<ol>
+<li>License</li>
+<li>USINGS - System, NFX, then your namespaces(if any)</li>
+<li>Region &quot;CONSTS&quot;</li>
+<li>Region &quot;.ctor&quot; - constructors, and static factories/properties, Destructor() calls</li>
+<li>Region &quot;Fields/.pvt .flds&quot;</li>
+<li>Region &quot;Properties&quot; - public properties</li>
+<li>Region &quot;Pub&quot; - public methods</li>
+<li>Region &quot;Protected&quot; - protected methods/stubs</li>
+<li>Region &quot;.pvt/.pvt.impl&quot; - private implementations</li>
+</ol>
+<p>Please see EMPTY_CLASS_TEMPLATE.cs under &#39;/Source&#39;</p>
+<p><strong>C# Note:</strong> in C# the access specifiers are not granular enough and in many cases one needs to &quot;un-protect&quot; some otherwise read-only field or property 
+(i.e. there is no way to make some member public ONLY to descendants of X). 
+While it&#39;s true that &quot;internal&quot; is sometimes sufficient, sometimes one needs to create a &quot;hack&quot; setter. 
+In these cases please make an internal function that starts with &quot;__&quot; (at least one underscore) and declare it near the field/property of interest: </p>
+<pre><code class="lang-cs">private int m_Magic; 
+
+internal void __setMagic(int val){ m_Magic = val; }
+</code></pre><p>This approach (vs just making the whole field internal) allows to signify the &quot;non-normal&quot; case.</p>
+<h2 id="dos-and-donts">DOs and DONTs</h2>
+<ul>
+<li><p>Never return a null from a string property UNLESS you need to signify the absence of a value (this is a rare case). 
+In most cases (98%) return string properties like <code>get { return m_Name ?? string.Empty; }</code></p>
+</li>
+<li><p>DO NOT proliferate redundant argument checks that do not reflect the &quot;business logic&quot; - like much of the .NET code does. 
+This is because the <strong>NFX</strong> code is a runtime for Aum, in Aum code contracts/args checks are done using aspects. 
+No need to write 1000s of IF statements that are not needed. 
+For example, do not check for nulls in this method: <code>mystream.CompressInto(another)</code>. If the user gets &quot;obj ref&quot; its ok</p>
+</li>
+<li>DO protect MAJOR methods with arg checks (non null) where the purpose of the argument is not obvious. 
+Example: <code>code.Analyze( lexer, parser)</code> - if lexer is not null then parser must be supplied as well</li>
+<li>DO NOT raise generic exceptions, derive(directly or indirectly) all exceptions from <code>NFXException</code></li>
+<li>DO NOT use cryptic names</li>
+<li>DO NOT reference 3rd-party (non-clr/system-core) DLLs from <strong>NFX</strong></li>
+<li>DO NOT bring-in mixed license code</li>
+<li>DO NOT use NUGET or any other package manager. UNISTACK is all about NOT USING packages. 
+If you want to use <strong>NFX</strong> in your project which is already &quot;dirty&quot; with 3rd parties - that&#39;s fine, but you will have to copy <strong>NFX</strong> DLLs by hand. We will not take NUGET-related contributions into out code base</li>
+<li>DO NOT Rely on the proprietary Microsoft technologies from within <strong>NFX</strong>: WCF, IIS, PowerShell, ASP.NET, MVC, Razor, MS.SQL, Entity, LINQto*, ActiveDirectory, etc.</li>
+</ul>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
