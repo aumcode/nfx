@@ -1,0 +1,28 @@
+- name: Naming/Coding Standarts
+  href: codestandarts.md
+
+- name: Unistack
+  href: unistack.md
+
+- name: Configuration
+  href: configuration/index.md
+  items:
+    - name: Laconic
+      href: configuration/laconic.md
+    - name: XML
+      href: configuration/xml.md
+    - name: JSON
+      href: configuration/json.md
+
+- name: Relational Schema
+  href: rschema.md
+
+- name: Template
+  href: template/index.md
+  items:
+  - name: C#
+    href: template/cs.md
+  - name: JS
+    href: template/js.md
+  - name: HTML
+    href: template/html.md
