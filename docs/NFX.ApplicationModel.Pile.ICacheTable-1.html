@@ -378,6 +378,55 @@ Returns object that was gotten or created anew</p>
               </table>
               
               
+              <a id="NFX_ApplicationModel_Pile_ICacheTable_1_GetPointer_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.GetPointer*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_ICacheTable_1_GetPointer__0_System_Int32_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.GetPointer(`0,System.Int32)">GetPointer(TKey, Int32)</h4>
+              <div class="markdown level1 summary"><p>Gets cache object pointer by key, optionally filtering-out objects older than ageSec param if it is &gt; zero.
+Returns invalid pointer if there is no object with the specified key or it is older than ageSec limit.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">PilePointer GetPointer(TKey key, int ageSec = 0)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TKey</span></td>
+                    <td><span class="parametername">key</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">ageSec</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_ApplicationModel_Pile_ICacheTable_1_Put_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.Put*"></a>
               <h4 id="NFX_ApplicationModel_Pile_ICacheTable_1_Put__0_System_Object_System_Nullable_System_Int32__System_Int32_System_Nullable_System_DateTime__" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.Put(`0,System.Object,System.Nullable{System.Int32},System.Int32,System.Nullable{System.DateTime})">Put(TKey, Object, Nullable&lt;Int32&gt;, Int32, Nullable&lt;DateTime&gt;)</h4>
               <div class="markdown level1 summary"><p>Puts an object identified by a key into cache returning the result of the put.
@@ -448,9 +497,79 @@ For example, put may have added nothing if the table is capped and the space is 
               </table>
               
               
+              <a id="NFX_ApplicationModel_Pile_ICacheTable_1_PutPointer_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.PutPointer*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_ICacheTable_1_PutPointer__0_NFX_ApplicationModel_Pile_PilePointer_System_Nullable_System_Int32__System_Int32_System_Nullable_System_DateTime__" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.PutPointer(`0,NFX.ApplicationModel.Pile.PilePointer,System.Nullable{System.Int32},System.Int32,System.Nullable{System.DateTime})">PutPointer(TKey, PilePointer, Nullable&lt;Int32&gt;, Int32, Nullable&lt;DateTime&gt;)</h4>
+              <div class="markdown level1 summary"><p>Puts a pointer identified by a key into cache returning the result of the put.
+For example, put may have added nothing if the table is capped and the space is occupied with data of higher priority</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">PutResult PutPointer(TKey key, PilePointer ptr, int ? maxAgeSec = null, int priority = 0, DateTime? absoluteExpirationUTC = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">TKey</span></td>
+                    <td><span class="parametername">key</span></td>
+                    <td><p>A table-wide unique obvject key</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td><span class="parametername">ptr</span></td>
+                    <td><p>A valid pointer to put</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+                    <td><span class="parametername">maxAgeSec</span></td>
+                    <td><p>If null then the default maxAgeSec is taken from Options property, otherwise specifies the length of items life in seconds</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">priority</span></td>
+                    <td><p>The priority of this item. If there is no space in future the items with lower priorities will not evict existing data with highr priorities</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.DateTime</span>&gt;</td>
+                    <td><span class="parametername">absoluteExpirationUTC</span></td>
+                    <td><p>Optional UTC timestamp of object eviction from cache</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PutResult.html">PutResult</a></td>
+                    <td><p>The status of put - whether item was inserted/replaced(if key exists)/overwritten or collided with higher-prioritized existing data</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_ApplicationModel_Pile_ICacheTable_1_Rejuvenate_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.Rejuvenate*"></a>
               <h4 id="NFX_ApplicationModel_Pile_ICacheTable_1_Rejuvenate__0_" data-uid="NFX.ApplicationModel.Pile.ICacheTable`1.Rejuvenate(`0)">Rejuvenate(TKey)</h4>
-              <div class="markdown level1 summary"><p>Resets inetrnal object age returning true of object was found and rejuvenated</p>
+              <div class="markdown level1 summary"><p>Resets internal object age returning true of object was found and rejuvenated</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -768,7 +887,12 @@ For example, put may have added nothing if the table is capped and the space is 
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2006-2017 <strong>ITAdapter Corp Inc </strong>
+            <a href="http://itadapter.com/" target="_blank">
+              <img id="itadapter-logo-small" src="../images/itadapter.Logo.png">
+            </a>
+            <br>
+            Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

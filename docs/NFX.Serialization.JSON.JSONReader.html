@@ -457,7 +457,7 @@
               
               
               <a id="NFX_Serialization_JSON_JSONReader_ToRow_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow*"></a>
-              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow_NFX_DataAccess_CRUD_Row_NFX_Serialization_JSON_JSONDataMap_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow(NFX.DataAccess.CRUD.Row,NFX.Serialization.JSON.JSONDataMap,System.Boolean)">ToRow(Row, JSONDataMap, Boolean)</h4>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow_NFX_DataAccess_CRUD_Row_NFX_Serialization_JSON_JSONDataMap_System_Boolean_System_Nullable_NFX_Serialization_JSON_JSONReader_NameBinding__" data-uid="NFX.Serialization.JSON.JSONReader.ToRow(NFX.DataAccess.CRUD.Row,NFX.Serialization.JSON.JSONDataMap,System.Boolean,System.Nullable{NFX.Serialization.JSON.JSONReader.NameBinding})">ToRow(Row, JSONDataMap, Boolean, Nullable&lt;JSONReader.NameBinding&gt;)</h4>
               <div class="markdown level1 summary"><p>Converts JSONMap into supplied row instance.
 The extra data found in JSON map will be placed in AmorphousData dictionary if the row implemets IAmorphousData, discarded otherwise.
 Note: This method provides &quot;the best match&quot; and does not guarantee that all data will/can be converted from JSON, i.e.
@@ -466,7 +466,7 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static void ToRow(Row row, JSONDataMap jsonMap, bool fromUI = true)</code></pre>
+                <pre><code class="lang-csharp hljs">public static void ToRow(Row row, JSONDataMap jsonMap, bool fromUI = true, JSONReader.NameBinding? nameBinding = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -496,12 +496,17 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
                     <td><p>When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</p>
 </td>
                   </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONReader.NameBinding.html">JSONReader.NameBinding</a>&gt;</td>
+                    <td><span class="parametername">nameBinding</span></td>
+                    <td></td>
+                  </tr>
                 </tbody>
               </table>
               
               
               <a id="NFX_Serialization_JSON_JSONReader_ToRow_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow*"></a>
-              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow_System_Type_NFX_Serialization_JSON_JSONDataMap_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow(System.Type,NFX.Serialization.JSON.JSONDataMap,System.Boolean)">ToRow(Type, JSONDataMap, Boolean)</h4>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow_System_Type_NFX_Serialization_JSON_JSONDataMap_System_Boolean_System_Nullable_NFX_Serialization_JSON_JSONReader_NameBinding__" data-uid="NFX.Serialization.JSON.JSONReader.ToRow(System.Type,NFX.Serialization.JSON.JSONDataMap,System.Boolean,System.Nullable{NFX.Serialization.JSON.JSONReader.NameBinding})">ToRow(Type, JSONDataMap, Boolean, Nullable&lt;JSONReader.NameBinding&gt;)</h4>
               <div class="markdown level1 summary"><p>Converts JSONMap into typed row of the requested type.
 The requested type must be derived from NFX.DataAccess.CRUD.TypedRow.
 The extra data found in JSON map will be placed in AmorphousData dictionary if the row implemets IAmorphousData, discarded otherwise.
@@ -511,7 +516,7 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static TypedRow ToRow(Type type, JSONDataMap jsonMap, bool fromUI = true)</code></pre>
+                <pre><code class="lang-csharp hljs">public static TypedRow ToRow(Type type, JSONDataMap jsonMap, bool fromUI = true, JSONReader.NameBinding? nameBinding = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -541,6 +546,11 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
                     <td><p>When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</p>
 </td>
                   </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONReader.NameBinding.html">JSONReader.NameBinding</a>&gt;</td>
+                    <td><span class="parametername">nameBinding</span></td>
+                    <td></td>
+                  </tr>
                 </tbody>
               </table>
               <h5 class="returns">Returns</h5>
@@ -561,14 +571,13 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
               
               
               <a id="NFX_Serialization_JSON_JSONReader_ToRow_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow*"></a>
-              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow__1_NFX_Serialization_JSON_JSONDataMap_System_Boolean_" data-uid="NFX.Serialization.JSON.JSONReader.ToRow``1(NFX.Serialization.JSON.JSONDataMap,System.Boolean)">ToRow&lt;T&gt;(JSONDataMap, Boolean)</h4>
-              <div class="markdown level1 summary"><p>Generic version of</p>
-<a class="xref" href="NFX.Serialization.JSON.JSONReader.html#NFX_Serialization_JSON_JSONReader_ToRow_System_Type_NFX_Serialization_JSON_JSONDataMap_System_Boolean_">ToRow(Type, JSONDataMap, Boolean)</a>
+              <h4 id="NFX_Serialization_JSON_JSONReader_ToRow__1_NFX_Serialization_JSON_JSONDataMap_System_Boolean_System_Nullable_NFX_Serialization_JSON_JSONReader_NameBinding__" data-uid="NFX.Serialization.JSON.JSONReader.ToRow``1(NFX.Serialization.JSON.JSONDataMap,System.Boolean,System.Nullable{NFX.Serialization.JSON.JSONReader.NameBinding})">ToRow&lt;T&gt;(JSONDataMap, Boolean, Nullable&lt;JSONReader.NameBinding&gt;)</h4>
+              <div class="markdown level1 summary"><p>Generic version of ToRow(Type, JSONDataMap, bool)/&gt;</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static T ToRow&lt;T&gt;(JSONDataMap jsonMap, bool fromUI = true)where T : TypedRow</code></pre>
+                <pre><code class="lang-csharp hljs">public static T ToRow&lt;T&gt;(JSONDataMap jsonMap, bool fromUI = true, JSONReader.NameBinding? nameBinding = null)where T : TypedRow</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -588,6 +597,11 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
                   <tr>
                     <td><span class="xref">System.Boolean</span></td>
                     <td><span class="parametername">fromUI</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="NFX.Serialization.JSON.JSONReader.NameBinding.html">JSONReader.NameBinding</a>&gt;</td>
+                    <td><span class="parametername">nameBinding</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -754,7 +768,12 @@ it can only convert one dimensional arrays and Lists of either primitive or Type
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2006-2017 ITAdapter Corp Inc<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2006-2017 <strong>ITAdapter Corp Inc </strong>
+            <a href="http://itadapter.com/" target="_blank">
+              <img id="itadapter-logo-small" src="../images/itadapter.Logo.png">
+            </a>
+            <br>
+            Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

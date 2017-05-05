@@ -906,15 +906,6 @@ div.embeddedvideo iframe {
   margin: 8px 8px 8px 0;
 }
 
-.div-ita-container {
-  float: right;
-  margin-top: 10px;
-}
-
-.div-ita-container, .container {
-  display: inline-block;
-}
-
 .imgHomePage {
   width:  47%;
   margin: 10px;
