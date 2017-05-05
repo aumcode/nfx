@@ -145,6 +145,7 @@
   <ItemGroup>
     <Content Include="Templatization\JS\jsCompiler.test.html" />
     <Content Include="Templatization\JS\compiled.js" />
+    <Content Include="Templatization\JS\_include.js" />
     <EmbeddedResource Include="Templatization\NHT\Template.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

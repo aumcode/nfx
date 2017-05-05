@@ -99,8 +99,8 @@ namespace NFX.Templatization
     #region Protected
     protected override void DoCompileTemplateSource(CompileUnit unit)
     {
-      var text = unit.TemplateSource.GetSourceContent().ToString().Trim();
-      var icname = unit.TemplateSource.InferClassName();
+      var icname =  unit.TemplateSource.InferClassName();
+      var text =  getSource(unit);
 
       var blockCount = 0;
       var result = transpile(text, @"\/\*{3}(.*?)\*{3}\/", false, ref blockCount);
@@ -116,13 +116,31 @@ namespace NFX.Templatization
 
     #region .pvt
 
+    private string getSource(CompileUnit unit)
+    {
+      var source = unit.TemplateSource.GetSourceContent().ToString().Trim();
+      var r = new Regex(@"\/\*{3}\@(.*?)\*{3}\/", RegexOptions.Singleline);
+      var path = string.Empty;
+      try
+      {
+        return r.Replace(source, m => {
+          path = m.Groups[1].AsString().Trim();
+          return unit.TemplateSource.GetRelativeContent(path).AsString();
+        });
+      }
+      catch (Exception error)
+      {
+        throw new TemplateParseException(StringConsts.TEMPLATE_JS_COMPILER_INCLUDE_ERROR.Args(path, error.Message), error);
+      }
+    }
+
     private string transpile(string source, string regex, bool wrapWithFunction, ref int blockCount)
     {
       var r = new Regex(regex, RegexOptions.Singleline);
       try
       {
         var bc = blockCount;
-        var result = r.Replace(source, (m) =>
+        var result = r.Replace(source, m =>
         {
           bc++;
 
@@ -149,7 +167,7 @@ namespace NFX.Templatization
       }
       catch (Exception error)
       {
-        throw new TemplateParseException(StringConsts.TEMPLATE_CS_COMPILER_CONFIG_ERROR + error.Message, error);
+        throw new TemplateParseException(StringConsts.TEMPLATE_JS_COMPILER_CONFIG_ERROR + error.Message, error);
       }
     }
 

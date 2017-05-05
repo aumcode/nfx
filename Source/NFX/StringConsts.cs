@@ -523,6 +523,9 @@ namespace NFX
     public const string TEMPLATE_JS_COMPILER_DUPLICATION_ID =
       "Duplication of id: {0}";
 
+    public const string TEMPLATE_JS_COMPILER_INCLUDE_ERROR =
+      "Cannot include path: '{0}'. Exception: {1}";
+
     public const string PARAMETER_MAY_NOT_BE_NULL_ERROR =
         "Parameter '{0}' may not be null";
 

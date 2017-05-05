@@ -94,6 +94,19 @@
     <Compile Include="SysConsts.cs" />
     <Compile Include="Templatization\ResponseRenderingTarget.cs" />
     <Compile Include="Handlers\StockContentSiteHandler.cs" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\chain.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\curtain.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\details.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\dialog.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\gallery.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\mtb.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\oeditor.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\pseditor.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\ruleman.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\select.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\tabs.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\toast.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\tree.js" />
     <Compile Include="Templatization\StockContent\Error.htm.auto.cs">
       <DependentUpon>Error.htm</DependentUpon>
     </Compile>
@@ -117,24 +130,47 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.CopyAndSelect.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.select.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.selector-chain.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.details.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.gallery.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.image-view.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.markup.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.object-editor.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.PropSetEditor.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.tabs.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.CopyAndSelect.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.select.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.selector-chain.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.details.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.gallery.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.image-view.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.markup.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.object-editor.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.PropSetEditor.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.tabs.test.htm" />
     <None Include="Templatization\StockContent\Embedded\stl\select.test.css" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.html.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\js-compiler.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\js-compiler.test.html" />
-    <Content Include="Templatization\StockContent\Embedded\script\wv.dialog.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\js-compiler.ntc.js" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.html.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\js-compiler.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\array.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\dom.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\evt.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\geometry.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\localizer.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\markup.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\pay.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\rm\record.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\rm\recordview.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\rndk.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\str.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\svg.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\type.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\pzlk.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\wincon.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\utest.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\walkable.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\inc\web.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\mtest\js-compiler.test.html" />
+    <Content Include="Templatization\StockContent\Embedded\script\mtest\js-compiler-include.ntc.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\mtest\wv.dialog.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\js-compiler.ntc.js" />
     <None Include="Templatization\StockContent\Embedded\script\wv.rmgui.js" />
     <None Include="Templatization\StockContent\Embedded\script\wv.rmgui.ntc.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.ntc.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Templatization\StockContent\Embedded\script\wv.gui.ntc.js" />
     <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -149,7 +185,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.data.tests.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\payment.providers.test.html" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\payment.providers.test.html" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.data.tests.js" />
     <Content Include="Templatization\StockContent\Embedded\script\utest\wv.tests.js" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.min.tests.htm" />
@@ -158,16 +194,16 @@
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="Templatization\StockContent\Embedded\script\wv.objectinspector.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.ruler.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.tree.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.objectinspector.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.ruler.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.tree.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\CLOSURE_ERROR_OUT.txt" />
-    <None Include="Templatization\StockContent\Embedded\script\signal.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\signal.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.chart.svg.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="Templatization\StockContent\Embedded\script\wv.chart.svg.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.forms.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.chart.svg.test.htm" />
+    <None Include="Templatization\StockContent\Embedded\script\mtest\wv.forms.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\utest\wv.data.tests.htm" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -436,6 +472,7 @@
       <Name>NFX</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"

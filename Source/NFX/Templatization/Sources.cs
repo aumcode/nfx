@@ -41,6 +41,11 @@ namespace NFX.Templatization
       /// Gets printable source name
       /// </summary>
       string GetName(int maxLength);
+
+      /// <summary>
+      /// Returns content relative to this one or null if not supported
+      /// </summary>
+      object GetRelativeContent(string relativeName);
     }
 
     /// <summary>
@@ -52,6 +57,11 @@ namespace NFX.Templatization
       /// Returns template source content
       /// </summary>
       new T GetSourceContent();
+
+      /// <summary>
+      /// Returns content relative to this one or null if not supported
+      /// </summary>
+      new T GetRelativeContent(string relativeName);
     }
 
 
@@ -106,6 +116,17 @@ namespace NFX.Templatization
         return this.GetSourceContent();
       }
 
+      public string GetRelativeContent(string relativeName)
+      {
+        var rfn = Path.Combine(Path.GetDirectoryName(FileName), relativeName);
+        return File.ReadAllText(rfn);
+      }
+
+      object ITemplateSource.GetRelativeContent(string relativeName)
+      {
+        return this.GetRelativeContent(relativeName);
+      }
+
       /// <summary>
       /// Gets printable source name
       /// </summary>
@@ -131,7 +152,6 @@ namespace NFX.Templatization
       {
           return FileName.GetHashCode();
       }
-
     }
 
 
@@ -168,6 +188,16 @@ namespace NFX.Templatization
         return Content;
       }
 
+      public string GetRelativeContent(string relativeName)
+      {
+        return null;
+      }
+
+      object ITemplateSource.GetRelativeContent(string relativeName)
+      {
+        return null;
+      }
+
 
       /// <summary>
       /// Gets printable source name
@@ -195,8 +225,7 @@ namespace NFX.Templatization
       {
           return Content.GetHashCode();
       }
-
-    }
+  }
 
 
 

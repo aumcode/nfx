@@ -6,6 +6,7 @@ function inline() {
   return "*#* div{ id=someText } *#*";
 }
 
+/***@ _include.js ***/
 
 function ex1(root, ctx) {
   /***

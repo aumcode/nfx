@@ -6,6 +6,9 @@ function inline() {
   return (function(){var Ør=arguments[0];if(WAVE.isString(Ør))Ør=WAVE.id(Ør);var Ø1=WAVE.ce('div');Ø1.setAttribute('id','someText');if(WAVE.isObject(Ør))Ør.appendChild(Ø1);return Ø1;})();
 }
 
+function alt() {
+  alert();
+}
 
 function ex1(root, ctx) {
   var Ør = arguments[0];

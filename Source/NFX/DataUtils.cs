@@ -30,6 +30,9 @@ using NFX.DataAccess.CRUD;
 
 namespace NFX
 {
+  /// <summary>
+  /// Provides various extension methods for construction of FieldFilterFunc and casting rowsets
+  /// </summary>
   public static class DataUtils
   {
     private static readonly char[] FIELD_DELIMITER = {',',';','|'};

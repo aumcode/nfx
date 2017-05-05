@@ -40,19 +40,23 @@ using NFX.DataAccess.CRUD;
 
 namespace NFX
 {
+  /// <summary>
+  /// Provides a collection of frequently-used extension methods
+  /// </summary>
   public static class MiscUtils
   {
     public static readonly DateTime UNIX_EPOCH_START_DATE = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     public static readonly string[] WIN_UNIX_LINE_BRAKES = new string[]{ "\r\n", "\n" };
 
 
-
+    /// <summary>
+    /// Tests bool? for being assigned with true
+    /// </summary>
     public static bool IsTrue(this Nullable<bool> value, bool dflt = false)
     {
       if (!value.HasValue) return dflt;
       return value.Value;
     }
-
 
 
     /// <summary>
@@ -1061,6 +1065,9 @@ namespace NFX
       return sb.ToString();
     }
 
+    /// <summary>
+    /// Retruns an approximate time distance (timespan) between two dates
+    /// </summary>
     public static string ApproximateTimeDistance(this DateTime fromDate, DateTime toDate)
     {
       var diff = fromDate - toDate;
@@ -1072,7 +1079,7 @@ namespace NFX
       string result;
 
       if (years > 1) result = "{0:n0} years".Args(years);
-      else if (months > 1) result = "{0:n0} months".Args(months); 
+      else if (months > 1) result = "{0:n0} months".Args(months);
         else if (totalDays > 1) result = "{0:n0} days".Args(totalDays);
           else if (totalHours > 1) result = "{0:n0} hours".Args(totalHours);
             else if (totalMinutes > 1) result = "{0:n0} minutes".Args(totalMinutes);
@@ -1083,6 +1090,9 @@ namespace NFX
   }
 
 
+  /// <summary>
+  /// URI handling helpers
+  /// </summary>
   public static class URIUtils
   {
     public static readonly char[] PATH_JOIN_TRIM_CHARS = new char[]{'/', ' ', '\\'};

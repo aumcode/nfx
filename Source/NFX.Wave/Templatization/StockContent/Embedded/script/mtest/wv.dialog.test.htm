@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../jquery-2.1.4.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+  <title></title>
+</head>
+<body>
+  <div>
+    <button onclick="showScript()">Open Dialog</button>
+  </div>
+  <script>
+    function showScript() {
+      new WAVE.GUI.Dialog({
+        header: "Hello World",
+        body: "<div>Some contents buttons and other</div>",
+        footer: "<div>Special placeholder for buttons or info</div><button onclick='WAVE.GUI.currentDialog().close()'>Close</button>",
+        closeOnClickOutside: true,
+        onShow: function(dlg) { console.log("Dialog open callback"); },
+        onClose: function(dlg, result) { console.log("Dialog close callback with result: '" + result + "'"); return true; }
+      });
+    }
+  </script>
+  <style>
+    body {
+      font-family: Verdana;
+      font-size: 12px;
+    }
+    .wvCurtain,
+    .wvDialogBase {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    .wvDialogBase {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .wvDialogContent {
+      display: block;
+      position: fixed;
+      background: #3866de;
+      border: 1px solid #808080;
+      border-radius: 4px;
+      padding: 6px;
+      color: white;
+      box-shadow: 6px 6px 10px #888888;
+      margin: 10px 0;
+    }
+
+    .dlgYellow .wvDialogContent {
+      background: #ffff00;
+    }
+
+    .dlgGreen .wvDialogContent {
+      background: linear-gradient(to bottom, #bfd255 0%,#8eb92a 50%,#588701 51%,#9ecb2d 100%);
+    }
+
+    .wvDialogHeader {
+      background: #2020c0;
+      color: white;
+      font-size: 1.37em;
+      font-weight: bold;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .dlgYellow .wvDialogHeader {
+      background: red;
+    }
+
+    .dlgGreen .wvDialogHeader {
+      background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+    }
+
+    .wvDialogBody {
+      display: block;
+      background: #fefef0;
+      color: black;
+      border: 1px solid #7070ff;
+      padding: 4px;
+      margin-top: 6px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: calc(100% - 46px);
+    }
+
+    .wvCurtain {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+    }
+  </style>
+</body>
+</html>

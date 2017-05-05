@@ -865,6 +865,15 @@
 
 
 
+       run("Strings", "isString", function () {
+         assertFalse(WAVE.isString(), "undefined1");
+         assertFalse(WAVE.isString(undefined), "undefined2");
+         assertFalse(WAVE.isString(null), "null");
+         assertTrue(WAVE.isString(""), "empty string");
+         assertTrue(WAVE.isString("  "), "string with blanks");
+         assertTrue(WAVE.isString(" a "), "string with values and blanks");
+       });
+
        run("Strings", "strEmpty", function(){
            assertTrue( WAVE.strEmpty(), "undefined1" );
            assertTrue( WAVE.strEmpty(undefined), "undefined2" );

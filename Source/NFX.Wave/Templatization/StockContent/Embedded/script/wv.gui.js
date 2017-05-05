@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 /*jshint devel: true,browser: true, sub: true */
 /*global WAVE: true,$: true */
 
@@ -163,19 +163,114 @@ WAVE.GUI = (function(){
         CLS_CS_DIV_COMBO_WRAP: "wvChainSelectorComboWrap",
         CLS_CS_DIV_ARROW: "wvChainSelectorComboArrow",
 
-        EVT_CHAIN_SELECTOR_UPDATED: 'chain-selector-updated',
+        EVT_CHAIN_SELECTOR_UPDATED: "chain-selector-updated",
 
         EVT_DETAILS_SHOW: "wv-details-show",
-        EVT_DETAILS_HIDE: "wv-details-hide"
+        EVT_DETAILS_HIDE: "wv-details-hide",
+
+        CLS_SELECT_MODE_MULTI: "wvMulti",
+        CLS_SELECT_MODE_SINGLE: "wvSingle",
+        CLS_SELECT_CONTAINER: "wvSelectContainer",
+        CLS_SELECT_COMBOBOX: "wvSelectCombobox",
+        CLS_SELECT_DROPDOWN: "wvSelectDropdown",
+        CLS_SELECT_DROPDOWN_SHOWN: "wvShown",
+        CLS_SELECT_DROPDOWN_HIDDEN: "wvHidden",
+        CLS_SELECT_DISPLAY: "wvSelectDisplay",
+        CLS_SELECT_ARROW: "wvSelectArrow",
+        CLS_SELECT_AUTOCOMPETE: "wvSelectAutocomplete",
+        CLS_SELECT_AUTO_CONTAINER: "wvSelectAutoContainer",
+        CLS_SELECT_CHOICES_CONTAINER: "wvSelectChoicesContainer",
+
+        EVT_SELECT_CHANGE: "wv-select-change",
+        EVT_SELECT_OPEN: "wv-select-opan",
+        EVT_SELECT_CLOSE: "wv-select-close",
+        EVT_SELECT_SELECT: "wv-select-select",
+        EVT_SELECT_UNSELECT: "wv-select-unselect",
+        SELECT_MODES: { "Single": 0, "Multi": 1 }
     };
 
-    var CURTAIN_ZORDER  = 500000;
-    var TOAST_ZORDER   = 1000000;
+    var CURTAIN_ZORDER = 500000;
+    var fCurtains = [];
+
+    var fDirty = false;
+
+    //gets/sets dirty flag
+    published.dirty = function (val) {
+      if (typeof (val) === tUNDEFINED) return fDirty;
+      fDirty = val;
+    };
+
+    //Returns true if dirty flag is set or dialog shown
+    published.isDirty = function () {
+      return fDirty || published.currentDialog() !== null;
+    };
+
+    //Set to true to bypass check on page unload
+    published.SUPPRESS_UNLOAD_CHECK = false;
+
+    window.onbeforeunload = function (e) {
+      if (!published.SUPPRESS_UNLOAD_CHECK && (published.isDirty() || WAVE.RecordModel.isDirty()))
+        (e || window.event).returnValue = "The page is in the middle of the data entry. If you navigate away/close the page now some changes will be lost. Are you sure?";
+    };
+
+    var fBodyScrollTop = 0,
+        fBodyPosition = null,
+        fBodyOverflowY = null,
+        fBodyTop = null,
+        fBodyPaddingRight = null,
+        fScrollFixed = false;
+
+    function preventFocusLeak(e) {
+      if (fCurtains.length > 0){
+        var topCurtain = fCurtains[fCurtains.length -1];
+        var t = e.target;
+        if (typeof(t) !== tUNDEFINED && t !== null){
+           if(!WAVE.isParentOf(topCurtain, t)) {
+            topCurtain.tabIndex = 0;
+            topCurtain.focus();
+          }
+        }
+      }
+    }
+
+    function tryMakeBodyUnscrollable() {
+      if (!fScrollFixed && !WAVE.Platform.Mobile) {
+        window.addEventListener("focus", preventFocusLeak, true);
+
+        fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        fBodyTop = document.body.style.top;
+        fBodyPosition = document.body.style.position;
+        fBodyOverflowY = document.body.style.overflowY;
+        fBodyPaddingRight = document.body.style.paddingRight;
+
+        if (document.body.parentElement.offsetHeight > window.innerHeight) {
+          fScrollFixed = true;
+
+          document.body.style.position = "fixed";
+          document.body.style.paddingRight = ((fBodyPaddingRight + WAVE.getScrollBarWidth()) + "px");
+          document.body.style.overflow = "hidden";
+          document.body.style.top = (-(fBodyScrollTop) + "px");
+        }
+      }
+    }
+
+    function tryRetrunScrollingToBody() {
+      if (fScrollFixed && !WAVE.Platform.Mobile) {
+        window.removeEventListener("focus", preventFocusLeak, true);
+
+        document.body.style.top = fBodyTop;
+        document.body.style.position = fBodyPosition;
+        document.body.style.overflowY = fBodyOverflowY;
+        document.body.style.paddingRight = fBodyPaddingRight;
+        document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
+        fScrollFixed = false;
+      }
+    }
+
+// inc/ui/toast.js
+        var TOAST_ZORDER = 1000000;
 
     var fToastCount = 0;
-
-    published.pageWidth = function() { return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; };
-    published.pageHeight = function() { return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight; };
 
     published.toast = function(msg, type, duration){
       var self = {};
@@ -213,78 +308,8 @@ WAVE.GUI = (function(){
       return self;
     };
 
-
-    var fCurtains = [];
-
-    var fBodyScrollTop = 0,
-        fBodyPosition = null,
-        fBodyOverflowY = null,
-        fBodyTop = null,
-        fBodyPaddingRight = null,
-        fScrollFixed = false;
-
-    function preventFocusLeak(e) {
-      if (fCurtains.length > 0){
-        var topCurtain = fCurtains[fCurtains.length -1];
-        var t = e.target;
-        if (typeof(t) !== tUNDEFINED && t !== null){
-           if(!WAVE.isParentOf(topCurtain, t)) {
-            topCurtain.tabIndex = 0;
-            topCurtain.focus();
-          }
-        }
-      }
-    }
-
-    function tryMakeBodyUnscrollable() {
-      if (!fScrollFixed && !WAVE.Platform.Mobile) {
-        window.addEventListener("focus", preventFocusLeak, true);
-
-        fBodyScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        fBodyTop = document.body.style.top;
-        fBodyPosition = document.body.style.position;
-        fBodyOverflowY = document.body.style.overflowY;
-        fBodyPaddingRight = document.body.style.paddingRight;
-
-        if (document.body.parentElement.offsetHeight > window.innerHeight) {
-          fScrollFixed = true;
-
-          document.body.style.position = "fixed";
-          document.body.style.paddingRight = ((fBodyPaddingRight + published.getScrollBarWidth()) + "px");
-          document.body.style.overflow = "hidden";
-          document.body.style.top = (-(fBodyScrollTop) + "px");
-        }
-      }
-    }
-
-    function tryRetrunScrollingToBody() {
-      if (fScrollFixed && !WAVE.Platform.Mobile) {
-        window.removeEventListener("focus", preventFocusLeak, true);
-
-        document.body.style.top = fBodyTop;
-        document.body.style.position = fBodyPosition;
-        document.body.style.overflowY = fBodyOverflowY;
-        document.body.style.paddingRight = fBodyPaddingRight;
-        document.documentElement.scrollTop = document.body.scrollTop = fBodyScrollTop;
-        fScrollFixed = false;
-      }
-    }
-
-    published.getScrollBarWidth = function() {
-      var scrollDiv = document.createElement("div");
-      scrollDiv.style.height = "100px";
-      scrollDiv.style.position = "absolute";
-      scrollDiv.style.top = "-10000px";
-      scrollDiv.style.width = "100px";
-      scrollDiv.style.overflow = "scroll";
-
-      document.body.appendChild(scrollDiv);
-      var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-      document.body.removeChild(scrollDiv);
-      return scrollbarWidth;
-    };
-
-    published.curtainOn = function(cls, makeBodyUnscrollable, notBlur){
+ // inc/ui/curtain.js
+        published.curtainOn = function(cls, makeBodyUnscrollable, notBlur){
         if (!notBlur) try{ document.activeElement.blur(); } catch(e){}
 
         var div = document.createElement("div"),
@@ -322,14 +347,8 @@ WAVE.GUI = (function(){
 
     published.isCurtain = function(){ return fCurtains.length>0; };
 
-    //Returns currently active dialog or null
-    published.currentDialog = function(){
-        for(var i=fCurtains.length-1; i>=0; i--)
-         if (typeof(fCurtains[i].__DIALOG)!==tUNDEFINED) return fCurtains[i].__DIALOG;
-        return null;
-    };
-
-    //Dialog window:
+// inc/ui/dialog.js
+        //Dialog window:
     //   {header: 'html markup', body: 'html markup', footer: 'html markup', cls: 'className', widthpct: 75, heightpct: 50, onShow: function(dlg){}, onClose: function(dlg, result){return true;}}
     published.Dialog = function(init)
     {
@@ -395,8 +414,8 @@ WAVE.GUI = (function(){
           if (fWidthPct === 0 && fHeightPct === 0)
             return;
 
-          var sw = published.pageWidth();
-          var sh = published.pageHeight();
+          var sw = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+          var sh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
           var cx = sw / 2;
           var cy = sh / 2;
 
@@ -411,9 +430,9 @@ WAVE.GUI = (function(){
           fdivContent.style.top = top + "px";
 
           fdivContent.style.width  = fWidthPct===0  ? "auto" : w - (fdivContent.offsetLeft*2) + "px";
-          fdivContent.style.height  = fWidthPct===0  ?
-                                      "auto" :
-                                      (h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px");//todo This may need to be put as published.OFFSETY that depends on style
+          fdivContent.style.height = fWidthPct===0  ?
+                                     "auto" :
+                                     (h - (fdivContent.offsetTop + fdivContent.offsetLeft) + "px");//todo This may need to be put as published.OFFSETY that depends on style
         }
 
         function outsideClickHandler(e) {
@@ -582,129 +601,119 @@ WAVE.GUI = (function(){
       });
     };
 
-    var fDirty = false;
-
-    //gets/sets dirty flag
-    published.dirty = function(val){
-      if (typeof(val)===tUNDEFINED) return fDirty;
-      fDirty = val;
+    //Returns currently active dialog or null
+    published.currentDialog = function () {
+      for (var i = fCurtains.length - 1; i >= 0; i--)
+        if (typeof (fCurtains[i].__DIALOG) !== tUNDEFINED) return fCurtains[i].__DIALOG;
+      return null;
     };
 
-    //Returns true if dirty flag is set or dialog shown
-    published.isDirty = function(){
-      return fDirty || published.currentDialog()!==null;
+// inc/ui/pzlk.js
+    
+var PUZZLE_DFLT_HELP = "Please enter the following security information by touching the symbols below";
+
+//Puzzle keypad class: new PuzzleKeypad({DIV: divPuzzle, Image: '/security/captcha?for=login', Question: 'Your first name spelled backwards'});
+published.PuzzleKeypad = function (init) {
+  if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || WAVE.strEmpty(init.Image)) throw "PuzzleKeypad.ctor(init.DIV, init.Image)";
+
+  var keypad = this;
+  WAVE.extend(keypad, WAVE.EventManager);
+
+  var rndKey = WAVE.genRndKey(4);
+  var fDIV = init.DIV;
+  var fHelp = WAVE.strEmpty(init.Help) ? PUZZLE_DFLT_HELP : init.Help;
+  var fQuestion = WAVE.strEmpty(init.Question) ? "" : init.Question;
+  var fValue = [];
+  var fImage = init.Image;
+
+  var fdivHelp = null;
+  var fdivQuestion = null;
+  var ftbValue = null;
+  var fbtnClear = null;
+  var fimgKeys = null;
+
+  function rebuild() {
+    var seed = "pzl_" + rndKey + "_" + WAVE.genAutoincKey("_puzzle#-?Keypad@Elements");
+
+    var args = {
+      hid: "divHelp_" + seed,
+      qid: "divQuestion_" + seed,
+      tid: "tbValue_" + seed,
+      bid: "btnClear_" + seed,
+      iid: "img_" + seed,
+      help: fHelp,
+      question: fQuestion,
+      img: fImage + "&req=" + WAVE.genRndKey(),
+      clear: "Clear"
     };
 
-    //Set to true to bypass check on page unload
-    published.SUPPRESS_UNLOAD_CHECK = false;
+    var html = WAVE.strTemplate(
+      "<div class='wvPuzzleHelp'     id='@hid@'>@help@</div>" +
+      "<div class='wvPuzzleQuestion' id='@qid@'>@question@</div>" +
+      "<div class='wvPuzzleInputs'> <input id='@tid@' placeholder='···············' type='text' disabled /><button id='@bid@'>@clear@</button> </div>" +
+      "<div class='wvPuzzleImg'> <img id='@iid@' src='@img@'/></div>", args);
 
-    window.onbeforeunload = function(e){
-      if (!published.SUPPRESS_UNLOAD_CHECK && (published.isDirty() || WAVE.RecordModel.isDirty()))
-        (e || window.event).returnValue = "The page is in the middle of the data entry. If you navigate away/close the page now some changes will be lost. Are you sure?";
-    };
+    fDIV.innerHTML = html;
 
-    var PUZZLE_DFLT_HELP = "Please enter the following security information by touching the symbols below";
+    $("#" + args.bid).click(function (evt) {//CLEAR
+      evt.preventDefault();
+      ftbValue.value = "";
+      fValue = [];
+      keypad.eventInvoke(published.EVT_PUZZLE_KEYPAD_CHANGE, fValue);
+    });
 
-    //Puzzle keypad class: new PuzzleKeypad({DIV: divPuzzle, Image: '/security/captcha?for=login', Question: 'Your first name spelled backwards'});
-    published.PuzzleKeypad = function(init)
-    {
-        if (typeof(init)===tUNDEFINED || init===null || typeof(init.DIV)===tUNDEFINED || WAVE.strEmpty(init.Image)) throw "PuzzleKeypad.ctor(init.DIV, init.Image)";
-
-        var keypad = this;
-        WAVE.extend(keypad, WAVE.EventManager);
-
-        var rndKey = WAVE.genRndKey(4);
-        var fDIV = init.DIV;
-        var fHelp = WAVE.strEmpty(init.Help) ? PUZZLE_DFLT_HELP : init.Help;
-        var fQuestion = WAVE.strEmpty(init.Question) ? "" : init.Question;
-        var fValue = [];
-        var fImage = init.Image;
-
-        var fdivHelp = null;
-        var fdivQuestion = null;
-        var ftbValue = null;
-        var fbtnClear = null;
-        var fimgKeys = null;
-
-        function rebuild(){
-            var seed = "pzl_"+rndKey+"_"+WAVE.genAutoincKey("_puzzle#-?Keypad@Elements");
-
-            var args = {
-              hid: "divHelp_"+seed,
-              qid: "divQuestion_"+seed,
-              tid: "tbValue_"+seed,
-              bid: "btnClear_"+seed,
-              iid: "img_"+seed,
-              help: fHelp,
-              question: fQuestion,
-              img: fImage + "&req="+WAVE.genRndKey(),
-              clear: "Clear"
-            };
-
-            var html = WAVE.strTemplate(
-                        "<div class='wvPuzzleHelp'     id='@hid@'>@help@</div>"+
-                        "<div class='wvPuzzleQuestion' id='@qid@'>@question@</div>"+
-                        "<div class='wvPuzzleInputs'> <input id='@tid@' placeholder='···············' type='text' disabled /><button id='@bid@'>@clear@</button> </div>"+
-                        "<div class='wvPuzzleImg'> <img id='@iid@' src='@img@'/></div>", args);
-
-            fDIV.innerHTML = html;
-
-            $("#"+args.bid).click(function(evt){//CLEAR
-               evt.preventDefault();
-               ftbValue.value = "";
-               fValue = [];
-               keypad.eventInvoke(published.EVT_PUZZLE_KEYPAD_CHANGE, fValue);
-             });
-
-            $("#"+args.iid).click(function(e){//IMAGE click
-               var offset = $(this).offset();
-               var point = {x: Math.round(e.pageX-offset.left), y: Math.round(e.pageY-offset.top)};
-               fValue.push(point);
-               ftbValue.value += "*";
-               keypad.eventInvoke(published.EVT_PUZZLE_KEYPAD_CHANGE, fValue);
-             });
+    $("#" + args.iid).click(function (e) {//IMAGE click
+      var offset = $(this).offset();
+      var point = { x: Math.round(e.pageX - offset.left), y: Math.round(e.pageY - offset.top) };
+      fValue.push(point);
+      ftbValue.value += "*";
+      keypad.eventInvoke(published.EVT_PUZZLE_KEYPAD_CHANGE, fValue);
+    });
 
 
-            fdivHelp = WAVE.id(args.hid);
-            fdivQuestion = WAVE.id(args.qid);
-            ftbValue  = WAVE.id(args.tid);
-            fbtnClear = WAVE.id(args.bid);
-            fimgKeys  = WAVE.id(args.iid);
-        }
+    fdivHelp = WAVE.id(args.hid);
+    fdivQuestion = WAVE.id(args.qid);
+    ftbValue = WAVE.id(args.tid);
+    fbtnClear = WAVE.id(args.bid);
+    fimgKeys = WAVE.id(args.iid);
+  }
 
-        this.destroy = function() {
-          fDIV.innerHTML = "";
-        };
+  this.destroy = function () {
+    fDIV.innerHTML = "";
+  };
 
-        //Returns value as an array of points where user clicked
-        this.value = function(){ return fValue;};
+  //Returns value as an array of points where user clicked
+  this.value = function () { return fValue; };
 
-        //Returns value as a JSON array of points where user clicked
-        this.jsonValue = function(){ return JSON.stringify(fValue);};
+  //Returns value as a JSON array of points where user clicked
+  this.jsonValue = function () { return JSON.stringify(fValue); };
 
-        this.help = function(val){
-           if (typeof(val)===tUNDEFINED) return fHelp;
-           if (WAVE.strEmpty(val)) fHelp = PUZZLE_DFLT_HELP;
-           else fHelp = val;
-           fdivHelp.innerHTML = fHelp;
-        };
+  this.help = function (val) {
+    if (typeof (val) === tUNDEFINED) return fHelp;
+    if (WAVE.strEmpty(val)) fHelp = PUZZLE_DFLT_HELP;
+    else fHelp = val;
+    fdivHelp.innerHTML = fHelp;
+  };
 
-        this.question = function(val){
-           if (typeof(val)===tUNDEFINED) return fQuestion;
-           if (WAVE.strEmpty(val)) fQuestion = "";
-           else fQuestion = val;
-           fdivQuestion.innerHTML = fQuestion;
-        };
+  this.question = function (val) {
+    if (typeof (val) === tUNDEFINED) return fQuestion;
+    if (WAVE.strEmpty(val)) fQuestion = "";
+    else fQuestion = val;
+    fdivQuestion.innerHTML = fQuestion;
+  };
 
-        this.image = function(url) {
-           if (typeof(url)===tUNDEFINED) return fImage;
-           if (WAVE.strEmpty(url)) fImage = "";
-           else fImage = url;
-           fimgKeys.src = fImage + "&req="+WAVE.genRndKey();
-        };
+  this.image = function (url) {
+    if (typeof (url) === tUNDEFINED) return fImage;
+    if (WAVE.strEmpty(url)) fImage = "";
+    else fImage = url;
+    fimgKeys.src = fImage + "&req=" + WAVE.genRndKey();
+  };
 
-        rebuild();
-    };//keypad
+  rebuild();
+};//keypad
+
+// inc/ui/ruleman.js
+    
 
     // Manages all ruler logic
     var RulerManager = function (cfg) {
@@ -1237,6 +1246,8 @@ WAVE.GUI = (function(){
       fRulerManager.eventBind(e, handler);
     };
 
+// inc/ui/wincon.js
+    
     // Implements inter-window browser commenication
     published.WindowConnector = function (cfg) {
       cfg = cfg || {};
@@ -1317,7 +1328,8 @@ WAVE.GUI = (function(){
       if (!wnd.Connector) wnd.Connector = new published.WindowConnector({ wnd: wnd });
     };
 
-    var fTreeNodeIDSeed = 0;
+// inc/ui/tree.js
+        var fTreeNodeIDSeed = 0;
 
     var TREE_NODE_TEMPLATE =  "<div id='exp_@id@' class='@wvTreeNodeButton@'></div>" +
                               "<div id='content_@id@' class='@wvTreeNodeContent@'>" +
@@ -1902,7 +1914,8 @@ WAVE.GUI = (function(){
       build(fTree.root(), obj, "");
     };//ObjectInspector
 
-  // {
+// inc/ui/mtb.js
+      // {
   //   "DIV": html container,
   //   "id" : "uniqueId",
   //   "value" : "",
@@ -1988,43 +2001,43 @@ WAVE.GUI = (function(){
       return editor;
     };//MultiLineTextBox
 
-    var fPSEditorIDSeed = 0;
-
-  // {
-  //   "DIV": html container, --required
-  //   "outputFormFieldName" : "fieldId"
-  //   "sets" :[],
-  //   "content": "{}",
-  //   "disabled": false,
-  //   "readonly": false,
-  //   "canAdd": true,
-  //   "canDel": true,
-  //   "canRaw": true,
-  //   "options" : {"n": {type : "text", plh: "Name"}, "d": {type : "textarea", plh: "Description"}},
-  //   "btnClasses" : {
-  //     "addBtnCls" : "class name",
-  //     "delBtnCls" : "class name",
-  //     "rawBtnCls" : "class name",
-  //     "clearBtnCls" : "class name",
-  //     "modalBtnCls" : "class name",
-  //   },
-  //   "texts" : {
-  //     "add-title" : "Add New Language",
-  //     "add-body" : "",
-  //     "raw-title" : "Raw Edit",
-  //     "raw-body" : "",
-  //     "clear-confirm-title" : "Confirm Clear",
-  //     "clear-confirm-body" : "Clear all language data?",
-  //     "del-confirm-title" : "Confirm Delete",
-  //     "del-confirm-body" : "",
-  //     "btn-del" : "Delete",
-  //     "btn-add" : "Add",
-  //     "btn-raw" : "Edit Raw",
-  //     "btn-clear" : "Clear",
-  //     "n-plh" : "Name",
-  //     "d-plh" : "Description",
-  //   }
-  // }
+// inc/ui/pseditor.js
+        var fPSEditorIDSeed = 0;
+    // {
+    //   "DIV": html container, --required
+    //   "outputFormFieldName" : "fieldId"
+    //   "sets" :[],
+    //   "content": "{}",
+    //   "disabled": false,
+    //   "readonly": false,
+    //   "canAdd": true,
+    //   "canDel": true,
+    //   "canRaw": true,
+    //   "options" : {"n": {type : "text", plh: "Name"}, "d": {type : "textarea", plh: "Description"}},
+    //   "btnClasses" : {
+    //     "addBtnCls" : "class name",
+    //     "delBtnCls" : "class name",
+    //     "rawBtnCls" : "class name",
+    //     "clearBtnCls" : "class name",
+    //     "modalBtnCls" : "class name",
+    //   },
+    //   "texts" : {
+    //     "add-title" : "Add New Language",
+    //     "add-body" : "",
+    //     "raw-title" : "Raw Edit",
+    //     "raw-body" : "",
+    //     "clear-confirm-title" : "Confirm Clear",
+    //     "clear-confirm-body" : "Clear all language data?",
+    //     "del-confirm-title" : "Confirm Delete",
+    //     "del-confirm-body" : "",
+    //     "btn-del" : "Delete",
+    //     "btn-add" : "Add",
+    //     "btn-raw" : "Edit Raw",
+    //     "btn-clear" : "Clear",
+    //     "n-plh" : "Name",
+    //     "d-plh" : "Description",
+    //   }
+    // }
     published.PropSetEditor = function (init) {
       if (typeof (init) === tUNDEFINED || init === null || typeof (init.DIV) === tUNDEFINED || init.DIV === null) throw "PropSetEditor.ctor(init.DIV)";
 
@@ -2413,7 +2426,8 @@ WAVE.GUI = (function(){
       return editor;
     };//PropSetEditor
 
-    var fObjectEditorIdSeed = 0;
+// inc/ui/oeditor.js
+        var fObjectEditorIdSeed = 0;
     //{
     //  DIV: div,
     //  content: {}
@@ -2932,8 +2946,8 @@ WAVE.GUI = (function(){
       build();
     };//ObjectEditor
 
-
-    var fTabsIdSeed = 0;
+// inc/ui/tabs.js
+        var fTabsIdSeed = 0;
     //{
     //  "DIV" : DIV,
     //  "unswitchable" : false,
@@ -3314,7 +3328,8 @@ WAVE.GUI = (function(){
       return tabs;
     };//Tabs
 
-  /*
+// inc/ui/details.js
+      /*
     init : {
       DIV: control|Id
       title: text|html
@@ -3606,7 +3621,8 @@ WAVE.GUI = (function(){
       return details;
     };//Details
 
-    function equalsImage(left, right) {
+// inc/ui/gallery.js
+        function equalsImage(left, right) {
       if (left === right) return true;
       if (typeof(left) === tUNDEFINED || typeof(right) === tUNDEFINED) return false;
       if (!WAVE.isObject(left)) left = { url: left };
@@ -4195,7 +4211,8 @@ WAVE.GUI = (function(){
       return published.Gallery.call(this, init);
     };//GallerySimple
 
-    var fChainSelectorSeed = 0;
+// inc/ui/chain.js
+        var fChainSelectorSeed = 0;
     /*
     init : {
       DIV: html container, requred,
@@ -4468,27 +4485,8 @@ WAVE.GUI = (function(){
       return chain;
     };//ChainSelector
 
-    published.CLS_SELECT_MODE_MULTI = "wvMulti";
-    published.CLS_SELECT_MODE_SINGLE = "wvSingle";
-    published.CLS_SELECT_CONTAINER = "wvSelectContainer";
-    published.CLS_SELECT_COMBOBOX = "wvSelectCombobox";
-    published.CLS_SELECT_DROPDOWN = "wvSelectDropdown";
-    published.CLS_SELECT_DROPDOWN_SHOWN = "wvShown";
-    published.CLS_SELECT_DROPDOWN_HIDDEN = "wvHidden";
-    published.CLS_SELECT_DISPLAY = "wvSelectDisplay";
-    published.CLS_SELECT_ARROW = "wvSelectArrow";
-    published.CLS_SELECT_AUTOCOMPETE = "wvSelectAutocomplete";
-    published.CLS_SELECT_AUTO_CONTAINER = "wvSelectAutoContainer";
-    published.CLS_SELECT_CHOICES_CONTAINER = "wvSelectChoicesContainer";
-
-    published.EVT_SELECT_CHANGE = "wv-select-change";
-    published.EVT_SELECT_OPEN = "wv-select-opan";
-    published.EVT_SELECT_CLOSE = "wv-select-close";
-    published.EVT_SELECT_SELECT = "wv-select-select";
-    published.EVT_SELECT_UNSELECT = "wv-select-unselect";
-    published.SELECT_MODES = {"Single": 0, "Multi": 1};
-
-    var fSelectSeed = 0;
+// inc/ui/select.js
+        var fSelectSeed = 0;
     //{
     //  DIV: id | node
     //  data: JSON | {} | []
@@ -4567,7 +4565,7 @@ WAVE.GUI = (function(){
       function __resetTimer() {
         if (fFilterTimer !== null) {
           clearTimeout(fFilterTimer);
-          fFilterTimer === null;
+          fFilterTimer = null;
         }
       }
 
@@ -5308,9 +5306,7 @@ WAVE.GUI = (function(){
     return published;
 }());//WAVE.GUI
 
-
-
-WAVE.RecordModel.GUI = (function(){
+WAVE.RecordModel.GUI = (function () {
 
     var tUNDEFINED = "undefined";
 
@@ -5323,12 +5319,32 @@ WAVE.RecordModel.GUI = (function(){
         CLS_COMBO_WRAP: 'wvComboWrap'
     };
 
-        var AIKEY = "__wv.rm.gui";
+        var AIKEY = "__wv.rmgui";
         var fErroredInput = null;
 
+        function renderTestControl(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          Ø1.setAttribute('div', ctx.about);
+          var Ø2 = WAVE.ce('input');
+          Ø2.setAttribute('type', 'text');
+          Ø2.setAttribute('name', ctx.fName);
+          Ø2.setAttribute('value', ctx.fValue);
+          Ø1.appendChild(Ø2);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
         function buildTestControl(fldView){
-          fldView.DIV().innerHTML = WAVE.strHTMLTemplate("<div>@about@</div><input type='text' name='@fName@' value='@fValue@'/>",
-                                                        {about: fldView.field().about(), fName: fldView.field().name(), fValue: fldView.field().value()});
+          var divRoot = fldView.DIV();
+          WAVE.removeChildren(divRoot);
+          renderTestControl(divRoot, {
+            about: fldView.field().about(),
+            fName: fldView.field().name(),
+            fValue: fldView.field().value()
+          });
         }
 
         function genIDSeed(fldView){
@@ -5336,55 +5352,494 @@ WAVE.RecordModel.GUI = (function(){
           return "_"+fldView.recView().ID()+"_"+id;
         }
 
-        function buildChainSelector(fldView) {
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
+        function textChangeHandler(e) {
+          var target = e.target,
+              val = target.value,
+              field = target.__fieldView.field();
 
-          var genIdKey = "@#$CHAIN_SELECTOR_GEN_ID$#@";
-          var ids = WAVE.get(fldView, genIdKey, null);
+          try { field.setGUIValue(val); }
+          catch(e)
+          {
+            WAVE.GUI.toast(WAVE.strHTMLTemplate("Wrong value for field '@about@'. Please re-enter or undo", {about: field.about()}), "error");
+          }
+        }
+
+        function renderTextBox(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          var Ø2 = WAVE.ce('label');
+          Ø2.innerText = ctx.about;
+          Ø2.setAttribute('for', ctx.tbid);
+          Ø2.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø2);
+          if(ctx.error) {
+            var Ø3 = WAVE.ce('div');
+            Ø3.innerText = ctx.error;
+            Ø3.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø3);
+          }
+          var Ø4 = WAVE.ce('input');
+          Ø4.setAttribute('id', ctx.id);
+          Ø4.setAttribute('type', ctx.tp);
+          Ø4.setAttribute('name', ctx.name);
+          Ø4.disabled = ctx.disabled;
+          Ø4.readonly = ctx.readonly;
+          Ø4.setAttribute('value', ctx.value);
+          Ø4.setAttribute('placeholder', ctx.placeholder);
+          Ø4.required = ctx.required;
+          Ø4.__fieldView = ctx.fw;
+          Ø4.addEventListener('change', ctx.handler, false);
+          Ø1.appendChild(Ø4);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function buildTextBox(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "tb"+ids,
+              ve = field.validationError(),
+              fk = field.kind(),
+              itp = field.password() ? "password" : fk===WAVE.RecordModel.KIND_SCREENNAME ? "text" : fk;
+
+          WAVE.removeChildren(divRoot);
+          renderTextBox(divRoot, {
+            tbid: idInput,
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            id: idInput,
+            tp: itp,
+            name: field.name(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
+            readonly: field.readonly() ? "readonly" : "",
+            value: field.isNull()? "" : field.displayValue(),
+            placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
+            required: field.required() ? "required" : "",
+            handler: textChangeHandler,
+            fw: fldView
+          });
+        }
+
+        function renderTextArea(root, ctx) {
+        var Ør = arguments[0];
+        if (WAVE.isString(Ør))
+          Ør = WAVE.id(Ør);
+        var Ø1 = WAVE.ce('div');
+        var Ø2 = WAVE.ce('label');
+        Ø2.innerText = ctx.about;
+        Ø2.setAttribute('for', ctx.tbid);
+        Ø2.setAttribute('class', ctx.cls);
+        Ø1.appendChild(Ø2);
+        if (ctx.error!==null) {
+          var Ø3 = WAVE.ce('div');
+          Ø3.innerText = ctx.error;
+          Ø3.setAttribute('class', ctx.ec);
+          Ø1.appendChild(Ø3);
+        }
+        var Ø4 = WAVE.ce('textarea');
+        Ø4.innerText = ctx.value;
+        Ø4.setAttribute('id', ctx.id);
+        Ø4.setAttribute('name', ctx.name);
+        Ø4.disabled = ctx.disabled;
+        Ø4.setAttribute('maxlength', ctx.maxlength);
+        Ø4.readonly = ctx.readonly;
+        Ø4.setAttribute('value', ctx.value);
+        Ø4.setAttribute('placeholder', ctx.placeholder);
+        Ø4.required = ctx.required;
+        Ø4.__fieldView = ctx.fw;
+        Ø4.addEventListener('change', ctx.handler, false);
+        Ø1.appendChild(Ø4);
+        if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+        return Ø1;
+        }
+
+        function buildTextArea(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "tb"+ids,
+              ve = field.validationError();
+
+          WAVE.removeChildren(divRoot);
+
+          renderTextArea(divRoot, {
+            tbid: idInput,
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            id: idInput,
+            name: field.name(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
+            readonly: field.readonly() ? "readonly" : "",
+            value: field.isNull()? "" : field.displayValue(),
+            placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
+            required: field.required() ? "required" : "",
+            fw: fldView,
+            handler: textChangeHandler
+          });
+        }
+
+        function renderRadioGroup(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('fieldset');
+          var Ø2 = WAVE.ce('legend');
+          Ø2.innerText = ctx.about;
+          Ø2.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø2);
+          if (ctx.error) {
+            var Ø3 = WAVE.ce('div');
+            Ø3.innerText = ctx.error;
+            Ø3.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø3);
+          }
+          for(var i in ctx.keys) {
+             var key = ctx.keys[i], keyDesc = ctx.dict[key], idInput = 'rbt'+ctx.ids+'_'+i; 
+            var Ø4 = WAVE.ce('input');
+            Ø4.setAttribute('id', idInput);
+            Ø4.setAttribute('name', ctx.name);
+            Ø4.setAttribute('type', 'radio');
+            Ø4.disabled = ctx.disabled;
+            Ø4.readonly = ctx.readonly;
+            Ø4.setAttribute('value', key);
+            Ø4.required = ctx.required;
+            Ø4.checked = WAVE.strSame(key, ctx.value) ? 'checked' : '';
+            Ø4.__fieldView = ctx.fw;
+            Ø4.addEventListener('change', ctx.onchange, false);
+            Ø1.appendChild(Ø4);
+            var Ø5 = WAVE.ce('label');
+            Ø5.innerText = keyDesc;
+            Ø5.setAttribute('for', idInput);
+            Ø1.appendChild(Ø5);
+          }
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function radioGroupChangeHandler(e) {
+          var target = e.target,
+              val = target.value,
+              fld = target.__fieldView.field();
+
+          if (!fld.readonly()) fld.value(val, true);//from GUI
+          else rebuildControl(target.__fieldView);
+        }
+
+        function buildRadioGroup(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              dict = field.lookupDict(),
+              keys = Object.keys(dict),
+              ve = field.validationError(),
+              ids = genIDSeed(fldView);
+
+          WAVE.removeChildren(divRoot);
+
+          renderRadioGroup(divRoot, {
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            keys: keys,
+            dict: dict,
+            ids: ids,
+            name: field.name(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            readonly: field.readonly() ? "readonly" : "",
+            required: field.required() ? "required" : "",
+            value: field.value(),
+            fw: fldView,
+            onchange: radioGroupChangeHandler
+          });
+        }
+
+        function renderCheck(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          if(ctx.error) {
+            var Ø2 = WAVE.ce('div');
+            Ø2.innerText = ctx.error;
+            Ø2.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø2);
+          }
+          var Ø3 = WAVE.ce('input');
+          Ø3.setAttribute('id', 'h_'+ctx.id);
+          Ø3.setAttribute('type', 'hidden');
+          Ø3.setAttribute('value', ctx.val);
+          Ø3.setAttribute('name', ctx.name);
+          Ø1.appendChild(Ø3);
+          var Ø4 = WAVE.ce('label');
+          Ø4.innerText = ctx.about;
+          Ø4.setAttribute('for', ctx.id);
+          Ø4.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø4);
+          var Ø5 = WAVE.ce('input');
+          Ø5.setAttribute('id', ctx.id);
+          Ø5.setAttribute('type', 'checkbox');
+          Ø5.disabled = ctx.disabled;
+          Ø5.readonly = ctx.readonly;
+          Ø5.required = ctx.required;
+          Ø5.checked = ctx.checked;
+          Ø5.__fieldView = ctx.fw;
+          Ø5.__hiddenId = 'h_'+ctx.id;
+          Ø5.addEventListener('change', ctx.handler, false);
+          Ø1.appendChild(Ø5);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function checkChangedHandler(e) {
+          var target = e.target,
+              val = target.checked,
+              fld = target.__fieldView.field();
+
+          WAVE.id(target.__hiddenId).value = val ? "true" : "false";
+          if (!fld.readonly()) fld.value(val, true);
+          else rebuildControl(target.__fieldView);
+        }
+
+        function buildCheck(fldView){
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "chk"+ids,
+              ve = field.validationError();
+
+          WAVE.removeChildren(divRoot);
+          renderCheck(divRoot, {
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            id: idInput,
+            name: field.name(),
+            val: WAVE.strAsBool(field.value()) ? "true" : "false",
+
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            disabled: field.isEnabled() ? "" : "disabled",
+            readonly: field.readonly() ? "readonly" : "",
+            required: field.required() ? "required" : "",
+            checked: WAVE.strAsBool(field.value()) ? "checked" : "",
+            fw: fldView,
+            handler: checkChangedHandler
+          });
+        }
+
+        function renderComboBox(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          var Ø2 = WAVE.ce('label');
+          Ø2.innerText = ctx.about;
+          Ø2.setAttribute('for', ctx.id);
+          Ø2.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø2);
+          if (ctx.error) {
+            var Ø3 = WAVE.ce('div');
+            Ø3.innerText = ctx.error;
+            Ø3.setAttribute('class', ctx.ec);
+            Ø1.appendChild(Ø3);
+          }
+          var Ø4 = WAVE.ce('div');
+          Ø4.setAttribute('class', ctx.wrapCls);
+          var Ø5 = WAVE.ce('select');
+          Ø5.setAttribute('id', ctx.id);
+          Ø5.setAttribute('name', ctx.name);
+          Ø5.disabled = ctx.disabled;
+          Ø5.readonly = ctx.readonly;
+          Ø5.setAttribute('value', ctx.value);
+          Ø5.setAttribute('placeholder', ctx.placeholder);
+          Ø5.required = ctx.required;
+          Ø5.__fieldView = ctx.fw;
+          Ø5.addEventListener('change', ctx.handler, false);
+          var Ø6 = WAVE.ce('option');
+          Ø6.setAttribute('value', '');
+          Ø5.appendChild(Ø6);
+          for(var i in ctx.keys) {
+            var val = ctx.keys[i]; 
+            var Ø7 = WAVE.ce('option');
+            Ø7.innerText = ctx.dict[val];
+            Ø7.setAttribute('value', val);
+            Ø7.selected = WAVE.strSame(val, ctx.value) ? 'selected' : '';
+            Ø5.appendChild(Ø7);
+          }
+          Ø4.appendChild(Ø5);
+          var Ø8 = WAVE.ce('div');
+          Ø8.setAttribute('id', ctx.arId);
+          Ø8.setAttribute('class', ctx.arCls);
+          Ø4.appendChild(Ø8);
+          Ø1.appendChild(Ø4);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function comboChangedHandler(e) {
+          var target = e.target,
+              view = target.__fieldView,
+              field = target.__fieldView.field(),
+              fv = field.value();
+
+          if (field.readonly()) {
+            if (target.value !== fv) target.value = fv;
+            return;
+          }
+
+          var val = target.value;
+          field.value(val, true);//from GUI
+        }
+
+        function buildComboBox(fldView) {
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "cbo" + ids,
+              arrowId = "lbl" + idInput,
+              ve = field.validationError();
+
+          WAVE.removeChildren(divRoot);
+          renderComboBox(divRoot, {
+            id: idInput,
+
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : ""),
+
+            ec: published.CLS_ERROR,
+            error: ve,
+
+            name: field.name(),
+            value: field.value(),
+            disabled: field.isEnabled() ? "" : "disabled",
+            readonly: field.readonly() ? "readonly" : "",
+            placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
+            required: field.required() ? "required" : "",
+            wrapCls: published.CLS_COMBO_WRAP,
+            fw: fldView,
+            handler: comboChangedHandler,
+
+            dict: field.lookupDict(),
+            keys: Object.keys(field.lookupDict()),
+
+            arId: arrowId,
+            arCls: published.CLS_COMBO_ARROW
+          });
+        }
+
+        function renderHidden(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('input');
+          Ø1.setAttribute('type', 'hidden');
+          Ø1.setAttribute('name', ctx.name);
+          Ø1.setAttribute('value', ctx.value);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function buildHidden(fldView) {
+          var divRoot = fldView.DIV(),
+              field = fldView.field();
+          WAVE.removeChildren(divRoot);
+          renderHidden(divRoot, {
+            name: field.name(),
+            value: field.displayValue()
+          });
+        }
+
+        function renderCustomControlContainer(root, lblDivId, cntDivId) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          var Ø2 = WAVE.ce('div');
+          Ø2.setAttribute('id', lblDivId);
+          Ø1.appendChild(Ø2);
+          var Ø3 = WAVE.ce('div');
+          Ø3.setAttribute('id', cntDivId);
+          Ø1.appendChild(Ø3);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function renderCustomControlContent(root, ctx) {
+          WAVE.removeChildren(root);
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('nfx');
+          var Ø2 = WAVE.ce('div');
+          Ø2.innerText = ctx.error;
+          Ø2.setAttribute('class', ctx.ec);
+          Ø1.appendChild(Ø2);
+          var Ø3 = WAVE.ce('label');
+          Ø3.innerText = ctx.about;
+          Ø3.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø3);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
+        }
+
+        function buildChainSelector(fldView) {
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              genIdKey = "@#$CHAIN_SELECTOR_GEN_ID$#@",
+              ids = WAVE.get(fldView, genIdKey, null);
+
           if (ids === null) {
             ids = genIDSeed(fldView);
             fldView[genIdKey] = ids;
           }
-          var idCSDiv = "divCS_" + ids;
-          var idLabelDiv = "labelCont_" + ids;
 
-          var labelCont = WAVE.id(idLabelDiv);
-          var editorCont = WAVE.id(idCSDiv);
+          var idCSDiv = "divCS_" + ids,
+              idLabelDiv = "labelCont_" + ids,
+              labelCont = WAVE.id(idLabelDiv),
+              editorCont = WAVE.id(idCSDiv),
+              ve = field.validationError();
+
           if (labelCont === null || editorCont === null) {
-            divRoot.innerHTML = WAVE.strHTMLTemplate("<div id='@idLabelDiv@'></div><div id='@idCSDiv@'></div>",
-                                                     {
-                                                       idLabelDiv: idLabelDiv,
-                                                       idCSDiv: idCSDiv
-                                                     });
+            renderCustomControlContainer(divRoot, idLabelDiv, idCSDiv);
             labelCont = WAVE.id(idLabelDiv);
             editorCont = WAVE.id(idCSDiv);
           }
+          renderCustomControlContent(labelCont, {
+            ec: published.CLS_ERROR,
+            error: ve,
 
-          var html = "";
-          var ve = field.validationError();
-          if (ve !== null) html += WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", { ec: published.CLS_ERROR, error: ve });
-          html += WAVE.strHTMLTemplate("<label class='@cls@'>@about@</label>",
-                                      {
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-
-          labelCont.innerHTML = html;
-
-          var dict = field.lookupDict();
-          var values = WAVE.exists(dict) ? dict.values : [];
-          var path = field.isNull() ? "" : field.value();
-
-          var selector = new WAVE.GUI.ChainSelector({
-            DIV: editorCont,
-            outputFormFieldName: field.name(),
-            classes: { divArrowCls: published.CLS_COMBO_ARROW, divComboWrapCls: published.CLS_COMBO_WRAP },
-            path: path,
-            disable: field.isEnabled() ? false : true,
-            readonly: field.readonly(),
-            values: values
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
           });
+
+          var dict = field.lookupDict(),
+              values = WAVE.exists(dict) ? dict.values : [],
+              path = field.isNull() ? "" : field.value(),
+              selector = new WAVE.GUI.ChainSelector({
+                DIV: editorCont,
+                outputFormFieldName: field.name(),
+                classes: { divArrowCls: published.CLS_COMBO_ARROW, divComboWrapCls: published.CLS_COMBO_WRAP },
+                path: path,
+                disable: field.isEnabled() ? false : true,
+                readonly: field.readonly(),
+                values: values
+              });
 
           selector.eventBind(WAVE.GUI.EVT_CHAIN_SELECTOR_UPDATED,
                              function (e, d) {
@@ -5392,445 +5847,154 @@ WAVE.RecordModel.GUI = (function(){
                              });
         }
 
-        function buildTextBox(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "tb"+ids;
-
-          var html = WAVE.strHTMLTemplate("<label for='@tbid@' class='@cls@'>@about@</label>",
-                                      {
-                                        tbid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          var itp;
-          var fk = field.kind();
-          if (field.password()) itp = "password";
-          else if (fk===WAVE.RecordModel.KIND_SCREENNAME) itp = "text";
-          else itp = fk;
-
-          html+= WAVE.strHTMLTemplate("<input id='@id@' type='@tp@' name='@name@' @disabled@ @maxlength@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
-                                      {
-                                        id: idInput,
-                                        tp: itp,
-                                        name: field.name(),
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        value: field.isNull()? "" : field.displayValue(),
-                                        placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : ""
-                                      });
-
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-            var val = this.value;
-            try
-            {
-                this.__fieldView.field().setGUIValue(val);
-                fErroredInput = null;
-            }
-            catch(e)
-            {
-                WAVE.GUI.toast("Wrong value for field '"+this.__fieldView.field().about()+"'. Please re-enter or undo", "error");
-                var self = this;
-                if (fErroredInput===self || fErroredInput===null)
-                {
-                    fErroredInput = self;
-                    setTimeout(function()
-                           {
-                             if (!self.ERRORED) $(self).blur(function(){$(self).change();});
-                             self.focus();
-                             self.ERRORED = true;
-                           }, 50);
-                }
-            }
-          });
-        }
-
-
-        function buildTextArea(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "tb"+ids;
-
-          var html = WAVE.strHTMLTemplate("<label for='@tbid@' class='@cls@'>@about@</label>",
-                                      {
-                                        tbid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          html+= WAVE.strHTMLTemplate("<textarea id='@id@' name='@name@' @disabled@ @maxlength@ @readonly@ placeholder='@placeholder@' @required@>@value@</textarea>",
-                                      {
-                                        id: idInput,
-                                        name: field.name(),
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        value: field.isNull()? "" : field.displayValue(),
-                                        placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : ""
-                                      });
-
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-            var val = this.value;
-            try
-            {
-                this.__fieldView.field().setGUIValue(val);
-                fErroredInput = null;
-            }
-            catch(e)
-            {
-                WAVE.GUI.toast("Wrong value for field '"+this.__fieldView.field().about()+"'. Please re-enter or undo", "error");
-                var self = this;
-                if (fErroredInput===self || fErroredInput===null)
-                {
-                    fErroredInput = self;
-                    setTimeout(function()
-                           {
-                             if (!self.ERRORED) $(self).blur(function(){$(self).change();});
-                             self.focus();
-                             self.ERRORED = true;
-                           }, 50);
-                }
-            }
-          });
-        }
-
-
-        function buildRadioGroup(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var dict = field.lookupDict();
-          var keys = Object.keys(dict);
-
-          var html = "<fieldset>";
-          html+= WAVE.strHTMLTemplate("<legend class='@cls@'>@about@</legend>",{about: field.about(),
-                                                                                cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                                                               });
-
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          var ids = genIDSeed(fldView);
-
-          for(var i in Object.keys(dict)){
-             var key = keys[i];
-             var keyDescr = dict[key];
-
-              var idInput = "rbt"+ids+"_"+i;
-
-              html+= WAVE.strHTMLTemplate("<input id='@id@' type='radio' name='@name@' @disabled@ @readonly@ value='@value@' @required@ @checked@>",
-                                          {
-                                            id: idInput,
-                                            name: field.name(),
-                                            disabled: field.isEnabled() ? "" : "disabled",
-                                            readonly: field.readonly() ? "readonly" : "",
-                                            value: key,
-                                            required: field.required() ? "required" : "",
-                                            checked: WAVE.strSame(key, field.value()) ? "checked" : ""
-                                          });
-
-              html+= WAVE.strHTMLTemplate("<label for='@rbtid@'>@about@</label>",
-                                          {
-                                            rbtid: idInput,
-                                            about: keyDescr
-                                          });
-
-
-
-          }//for
-
-          html+= "</fieldset>";
-
-          divRoot.innerHTML = html;
-
-          //bind events
-          function rbtChange(evt){
-            var val = evt.target.value;
-            var fld = evt.target.__fieldView.field();
-            if (!fld.readonly())
-                fld.value(val, true);//from GUI
-            else
-                rebuildControl(evt.target.__fieldView);
-          }
-
-          for(var j in Object.keys(dict)){
-           var idInp = "rbt"+ids+"_"+j;
-           WAVE.id(idInp).__fieldView = fldView;
-
-           $("#"+idInp).change(rbtChange);
-          }
-        }
-
-        function buildCheck(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "chk"+ids;
-
-          var html = "";
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-
-          html+= WAVE.strHTMLTemplate("<input id='h_@id@' type='hidden'  value='@val@' name='@name@'>",
-                                      {
-                                        id: idInput,
-                                        name: field.name(),
-                                        val: WAVE.strAsBool(field.value()) ? "true" : "false"
-                                      });
-
-
-          html+= WAVE.strHTMLTemplate("<label for='@chkid@' class='@cls@'>@about@</label>",
-                                      {
-                                        chkid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-          html+= WAVE.strHTMLTemplate("<input id='@id@' type='checkbox' @disabled@ @readonly@  @required@ @checked@>",
-                                      {
-                                        id: idInput,
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        required: field.required() ? "required" : "",
-                                        checked: WAVE.strAsBool(field.value()) ? "checked" : ""
-                                      });
-
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-               var val = this.checked;
-               $("#h_"+idInput).val( val ? "true" : "false");
-               var fld = this.__fieldView.field();
-               if (!fld.readonly())
-                 fld.value(val, true);//from GUI
-               else
-                 rebuildControl(this.__fieldView);
-          });
-        }
-
         function buildPSEditor(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
+          var field = fldView.field(),
+             divRoot = fldView.DIV(),
+             genIdKey = "@#$PS_EDITOR_GEN_ID$#@",
+             ids = WAVE.get(fldView, genIdKey, null);
 
-          var genIdKey = "@#$PS_EDITOR_GEN_ID$#@";
-          var ids = WAVE.get(fldView, genIdKey, null);
           if (ids === null) {
             ids = genIDSeed(fldView);
             fldView[genIdKey] = ids;
           }
-          var idPSDiv = "divps_"+ids;
-          var idLabelDiv =  "labelCont_"+ids;
 
-          var labelCont = WAVE.id(idLabelDiv);
-          var editorCont = WAVE.id(idPSDiv);
+          var idPSDiv = "divps_"+ids,
+              idLabelDiv =  "labelCont_"+ids,
+              labelCont = WAVE.id(idLabelDiv),
+              editorCont = WAVE.id(idPSDiv),
+              ve = field.validationError();
+
           if (labelCont === null || editorCont === null){
-             divRoot.innerHTML = WAVE.strHTMLTemplate("<div id='@idLabelDiv@'></div><div id='@idPSDiv@'></div>", {idLabelDiv:idLabelDiv, idPSDiv:idPSDiv});
-             labelCont = WAVE.id(idLabelDiv);
-             editorCont = WAVE.id(idPSDiv);
+            renderCustomControlContainer(divRoot, idLabelDiv, idPSDiv);
+            labelCont = WAVE.id(idLabelDiv);
+            editorCont = WAVE.id(idPSDiv);
           }
+          renderCustomControlContent(labelCont, {
+            ec: published.CLS_ERROR,
+            error: ve,
 
-          var html = "";
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-          html+= WAVE.strHTMLTemplate("<label class='@cls@'>@about@</label>",
-                                      {
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-
-          labelCont.innerHTML = html;
-
-          var json = field.isNull()? "" : field.value();
-          var ekey = "@#$PS_EDITOR$#@";
-          var editor = WAVE.get(fldView, ekey, null);
-          if (editor===null)
-          {
-               editor =  new WAVE.GUI.PropSetEditor({
-                                    DIV: editorCont,
-                                    outputFormFieldName: field.name(),
-                                    langs: WAVE.LOCALIZER.allLanguageISOs(),
-                                    content: json,
-                                    disable: field.isEnabled() ? false : true,
-                                    readonly: field.readonly(),
-                                    title: field.about()
-                                });
-
-               fldView[ekey] = editor;
-
-               editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED,
-                               function (e, d){
-                                 field.value(d, true);//from GUI
-                               });
-         }
-        }
-
-        function buildComboBox(fldView){
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
-
-          var ids = genIDSeed(fldView);
-          var idInput = "cbo"+ids;
-          var arrowId = "lbl"+idInput;
-
-          var html = WAVE.strHTMLTemplate("<label for='@cbid@' class='@cls@'>@about@</label>",
-                                      {
-                                        cbid: idInput,
-                                        about: field.about(),
-                                        cls: (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "")
-                                      });
-
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          html+= WAVE.strHTMLTemplate("<div class='@comboWrapCls@'><select id='@id@' name='@name@' @disabled@ @readonly@ value='@value@' placeholder='@placeholder@' @required@>",
-                                      {
-                                        id: idInput,
-                                        name: field.name(),
-                                        disabled: field.isEnabled() ? "" : "disabled",
-                                        readonly: field.readonly() ? "readonly" : "",
-                                        value: field.value(),
-                                        placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
-                                        required: field.required() ? "required" : "",
-                                        comboWrapCls: published.CLS_COMBO_WRAP
-                                      });
-
-          var dict = field.lookupDict();
-          var keys = Object.keys(dict);
-          html += "<option value=''></option>";//add Blank
-          for(var i in Object.keys(dict)){
-              html += WAVE.strHTMLTemplate("<option value='@value@' @selected@>@descr@</option>",
-                                          {
-                                            value: keys[i],
-                                            selected: WAVE.strSame(keys[i], field.value()) ? "selected" : "",
-                                            descr: dict[keys[i]]
-                                          });
-          }//for options
-
-          html+=WAVE.strHTMLTemplate("</select><div id='@id@' class='@comboArrowCls@'></div></div>",
-                                          {
-                                            id: arrowId,
-                                            comboArrowCls: published.CLS_COMBO_ARROW
-                                          });
-          divRoot.innerHTML = html;
-          WAVE.id(idInput).__fieldView = fldView;
-          $("#"+idInput).change(function(){
-
-            var fv = field.value();
-            if (field.readonly())
-            {
-              if (this.value !== fv) this.value = fv;
-              return;
-            }
-
-            var val = this.value;
-            this.__fieldView.field().value(val, true);//from GUI
+            about: field.about(),
+            cls: (field.required() ? published.CLS_REQ : "") + " " + (field.isGUIModified() ? published.CLS_MOD : "")
           });
 
-          WAVE.id(arrowId).onclick = function() {
-            var element = WAVE.id(idInput);
-            try {
-              var event = new MouseEvent('mousedown');
-              element.dispatchEvent(event);
-            } catch(e) { }
-            return false;
-          };
+          var json = field.isNull()? "" : field.value(),
+              ekey = "@#$PS_EDITOR$#@",
+              editor = WAVE.get(fldView, ekey, null);
+          if (editor===null)
+          {
+            editor =  new WAVE.GUI.PropSetEditor({
+              DIV: editorCont,
+              outputFormFieldName: field.name(),
+              langs: WAVE.LOCALIZER.allLanguageISOs(),
+              content: json,
+              disable: field.isEnabled() ? false : true,
+              readonly: field.readonly(),
+              title: field.about()
+            });
+
+            fldView[ekey] = editor;
+
+            editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED,
+            function (e, d){
+              field.value(d, true);//from GUI
+            });
+          }
+        }
+
+        function renderPuzzleContainer(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          var Ø2 = WAVE.ce('div');
+          Ø2.innerText = ctx.error;
+          Ø2.setAttribute('class', ctx.ec);
+          Ø1.appendChild(Ø2);
+          var Ø3 = WAVE.ce('div');
+          Ø3.setAttribute('id', ctx.id);
+          Ø3.setAttribute('class', ctx.cls);
+          Ø1.appendChild(Ø3);
+          var Ø4 = WAVE.ce('input');
+          Ø4.setAttribute('id', ctx.hId);
+          Ø4.setAttribute('type', 'hidden');
+          Ø4.setAttribute('name', ctx.name);
+          Ø4.setAttribute('value', '');
+          Ø1.appendChild(Ø4);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
         }
 
         function buildPuzzle(fldView){
-
           if (fldView.PUZZLE) return;
 
-          var field = fldView.field();
-          var divRoot = fldView.DIV();
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              ids = genIDSeed(fldView),
+              idInput = "divPuzzle"+ids,
+              idHiddenInput = "hiddenPuzzle"+ids,
+              ve = field.validationError();
 
-          var ids = genIDSeed(fldView);
-          var idInput = "divPuzzle"+ids;
-          var idHiddenInput = "hiddenPuzzle"+ids;
+          renderPuzzleContainer(divRoot, {
+            ec: published.CLS_ERROR,
+            error: ve,
 
-          var html = "";
-          var ve = field.validationError();
-          if (ve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: ve});
-
-          html+= WAVE.strTemplate("<div id='@id@' class='@cls@'></div>"+
-                                  "<input id='@idh@' type='hidden' name=@fname@ value=''></input>",
-                                      {
-                                        id: idInput,
-                                        idh: idHiddenInput,
-                                        fname: field.name(),
-                                        cls: published.CLS_PUZZLE
-                                      });
-
-          divRoot.innerHTML = html;
+            id: idInput,
+            cls: published.CLS_PUZZLE,
+            hId: idHiddenInput,
+            name: field.name()
+          });
 
           var fv = field.value();
           var pk = new WAVE.GUI.PuzzleKeypad(
-                   {
-                     DIV: WAVE.id(idInput),
-                     Image: WAVE.strDefault(fv.Image, ""),
-                     Help:  WAVE.strDefault(fv.Help, ""),
-                     Question: WAVE.strDefault(fv.Question, "")
-                   });
+            {
+              DIV: WAVE.id(idInput),
+              Image: WAVE.strDefault(fv.Image, ""),
+              Help:  WAVE.strDefault(fv.Help, ""),
+              Question: WAVE.strDefault(fv.Question, "")
+            });
 
           var hidden = WAVE.id(idHiddenInput);
           hidden.value = JSON.stringify(field.value());
 
-          pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE, function(kpad){
-                          field.value().Answer = kpad.value();
-                          hidden.value = JSON.stringify(field.value());
-                       });
+          pk.eventBind(WAVE.GUI.EVT_PUZZLE_KEYPAD_CHANGE,
+            function (kpad) {
+              field.value().Answer = kpad.value();
+              hidden.value = JSON.stringify(field.value());
+            });
 
           fldView.PUZZLE = pk;
         }
 
-
-        function buildHidden(fldView){
-          fldView.DIV().innerHTML = WAVE.strHTMLTemplate("<input type='hidden' name='@fName@' value='@fValue@'>",
-                                                        {fName: fldView.field().name(), fValue: fldView.field().displayValue()});
+        function renderErrorRec(root, ctx) {
+          var Ør = arguments[0];
+          if (WAVE.isString(Ør))
+            Ør = WAVE.id(Ør);
+          var Ø1 = WAVE.ce('div');
+          Ø1.innerText = ctx.error;
+          Ø1.setAttribute('class', ctx.ec);
+          if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+          return Ø1;
         }
 
-
         function buildErrorRec(fldView, summary){
-          var record = fldView.record();
-          var divRoot = fldView.DIV();
+          var record = fldView.record(),
+              divRoot = fldView.DIV();
 
-
-          var html = "";
           if (summary)
           {
             var allErrors = record.allValidationErrors();
             for(var i in allErrors)
             {
-               var err = allErrors[i];
-               if (err!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: err});
+              var err = allErrors[i];
+              if (err !== null) renderErrorRec(divRoot, { ec: published.CLS_ERROR, error: err });
             }
-
           }
           else
           {
             var rve = record.validationError();
-            if (rve!==null) html+=WAVE.strHTMLTemplate("<div class='@ec@'>@error@</div>", {ec: published.CLS_ERROR, error: rve});
+            if (rve !== null) renderErrorRec(divRoot, { ec: published.CLS_ERROR, error: rve });
           }
-
-          divRoot.innerHTML = html;
         }
-
 
         function rebuildControl(fldView){
           var ct = published.getControlType(fldView);
@@ -5870,7 +6034,6 @@ WAVE.RecordModel.GUI = (function(){
           if (fldView.field()===null)
            throw "The control type '"+ct+"' requires the field binding, but was bound to record";
         }
-
 
 
     //Gets the appropriate(for this GUI lib) control type if the one is specified in field schema, or infers one from field definition

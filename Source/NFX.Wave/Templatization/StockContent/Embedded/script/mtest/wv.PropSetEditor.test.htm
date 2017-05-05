@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../jquery-2.1.4.js"></script>
+    <script src="../wv.js"></script>
+    <script src="../wv.gui.js"></script>
+
+    <style>
+     body {
+            font-family: Verdana;
+            font-size: 12px;
+        }
+        .fView {
+            display: block;
+            border: 1px solid #fefeb0;
+            padding: 4px;
+        }
+        label {
+            margin: 4px;
+            display: inline-block;
+        }
+        fieldset {
+            border: 1px solid #bfbfbf;
+        }
+
+        .wvError {
+            color: yellow;
+            background: #ff8080;
+        }
+        .wvRequired {
+            font-weight: bold;
+        }
+
+        .wvModified {
+            border-bottom: 2px solid #0000ff;
+        }
+
+
+        .wvCurtain,
+    .wvDialogBase {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    .wvDialogBase {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .wvDialogContent {
+      display: block;
+      position: fixed;
+      background: #3866de;
+      border: 1px solid #808080;
+      border-radius: 4px;
+      padding: 6px;
+      color: white;
+      box-shadow: 6px 6px 10px #888888;
+      margin: 10px 0;
+    }
+
+    .dlgYellow .wvDialogContent {
+      background: #ffff00;
+    }
+
+    .dlgGreen .wvDialogContent {
+      background: linear-gradient(to bottom, #bfd255 0%,#8eb92a 50%,#588701 51%,#9ecb2d 100%);
+    }
+
+    .wvDialogHeader {
+      background: #2020c0;
+      color: white;
+      font-size: 1.37em;
+      font-weight: bold;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .dlgYellow .wvDialogHeader {
+      background: red;
+    }
+
+    .dlgGreen .wvDialogHeader {
+      background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+    }
+
+    .wvDialogBody {
+      display: block;
+      background: #fefef0;
+      color: black;
+      border: 1px solid #7070ff;
+      padding: 4px;
+      margin-top: 6px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: calc(100% - 46px);
+    }
+
+        .wvToast {
+            display: block;
+            position: fixed;
+            background: black;
+            border: 1px solid #808080;
+            width: auto;
+            padding: 8px;
+            top: 45%;
+            left: 50%;
+            color: white;
+            box-shadow: 2px 2px 10px #888888;
+        }
+
+        .wvToast_warning {
+            display: block;
+            position: fixed;
+            background: yellow;
+            border: 1px solid #bcbc00;
+            width: auto;
+            padding: 8px;
+            top: 45%;
+            left: 50%;
+            color: black;
+            box-shadow: 2px 2px 10px #888888;
+        }
+
+        .wvToast_error {
+            display: block;
+            position: fixed;
+            background: #ff2020;
+            border: 1px solid #ff8080;
+            width: auto;
+            padding: 8px;
+            top: 45%;
+            left: 50%;
+            color: white;
+            box-shadow: 2px 2px 10px #888888;
+        }
+
+        .wvCurtain {
+            background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+        }
+
+        #container, #container2 {
+            display: inline-block;
+            /*width: 250px;
+            border: 1px solid red;
+            max-height: 350px;*/
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .wvPSLangLabel {
+            max-width: 100%;
+            padding: 5px;
+        }
+
+        .wvPSInputContainer,
+        .wvPSLabelContainer {
+            margin: 3px;
+        }
+
+        .wvPSInputContainer div {
+            max-width: 100%;
+        }
+
+        .wvPSInputContainer input,.wvPSInputContainer textarea  {
+            max-width: 100%;
+            width: 98%;
+        }
+        .wvPSLangSeparator{
+            clear: both;
+        }
+
+        .wvDialogBase {
+            background-color: white;
+        }
+
+        .wvToast_error {
+            background-color: red;
+            color: black;
+            text-align: center;
+        }
+        .somecssclass{
+          background-color: red;
+        }
+        .wvPSLangSelector{
+          width: 100%;
+          text-transform:  uppercase;
+        }
+        .wvPSLangSelector option{
+          text-transform:  uppercase;
+        }
+    </style>
+    <script>
+
+      var data = {
+        //ENG:{d: [{}, {}]},
+        //"FRA":{"n": "la cream","d": "lalalal alala"}
+      };
+
+      document.addEventListener('DOMContentLoaded', function () {
+
+        var cont = WAVE.id("container");
+        var btnClasses = {
+          //addBtnCls: "somecssclass", - use defalut
+          delBtnCls: "somecssclass",
+          //rawBtnCls: "somecssclass", -use default
+          clearBtnCls: "somecssclass",
+          //modalBtnCls: "somecssclass",
+        }
+
+        var editor = new WAVE.GUI.PropSetEditor({
+          DIV: WAVE.id("container"),
+          outputFormFieldName: "output",
+          sets: ["RUS", "rus", "eng", "Eng", "eNG", "esP"],
+          shema : {//"n": {"type" : "text", "plh": "Name"}, "d": {"type" : "text", "plh": "Description"}},
+          //options : {
+            //d : {
+            //  type : "array",
+            //  options : {
+            //    n: {
+            //      type : "text",
+            //      plh: "Name"
+            //    }
+            //  }
+            //},
+            f : {type : "nls", plh: "Name3"},
+            b : {type : "nls", plh: "Name4"}
+          },
+          content: JSON.stringify(data),
+          btnClasses: btnClasses
+        });//, disable: true});
+
+
+        editor.eventBind(WAVE.GUI.EVT_PS_EDITOR_UPDATED, function (e, d) {
+          WAVE.id('code').innerText = JSON.stringify(d, null, 2);
+        })
+        var en = false;
+        WAVE.id('btnD').onclick = function () {
+          editor.enable(en);
+          en = !en;
+        }
+
+        var ro = true;
+        WAVE.id('btnR').onclick = function () {
+          editor.readOnly(ro);
+          ro = !ro;
+        }
+
+        WAVE.id('btnI').onclick = function () {
+          editor.content(WAVE.id('text').value);
+        }
+
+        var add = false;
+        WAVE.id('btnAdd').onclick = function () {
+          editor.canAdd(add);
+          add = !add;
+        }
+
+        var del = false;
+        WAVE.id('btnDel').onclick = function () {
+          editor.canDel(del);
+          del = !del;
+        }
+
+        var raw = false;
+        WAVE.id('btnRaw').onclick = function () {
+          editor.canRaw(raw);
+          raw = !raw;
+        }
+
+      }, false);
+    </script>
+</head>
+
+
+<body>
+
+    <br />
+    <br />
+    <div id="container"></div>
+    <br />
+    <br />
+    <br />
+    <span id="code"></span>
+    <br />
+    <br />
+    <br />
+    <button id="btnAdd">Toggle can add</button>
+    <button id="btnDel">Toggle can del</button>
+    <button id="btnRaw">Toggle can raw</button>
+    <button id="btnD">enable\disable</button>
+    <button id="btnR">readonly toggle</button>
+    <br />
+    <br />
+    <br />
+    <h3>insert raw content</h3>
+    <textarea id='text' rows="10" cols="30"></textarea>
+    <br />
+    <input type='button' value="insert conent" id='btnI'/>
+
+</body>
+
+</html>

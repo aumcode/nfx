@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Ruler Test</title>
+
+    <script type="text/javascript" src="../jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../wv.js"></script>
+    <script type="text/javascript" src="../wv.gui.js"></script>
+
+    <style>
+      html, body {
+        margin: 0; padding: 0;
+      }
+
+      #dvControl {
+        margin: 5px;
+      }
+
+      #dv1 {
+        background-color: #9999B0;
+        margin-left: 100px; margin-top: 100px;
+        width: 300px; height: 200px;
+        float: left;
+        cursor: none;
+      }
+
+      #dv2 {
+        background-color: #99B099;
+        margin-left: 100px; margin-top: 100px;
+        width: 300px; height: 200px;
+        float: left;
+        cursor: crosshair;
+      }
+
+      #svg1 {
+        background-color: #B09999;
+        margin-left: 100px; margin-top: 100px;
+        float: left;
+      }
+
+      #svg2 {
+        background-color: #999999;
+        margin-left: 100px; margin-top: 100px;
+        float: left;
+      }
+
+      .wvRulerHint {
+        background-color: #eeeecc;
+        pointer-events: none;
+        z-index: 10000;
+      }
+
+      .wvRulerHint-alt {
+        background-color: #eeccee;
+        pointer-events: none;
+      }
+
+      .wvRulerSight {
+        border-left: 1px dashed #cccccc;
+        border-top: 1px dashed #cccccc;
+        pointer-events: none;
+        z-index: 9999;
+      }
+    </style>
+
+    <script type="text/javascript">
+
+      WAVE.GUI.connectorEnsure();
+
+      function onNewWin() {
+        window.Connector.openWindow();
+      }
+
+      function callWindowFunc() {
+        window.Connector.callWindowFunc(function (w) {
+          w.Connector.logMsg("test call");
+        });
+      }
+
+    </script>
+</head>
+<body>
+  <div id="dvControl">
+    <button id="btnNewWin" onclick="onNewWin()">New Win</button>
+    <button id="btnCloseWin" onclick="onCloseWin()">Close Win</button>
+    <button id="btnLogMsg" onclick="callWindowFunc()">Log Msg</button>
+  </div>
+
+  <div id="dv1"></div>
+
+  <div id="dv2"></div>
+
+  <svg id="svg1" width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+
+  <svg id="svg2" width="300" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+
+  <script type="text/javascript">
+
+    var dv1 = WAVE.id("dv1");
+    WAVE.GUI.rulerSet({ element: dv1 });
+    var dv2 = WAVE.id("dv2");
+    WAVE.GUI.rulerSet({ element: dv2 });
+    WAVE.GUI.rulerSet({ element: dv2, scopeName: "svg" });
+    var svg1 = WAVE.id("svg1");
+    WAVE.GUI.rulerSet({ element: svg1, scopeName: "svg" });
+    var svg2 = WAVE.id("svg2");
+    WAVE.GUI.rulerSet({ element: svg2, scopeName: "svg" });
+
+    WAVE.GUI.rulerEventBind(WAVE.GUI.EVT_RULER_MOUSE_MOVE, function(src, masterRes, scopeNames) {
+      window.Connector.callWindowFunc(function(w) {
+        w.WAVE.GUI.rulerMouseMove(masterRes, scopeNames);
+      });
+    });
+
+    WAVE.GUI.rulerEventBind(WAVE.GUI.EVT_RULER_MOUSE_ENTER, function (src, scopeNames) {
+      window.Connector.callWindowFunc(function (w) {
+        w.WAVE.GUI.rulerMouseEnter(scopeNames);
+      });
+    });
+
+    WAVE.GUI.rulerEventBind(WAVE.GUI.EVT_RULER_MOUSE_LEAVE, function (src, scopeNames) {
+      window.Connector.callWindowFunc(function (w) {
+        w.WAVE.GUI.rulerMouseLeave(scopeNames);
+      });
+    });
+
+  </script>
+
+</body>
+</html>

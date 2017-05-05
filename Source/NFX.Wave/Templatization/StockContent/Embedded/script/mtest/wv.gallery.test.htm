@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../jquery-2.1.4.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+
+  <style>
+    * { padding: 0; margin: 0; }
+    html, body { width: 100%; }
+
+    #gallery-container {
+      position: relative;
+      width: 100%; height: 50vh;
+    }
+
+    #gallery {
+      position: absolute;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      margin: 2ch;
+      box-shadow: 1px 1px 1px 1px gray;
+      border-radius: 2px;
+    }
+
+    #content { margin: 2ch; }
+    #content p {
+      text-indent: 4ch;
+      text-align: justify;
+    }
+
+    #gallery .wvGallerySimple_thumbnails {
+      position: relative;
+      float: left;
+      width: 25%; height: 100%;
+      background-color: gray;
+    }
+
+    #gallery .wvGallerySimple_preview {
+      float: right;
+      width: 75%; height: 100%;
+    }
+
+    #gallery .wvImageBox_loading:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 16px !important;
+      height: 16px !important;
+      background-repeat: no-repeat;
+      background-image: url(data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQACgABACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkEAAoAAgAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkEAAoAAwAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkEAAoABAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQACgAFACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQACgAGACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAAKAAcALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==);
+    }
+    #gallery .wvImageBox_error:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 16px !important;
+      height: 16px !important;
+      background-repeat: no-repeat;
+      background-image: url(data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAPwALAAAAAAQABAAhwAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAAAiGAPcJFFiuILmCAxMSlJaN4TRs5RTuO4gq27RsDbOhOpiwHKp9FS1qBBmR4EeBqC6eJLmvHLZsqQaiWhmy4MWRIE+GzFbw5cuZKFNilFYQI0agOYfyLCdSp06MEMkdlflK5suIHmU2rIqy5L51H3eO3NjRo8WXRzkqlGo0G0SJA8sdLOhVYEAAOw==);
+    }
+    #gallery .wvImageBox_wider * { width: 100% !important; }
+    #gallery .wvImageBox_higher * { height: 100% !important; }
+
+    #gallery .wvImageView {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    #gallery .wvImageView .wvImageView_image {
+      position: absolute;
+      display: block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+
+      -webkit-animation: fadein 2s;
+         -moz-animation: fadein 2s;
+          -ms-animation: fadein 2s;
+           -o-animation: fadein 2s;
+              animation: fadein 2s;
+    }
+
+    @-webkit-keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+       @-moz-keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+        @-ms-keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+         @-o-keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+    #gallery .wvImageView.wvImageView_zoom .wvImageView_image {
+      margin: 0;
+      max-width: none;
+      max-height: none;
+      width: auto !important;
+      height: auto !important;
+    }
+    #gallery .wvGallery_list {
+      position: absolute;
+      display: block;
+      list-style-type: none;
+      overflow: hidden;
+      left: 1px; right: 1px;
+      top: 4vw; bottom: 4vw;
+    }
+    #gallery .wvGallery_item {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      outline: 1px solid gray;
+    }
+    #gallery .wvGallery_item:before {
+      content: '';
+      display: block;
+      padding-top: 125%;
+    }
+    #gallery .wvGallery_thumbnail {
+      position: absolute;
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      left: 0; right: 0;
+      top: 0; bottom: 20%;
+      margin: auto;
+      background-color: white;
+    }
+    #gallery .wvGallery_thumbnail:after {
+      content: '';
+      position: absolute;
+      display: block;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      box-shadow: inset 0 0 1ch gray;
+    }
+    #gallery .wvGallery_content {
+      position: absolute;
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      left: 0; right: 0;
+      top: 80%; bottom: 0;
+      margin: auto;
+      text-align: center;
+      overflow: hidden;
+      font-size: 3vw;
+    }
+    #gallery .wvGallery_thumbnail .wvGallery_image {
+      position: absolute;
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      margin: auto;
+    }
+    #gallery .wvGallery_prev,
+    #gallery .wvGallery_next {
+      position: absolute;
+      display: block;
+      width: 100%; height: 4vw;
+    }
+    #gallery .wvGallery_prev { top: 0; }
+    #gallery .wvGallery_next { bottom: 0; }
+    #gallery .wvGallery_prev:before,
+    #gallery .wvGallery_next:before {
+      content: '';
+      display: block;
+      width: 0; height: 0;
+      margin: auto;
+      border: solid transparent;
+      border-width: 4vw;
+    }
+    #gallery .wvGallery_prev:before {
+      border-bottom-color: white;
+      border-top-width: 0 !important;
+    }
+    #gallery .wvGallery_next:before {
+      border-top-color: white;
+      border-bottom-width: 0 !important;
+    }
+    #gallery .wvGallery_prev:hover:before {
+      border-bottom-color: gold;
+    }
+    #gallery .wvGallery_next:hover:before {
+      border-top-color: gold;
+    }
+    #gallery .wvGallery_prev.wvGallery_disabled:before,
+    #gallery .wvGallery_next.wvGallery_disabled:before {
+      border-color: transparent;
+    }
+    #gallery .wvGallery_selected:after {
+      position: absolute;
+      border: solid transparent;
+      content: '';
+      height: 0; width: 0;
+      right: 0; top: 40%;
+      border-width: 1vw;
+      border-right-color: gold;
+      margin-top: -1vw;
+    }
+    #gallery .wvGallery_selected .wvGallery_thumbnail:after { box-shadow: inset 0 0 1ch gold; }
+    #gallery .wvGallery_selected .wvGallery_content { color: gold; }
+
+    @media screen and (min-aspect-ratio: 1/1) {
+      #gallery-container { width: 50%; float: left;  }
+      #gallery .wvGallery_list { top: 2vw; bottom: 2vw; }
+      #gallery .wvGallery_item { width: 50%; }
+      #gallery .wvGallery_prev,
+      #gallery .wvGallery_next { height: 2vw; }
+      #gallery .wvGallery_prev:before,
+      #gallery .wvGallery_next:before { border-width: 2vw; }
+      #gallery .wvGallery_content { font-size: 1vw; }
+    }
+
+    #gallery-horizontal-container {
+      position: relative;
+      width: 100%; height: 120px;
+      background-color: gray;
+    }
+
+    #gallery-horizontal {
+      position: absolute;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      margin: 2ch;
+      box-shadow: 1px 1px 1px 1px gray;
+      border-radius: 2px;
+    }
+
+    #gallery-horizontal .wvImageBox_loading:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 16px !important;
+      height: 16px !important;
+      background-repeat: no-repeat;
+      background-image: url(data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQACgABACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkEAAoAAgAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkEAAoAAwAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkEAAoABAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQACgAFACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQACgAGACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAAKAAcALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==);
+    }
+    #gallery-horizontal .wvImageBox_error:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 16px !important;
+      height: 16px !important;
+      background-repeat: no-repeat;
+      background-image: url(data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAPwALAAAAAAQABAAhwAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAAAiGAPcJFFiuILmCAxMSlJaN4TRs5RTuO4gq27RsDbOhOpiwHKp9FS1qBBmR4EeBqC6eJLmvHLZsqQaiWhmy4MWRIE+GzFbw5cuZKFNilFYQI0agOYfyLCdSp06MEMkdlflK5suIHmU2rIqy5L51H3eO3NjRo8WXRzkqlGo0G0SJA8sdLOhVYEAAOw==);
+    }
+    #gallery-horizontal .wvImageBox_wider * { width: 100% !important; }
+    #gallery-horizontal .wvImageBox_higher * { height: 100% !important; }
+
+    #gallery-horizontal .wvGallery_list {
+      position: absolute;
+      display: block;
+      list-style-type: none;
+      overflow: hidden;
+      left: 2ch; right: 2ch;
+      top: 1px; bottom: 1px;
+      white-space: nowrap;
+    }
+    #gallery-horizontal .wvGallery_item {
+      display: inline-block;
+      position: relative;
+      width: 50px;
+      outline: 1px solid gray;
+    }
+    #gallery-horizontal .wvGallery_item:before {
+      content: '';
+      display: block;
+      padding-top: 125%;
+    }
+    #gallery-horizontal .wvGallery_thumbnail {
+      position: absolute;
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      left: 0; right: 0;
+      top: 0; bottom: 20%;
+      margin: auto;
+      background-color: white;
+    }
+    #gallery-horizontal .wvGallery_thumbnail:after {
+      content: '';
+      position: absolute;
+      display: block;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      box-shadow: inset 0 0 1ch gray;
+    }
+    #gallery-horizontal .wvGallery_content {
+      position: absolute;
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      left: 0; right: 0;
+      top: 80%; bottom: 0;
+      margin: auto;
+      text-align: center;
+      overflow: hidden;
+      font-size: 3vw;
+    }
+    #gallery-horizontal .wvGallery_thumbnail .wvGallery_image {
+      position: absolute;
+      display: block;
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      margin: auto;
+    }
+    #gallery-horizontal .wvGallery_prev,
+    #gallery-horizontal .wvGallery_next {
+      position: absolute;
+      display: block;
+      width: 2ch; height: 100%;
+    }
+    #gallery-horizontal .wvGallery_prev { top: 0; }
+    #gallery-horizontal .wvGallery_next { bottom: 0; }
+    #gallery-horizontal .wvGallery_prev:before,
+    #gallery-horizontal .wvGallery_next:before {
+      content: '';
+      display: block;
+      width: 0; height: 0;
+      margin: auto;
+      border: solid transparent;
+      border-width: 2ch;
+    }
+    #gallery-horizontal .wvGallery_prev:before {
+      border-left-color: white;
+      border-right-width: 0 !important;
+    }
+    #gallery-horizontal .wvGallery_next:before {
+      border-right-color: white;
+      border-left-width: 0 !important;
+    }
+    #gallery-horizontal .wvGallery_prev:hover:before {
+      border-left-color: gold;
+    }
+    #gallery-horizontal .wvGallery_next:hover:before {
+      border-right-color: gold;
+    }
+    #gallery-horizontal .wvGallery_prev.wvGallery_disabled:before,
+    #gallery-horizontal .wvGallery_next.wvGallery_disabled:before {
+      border-color: transparent;
+    }
+    #gallery-horizontal .wvGallery_selected:after {
+      position: absolute;
+      border: solid transparent;
+      content: '';
+      height: 0; width: 0;
+      right: 0; top: 40%;
+      border-width: 1vw;
+      border-right-color: gold;
+      margin-top: -1vw;
+    }
+    #gallery-horizontal .wvGallery_selected .wvGallery_thumbnail:after { box-shadow: inset 0 0 1ch gold; }
+    #gallery-horizontal .wvGallery_selected .wvGallery_content { color: gold; }
+  </style>
+</head>
+
+<body>
+  <button id="refresh">Refresh</button><button id="filter">Filter</button><button id="clear">Clear</button>
+  <div id="gallery-container">
+    <div id="gallery"></div>
+  </div>
+  <div id="content">
+    <p><b>Lorem ipsum dolor sit amet</b>, consectetur adipiscing elit. Praesent quam purus, iaculis dictum facilisis quis, blandit sed dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed tempor, arcu feugiat mattis molestie, magna metus molestie lorem, sit amet consectetur eros ipsum id tellus. Vestibulum eu lacinia urna, at congue tortor. Aenean eget pellentesque diam. Sed fringilla velit sed congue consectetur. Praesent rhoncus eros vitae quam mollis posuere. Maecenas laoreet dui ac gravida maximus. Phasellus vulputate gravida ligula nec lacinia. Fusce ac lectus vel tellus pellentesque elementum. Proin ultricies pellentesque sollicitudin. Curabitur scelerisque suscipit mauris, ac blandit erat vehicula eget.</p>
+    <p>Proin vitae nibh facilisis, vestibulum nulla mattis, aliquam libero. Etiam ultrices, nisi eget auctor volutpat, nisi est rutrum mi, vitae tempor nisi erat ut neque. Pellentesque vulputate felis ante, vel tempus magna eleifend et. Curabitur aliquet pharetra tellus, sodales posuere magna vestibulum id. Phasellus in dapibus libero. Nullam non mauris blandit, viverra ipsum ac, bibendum massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent eu libero justo. Fusce a orci sapien.</p>
+    <p>Nullam vestibulum bibendum blandit. Duis lobortis ligula eu molestie blandit. Sed nec massa sit amet nibh consectetur ullamcorper. Donec pellentesque malesuada lectus, et suscipit purus faucibus a. In condimentum, nibh et accumsan rutrum, eros velit suscipit orci, sit amet laoreet est nunc sed ligula. Phasellus vel magna ut magna commodo mattis. Nunc at mauris arcu. Donec ultrices arcu quis eros lobortis, nec ultrices felis euismod. Aenean ac vehicula ipsum.</p>
+    <p>Vestibulum lacinia semper ex, non mollis arcu consequat eget. Vestibulum pharetra lectus nec nibh vulputate, a aliquet urna ultricies. Quisque vel fringilla magna. Donec pulvinar felis massa, quis aliquam tortor tempus vitae. Nam dignissim ante odio, vitae dapibus quam viverra et. Aliquam at dictum nisi, eu lacinia est. Nunc porta sem ac sem sodales, sed gravida urna varius. Curabitur convallis convallis turpis, at euismod risus varius sed.</p>
+    <p>Etiam tempus, enim nec pulvinar varius, eros nisl interdum eros, non porta odio elit et risus. Integer ut luctus felis. Sed vel ligula enim. Proin ultricies a ante in varius. Sed vel mi mi. In hac habitasse platea dictumst. Etiam placerat leo id mauris dignissim, a iaculis purus sodales. Pellentesque tincidunt, dui nec venenatis tempor, ante magna varius enim, non congue ligula justo et purus. In hendrerit sollicitudin auctor. Suspendisse maximus, ipsum pulvinar scelerisque blandit, risus mauris euismod turpis, eu ornare lorem nibh vel elit. Nullam egestas metus eu ligula aliquam laoreet eget nec turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam non magna at dui interdum eleifend. Suspendisse velit nisl, egestas sit amet posuere eget, maximus quis ligula. Ut sed cursus sapien.</p>
+  </div>
+  <div id="gallery-horizontal-container">
+    <div id="gallery-horizontal"></div>
+  </div>
+
+  <script>
+    var gallery = new WAVE.GUI.GallerySimple({
+      DIV: "gallery",
+      urls: {
+        "world-map": "http://www.vectorworldmap.com/vectormaps/vector-world-map-v2.1.gif",
+        "lenin": "http://upload.wikimedia.org/wikipedia/commons/4/43/Lenin_CL.jpg"
+      }
+    });
+
+    var galleryHorizontal = new WAVE.GUI.Gallery({
+      thumbnails: "gallery-horizontal",
+      urls: {
+        "world-map": "http://www.vectorworldmap.com/vectormaps/vector-world-map-v2.1.gif",
+        "lenin": "http://upload.wikimedia.org/wikipedia/commons/4/43/Lenin_CL.jpg"
+      }
+    });
+
+
+    var images = [
+      {
+        image: "$world-map",
+        thumb: { url: "$world-map", clip: { left: 4100, right: 6800, top: 105, bottom: 1705 } },
+        content: "<b>World Map</b>"
+      },
+      {
+        image: "http://wallpaperscraft.ru/image/gorod_moskva_rossiya_kreml_812_1920x1080.jpg",
+        content: "<b>Kremlin</b>"
+      },
+      {
+        image: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+        thumb: { url: "https://www.google.com/images/nav_logo242_hr.png", clip: { left: 48, right: 279, top: 0, bottom: 74 } },
+        content: "<b>Google</b>"
+      },
+      {
+        image: "$lenin",
+        thumb: "error",
+        content: "<b>Lenin</b>"
+      },
+      {
+        image: "error",
+        content: "<b>Error</b>"
+      }
+    ];
+    var version = 0;
+    WAVE.id('refresh').onclick = function () {
+      version++;
+      var current = gallery.current();
+      WAVE.each(images, function (image, i) {
+        image.id = i;
+        image.order = i;
+        image.data = { version: version };
+        gallery.update(image);
+      });
+      if (!gallery.has(current))
+        gallery.current(0);
+
+      current = galleryHorizontal.current();
+      WAVE.each(images, function (image, i) {
+        image.id = i;
+        image.order = i;
+        image.data = { version: version };
+        galleryHorizontal.update(image);
+      });
+      if (!galleryHorizontal.has(current))
+        galleryHorizontal.current(0);
+    };
+    WAVE.id('filter').onclick = function () {
+      version++;
+      var current = gallery.current();
+      WAVE.each(images, function (image, i) {
+        image.id = i;
+        image.order = i;
+        image.data = { version: version };
+        if (i % 2 === 0)
+          gallery.update(image);
+      });
+      var old = [];
+      WAVE.each(gallery.images(), function (image) {
+        if (image.data().version != version)
+          old.push(image.id());
+      });
+      WAVE.each(old, function (id) {
+        gallery.remove(id);
+      });
+      if (!gallery.has(current))
+        gallery.current(0);
+
+      current = galleryHorizontal.current();
+      WAVE.each(images, function (image, i) {
+        image.id = i;
+        image.order = i;
+        image.data = { version: version };
+        if (i % 2 === 0)
+          galleryHorizontal.update(image);
+      });
+      var old = [];
+      WAVE.each(galleryHorizontal.images(), function (image) {
+        if (image.data().version != version)
+          old.push(image.id());
+      });
+      WAVE.each(old, function (id) {
+        galleryHorizontal.remove(id);
+      });
+      if (!galleryHorizontal.has(current))
+        galleryHorizontal.current(0);
+    };
+    WAVE.id('clear').onclick = function () {
+      version++;
+      var current = gallery.current();
+      var old = [];
+      WAVE.each(gallery.images(), function (image) {
+        if (image.data().version != version)
+          old.push(image.id());
+      });
+      WAVE.each(old, function (id) {
+        gallery.remove(id);
+      });
+      if (!gallery.has(current))
+        gallery.current(0);
+
+      current = galleryHorizontal.current();
+      var old = [];
+      WAVE.each(galleryHorizontal.images(), function (image) {
+        if (image.data().version != version)
+          old.push(image.id());
+      });
+      WAVE.each(old, function (id) {
+        galleryHorizontal.remove(id);
+      });
+      if (!galleryHorizontal.has(current))
+        galleryHorizontal.current(0);
+    };
+  </script>
+</body>
+</html>

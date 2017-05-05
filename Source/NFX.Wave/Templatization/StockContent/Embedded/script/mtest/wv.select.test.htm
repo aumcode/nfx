@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../../stl/select.test.css">
+  <script src="../jquery-2.1.4.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+  <title></title>
+</head>
+<body>
+
+  <div class="tests">
+    <div class="test">
+      <h2>Single test</h2>
+      <div id="divSingle"></div>
+    </div>
+    <div class="test">
+      <h2>Multi-select test</h2>
+      <div id="divMulti"></div>
+    </div>
+    <div class="test">
+      <h2>Update data test</h2>
+      <div id="divUpdate"></div>
+      <input type="button" value="Change Select Data" onclick="swapData()" />
+    </div>
+    <div class="test">
+      <h2>Empty data test</h2>
+      <div id="divEmpty"></div>
+    </div>
+    <div class="test">
+      <h2>Choice without select</h2>
+      <div id="divChoice"></div>
+    </div>
+  </div>
+
+  <script>
+
+    var states =
+    {
+      "Alaskan/Hawaiian Time Zone" : [
+        {"AK" : "Alaska"},
+        {"HI": "Hawaii"}
+      ],
+      "Pacific Time Zone" : [
+        {"CA" : "California"},
+        {"NV" : "Nevada"},
+        {"OR" : "Oregon"},
+        {"WA" : "Washington"},
+      ],
+      "Mountain Time Zone" : [
+        {"AZ" : "Arizona"},
+        {"CO" : "Colorado"},
+        {"ID" : "Idaho"},
+        {"MT" : "Montana"},
+        {"NE" : "Nebraska"},
+        {"NM" : "New Mexico"},
+        {"ND" : "North Dakota"},
+        {"UT" : "Utah"},
+        {"WY" : "Wyoming"},
+      ],
+      "Central Time Zone" : [
+        {"AL" : "Alabama"},
+        {"AR" : "Arkansas"},
+        {"IL" : "Illinois"},
+        {"IA" : "Iowa"},
+        {"KS" : "Kansas"},
+        {"KY" : "Kentucky"},
+        {"LA" : "Louisiana"},
+        {"MN" : "Minnesota"},
+        {"MS" : "Mississippi"},
+        {"MO" : "Missouri"},
+        {"OK" : "Oklahoma"},
+        {"SD" : "South Dakota"},
+        {"TX" : "Texas"},
+        {"TN" : "Tennessee"},
+        {"WI" : "Wisconsin"},
+      ],
+      "Eastern Time Zone" : [
+        {"CT" : "Connecticut"},
+        {"DE" : "Delaware"},
+        {"FL" : "Florida"},
+        {"GA" : "Georgia"},
+        {"IN" : "Indiana"},
+        {"ME" : "Maine"},
+        {"MD" : "Maryland"},
+        {"MA" : "Massachusetts"},
+        {"MI" : "Michigan"},
+        {"NH" : "New Hampshire"},
+        {"NJ" : "New Jersey"},
+        {"NY" : "New York"},
+        {"NC" : "North Carolina"},
+        {"OH" : "Ohio"},
+        {"PA" : "Pennsylvania"},
+        {"RI" : "Rhode Island"},
+        {"SC" : "South Carolina"},
+        {"VT" : "Vermont"},
+        {"VA" : "Virginia"},
+        {"WV" : "West Virginia"},
+      ]
+    };
+
+    var cities = [
+      "Sydney",
+      "Albury",
+      "Armidale",
+      "Bathurst",
+      "Blue Mountains",
+      "Broken Hill",
+      "Campbelltown",
+      "Cessnock",
+      "Dubbo",
+      "Goulburn",
+      "Grafton",
+      "Lithgow",
+      "Liverpool",
+      "Newcastle",
+      "Orange",
+      "Parramatta",
+      "Penrith",
+      "Queanbeyan",
+      "Tamworth",
+      "Wagga Wagga",
+      "Wollongong",
+    ];
+
+    var singleCbo = new WAVE.GUI.Select({
+      DIV: "divSingle",
+      data : states,
+      mode: WAVE.GUI.SELECT_MODES.Single,
+      formName: "single",
+      autocomlete: true
+    });
+
+    var multiCbo = new WAVE.GUI.Select({DIV: "divMulti", data : states, mode: WAVE.GUI.SELECT_MODES.Multi});
+
+    var updateCbo = new WAVE.GUI.Select({DIV: "divUpdate", data : states, mode: WAVE.GUI.SELECT_MODES.Single});
+
+    var curd = 0;
+    function swapData() {
+      if (curd === 0) {
+        updateCbo.data(cities);
+        curd = 1;
+      } else {
+        updateCbo.data(states);
+        curd = 0;
+      }
+    }
+
+    var updateCbo = new WAVE.GUI.Select({DIV: "divEmpty", data : [], mode: WAVE.GUI.SELECT_MODES.Single});
+
+    var justChoices = new WAVE.GUI.Choice({data:states, DIV:WAVE.id("divChoice")});
+
+  </script>
+</body>
+</html>

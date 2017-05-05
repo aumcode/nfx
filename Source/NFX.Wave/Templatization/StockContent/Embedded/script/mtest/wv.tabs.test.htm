@@ -1,0 +1,333 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../jquery-2.1.4.js"></script>
+    <script src="../wv.js"></script>
+    <script src="../wv.gui.js"></script>
+
+
+    <script>
+      var tabs;
+       document.addEventListener('DOMContentLoaded', function () {
+//{
+//  "DIV" : DIV,
+//  "tabs" : [
+//    {
+//      "title" : "text",
+//      "content" : "text or hml",
+//      "isHtml" : "true",
+//      "isActive" : "false",
+//      "visible" : ""
+//    }
+//  ]
+//}
+        tabs = new WAVE.GUI.Tabs({
+        DIV: WAVE.id("cont"),
+        tabs: [
+          {
+            title: "Tab cho vedet v kozmoz",
+            content: "wababalabala",
+            visible: false
+          },
+          {
+            title: "secret",
+            content: " asdfj a;lksdjf;lkas j;flajs;lf jas;klfdj ;alkjdf;laksjf ;lask j;s",
+            isHtml: false
+          },
+          {
+            title: "Html",
+            content: "<table><tr><td> adf asdf asfd </td><td> asdf asdfasfd</td></tr><tr><td>asdf asdf asfd</td><td> asdf asdfaf</td></tr><tr><td> asdf af asfd</td><td>asdf asdf asdfasf</td></tr></table>",
+            isHtml: true
+          },
+          {
+            title: "Text",
+            content: "<table><tr><td> adf asdf asfd </td><td> asdf asdfasfd</td></tr><tr><td>asdf asdf asfd</td><td> asdf asdfaf</td></tr><tr><td> asdf af asfd</td><td>asdf asdf asdfasf</td></tr></table>",
+            isHtml: false
+          }
+        ]});
+
+        WAVE.id('act').onclick = function() {
+          tabs.tabAdd({
+          title: WAVE.id('title').value,
+          content: WAVE.id('content').value
+          });
+        }
+
+        WAVE.id('del').onclick = function() {
+          tabs.tabDelete(tabs.tabActive());
+        }
+
+        WAVE.id('get').onclick = function() {
+          WAVE.GUI.toast(tabs.tabActive());
+        }
+
+        WAVE.id('toggle').onclick =function(){
+          tabs.unswitchable(!tabs.unswitchable());
+        }
+
+        WAVE.id('uc').onclick =function(){
+          alert(tabs.tabContent('1', WAVE.id('nc').value));
+        }
+
+        tabs.eventBind(WAVE.GUI.EVT_TABS_TAB_CHANGED, function (e, d) {
+          WAVE.id('text').value = "active tab name: " + d;
+        })
+
+        new WAVE.GUI.Tabs({
+          DIV: WAVE.id("parse-tabs"),
+          parse: true
+        });
+
+      }, false);
+
+    </script>
+</head>
+
+
+<body>
+
+  <button id="act" >add tab</button>
+  <input type="text" id="title" placeholder="tab title"/>
+  <input type="text" id="content" placeholder="tab content"/>
+  <br />
+  <button id="del">delete active tab</button>
+  <br />
+  <button id="get">get active tab id</button>
+  <br />
+  <button id="toggle">Toggle switchability</button>
+  <br />
+  <button id="uc">Update Content</button>
+  <br />
+  <input id="text" type="text"/>
+  <textarea id="nc"></textarea>
+  <br />
+  <br />
+  <div id="cont"></div>
+
+  <h1>attribte build</h1>
+
+  <div id="parse-tabs">
+    <ul data-tabs>
+      <li data-tabs-contId="cont1" data-tabs-name="Tabolusha1">Tab 1</li>
+      <li data-tabs-contId="cont2">Tab 2</li>
+      <li data-tabs-contId="cont3">Tab 3</li>
+    </ul>
+    <div id="cont1">
+      Div 1
+    </div>
+    <div id="cont2">
+      Div 2
+    </div>
+    <div id="cont3">
+      Div 3
+    </div>
+  </div>
+
+</body>
+
+<style>
+  body {
+    font-family: Verdana;
+    font-size: 12px;
+  }
+
+  .fView {
+    display: block;
+    border: 1px solid #fefeb0;
+    padding: 4px;
+  }
+
+  label {
+    margin: 4px;
+    display: inline-block;
+  }
+
+  fieldset {
+    border: 1px solid #bfbfbf;
+  }
+
+  .wvError {
+    color: yellow;
+    background: #ff8080;
+  }
+
+  .wvRequired {
+    font-weight: bold;
+  }
+
+  .wvModified {
+    border-bottom: 2px solid #0000ff;
+  }
+
+
+  .wvCurtain,
+    .wvDialogBase {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    .wvDialogBase {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .wvDialogContent {
+      display: block;
+      position: fixed;
+      background: #3866de;
+      border: 1px solid #808080;
+      border-radius: 4px;
+      padding: 6px;
+      color: white;
+      box-shadow: 6px 6px 10px #888888;
+      margin: 10px 0;
+    }
+
+    .dlgYellow .wvDialogContent {
+      background: #ffff00;
+    }
+
+    .dlgGreen .wvDialogContent {
+      background: linear-gradient(to bottom, #bfd255 0%,#8eb92a 50%,#588701 51%,#9ecb2d 100%);
+    }
+
+    .wvDialogHeader {
+      background: #2020c0;
+      color: white;
+      font-size: 1.37em;
+      font-weight: bold;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .dlgYellow .wvDialogHeader {
+      background: red;
+    }
+
+    .dlgGreen .wvDialogHeader {
+      background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+    }
+
+    .wvDialogBody {
+      display: block;
+      background: #fefef0;
+      color: black;
+      border: 1px solid #7070ff;
+      padding: 4px;
+      margin-top: 6px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: calc(100% - 46px);
+    }
+
+  .wvToast {
+    display: block;
+    position: fixed;
+    background: black;
+    border: 1px solid #808080;
+    width: auto;
+    padding: 8px;
+    top: 45%;
+    left: 50%;
+    color: white;
+    box-shadow: 2px 2px 10px #888888;
+  }
+
+  .wvToast_warning {
+    display: block;
+    position: fixed;
+    background: yellow;
+    border: 1px solid #bcbc00;
+    width: auto;
+    padding: 8px;
+    top: 45%;
+    left: 50%;
+    color: black;
+    box-shadow: 2px 2px 10px #888888;
+  }
+
+  .wvToast_error {
+    display: block;
+    position: fixed;
+    background: #ff2020;
+    border: 1px solid #ff8080;
+    width: auto;
+    padding: 8px;
+    top: 45%;
+    left: 50%;
+    color: white;
+    box-shadow: 2px 2px 10px #888888;
+  }
+
+  .wvCurtain {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+  }
+
+  .wvTabsUl {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 4px;
+    max-width: 600px;
+  }
+
+    .wvTabsUl li {
+      border: 1px solid black;
+      padding: 4px;
+      cursor: pointer;
+      margin-right: 4px;
+      background-color: #f0f0f0;
+      display: inline;
+    }
+
+  .wvTabsActive {
+    border-bottom-color: #f0f0f0 !important;
+    cursor: default !important;
+  }
+
+  .wvTabsContentContainer {
+    width: 600px;
+    height: 300px;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: #f0f0f0;
+  }
+
+  .wvTabsContentDiv {
+    background-color: white;
+    max-height: 100%;
+    height: 100%;
+    padding: 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  table, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  .wvTabDisabled {
+    background-color: #98e4d1 !important;
+    color: #ff8282 !important;
+    cursor: default !important;
+  }
+
+  .wvTabsContentDivHidden {
+    display: none;
+  }
+
+  .wvTabsContentDivShown {
+    display: block;
+  }
+</style>
+
+
+
+</html>

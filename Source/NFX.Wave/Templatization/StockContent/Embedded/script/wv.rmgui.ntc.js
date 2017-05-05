@@ -1,4 +1,4 @@
-﻿WAVE.RMGUI = (function(){
+﻿WAVE.RecordModel.GUI = (function () {
 
     var tUNDEFINED = "undefined";
 
@@ -703,4 +703,4 @@
     };
 
     return published;
-}());//WAVE.RM.GUI
+}());//WAVE.RecordModel.GUI

@@ -1,0 +1,219 @@
+<html>
+<head>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.stripe.js"></script>
+  <script src="../wv.braintree.js"></script>
+</head>
+<body>
+  <div>
+
+    <!-- Card Data -->
+    <table style="width:350px" align="center">
+      <tr><td colspan="2" style="text-align:center"><div style="margin: 20px 0 10px 0; font-weight:bold">CARD</div></td></tr>
+      <tr>
+        <td>Number: </td>
+        <td>
+          <input id="cardNumber" type="text" value="4111111111111111" />
+        </td>
+      </tr>
+      <tr>
+        <td>Exp. Month: </td>
+        <td>
+          <input id="cardExpMonth" type="text" value="1" />
+        </td>
+      </tr>
+      <tr>
+        <td>Exp. Year: </td>
+        <td>
+          <input id="cardExpYear" type="text" value="2021" />
+        </td>
+      </tr>
+      <tr>
+        <td>CVC: </td>
+        <td>
+          <input id="cardCVC" type="text"/>
+        </td>
+      </tr>
+      <tr>
+        <td><div style="margin:15px 0 0 0">Client-side Validation: </div></td>
+        <td>
+          <input id="clientSideValidation" style="margin:15px 0 0 0" type="checkbox" />
+        </td>
+      </tr>
+    </table>
+
+    <!-- Stripe -->
+    <table style="width:600px" align="center">
+      <tr>
+        <td colspan="3" style="text-align:center"><div style="margin: 20px 0 10px 0; font-weight:bold">STRIPE</div></td>
+      </tr>
+      <tr>
+        <td style="width:130px">Publishable Key:</td>
+        <td>
+          <input id="stripePubKey" type="text" style="width:100%" value="pk_test_EhM2ZaLqIb0kSx46m54tsyPW" />
+        </td>
+        <td>
+          <button id="btnStripeGetToken" style='height:23px; width:100px;' onclick='getStripeToken()'>get token</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:center;"><div id="divStripeResult" style="margin-top:15px;"></div></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:left;"><pre id="rawStripeResult" style="margin-top:10px;"></pre></td>
+      </tr>
+    </table>
+
+    <!-- BRAINTREE -->
+    <table style="width:1000px" align="center">
+      <tr>
+        <td colspan="2" style="text-align:center"><div style="margin: 20px 0 10px 0; font-weight:bold">BRAINTREE</div></td>
+      </tr>
+      <tr>
+        <!-- Server Side -->
+        <td>
+          <div style="width:400px; padding:0 15px; border:1px solid black" align="left">
+            <div style="margin:0 0 10px 0; font-weight:bold; text-align: center;">Server-side</div>
+            <div style="margin:0 0 20px 0;">
+              Server-side is responsible for generation client tokens.
+              In case of .NET server SDK can be found in <a href="https://developers.braintreepayments.com/client_libraries/dotnet/Braintree-2.52.0.dll">.NET SDK</a>.
+              Below is a .NET server-side implementation contains server's private information shown here <b>for a testing purposes only</b>.
+              You should never expose private tokens on your client-side.
+            </div>
+            <div style="text-align: left; margin:0 0 20px 20px; font-family: verdana; font-size: 12px;">
+              var gateway = new BraintreeGateway<br />
+              {<br />
+              <div style="margin: 0 0 0 30px;">
+                Environment = Braintree.Environment.SANDBOX,<br />
+                MerchantId = "qc4hnd8qh7n32zj5",<br />
+                PublicKey = "f5jhgpmmxmzmdvjf",<br />
+                PrivateKey = "7b51b94780d0b01e9a162054fa8f8126"<br />
+              </div>
+              };<br />
+              var clientToken = gateway.ClientToken.generate();<br />
+            </div>
+          </div>
+          <!-- Client Side -->
+        <td valign="top">
+          <table style="width:600px" align="right">
+            <tr>
+              <td colspan="3" style="text-align:center"><div style="margin:0 0 10px 0; font-weight:bold">Client-side</div></td>
+            </tr>
+            <tr>
+              <td valign='top' style="width:100px;">Client Token:</td>
+              <td>
+                <textarea id="btreeClientToken" type="text" style="width: 380px; height: 100px; resize:none;">eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJiM2Q3OWRiNmQ5ZGQwMGVlYWUxZDQ5MzZiZTY1NWYwMWY2ZGE0YzZmMTcwNWNiNGYwM2FjZTczMTBkOWRjYTVlfGNyZWF0ZWRfYXQ9MjAxNi0wMS0wOFQxMjozMjoyOS43OTMwNDAwMjkrMDAwMFx1MDAyNm1lcmNoYW50X2lkPXFjNGhuZDhxaDduMzJ6ajVcdTAwMjZwdWJsaWNfa2V5PWY1amhncG1teG16bWR2amYiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvcWM0aG5kOHFoN24zMnpqNS9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzL3FjNGhuZDhxaDduMzJ6ajUvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIn0sInRocmVlRFNlY3VyZUVuYWJsZWQiOmZhbHNlLCJwYXlwYWxFbmFibGVkIjp0cnVlLCJwYXlwYWwiOnsiZGlzcGxheU5hbWUiOiJVU0EiLCJjbGllbnRJZCI6bnVsbCwicHJpdmFjeVVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS9wcCIsInVzZXJBZ3JlZW1lbnRVcmwiOiJodHRwOi8vZXhhbXBsZS5jb20vdG9zIiwiYmFzZVVybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9jaGVja291dC5wYXlwYWwuY29tIiwiZGlyZWN0QmFzZVVybCI6bnVsbCwiYWxsb3dIdHRwIjp0cnVlLCJlbnZpcm9ubWVudE5vTmV0d29yayI6dHJ1ZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJ1c2EiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6InFjNGhuZDhxaDduMzJ6ajUiLCJ2ZW5tbyI6Im9mZiJ9</textarea>
+              </td>
+              <td valign="top">
+                <button id="btnBraintreeGetNonce" style='height:23px; width:100px;' onclick='getBraintreeNonce()'>get nonce</button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align:center;"><div id="divBraintreeResult" style="margin-top:15px;"></div></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align:left;"><pre id="rawBraintreeResult" style="margin-top:10px;"></pre></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+  <script>
+    function validateCard() {
+        var cardNumber = document.getElementById('cardNumber').value;
+        var cardMonth = document.getElementById('cardExpMonth').value;
+        var cardYear = document.getElementById('cardExpYear').value;
+        var cardCVC = document.getElementById('cardCVC').value;
+
+        if (!WAVE.Pay.checkLuhn(cardNumber))
+            throw new WAVE.Pay.CardValidationError("LUHN is invalid");
+        if (!WAVE.Pay.validateCardNumber(cardNumber))
+            throw new WAVE.Pay.CardValidationError("card number is invalid");
+        if (!WAVE.Pay.validateCVC(cardCVC))
+            throw new WAVE.Pay.CardValidationError("CVC is invalid");
+        if (!WAVE.Pay.validateExpirationDate(cardMonth, cardYear))
+            throw new WAVE.Pay.CardValidationError("Expiration date is invalid");
+        if (WAVE.Pay.getCardBrand(cardNumber) === WAVE.Pay.Brands.UNKNOWN)
+            throw new WAVE.Pay.CardValidationError("unknown card brand");
+    }
+
+    function getStripeToken() {
+      document.getElementById('btnStripeGetToken').disabled = true;
+      document.getElementById('divStripeResult').textContent = 'processing...';
+      document.getElementById('rawStripeResult').innerHTML = '';
+
+      var ccNumber = document.getElementById('cardNumber').value;
+      var ccMonth = document.getElementById('cardExpMonth').value;
+      var ccYear = document.getElementById('cardExpYear').value;
+
+      try {
+        if (document.getElementById("clientSideValidation").checked)
+            validateCard();
+
+        var publicKey = document.getElementById('stripePubKey').value;
+        var init = { publicKey: publicKey };
+        var pay = new WAVE.Pay.Facade('stripe1', WAVE.Pay.Providers.Stripe, init);
+
+        var paymentData = { cardNumber: ccNumber, cardExpMonth: ccMonth, cardExpYear: ccYear };
+        pay.tokenize(paymentData, function (result) {
+          document.getElementById('btnStripeGetToken').disabled = false;
+          if (result.OK) {
+            document.getElementById('divStripeResult').textContent = result.tokenString;
+            document.getElementById('rawStripeResult').innerHTML = "card: " + JSON.stringify(result.card, undefined, 2);
+          }
+          else {
+            document.getElementById('divStripeResult').textContent = result.errorMessage;
+            document.getElementById('rawStripeResult').innerHTML = "error: " + JSON.stringify(result.rawError, undefined, 2);
+          }
+        });
+      }
+      catch (error) {
+        document.getElementById('divStripeResult').textContent = "ERROR: " + error.message;
+        document.getElementById('btnStripeGetToken').disabled = false;
+      }
+    }
+
+    // server-side imitation
+    function getBraintreeNonce() {
+      document.getElementById('btnBraintreeGetNonce').disabled = true;
+      document.getElementById('divBraintreeResult').textContent = 'processing...';
+      document.getElementById('rawBraintreeResult').innerHTML = '';
+
+      var ccNumber = document.getElementById('cardNumber').value;
+      var ccMonth = document.getElementById('cardExpMonth').value;
+      var ccYear = document.getElementById('cardExpYear').value;
+
+      try {
+        if (document.getElementById("clientSideValidation").checked)
+            validateCard();
+
+        var publicKey = document.getElementById('btreeClientToken').value;
+        var init = { publicKey: publicKey };
+        var pay = new WAVE.Pay.Facade('btree1', WAVE.Pay.Providers.Braintree, init);
+
+        var paymentData = { cardNumber: ccNumber, cardExpMonth: ccMonth, cardExpYear: ccYear };
+        pay.tokenize(paymentData, function (result) {
+          document.getElementById('btnBraintreeGetNonce').disabled = false;
+          if (result.OK) {
+            document.getElementById('divBraintreeResult').textContent = result.tokenString;
+          }
+          else {
+            document.getElementById('divBraintreeResult').textContent = result.errorMessage;
+            document.getElementById('rawBraintreeResult').innerHTML = "error: " + JSON.stringify(result.rawError, undefined, 2);
+          }
+        });
+      }
+      catch (error) {
+        document.getElementById('divBraintreeResult').textContent = "ERROR: " + error.message;
+        document.getElementById('btnBraintreeGetNonce').disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

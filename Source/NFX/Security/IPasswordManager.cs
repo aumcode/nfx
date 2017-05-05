@@ -24,6 +24,9 @@ using NFX.ServiceModel;
 
 namespace NFX.Security
 {
+  /// <summary>
+  /// Defines password stregth levels: Minimum, Normal, Maximum etc.
+  /// </summary>
   public enum PasswordStrengthLevel
   {
     Default = 0,
@@ -50,7 +53,7 @@ namespace NFX.Security
 
 
   /// <summary>
-  /// Denoutes an entity that manages passwords such as: computes and verified hash tokens
+  /// Denotes an entity that manages passwords such as: computes and verified hash tokens
   /// and provides password strength verification
   /// </summary>
   public interface IPasswordManager : IApplicationComponent

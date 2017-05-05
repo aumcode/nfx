@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Obj. Inspector</title>
+
+  <style>
+    #dvInspector {
+      background-color: #eeeeee;
+    }
+
+    .wvTreeNode {
+      display: table;
+      padding: 2px;
+      position: relative;
+    }
+
+    .wvTreeNodeButtonExpanded {
+      display: table-cell;
+      width: 1em;
+      cursor: pointer;
+    }
+
+    .wvTreeNodeButtonCollapsed {
+      display: table-cell;
+      width: 1em;
+      cursor: pointer;
+    }
+
+    .wvTreeNodeContent {
+      display: table-cell;
+    }
+
+    .wvTreeNodeOwn {
+      display: block;
+    }
+
+    .wvTreeNodeChildren {
+      display: block;
+      height: auto;
+    }
+
+    .wvObjectInspectorEditor {
+      padding: 3px;
+    }
+  </style>
+
+  <script type="text/javascript" src="../jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="../wv.js"></script>
+  <script type="text/javascript" src="../wv.gui.js"></script>
+</head>
+<body>
+  <div id="dvInspector">
+
+  </div>
+
+  <script type="text/javascript">
+    var obj = { id: 777, name: "Austin", portfolio: { country: "Great Britain", cities: ["London", "Liverpool"] } };
+    var insp = new WAVE.GUI.ObjectInspector(obj, { div: WAVE.id("dvInspector") });
+  </script>
+</body>
+</html>

@@ -13,10 +13,7 @@ namespace NFX.Web.Cloud.Azure
 {
   public class AzureNetworkInterface
   {
-    public AzureNetworkInterface(IConfigSectionNode node)
-    {
-      ConfigAttribute.Apply(this, node);
-    }
+    public AzureNetworkInterface(IConfigSectionNode node) { ConfigAttribute.Apply(this, node); }
 
     [Config("$vnet")]
     public string VNet { get; set; }
@@ -54,7 +51,7 @@ namespace NFX.Web.Cloud.Azure
     [Config]
     public string AdminPassword { get; set; }
 
-    public List<AzureNetworkInterface> m_NetworkInterfaces = new List<AzureNetworkInterface>();
+    private List<AzureNetworkInterface> m_NetworkInterfaces = new List<AzureNetworkInterface>();
     public List<AzureNetworkInterface> NetworkInterfaces { get { return m_NetworkInterfaces; } }
 
     public override void Configure(IConfigSectionNode node)

@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="../jquery-2.1.4.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+  <script>
+       document.addEventListener('DOMContentLoaded', function () {
+         var d1 = new WAVE.GUI.Details({
+           titleCtrl: WAVE.id("title-1"),
+           contentCtrl: WAVE.id("content-1"),
+           timeout: 2500,
+           hideOnTimer: true,
+           hideOnClick: false
+         });
+
+         var d2 = new WAVE.GUI.Details({
+           DIV: WAVE.id("container-1"),
+           title: "Details on focus",
+           altTitle: "alternate title",
+           content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+           showOnFocus: true,
+           showOnClick: false,
+           hideOnFocus: true
+         });
+
+         var d3 = new WAVE.GUI.Details({
+           DIV: WAVE.id("container-2"),
+           title: "Details modal",
+           content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+           mode: "modal"
+         });
+
+         var d3 = new WAVE.GUI.Details({
+           DIV: WAVE.id("container-3"),
+           title: "Ajax modal",
+           content: "Loading..",
+           contentUrl: "http://api.fixer.io/latest",
+           loadCallback: function(d) {
+             var r = WAVE.tryParseJSON(d);
+             if (r.ok) {
+              return JSON.stringify(r.obj, null, 2);
+             }
+             return "Not valid JSON";
+           },
+           mode: "modal",
+           modalTitle: "Ajax Modal Details"
+         });
+
+      }, false);
+
+  </script>
+</head>
+
+
+<body>
+  <span id="title-1" tabindex="0" class="title">Details with timer</span>
+
+  <div id="content-1" class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+
+  <br />
+  <br />
+  <br />
+
+  <div id="container-1"></div>
+
+  <br />
+  <br />
+  <br />
+
+  <div id="container-2"></div>
+
+  <br />
+  <br />
+  <br />
+
+  <div id="container-3"></div>
+  <style>
+
+  .wvDetailsTitle {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .wvDetailsTitle:after{
+    content: "";
+    display: block;
+  }
+
+  .wvDetailsContent {
+    display: inline-block;
+    width: 300px;
+    background-color: aliceblue;
+    padding: 4px;
+    border:solid black 1px;
+  }
+
+  .wvDetailsContentHidden {
+    display: none;
+  }
+
+  .wvDetailsContent .wvDialogBody {
+    width: 400px;
+    margin: 0;
+  }
+
+
+
+
+
+
+
+
+
+  /*Common ==============================================*/
+    body {
+      font-family: Verdana;
+      font-size: 12px;
+    }
+
+    .fView {
+      display: block;
+      border: 1px solid #fefeb0;
+      padding: 4px;
+    }
+
+    label {
+      margin: 4px;
+      display: inline-block;
+    }
+
+    fieldset {
+      border: 1px solid #bfbfbf;
+    }
+
+    .wvError {
+      color: yellow;
+      background: #ff8080;
+    }
+
+    .wvRequired {
+      font-weight: bold;
+    }
+
+    .wvModified {
+      border-bottom: 2px solid #0000ff;
+    }
+
+
+    .wvCurtain,
+    .wvDialogBase {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    .wvDialogBase {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .wvDialogContent {
+      display: block;
+      position: fixed;
+      background: #3866de;
+      border: 1px solid #808080;
+      border-radius: 4px;
+      padding: 6px;
+      color: white;
+      box-shadow: 6px 6px 10px #888888;
+      margin: 10px 0;
+    }
+
+    .dlgYellow .wvDialogContent {
+      background: #ffff00;
+    }
+
+    .dlgGreen .wvDialogContent {
+      background: linear-gradient(to bottom, #bfd255 0%,#8eb92a 50%,#588701 51%,#9ecb2d 100%);
+    }
+
+    .wvDialogHeader {
+      background: #2020c0;
+      color: white;
+      font-size: 1.37em;
+      font-weight: bold;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .dlgYellow .wvDialogHeader {
+      background: red;
+    }
+
+    .dlgGreen .wvDialogHeader {
+      background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+    }
+
+    .wvDialogBody {
+      display: block;
+      background: #fefef0;
+      color: black;
+      border: 1px solid #7070ff;
+      padding: 4px;
+      margin-top: 6px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: calc(100% - 46px);
+    }
+
+    .wvToast {
+      display: block;
+      position: fixed;
+      background: black;
+      border: 1px solid #808080;
+      width: auto;
+      padding: 8px;
+      top: 45%;
+      left: 50%;
+      color: white;
+      box-shadow: 2px 2px 10px #888888;
+    }
+
+    .wvToast_warning {
+      display: block;
+      position: fixed;
+      background: yellow;
+      border: 1px solid #bcbc00;
+      width: auto;
+      padding: 8px;
+      top: 45%;
+      left: 50%;
+      color: black;
+      box-shadow: 2px 2px 10px #888888;
+    }
+
+    .wvToast_error {
+      display: block;
+      position: fixed;
+      background: #ff2020;
+      border: 1px solid #ff8080;
+      width: auto;
+      padding: 8px;
+      top: 45%;
+      left: 50%;
+      color: white;
+      box-shadow: 2px 2px 10px #888888;
+    }
+
+    .wvCurtain {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+    }
+  </style>
+</body>
+
+
+
+
+
+</html>

@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../jquery-2.1.4.js"></script>
+    <script src="../wv.js"></script>
+    <script src="../wv.gui.js"></script>
+    <script>
+       document.addEventListener('DOMContentLoaded', function () {
+
+       var schema = {
+		          id: {
+                type: "textarea",
+                plh: "Key",
+                dflt: "sex",
+                required: true,
+                items: {int: "Integer", str: "string"}
+              },
+		        //  "nls-name": {
+			    //      type: "ps",
+			    //      sets: WAVE.LOCALIZER.allLanguageISOs()
+		        //  },
+		        //  order: { type: "text", plh: "Order" },
+		        //  default: { type: "text", plh: "Default Value" },
+		        //  "app-expr": { type: "text", plh: "Expression" },
+		        //  value: {
+                //dflt: [],
+			    //      type: "array",
+                //maxLength: 5,
+                //schema: {
+			    //        //"nls-name": {
+				//        //    type: "ps",
+				//        //    sets: WAVE.LOCALIZER.allLanguageISOs()
+			    //        //},
+			    //        id: { type: "text", plh: "Id" },
+			    //  //      "app-expr": { type: "text", plh: "Expression" },
+                //  //order: { type: "text", plh: "Order" }
+                //}
+		        //  }
+	          };
+
+        schema.id.validate = function(val) {
+          return {
+            ok: !WAVE.strEmpty(val),
+            value: val,
+            msg: "Value should not be fuck",
+            showError: function(target) {
+              $(target).css("border", "2px solid red");
+              $(target).focus();
+              WAVE.GUI.toast("Value should not be fuck", "error");
+            },
+            hideError: function(target) {
+              $(target).css("border", "none");
+            }
+          };
+        };
+
+        var editor = new WAVE.GUI.ObjectEditor({
+          canRaw : true,
+          DIV: WAVE.id("cont"),
+          readonly: true,
+          meta: {
+            //dflt: {id:"", name:""},
+            type: "object",
+            schema :{
+              id: { plh: "nu a che" },
+              name : {
+                type: "textarea",
+                plh: "Name"
+              },
+              kust:{
+                //readonly: false,
+                dflt: {},
+                type: "array",
+                schema: {
+                  vid: { plh: "vid", type: "check"},
+                  cvet: { type: "ps", sets: ["rus", "nebo", "RUS", "rUS"] },
+                  radio: {
+                    type: "radio",
+                    items: {key: 11111, key2: "bugagashechki", key3: "123", valu: "eeeee"}
+                  }
+                }
+              },
+              about: {
+                type: "ps",
+                sets: ["rus", "nebo", "RUS", "rUS"],
+                schema : {
+                  d: { type: "textarea", plh: "1" }
+                }
+              },
+              combo: {
+                type: "combo",
+                items: {key: 11111, key2: "bugagashechki", key3: "123", valu: "eeeee"}
+              },
+              check: {
+                content: ['key'],
+                type: "multiple",
+                items: {key: 11111, key2: "bugagashechki", key3: "123", valu: "eeeee"}
+              }
+            }
+          }
+          //content: [ {  } ],
+          //meta: {
+          //  type: "Object",
+          //  schema: {
+	      //      id: {
+          //      canDel: true,
+          //      plh: "Key",
+          //    },
+          //    Name: {
+          //      canDel: true,
+          //      plh: "Name",
+          //    },
+          //    Pan: {
+          //      canDel: true,
+          //      plh: "Pan",
+          //    },
+          //  }
+          //}
+        });
+
+        editor.eventBind(WAVE.GUI.EVT_OBJECT_EDITOR_UPDATED, function (e, d) {
+          WAVE.id('res').innerHTML = JSON.stringify(d, null, 2);
+        })
+
+        WAVE.id("valid").onclick = function() {
+          editor.validate();
+        }
+      }, false);
+
+    </script>
+</head>
+
+
+<body>
+
+  <div id="cont"></div>
+  <br />
+  <br />
+  <button id="valid" >Validate</button>
+  <br />
+  <br />
+  <div id="res"></div>
+
+</body>
+
+
+
+<style>
+  body {
+    font-family: Verdana;
+    font-size: 12px;
+  }
+
+  .fView {
+    display: block;
+    border: 1px solid #fefeb0;
+    padding: 4px;
+  }
+
+  label {
+    margin: 4px;
+    display: inline-block;
+  }
+
+  fieldset {
+    border: 1px solid #bfbfbf;
+  }
+
+  .wvError {
+    color: yellow;
+    background: #ff8080;
+  }
+
+  .wvRequired {
+    font-weight: bold;
+  }
+
+  .wvModified {
+    border-bottom: 2px solid #0000ff;
+  }
+
+
+  .wvCurtain,
+    .wvDialogBase {
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+
+    .wvDialogBase {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .wvDialogContent {
+      display: block;
+      position: fixed;
+      background: #3866de;
+      border: 1px solid #808080;
+      border-radius: 4px;
+      padding: 6px;
+      color: white;
+      box-shadow: 6px 6px 10px #888888;
+      margin: 10px 0;
+    }
+
+    .dlgYellow .wvDialogContent {
+      background: #ffff00;
+    }
+
+    .dlgGreen .wvDialogContent {
+      background: linear-gradient(to bottom, #bfd255 0%,#8eb92a 50%,#588701 51%,#9ecb2d 100%);
+    }
+
+    .wvDialogHeader {
+      background: #2020c0;
+      color: white;
+      font-size: 1.37em;
+      font-weight: bold;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .dlgYellow .wvDialogHeader {
+      background: red;
+    }
+
+    .dlgGreen .wvDialogHeader {
+      background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+    }
+
+    .wvDialogBody {
+      display: block;
+      background: #fefef0;
+      color: black;
+      border: 1px solid #7070ff;
+      padding: 4px;
+      margin-top: 6px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: calc(100% - 46px);
+    }
+
+  .wvToast {
+    display: block;
+    position: fixed;
+    background: black;
+    border: 1px solid #808080;
+    width: auto;
+    padding: 8px;
+    top: 45%;
+    left: 50%;
+    color: white;
+    box-shadow: 2px 2px 10px #888888;
+  }
+
+  .wvToast_warning {
+    display: block;
+    position: fixed;
+    background: yellow;
+    border: 1px solid #bcbc00;
+    width: auto;
+    padding: 8px;
+    top: 45%;
+    left: 50%;
+    color: black;
+    box-shadow: 2px 2px 10px #888888;
+  }
+
+  .wvToast_error {
+    display: block;
+    position: fixed;
+    background: #ff2020;
+    border: 1px solid #ff8080;
+    width: auto;
+    padding: 8px;
+    top: 45%;
+    left: 50%;
+    color: white;
+    box-shadow: 2px 2px 10px #888888;
+  }
+
+  .wvCurtain {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWNgQAW+cAKJxs3xZWBgYAAANwIBz+0UkPgAAAAASUVORK5CYII=) repeat;
+  }
+
+  .wvTabsUl {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 4px;
+    max-width: 600px;
+  }
+
+    .wvTabsUl li {
+      border: 1px solid black;
+      padding: 4px;
+      cursor: pointer;
+      margin-right: 4px;
+      background-color: #f0f0f0;
+      display: inline;
+    }
+
+  .wvTabsActive {
+    border-bottom-color: #f0f0f0 !important;
+    cursor: default !important;
+  }
+
+  .wvTabsContentContainer {
+    width: 600px;
+    height: 300px;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: #f0f0f0;
+  }
+
+  .wvTabsContentDiv {
+    background-color: white;
+    max-height: 100%;
+    height: 100%;
+    padding: 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  table, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  .wvTabDisabled {
+    background-color: #98e4d1 !important;
+    color: #ff8282 !important;
+    cursor: default !important;
+  }
+</style>
+
+
+
+</html>

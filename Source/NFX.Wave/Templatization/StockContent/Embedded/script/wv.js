@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 /*jshint devel: true,browser: true, sub: true */
 /*global escape: true */
 
@@ -31,1051 +31,600 @@ var WAVE = (function(){
     published.falseness = function() { return false; };
     published.falsefunc = function() { return false; };
 
+//inc/array.js
     published.arrayDelete = function(array, element) {
-      for (var i in array){
-        if (array[i] === element){
-          array.splice(i, 1);
-          return true;
-        }
-      }
-        return false;
-    };
+  for (var i in array){
+    if (array[i] === element){
+      array.splice(i, 1);
+      return true;
+    }
+  }
+    return false;
+};
 
-    published.arrayShallowCopy = function(source){
-       var copy = [];
-       if (source && source.length>0)
-        for (var i=0, max=source.length; i < max; i++) copy.push(source[i]);
-       return copy;
-    };
+published.arrayShallowCopy = function(source){
+    var copy = [];
+    if (source && source.length>0)
+    for (var i=0, max=source.length; i < max; i++) copy.push(source[i]);
+    return copy;
+};
 
-    published.arrayClear = function(array) {  while(array.length > 0) array.pop(); };
+published.arrayClear = function(array) {  while(array.length > 0) array.pop(); };
 
-    published.mergeArrays = function(left, right, matcher, transform) {
-      if(!published.isArray(left) && !published.isArray(right)) return [];
+published.mergeArrays = function(left, right, matcher, transform) {
+  if(!published.isArray(left) && !published.isArray(right)) return [];
 
-      var m = published.isFunction(matcher) ? matcher : function(a, b) { return a === b; };
-      var t = published.isFunction(transform) ? transform : function(a){ return a; };
+  var m = published.isFunction(matcher) ? matcher : function(a, b) { return a === b; };
+  var t = published.isFunction(transform) ? transform : function(a){ return a; };
 
-      if(!published.isArray(left)) left = right;
-      if(!published.isArray(right)) right = left;
+  if(!published.isArray(left)) left = right;
+  if(!published.isArray(right)) right = left;
 
-      var a = left.concat(right);
-      for(var i = 0; i < a.length; i++) {
-        for(var j = i + 1; j < a.length; j++) {
-          if (m(a[i],a[j]))
-            a.splice(j--, 1);
-        }
-        a[i] = t(a[i]);
-      }
-      return a;
-    };
+  var a = left.concat(right);
+  for(var i = 0; i < a.length; i++) {
+    for(var j = i + 1; j < a.length; j++) {
+      if (m(a[i],a[j]))
+        a.splice(j--, 1);
+    }
+    a[i] = t(a[i]);
+  }
+  return a;
+};
 
-    published.inArray = Array.prototype.indexOf ?
-                          function(array, value) { return array.indexOf(value) !== -1;} :
-                          function(array, value) {
-                              var i = array.length;
-                              while (i--) if (array[i] === value) return true;
-                              return false;
-                          };
+published.inArray = Array.prototype.indexOf ?
+                    function(array, value) { return array.indexOf(value) !== -1;} :
+                    function(array, value) {
+                        var i = array.length;
+                        while (i--) if (array[i] === value) return true;
+                        return false;
+                    };
 
-    published.isString = function(obj){ return Object.prototype.toString.call(obj) === '[object String]'; };
+//inc/type.js
+    published.isString = function (obj) {
+  if (typeof (obj) === tUNDEFINED) return false;
+  return Object.prototype.toString.call(obj) === '[object String]';
+};
 
-    //Returns true when the passed parameter is a map, not an array or function
-    published.isObject  = function(obj){
-     if (typeof(obj)===tUNDEFINED) return false;
-     return obj === Object(obj) && !published.isArray(obj) && !published.isFunction(obj);
-    };
+//Returns true when the passed parameter is a map, not an array or function
+published.isObject = function (obj) {
+  if (typeof (obj) === tUNDEFINED) return false;
+  return obj === Object(obj) && !published.isArray(obj) && !published.isFunction(obj);
+};
 
-    //Returns true when the passed parameter is an array, not a map or function
-    published.isArray   = function(obj){
-     if (typeof(obj)===tUNDEFINED) return false;
-     return Object.prototype.toString.call(obj) === '[object Array]';
-    };
+//Returns true when the passed parameter is an array, not a map or function
+published.isArray = function (obj) {
+  if (typeof (obj) === tUNDEFINED) return false;
+  return Object.prototype.toString.call(obj) === '[object Array]';
+};
 
-    //Returns true when poassed parameter is a function, not a map object or an array
-    published.isFunction = function(obj){
-     return typeof(obj)==="function";
-    };
+//Returns true when poassed parameter is a function, not a map object or an array
+published.isFunction = function (obj) {
+  return typeof (obj) === "function";
+};
 
-    //Returns true when the passed parameter is an array, or map but not a function
-    published.isMapOrArray   = function(obj){
-     return obj === Object(obj) && !published.isFunction(obj);
-    };
+//Returns true when the passed parameter is an array, or map but not a function
+published.isMapOrArray = function (obj) {
+  return obj === Object(obj) && !published.isFunction(obj);
+};
 
-    //Shortcut for not null and not undefined
-    published.exists = function(obj){
-      return typeof (obj) !== tUNDEFINED && obj !== null;
-    };
+//Shortcut for not null and not undefined
+published.exists = function (obj) {
+  return typeof (obj) !== tUNDEFINED && obj !== null;
+};
 
-    //Overrides existing function by wrapping in new one. May call base like so:
-    //  object.about = WAVE.overrideFun(object.about, function(){ return this.baseFunction() + "overridden" });
-    published.overrideFunction = function(original, fn){
-     var superFunction = original;
-    return function() {
-      this.baseFunction = superFunction;
-      return fn.apply(this, arguments);
-      };
-    };
+//Overrides existing function by wrapping in new one. May call base like so:
+//  object.about = WAVE.overrideFun(object.about, function(){ return this.baseFunction() + "overridden" });
+published.overrideFunction = function (original, fn) {
+  var superFunction = original;
+  return function () {
+    this.baseFunction = superFunction;
+    return fn.apply(this, arguments);
+  };
+};
+
+//Mixin behavior - extend obj with properties of ext. keepExisting=true preserves existing object key, even if it is null
+published.extend = function (obj, ext, keepExisting) {
+  var prop;
+  if (!keepExisting) {
+    for (prop in ext)
+      if (ext.hasOwnProperty(prop))
+        obj[prop] = ext[prop];
+  } else {
+    for (prop in ext)
+      if (ext.hasOwnProperty(prop) && !obj.hasOwnProperty(prop))
+        obj[prop] = ext[prop];
+  }
+  return obj;
+};
+
+// deep clones data object (not functions)
+published.clone = function (obj) {
+  return JSON.parse(JSON.stringify(obj));
+};
+
+// deep clones data object, optionally setting all keys to lower case
+published.memberClone = function (obj, lowerCaseKeys) {
+  var result;
+  if (!published.isObject(obj)) {
+    if (!published.isArray(obj)) return obj;
+    result = [];
+    var l = obj.length;
+    for (var i = 0; i < l; i++)
+      result.push(published.memberClone(obj[i], lowerCaseKeys));
+    return result;
+  }
+
+  result = {};
+  for (var n in obj) result[lowerCaseKeys ? n.toLowerCase() : n] = published.memberClone(obj[n], lowerCaseKeys);
+  return result;
+};
+
+// returns true if both objects represent the same scalar value or complex structure/map
+// that is keys/values of maps/arrays. Nulls are considered equivalent
+published.isSame = function (obj1, obj2) {
+  if (arguments.length < 2) return false;
+  if (obj1 === null && obj2 === null) return true;
+  if (obj1 === null || obj2 === null) return false;
+  if (typeof (obj1) !== typeof (obj2)) return false;
+
+  if (typeof (obj1.getTime) === "function")//Date requires special handling
+    return obj1.getTime() === obj2.getTime();
+
+  if (published.isMapOrArray(obj1)) {
+    if (obj1.length !== obj2.length ||
+      Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+    for (var i in obj1)
+      if (!published.isSame(obj1[i], obj2[i])) return false;
+    return true;
+  }
+
+  return obj1 === obj2;
+};
+
+//Checks object property for string value and if it is converts it to object (map)
+//Does nothing if prop does not exist, is null or not a string value
+published.propStrAsObject = function (obj, prop) {
+  if (obj === null) return;
+  if (published.strEmpty(prop)) return;
+  if (!obj.hasOwnProperty(prop)) return;
+  var val = obj[prop];
+  if (val === null) return;
+  if (typeof (val) === "string") {
+    try { obj[prop] = JSON.parse(val); }
+    catch (e) {
+      console.error("WV.propStrAsObject, error parsing property '" + prop + "' string as JSON: " + val);
+      throw e;
+    }
+  }
+};
+
+//Tries to parse string as json, passing through objects and arrays
+published.tryParseJSON = function (content, dflt) {
+  if (typeof (content) !== tUNDEFINED && content !== null) {
+    if (published.isMapOrArray(content))
+      return { ok: true, obj: content };
+    try {
+      return { ok: true, obj: JSON.parse(content) };
+    } catch (e) { }
+  }
+
+  return { ok: false, obj: typeof (dflt) !== tUNDEFINED ? dflt : {} };
+};
+
+//returns true if object has no duplicated keys
+published.checkKeysUnique = function (obj) {
+  if (!published.isObject(obj)) return obj;
+
+  var keys = Object.keys(obj);
+  for (var i = 0; i < keys.length; ++i)
+    for (var j = i + 1; j < keys.length; ++j)
+      if (keys[i].toLowerCase() === keys[j].toLowerCase()) return true;
+
+  return false;
+};
+
+//true if object has no keys
+published.empty = function (obj) {
+  if (typeof (obj) === tUNDEFINED || obj === null) return true;
+  for (var n in obj) return false;
+  return true;
+};
+
+//Test if object has its own property
+published.has = function (obj, prop) {
+  return obj ? hasOwnProperty.call(obj, prop) : false;
+};
+
+//Reads obj prop OR it doesnt exist return default or null, but never undefined
+published.get = function (obj, prop, dflt) {
+  if (typeof (obj) !== tUNDEFINED &&
+    obj !== null &&
+    typeof (prop) !== tUNDEFINED &&
+    prop !== null &&
+    published.has(obj, prop) &&
+    typeof (obj[prop]) !== tUNDEFINED) return obj[prop];
+
+  return (typeof (dflt) === tUNDEFINED) ? null : dflt;
+};
+
+published.tryParseInt = function (val, allowReal) {
+  var value;
+  if (typeof (val) === tUNDEFINED || val === null || val.length === 0)
+    value = NaN;
+  else
+    value = Number(val);
+
+  var ok;
+  if (allowReal) {
+    ok = !isNaN(value) && isFinite(value);
+    if (ok) value = value < 0 ? (-Math.floor(-value)) : Math.floor(value);
+  } else {
+    ok = published.isFunction(Number.isInteger) ?
+      Number.isInteger(value) :
+      !isNaN(value) && isFinite(value) && (Math.floor(value) === value);
+  }
+  return { ok: ok, value: value };
+};
+
+published.intValid = function (val) {
+  return published.tryParseInt(val).ok;
+};
+
+published.intValidPositive = function (val) {
+  var ival = published.tryParseInt(val);
+  return ival.ok && ival.value > 0;
+};
+
+published.intValidPositiveOrZero = function (val) {
+  var ival = published.tryParseInt(val);
+  return ival.ok && ival.value >= 0;
+};
+
+published.formatMoney = function (amount, d, t) {
+  var pObject = published.tryParseInt(amount, true);
+
+  if (!pObject.ok)
+    amount = 0;
+
+  d = typeof (d) === tUNDEFINED ? '.' : d;
+  t = typeof (t) === tUNDEFINED ? ',' : t;
+
+  // in javascript
+  // 47.87*100=4787, BUT! 37.87*100=3786.9999999999995
+  var a1 = amount * 100;
+  var a2 = Math.round(a1);
+  amount = (Math.abs(a1 - a2) < 0.0000001) ? a2 : (amount < 0 ? -Math.floor(-a1) : Math.floor(a1));
+  amount = (amount / 100).toFixed(2);
+
+  if (d !== '.') amount = amount.replace('.', d);
+
+  return amount.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1" + t);
+};
+
+
 
     published.each = function (obj, func) {
-      if (typeof(obj) === tUNDEFINED || obj === null) return null;
+      if (typeof (obj) === tUNDEFINED || obj === null) return null;
       if (!published.isFunction(func)) return obj;
       for (var i in obj) func(obj[i], i, obj);
       return obj;
     };
 
-    //Mixin behavior - extend obj with properties of ext. keepExisting=true preserves existing object key, even if it is null
-    published.extend = function(obj, ext, keepExisting) {
-        var prop;
-        if (!keepExisting){
-            for (prop in ext)
-              if (ext.hasOwnProperty(prop))
-                 obj[prop] = ext[prop];
-        }else{
-            for (prop in ext)
-              if (ext.hasOwnProperty(prop) && !obj.hasOwnProperty(prop))
-                 obj[prop] = ext[prop];
-        }
-        return obj;
+    // Returns true for scalar vars and false for arrays and objects
+    published.isScalar = function(value) {
+      return (/boolean|number|string/).test(typeof(value));
     };
 
-    // deep clones data object (not functions)
-    published.clone = function(obj){
-        return JSON.parse( JSON.stringify(obj) );
-    };
+ published.isObjectType = function(tp) { return published.strOneOf(tp, ["object", "json", "map", "array"]);};
+    published.isIntType = function(tp) { return published.strOneOf(tp, ["int", "integer"]);};
+    published.isRealType = function(tp) { return published.strOneOf(tp, ["float", "real", "double", "money"]);};
+    published.isBoolType = function(tp) { return published.strOneOf(tp, ["bool", "boolean", "logical"]);};
+    published.isStringType = function(tp) { return published.strOneOf(tp, ["str", "string", "char[]", "char", "varchar", "text"]);};
+    published.isDateType = function(tp) { return published.strOneOf(tp, ["date", "datetime", "time", "timestamp"]);};
 
-    // deep clones data object, optionally setting all keys to lower case
-    published.memberClone = function(obj, lowerCaseKeys){
-      var result;
-      if (!published.isObject(obj)) {
-        if(!published.isArray(obj)) return obj;
-        result = [];
-        var l = obj.length;
-        for(var i = 0; i < l; i++)
-          result.push(published.memberClone(obj[i], lowerCaseKeys));
-        return result;
-      }
-
-      result = {};
-      for(var n in obj) result[lowerCaseKeys ? n.toLowerCase() : n] = published.memberClone(obj[n], lowerCaseKeys);
-      return result;
-    };
-
-    // returns true if both objects represent the same scalar value or complex structure/map
-    // that is keys/values of maps/arrays. Nulls are considered equivalent
-    published.isSame = function(obj1, obj2){
-        if (arguments.length<2) return false;
-        if (obj1===null && obj2===null) return true;
-        if (obj1===null || obj2===null) return false;
-        if (typeof(obj1)!==typeof(obj2)) return false;
-
-        if (typeof(obj1.getTime)==="function")//Date requires special handling
-            return obj1.getTime()===obj2.getTime();
-
-        if (published.isMapOrArray(obj1)){
-            if (obj1.length!==obj2.length ||
-                Object.keys(obj1).length!==Object.keys(obj2).length) return false;
-            for(var i in obj1)
-              if (!published.isSame(obj1[i], obj2[i])) return false;
-            return true;
-        }
-
-        return obj1===obj2;
-    };
-
-    //Checks object property for string value and if it is converts it to object (map)
-    //Does nothing if prop does not exist, is null or not a string value
-    published.propStrAsObject = function(obj, prop){
-        if (obj===null) return;
-        if (published.strEmpty(prop)) return;
-        if (!obj.hasOwnProperty(prop)) return;
-        var val = obj[prop];
-        if (val===null) return;
-        if (typeof(val)==="string")
-        {
-            try{ obj[prop] = JSON.parse(val); }
-            catch(e)
-            {
-                console.error("WV.propStrAsObject, error parsing property '"+prop+"' string as JSON: " + val);
-                throw e;
-            }
-        }
-    };
-
-    //Tries to parse string as json, passing through objects and arrays
-    published.tryParseJSON = function(content, dflt) {
-        if (typeof(content)!==tUNDEFINED && content!==null)
-        {
-          if (published.isMapOrArray(content))
-            return {ok: true, obj: content};
-          try {
-            return {ok: true, obj: JSON.parse(content)};
-          } catch(e){}
-        }
-
-        return {ok: false, obj: typeof(dflt)!==tUNDEFINED ? dflt : {}};
-    };
-
-    //returns true if object has no duplicated keys
-    published.checkKeysUnique = function(obj){
-      if (!published.isObject(obj)) return obj;
-
+    published.isSimpleKeyStringMap = function (obj) {
+      if (!published.exists(obj) || !published.isObject(obj)) return false;
       var keys = Object.keys(obj);
-      for(var i=0; i < keys.length; ++i)
-        for(var j=i+1; j < keys.length; ++j)
-          if (keys[i].toLowerCase() === keys[j].toLowerCase()) return true;
-
-      return false;
-    };
-
-    //true if object has no keys
-    published.empty = function(obj) {
-        if (typeof(obj)===tUNDEFINED || obj===null) return true;
-        for(var n in obj) return false;
-        return true;
-    };
-
-    //Test if object has its own property
-    published.has = function(obj, prop) {
-        return obj ? hasOwnProperty.call(obj, prop) : false;
-    };
-
-    //Reads obj prop OR it doesnt exist return default or null, but never undefined
-    published.get = function(obj, prop, dflt) {
-        if (typeof(obj)!==tUNDEFINED &&
-            obj!==null &&
-            typeof(prop)!==tUNDEFINED &&
-            prop!==null &&
-            published.has(obj, prop) &&
-            typeof(obj[prop])!==tUNDEFINED) return obj[prop];
-
-        return(typeof(dflt)===tUNDEFINED) ? null : dflt;
-    };
-
-    published.tryParseInt = function(val, allowReal) {
-      var value;
-      if (typeof(val) === tUNDEFINED || val === null || val.length === 0)
-        value = NaN;
-      else
-        value = Number(val);
-
-      var ok;
-      if (allowReal) {
-        ok = !isNaN(value) && isFinite(value);
-        if (ok) value = value < 0 ? (-Math.floor(-value)) : Math.floor(value);
-      } else {
-        ok = published.isFunction(Number.isInteger) ?
-          Number.isInteger(value) :
-          !isNaN(value) && isFinite(value) && (Math.floor(value) === value);
+      for (var i in keys) {
+        var key = keys[i];
+        var val = obj[key];
+        if (typeof(val) === tUNDEFINED) return false;
+        if (val !== null && !published.isString(val)) return false;
       }
-      return {ok: ok, value: value};
+
+      return true;
     };
 
-    published.intValid = function(val) {
-        return published.tryParseInt(val).ok;
-    };
+    //Converts scalar value into the specified type: convertScalarType("12/14/2018", "date", true);
+    published.convertScalarType = function(nullable, value, type, dflt){
 
-    published.intValidPositive = function(val) {
-        var ival = published.tryParseInt(val);
-        return ival.ok && ival.value > 0;
-    };
+         function dfltOrError(){
+            if (typeof(dflt)!==tUNDEFINED && dflt!==null) return dflt;
+            if (value===null) value = '<null>';
+            throw "Can not convert '"+value+"' to type '"+type+"'";
+         }
 
-    published.intValidPositiveOrZero = function(val) {
-        var ival = published.tryParseInt(val);
-        return ival.ok && ival.value >= 0;
-    };
+        if (published.strEmpty(type)) return value;
 
-    published.formatMoney = function(amount, d, t){
-      var pObject = published.tryParseInt(amount, true);
+        var t;
 
-      if (!pObject.ok)
-        amount = 0;
-
-      d = typeof(d)===tUNDEFINED ? '.' : d;
-      t = typeof(t)===tUNDEFINED ? ',' : t;
-
-      // in javascript
-      // 47.87*100=4787, BUT! 37.87*100=3786.9999999999995
-      var a1 = amount * 100;
-      var a2 = Math.round(a1);
-      amount = (Math.abs(a1 - a2) < 0.0000001) ? a2 : (amount < 0 ? -Math.floor(-a1) : Math.floor(a1));
-      amount = (amount / 100).toFixed(2);
-
-      if (d!=='.') amount = amount.replace('.', d);
-
-      return amount.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1"+t);
-    };
-
-    published.strEmpty = function(str){ return ( !str  ||  0 === str.length  ||  /^\s*$/.test(str) ); };
-
-
-    published.strAsBool = function(str, dflt){
-      if (typeof(str)===tUNDEFINED||str===null) return ( (typeof(dflt)===tUNDEFINED) ? false : dflt  );
-      str = str.toString();
-      return published.strOneOf(str, ["true", "t", "yes", "1"]);
-    };
-
-
-    published.strDefault = function(str, dflt){
-      return typeof(str)===tUNDEFINED||str===null ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str.toString();
-    };
-
-    published.strEmptyDefault = function(str, dflt){
-      return published.strEmpty(str) ? (typeof(dflt)===tUNDEFINED||dflt===null?'':dflt) : str.toString();
-    };
-
-    published.nlsNameDefault = function(nls, dflt){
-     var v = (typeof(nls)===tUNDEFINED||nls===null) ? null : nls.n;
-     return published.strEmptyDefault(v, dflt);
-    };
-
-    published.nlsDescrDefault = function(nls, dflt){
-     var v = (typeof(nls)===tUNDEFINED||nls===null) ? null : nls.d;
-     return published.strEmptyDefault(v, dflt);
-    };
-
-    published.nlsNameOrDescrDefault = function(nls, dflt){
-     var v = null;
-     if (typeof(nls)!==tUNDEFINED&&nls!==null)
-     {
-       v = nls.n;
-       if (published.strEmpty(v)) v = nls.d;
-     }
-     return published.strEmptyDefault(v, dflt);
-    };
-
-    published.nlsDescrOrNameDefault = function(nls, dflt){
-     var v = null;
-     if (typeof(nls)!==tUNDEFINED&&nls!==null)
-     {
-       v = nls.d;
-       if (published.strEmpty(v)) v = nls.n;
-     }
-     return published.strEmptyDefault(v, dflt);
-    };
-
-
-    published.strTrim = function(str){  return str.replace(/^\s+|\s+$/g, ''); };
-    published.strLTrim = function(str){  return str.replace(/^\s+/,''); };
-    published.strRTrim = function(str){  return str.replace(/\s+$/,''); };
-
-    // Truncates str if its length exceeds maxLen and adds endWith string to result end.
-    published.strTrunc = function(str, maxLen, endWith) {
-      if (!str) return str;
-      var len = str.length;
-      if (len <= maxLen) return str;
-      endWith = endWith || "...";
-      return str.substr(0, maxLen - endWith.length) + endWith;
-    };
-
-    //Capitalizes first chars after spaces or dots, otionally converting chars in between to lower case
-    published.strCaps = function(str, norm){
-        //this does not use Regexp because regexp does not detect words correctly for non-english languages
-        if (published.strEmpty(str)) return str;
-        var c;
-        var result = "";
-        var sp = false;
-        for(var i=0; i<str.length; i++)
-        {
-           c = str[i];
-           if (c===' '||c==='.') {
-             sp = true;
-             result+=c;
-             continue;
-           }
-
-           if (sp||i===0)
-             result += c.toUpperCase();
-           else
-             result += norm ? c.toLowerCase() : c;
-           sp = false;
+        if (published.isObjectType(type)){
+            if (value===null) return nullable ?  null : {};
+            if (published.isObject(value)) return value;
+            t = typeof(value);
+            if (t==="boolean") return value ? {"value": true} : {"value": false};
+            if (published.isFunction(value.getTime) || t==="number") return {"value": value};
+            if (t==="string"){
+               try { return JSON.parse(value); }
+               catch(e){ return {"value": value};}
+            }
+            return dfltOrError();
         }
-        return result;
-    };
+        else if (published.isIntType(type)){
+            if (value===null) return nullable ?  null : 0;
+            t = typeof(value);
+            if (t==="boolean") return value ? 1 : 0;
+            if (published.isFunction(value.getTime)) return value.getTime();
 
-    published.joinPathSegs = function() {
-      if (arguments.length === 0) return '';
-      var s = '';
-      var first = true;
-      for (var i = 0; i < arguments.length; i++) {
-        var seg = arguments[i];
-        if (!seg) continue;
+            if (t==="number" || t==="object"){
+                t="string";
+                value = value.toString();
+            }
+            if (t==="string"){
+                if (published.strEmpty(value)) return nullable ? null : 0;
+                var i = published.tryParseInt(value, true);
+                if (i.ok) return i.value;
+                return dfltOrError();
+            }
+            return dfltOrError();
+        }
+        else if (published.isStringType(type)){
+            if (value===null) return nullable ?  null : "";
+            t = typeof(value);
+            if (t==="string") return value;
+            if (t==="boolean") return value ? "true" : "false";
 
-        seg = (first ? WAVE.strLTrim(seg) : seg.replace(/^[\/\\\s]+/, '')).replace(/[\/\\\s]+$/, '');
-        if (WAVE.strEmpty(seg)) continue;
+            if (published.isFunction(value.getTime)) return published.toUSDateTimeString(value);
 
-        if (!first) s += '/';
-        s += seg;
-        first = false;
-      }
-      return s;
-    };
+            return value.toString();
+        }
+        else if (published.isRealType(type)){
+            if (value===null) return nullable ?  null : 0.0;
+            t = typeof(value);
+            if (t==="boolean") return value ? 1.0 : 0.0;
+            if (published.isFunction(value.getTime)) return value.getTime();
 
-    published.mapCurrencyISOToSymbol = function(ciso, dflt) {
-      ciso = published.strDefault(ciso, "");
-      ciso = ciso.toUpperCase();
-      switch(ciso) {
-        case "USD":
-          return "$";
-        case "RUB":
-          return "₽";
-        case "EUR":
-          return "€";
-        case "GBP":
-          return "£";
-        default:
-          return published.strDefault("?", dflt);
-      }
-    };
+            if (t==="number" || t==="object"){
+                t="string";
+                value = value.toString();
+            }
+            if (t==="string"){
+                if (published.strEmpty(value)) return nullable ? null : 0;
+                var num = parseFloat(value);
+                if (!isNaN(num)) return num;
+                return dfltOrError();
+            }
 
-    published.content = function (str) {
-      if (published.strStartsWith(str, "###WV")) return published.markup(str.slice("###WV".length));
-      if (published.strStartsWith(str, "###HTML")) return str.slice("###HTML".length);
-      return published.strEscapeHTML(str);
-    };
+            return dfltOrError();
+        }
+        else if (published.isBoolType(type)){
+            if (value) return true;
+            return false;
+        }
+        else if (published.isDateType(type)){
+            if (value===null) return nullable ?  null : dfltOrError();
+            t = typeof(value);
+            if (t==="number") return new Date(Math.round(value));
 
-    published.markup = (function () {
-      var State = {
-        NONE:           0,
-        PARAGRAPH:      1,
-        PARAGRAPH_NEXT: 2,
-        SPAN:           3,
-        SPAN_END:       4,
-        CLASS:          5,
-        CLASS_NEXT:     6,
-        HEADING:        7,
-        HEADING_BODY:   8,
-        LIST:           9,
-        LIST_ITEM:     10,
-        LIST_NEXT:     11,
-        KEY:           12,
-        KEY_BODY:      13,
-        VALUE:         14,
-        VALUE_BODY:    15,
-        KEY_NEXT:      16
-      };
-      var entities = {
-        ' ': '&nbsp;',
-        '!': '&#33;',
-        '#': '&#35;',
-        '$': '&#36;',
-        '*': '&#42;',
-        '<': '&lt;',
-        '=': '&#61;',
-        '>': '&gt;',
-        '{': '&#123;',
-        '}': '&#125;'
-      };
-      return function (str) {
-        var out = '';
-        var state = State.NONE;
-        var stack = [];
-        var out_stack = [];
-        var level = 0;
-        var type;
-        var type_last;
-        var list_stack = [];
-        var in_kv;
+            if (published.strEmpty(value)&&nullable) return null;
 
-        for(var i = 0, length = str.length; i < length; i++) {
-          var c = str.charAt(i);
-          var n = str.charAt(i+1);
-          switch (c) {
-            case '\r': if (n === '\n') { i++; n = str.charAt(i+1); }
-            case '\n': c = '\n'; break;
-            case '<': c = '&lt;'; break;
-            case '>': c = '&gt;'; break;
-            case '&':
-              if (str.charAt(i+2) !== ';') break;
-              var ent = entities[n];
-              if (typeof(ent) !== tUNDEFINED) c = ent;
-              i+=2;
-              break;
-          }
+            var ms = Date.parse(value);
+            if (!isNaN(ms)) return new Date(ms);
 
-          switch (state) {
-            case /*State.NONE*/ 0:
-            case /*State.PARAGRAPH_NEXT*/ 2:
-            case /*State.LIST_NEXT*/ 11:
-            case /*State.KEY_NEXT*/ 16: {
-              switch (c) {
-                case '\n':
-                  if (state === State.PARAGRAPH_NEXT) out += '</p>';
-                  else {
-                    if (state === State.LIST_NEXT) close_list(0);
-                    if (state === State.KEY_NEXT) close_kv(false);
-                  }
-                  state = State.NONE;
-                  break;
-                case '{':
-                  if (state === State.PARAGRAPH_NEXT) out += ' ';
-                  else {
-                    if (state === State.LIST_NEXT) close_list(0);
-                    if (state === State.KEY_NEXT) close_kv(false);
-                    out += '<p>';
-                  }
-                  stack.push(State.PARAGRAPH);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                case '!':
-                  if (state === State.PARAGRAPH_NEXT) {
-                    state = State.PARAGRAPH;
-                    out += ' ' + c;
-                  } else {
-                    if (state === State.LIST_NEXT) close_list(0);
-                    if (state === State.KEY_NEXT) close_kv(false);
-                    state = State.HEADING;
-                    out_stack.push(out);
-                    out = c;
-                  }
-                  break;
-                case '#':
-                case '*':
-                  if (state === State.PARAGRAPH_NEXT) {
-                    state = State.PARAGRAPH;
-                    out += ' ' + c;
-                  } else {
-                    if (state === State.KEY_NEXT) close_kv(false);
-                    type = c;
-                    state = State.LIST;
-                    out_stack.push(out);
-                    out = c;
-                  }
-                  break;
-                case '$':
-                  if (state === State.PARAGRAPH_NEXT) {
-                    state = State.PARAGRAPH;
-                    out += ' ' + c;
-                  } else {
-                    if (state === State.KEY_NEXT) close_kv(true);
-                    in_kv = state === State.KEY_NEXT;
-                    state = State.KEY;
-                    out_stack.push(out);
-                    out = c;
-                  }
-                  break;
-                default:
-                  if (state === State.PARAGRAPH_NEXT) out += ' ';
-                  else {
-                    if (state === State.LIST_NEXT) close_list(0);
-                    if (state === State.KEY_NEXT) close_kv(false);
-                    out += '<p>';
-                  }
-                  state = State.PARAGRAPH;
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.PARAGRAPH*/ 1: {
-              switch (c) {
-                case '\n':
-                  state = State.PARAGRAPH_NEXT;
-                  break;
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.SPAN*/ 3: {
-              switch (c) {
-                case '\n':
-                  out += ' ';
-                  break;
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                case '}':
-                  state = State.SPAN_END;
-                  out = out.substr(1);
-                  break;
-                default: out += c; break;
-              }
-            } break;
-            case /*State.SPAN_END*/ 4: {
-              switch (c) {
-                case '.':
-                  if (class_start(n)) {
-                    state = State.CLASS;
-                    out_stack.push(out);
-                    out = c;
-                    break;
-                  }
-                default:
-                  state = stack.pop();
-                  out = out_stack.pop() + out;
-                  i--;
-                  break;
-              }
-            } break;
-            case /*State.CLASS*/ 5: {
-              out += c;
-              if (n === '.') state = State.CLASS_NEXT;
-              else if (!class_midle(n)) {
-                state = stack.pop();
-                out = '<span class="' + make_class(out) + '">'
-                    + out_stack.pop() + '</span>';
-                out = out_stack.pop() + out;
-              }
-            } break;
-            case /*State.CLASS_NEXT*/ 6: {
-              switch (c) {
-                case '.':
-                  if (class_start(n)) {
-                    state = State.CLASS;
-                    out += c;
-                    break;
-                  }
-                default:
-                  state = stack.pop();
-                  out = '<span class="' + make_class(out) + '">'
-                      + out_stack.pop() + '</span>.';
-                  out = out_stack.pop() + out;
-                  break;
-              }
-            } break;
-            case /*State.HEADING*/ 7: {
-              if (c === '\n') {
-                out = out_stack.pop() + '<p>' + out;
-                state = State.PARAGRAPH;
-                i--;
-                break;
-              }
-              if (c === '!' && out.length < 6) out += c;
-              else {
-                level = out.length;
-                out = out_stack.pop() + '<h' + level + '>';
-                state = State.HEADING_BODY;
-                switch (c) {
-                  case '{':
-                    stack.push(state);
-                    state = State.SPAN;
-                    out_stack.push(out);
-                    out = c;
-                    break;
-                  default:
-                    out += c;
-                    break;
-                }
-              }
-            } break;
-            case /*State.HEADING_BODY*/ 8: {
-              switch (c) {
-                case '\n':
-                  state = State.NONE;
-                  out += '</h' + level + '>';
-                  level = 0;
-                  break;
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = '{';
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.LIST*/ 9: {
-              if (c === '\n') {
-                out = out_stack.pop() + '<p>' + out;
-                state = State.PARAGRAPH;
-                i--;
-                break;
-              }
-              if (c === type ) out += c;
-              else {
-                state = State.LIST_ITEM;
-                var new_level = out.length;
-                out = out_stack.pop();
-                if (level === new_level && type !== type_last)
-                  close_list(0);
-                if (level === new_level) {
-                  out += '</li><li>';
-                } else if (level < new_level) {
-                  for (; level < new_level; level++) {
-                    switch (type) {
-                      case '#': out += '<ol><li>'; list_stack.push('ol'); break;
-                      case '*': out += '<ul><li>'; list_stack.push('ul'); break;
-                    }
-                  }
-                } else close_list(new_level);
-                switch (c) {
-                  case '{':
-                    stack.push(state);
-                    state = State.SPAN;
-                    out_stack.push(out);
-                    out = c;
-                    break;
-                  default:
-                    out += c;
-                    break;
-                }
-                break;
-              }
-            } break;
-            case /*State.LIST_ITEM*/ 10: {
-              switch (c) {
-                case '\n':
-                  type_last = type;
-                  state = State.LIST_NEXT;
-                  break;
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = '{';
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.KEY*/ 12: {
-              if (c === '\n' || c === '=') {
-                out = out_stack.pop() + (in_kv ? '</dl>' : '') + '<p>' + out;
-                state = State.PARAGRAPH;
-                i--;
-                break;
-              }
-              state = State.KEY_BODY;
-              switch (c) {
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.KEY_BODY*/ 13: {
-              if (c === '\n') {
-                out = out_stack.pop() + (in_kv ? '</dl>' : '') + '<p>' + out;
-                state = State.PARAGRAPH;
-                i--;
-                break;
-              }
-              switch (c) {
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                case '=':
-                  state = State.VALUE;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.VALUE*/ 14: {
-              if (c === '\n') {
-                out = '<p>' + out_stack.pop() + out;
-                out = out_stack.pop() + (in_kv ? '</dl>' : '') + out;
-                state = State.PARAGRAPH;
-                i--;
-                break;
-              }
-              out = '<dt>' + out_stack.pop().substr(1) + '</dt><dd>';
-              out = (in_kv ? out_stack.pop() : out_stack.pop() + '<dl>') + out;
-              state = State.VALUE_BODY;
-              switch (c) {
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = c;
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            case /*State.VALUE_BODY*/ 15: {
-              switch (c) {
-                case '\n':
-                  state = State.KEY_NEXT;
-                  break;
-                case '{':
-                  stack.push(state);
-                  state = State.SPAN;
-                  out_stack.push(out);
-                  out = '{';
-                  break;
-                default:
-                  out += c;
-                  break;
-              }
-            } break;
-            default: throw 'WAVE.markup(state)';
-          }
+            return dfltOrError();
         }
 
-        stack.push(state);
 
-        while(typeof(state = stack.pop()) !== tUNDEFINED) {
-          switch(state) {
-            case /*State.NONE*/ 0: break;
-            case /*State.PARAGRAPH*/ 1:
-            case /*State.PARAGRAPH_NEXT*/ 2: out += '</p>'; break;
-            case /*State.VALUE*/ 14: out = out_stack.pop() + out;
-            case /*State.KEY*/ 12:
-            case /*State.KEY_BODY*/ 13: if (in_kv) out_stack.push(out_stack.pop() + '</dl>');
-            case /*State.LIST*/ 9:
-            case /*State.HEADING*/ 7: out = '<p>' + out + '</p>';
-            case /*State.SPAN*/ 3:
-            case /*State.SPAN_END*/ 4: out = out_stack.pop() + out; break;
-            case /*State.HEADING_BODY*/ 8: out += '</h' + level + '>'; break;
-            case /*State.LIST_ITEM*/ 10:
-            case /*State.LIST_NEXT*/ 11: close_list(0); break;
-            case /*State.VALUE_BODY*/ 15:
-            case /*State.KEY_NEXT*/ 16: close_kv(false); break;
-            default:
-              /*State.CLASS*/
-              /*State.CLASS_NEXT*/
-              throw 'WAVE.markup(last.state)';
-          }
-        }
+        return dfltOrError();
+    };//convertType
 
-        return out;
+//inc/str.js
+    published.strEmpty = function (str) { return (!str || 0 === str.length || /^\s*$/.test(str)); };
 
-        function close_list(new_level) {
-          var lst;
-          while(level > new_level && typeof(lst = list_stack.pop()) !== tUNDEFINED) {
-            out += '</li></' + lst + '>';
-            level--;
-          }
-          if (level !== 0) out += '</li><li>';
-        }
-        function close_kv(in_kv) {
-          out += '</dd>';
-          if (!in_kv) out += '</dl>';
-        }
-      };
+published.strAsBool = function (str, dflt) {
+  if (typeof (str) === tUNDEFINED || str === null) return ((typeof (dflt) === tUNDEFINED) ? false : dflt);
+  str = str.toString();
+  return published.strOneOf(str, ["true", "t", "yes", "1"]);
+};
 
-      function class_start(c) {
-        return '_' === c
-          || ('A' <= c && c <= 'Z')
-          || ('a' <= c && c <= 'z');
-      }
+published.strDefault = function (str, dflt) {
+  return typeof (str) === tUNDEFINED || str === null ? (typeof (dflt) === tUNDEFINED || dflt === null ? '' : dflt) : str.toString();
+};
 
-      function class_midle(c) {
-        return '_' === c
-          || '-' === c
-          || ('A' <= c && c <= 'Z')
-          || ('a' <= c && c <= 'z')
-          || ('0' <= c && c <= '9');
-      }
+published.strEmptyDefault = function (str, dflt) {
+  return published.strEmpty(str) ? (typeof (dflt) === tUNDEFINED || dflt === null ? '' : dflt) : str.toString();
+};
 
-      function make_class(str) {
-        var cls = str.substr(1).split(".");
-        var uni = {};
-        for (var i in cls) uni[cls[i]] = 0;
-        cls = [];
-        for (var k in uni) cls.push('wv-markup-'+ k.toLowerCase());
-        return cls.join(' ');
-      }
-    })();
+published.nlsNameDefault = function (nls, dflt) {
+  var v = (typeof (nls) === tUNDEFINED || nls === null) ? null : nls.n;
+  return published.strEmptyDefault(v, dflt);
+};
+
+published.nlsDescrDefault = function (nls, dflt) {
+  var v = (typeof (nls) === tUNDEFINED || nls === null) ? null : nls.d;
+  return published.strEmptyDefault(v, dflt);
+};
+
+published.nlsNameOrDescrDefault = function (nls, dflt) {
+  var v = null;
+  if (typeof (nls) !== tUNDEFINED && nls !== null) {
+    v = nls.n;
+    if (published.strEmpty(v)) v = nls.d;
+  }
+  return published.strEmptyDefault(v, dflt);
+};
+
+published.nlsDescrOrNameDefault = function (nls, dflt) {
+  var v = null;
+  if (typeof (nls) !== tUNDEFINED && nls !== null) {
+    v = nls.d;
+    if (published.strEmpty(v)) v = nls.n;
+  }
+  return published.strEmptyDefault(v, dflt);
+};
 
 
-    var intPrefixes = ["", "k", "M", "G", "T", "P", "E", "Z", "Y"];
-    var floatPrefixes = ["", "m", "µ", "n", "p", "f", "a", "z", "y"];
+published.strTrim = function (str) { return str.replace(/^\s+|\s+$/g, ''); };
+published.strLTrim = function (str) { return str.replace(/^\s+/, ''); };
+published.strRTrim = function (str) { return str.replace(/\s+$/, ''); };
 
-    var siPrefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+// Truncates str if its length exceeds maxLen and adds endWith string to result end.
+published.strTrunc = function (str, maxLen, endWith) {
+  if (!str) return str;
+  var len = str.length;
+  if (len <= maxLen) return str;
+  endWith = endWith || "...";
+  return str.substr(0, maxLen - endWith.length) + endWith;
+};
 
-    // converts num to its string representation in SI (Le Système International d’Unités, SI) with precision desired
-    // so 1000 = "1.00k", .1="100.00m", 23.55 = "23.55", 999.999="1.00k"
-    published.siNum = function (num, decimalPlaces) {
+//Capitalizes first chars after spaces or dots, otionally converting chars in between to lower case
+published.strCaps = function (str, norm) {
+  //this does not use Regexp because regexp does not detect words correctly for non-english languages
+  if (published.strEmpty(str)) return str;
+  var c;
+  var result = "";
+  var sp = false;
+  for (var i = 0; i < str.length; i++) {
+    c = str[i];
+    if (c === ' ' || c === '.') {
+      sp = true;
+      result += c;
+      continue;
+    }
 
-      if (typeof (decimalPlaces) === tUNDEFINED) decimalPlaces = 2;
+    if (sp || i === 0)
+      result += c.toUpperCase();
+    else
+      result += norm ? c.toLowerCase() : c;
+    sp = false;
+  }
+  return result;
+};
 
-      if (num === 0) return num.toFixed(decimalPlaces);
+published.joinPathSegs = function () {
+  if (arguments.length === 0) return '';
+  var s = '';
+  var first = true;
+  for (var i = 0; i < arguments.length; i++) {
+    var seg = arguments[i];
+    if (!seg) continue;
 
-      var n = num;
-      if (num < 0) n = -n;
+    seg = (first ? WAVE.strLTrim(seg) : seg.replace(/^[\/\\\s]+/, '')).replace(/[\/\\\s]+$/, '');
+    if (WAVE.strEmpty(seg)) continue;
 
-      var k = 0;
-      var res = n.toFixed(decimalPlaces) + siPrefixes[k + 8];
+    if (!first) s += '/';
+    s += seg;
+    first = false;
+  }
+  return s;
+};
 
-      while (n >= 1000) { n /= 1000; k++; }
-      while (n < 1) { n *= 1000; k--; }
+published.mapCurrencyISOToSymbol = function (ciso, dflt) {
+  ciso = published.strDefault(ciso, "");
+  ciso = ciso.toUpperCase();
+  switch (ciso) {
+    case "USD":
+      return "$";
+    case "RUB":
+      return "₽";
+    case "EUR":
+      return "€";
+    case "GBP":
+      return "£";
+    default:
+      return published.strDefault("?", dflt);
+  }
+};
 
-      var roundK = Math.pow(10, decimalPlaces);
+var intPrefixes = ["", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+var floatPrefixes = ["", "m", "µ", "n", "p", "f", "a", "z", "y"];
 
-      n = Math.round(n * roundK) / roundK;
+var siPrefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
 
-      while (n >= 1000) { n /= 1000; k++; }
-      while (n < 1) { n *= 1000; k--; }
+// converts num to its string representation in SI (Le Système International d’Unités, SI) with precision desired
+// so 1000 = "1.00k", .1="100.00m", 23.55 = "23.55", 999.999="1.00k"
+published.siNum = function (num, decimalPlaces) {
 
-      if (num < 0) n = -n;
-      res = n.toFixed(decimalPlaces) + siPrefixes[k + 8];
+  if (typeof (decimalPlaces) === tUNDEFINED) decimalPlaces = 2;
 
-      return res;
-    };
+  if (num === 0) return num.toFixed(decimalPlaces);
 
-    //True for [a-zA-Z0-9]
-    published.charIsAZLetterOrDigit = function(c){
-        if (c===null) return false;
-        return (c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9');
-    };
+  var n = num;
+  if (num < 0) n = -n;
 
+  var k = 0;
+  var res = n.toFixed(decimalPlaces) + siPrefixes[k + 8];
 
-    published.strStartsWith = function(str, s, scase){
-     return scase ? str.slice(0, s.length) === s : str.slice(0, s.length).toLowerCase() === s.toLowerCase();
-    };
+  while (n >= 1000) { n /= 1000; k++; }
+  while (n < 1) { n *= 1000; k--; }
 
-    published.strEndsWith = function(str, s, scase){
-      return scase ? str.slice(-s.length) === s : str.slice(-s.length).toLowerCase() === s.toLowerCase();
-    };
+  var roundK = Math.pow(10, decimalPlaces);
 
-    // Ensures that string ends with the specified string: strEnsureEnding("path",'/')
-    published.strEnsureEnding = function(str, ending) {
-      return str+(str.slice(-ending.length) === ending ? '' : ending);
-    };
+  n = Math.round(n * roundK) / roundK;
 
-    //Returns true when str contains a seg optionally respecting case
-    published.strContains = function(str, seg, scase) {
-      return scase ? str.indexOf(seg)>-1 : str.toLowerCase().indexOf(seg.toLowerCase())>-1;
-    };
+  while (n >= 1000) { n /= 1000; k++; }
+  while (n < 1) { n *= 1000; k--; }
 
-    //Returns true if both string contain the same trimmed case-insensitive value.
-    //This method is usefull for tasks like searches of components by name
-    published.strSame = function(str1, str2){
-      if (typeof(str1)===tUNDEFINED || typeof(str2)===tUNDEFINED) return false;
-      if (str1===null || str2===null) return false;
-      return published.strTrim(str1).toLowerCase() === published.strTrim(str2).toLowerCase();
-    };
+  if (num < 0) n = -n;
+  res = n.toFixed(decimalPlaces) + siPrefixes[k + 8];
 
-    //Returns true if the case-insensitive trimmed string is in the set of values
-    //Neither string nor set value may contain delimiter which is '|' by default:
-    //   strOneOf("car",["car","house","tax"],';')
-    published.strOneOf = function(str1, set, del){
-      if (str1===null || set===null || !published.isArray(set)) return false;
-      if (!del) del = "|";
-      str1 = del+published.strTrim(str1).toLowerCase()+del;
-      var vset = (del+set.join(del)+del).toLowerCase();
-      return vset.indexOf(str1)>=0;
-    };
+  return res;
+};
 
-    //returns true if an element is a direct or indirect child of the specified parent
-    published.isParentOf = function(parent, elem){
-      if (published.isFunction(parent.contains)) {
-        try {return parent.contains(elem);}
-        catch(e) {return false;}
-      }
+//True for [a-zA-Z0-9]
+published.charIsAZLetterOrDigit = function (c) {
+  if (c === null) return false;
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+};
 
-      var node = elem;
-      while(true){
-        node = node.parentNode;
-        if(node === null) return false;
-        if(node === parent) return true;
-      }
-    };
+published.strStartsWith = function (str, s, scase) {
+  return scase ? str.slice(0, s.length) === s : str.slice(0, s.length).toLowerCase() === s.toLowerCase();
+};
 
-    //returns computed value of specified css style for given elemen
-    published.styleOf = function(elem, cssStyle){
-      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !published.isFunction(window.getComputedStyle))
-        return "";
+published.strEndsWith = function (str, s, scase) {
+  return scase ? str.slice(-s.length) === s : str.slice(-s.length).toLowerCase() === s.toLowerCase();
+};
 
-      return window.getComputedStyle(elem, null).getPropertyValue(cssStyle);
-    };
+// Ensures that string ends with the specified string: strEnsureEnding("path",'/')
+published.strEnsureEnding = function (str, ending) {
+  return str + (str.slice(-ending.length) === ending ? '' : ending);
+};
 
-    //removes html element with given id
-    published.removeElem = function(id) {
-      var el = published.id(id);
-      if (el !== null){
-        el.parentNode.removeChild(el);
-        return true;
-      }
-      return false;
-    };
+//Returns true when str contains a seg optionally respecting case
+published.strContains = function (str, seg, scase) {
+  return scase ? str.indexOf(seg) > -1 : str.toLowerCase().indexOf(seg.toLowerCase()) > -1;
+};
 
-    published.removeChildren = function(el) {
-      while (true) {
-        var lc = el.lastChild;
-        if (lc) el.removeChild(lc);
-        else break;
-      }
-    };
+//Returns true if both string contain the same trimmed case-insensitive value.
+//This method is usefull for tasks like searches of components by name
+published.strSame = function (str1, str2) {
+  if (typeof (str1) === tUNDEFINED || typeof (str2) === tUNDEFINED) return false;
+  if (str1 === null || str2 === null) return false;
+  return published.strTrim(str1).toLowerCase() === published.strTrim(str2).toLowerCase();
+};
 
-    published.addClass = function(elem, className) {
-      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className)) return;
+//Returns true if the case-insensitive trimmed string is in the set of values
+//Neither string nor set value may contain delimiter which is '|' by default:
+//   strOneOf("car",["car","house","tax"],';')
+published.strOneOf = function (str1, set, del) {
+  if (str1 === null || set === null || !published.isArray(set)) return false;
+  if (!del) del = "|";
+  str1 = del + published.strTrim(str1).toLowerCase() + del;
+  var vset = (del + set.join(del) + del).toLowerCase();
+  return vset.indexOf(str1) >= 0;
+};
 
-      published.removeClass(elem, className);
-      elem.className += (" " + className);
-    };
-
-    published.removeClass = function(elem, className) {
-      if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className) || typeof(elem.className) === tUNDEFINED) return;
-
-      elem.className = elem.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', "g") , '' );
-    };
-
-    published.fullHieght = function(elem) {
-      if (typeof(elem) === tUNDEFINED || elem === null) return;
-
-      return elem.clientHeight +
-             parseFloat(published.styleOf(elem, "margin-top")) +
-             parseFloat(published.styleOf(elem, "margin-bottom")) +
-             parseFloat(published.styleOf(elem, "padding-top")) +
-             parseFloat(published.styleOf(elem, "padding-bottom")) +
-             parseFloat(published.styleOf(elem, "border-top-width")) +
-             parseFloat(published.styleOf(elem, "border-bottom-width"));
-    };
-
-    published.fullWidth = function(elem) {
-      if (typeof(elem) === tUNDEFINED || elem === null) return;
-
-      return elem.clientWidth +
-             parseFloat(published.styleOf(elem, "margin-left")) +
-             parseFloat(published.styleOf(elem, "margin-right")) +
-             parseFloat(published.styleOf(elem, "padding-left")) +
-             parseFloat(published.styleOf(elem, "padding-right")) +
-             parseFloat(published.styleOf(elem, "border-left-width")) +
-             parseFloat(published.styleOf(elem, "border-right-width"));
-    };
-
-    published.addEventHandler = function(object, event, handler, useCapture) {
-      if (typeof(object) === tUNDEFINED || object === null) return;
-
-      if (published.isFunction(object.addEventListener))
-        object.addEventListener(event, handler, useCapture === true);
-      else if (published.isFunction(object.attachEvent))
-        object.attachEvent("on" + event, handler);
-      else
-        object["on"+event] = handler;
-    };
-
-    published.removeEventHandler = function(object, event, handler, useCapture) {
-      if (typeof(object) === tUNDEFINED || object === null) return;
-
-      if (published.isFunction(object.removeEventListener))
-        object.removeEventListener(event, handler, useCapture === true);
-      else if (published.isFunction(object.detachEvent))
-        object.detachEvent("on" + event, handler);
-      else
-        object["on"+event] = null;
-    };
-
-    var htmlEscapes = {
+var htmlEscapes = {
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
@@ -1268,56 +817,7 @@ var WAVE = (function(){
        return "("+area+") " + number + ext;
     };
 
-
-    published.LOCALIZER =
-    {
-      eng: {},
-      rus: {},
-      deu: {},
-      fra: {},
-      esp: {},
-
-      allLanguageISOs:  function () {
-         var result = [];
-
-         for (var name in published.LOCALIZER)
-           if (published.has(published.LOCALIZER, name) && name.length === 3) result.push(name);
-
-         return result;
-       }
-    };
-
-
-    //Localizes string per supplied lang iso code within schema/field
-    published.strLocalize = function(iso, schema, fld, val){
-      if (arguments.length<4) return val;
-      if (published.strEmpty(iso) || published.strEmpty(val)) return val;
-
-      var ANYSCHEMA = "--ANY-SCHEMA--";
-      var ANYFIELD = "--ANY-FIELD--";
-
-      if (published.strEmpty(schema)) schema = ANYSCHEMA;
-      if (published.strEmpty(fld)) fld = ANYFIELD;
-
-      var node = published.LOCALIZER;
-      if (!node.hasOwnProperty(iso)) return val;
-      node = node[iso];
-
-      if (!node.hasOwnProperty(schema)){
-        if (!node.hasOwnProperty(ANYSCHEMA)) return val;
-        node = node[ANYSCHEMA];
-      } else node = node[schema];
-
-      if (!node.hasOwnProperty(fld)){
-        if (!node.hasOwnProperty(ANYFIELD)) return val;
-        node = node[ANYFIELD];
-      } else node = node[fld];
-
-      if (!node.hasOwnProperty(val)) return val;
-      return node[val];
-    };
-
-    published.DATE_TIME_FORMATS = {
+published.DATE_TIME_FORMATS = {
       LONG_DATE: "LongDate",
       SHORT_DATE: "ShortDate",
       LONG_DATE_TIME: "LongDateTime",
@@ -1426,53 +926,574 @@ var WAVE = (function(){
       return result;
     };
 
-    // Generates random key with specified length from the alphabet of possible characters: rndKey(10,"abcdefzq2")
-    published.genRndKey = function(keyLen, alphabet) {
-      var key = "";
-      if (!published.intValidPositive(keyLen)) keyLen = 8;
-      if (published.strEmpty(alphabet)) alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      while(key.length<keyLen)
-        key += alphabet.charAt(published.rnd(alphabet.length));
-      return key;
-    };
+//inc/markup.js
+    published.content = function (str) {
+  if (published.strStartsWith(str, "###WV")) return published.markup(str.slice("###WV".length));
+  if (published.strStartsWith(str, "###HTML")) return str.slice("###HTML".length);
+  return published.strEscapeHTML(str);
+};
 
-    var _autoInc = {};
-    //returns auto-inced named value: getAutoincKey('card', 1)
-    published.genAutoincKey = function(seqName, num){
-        var current = 0;
-        if (published.strEmpty(seqName)) seqName = "Unspecified";
-        if (!published.intValidPositive(num)) num = 1;
+published.markup = (function () {
+  var State = {
+    NONE: 0,
+    PARAGRAPH: 1,
+    PARAGRAPH_NEXT: 2,
+    SPAN: 3,
+    SPAN_END: 4,
+    CLASS: 5,
+    CLASS_NEXT: 6,
+    HEADING: 7,
+    HEADING_BODY: 8,
+    LIST: 9,
+    LIST_ITEM: 10,
+    LIST_NEXT: 11,
+    KEY: 12,
+    KEY_BODY: 13,
+    VALUE: 14,
+    VALUE_BODY: 15,
+    KEY_NEXT: 16
+  };
+  var entities = {
+    ' ': '&nbsp;',
+    '!': '&#33;',
+    '#': '&#35;',
+    '$': '&#36;',
+    '*': '&#42;',
+    '<': '&lt;',
+    '=': '&#61;',
+    '>': '&gt;',
+    '{': '&#123;',
+    '}': '&#125;'
+  };
+  return function (str) {
+    var out = '';
+    var state = State.NONE;
+    var stack = [];
+    var out_stack = [];
+    var level = 0;
+    var type;
+    var type_last;
+    var list_stack = [];
+    var in_kv;
 
-        if (seqName in _autoInc)
-          current = _autoInc[seqName];
+    for (var i = 0, length = str.length; i < length; i++) {
+      var c = str.charAt(i);
+      var n = str.charAt(i + 1);
+      switch (c) {
+        case '\r': if (n === '\n') { i++; n = str.charAt(i + 1); }
+        case '\n': c = '\n'; break;
+        case '<': c = '&lt;'; break;
+        case '>': c = '&gt;'; break;
+        case '&':
+          if (str.charAt(i + 2) !== ';') break;
+          var ent = entities[n];
+          if (typeof (ent) !== tUNDEFINED) c = ent;
+          i += 2;
+          break;
+      }
 
-        var result = current;
+      switch (state) {
+        case /*State.NONE*/ 0:
+        case /*State.PARAGRAPH_NEXT*/ 2:
+        case /*State.LIST_NEXT*/ 11:
+        case /*State.KEY_NEXT*/ 16: {
+          switch (c) {
+            case '\n':
+              if (state === State.PARAGRAPH_NEXT) out += '</p>';
+              else {
+                if (state === State.LIST_NEXT) close_list(0);
+                if (state === State.KEY_NEXT) close_kv(false);
+              }
+              state = State.NONE;
+              break;
+            case '{':
+              if (state === State.PARAGRAPH_NEXT) out += ' ';
+              else {
+                if (state === State.LIST_NEXT) close_list(0);
+                if (state === State.KEY_NEXT) close_kv(false);
+                out += '<p>';
+              }
+              stack.push(State.PARAGRAPH);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = c;
+              break;
+            case '!':
+              if (state === State.PARAGRAPH_NEXT) {
+                state = State.PARAGRAPH;
+                out += ' ' + c;
+              } else {
+                if (state === State.LIST_NEXT) close_list(0);
+                if (state === State.KEY_NEXT) close_kv(false);
+                state = State.HEADING;
+                out_stack.push(out);
+                out = c;
+              }
+              break;
+            case '#':
+            case '*':
+              if (state === State.PARAGRAPH_NEXT) {
+                state = State.PARAGRAPH;
+                out += ' ' + c;
+              } else {
+                if (state === State.KEY_NEXT) close_kv(false);
+                type = c;
+                state = State.LIST;
+                out_stack.push(out);
+                out = c;
+              }
+              break;
+            case '$':
+              if (state === State.PARAGRAPH_NEXT) {
+                state = State.PARAGRAPH;
+                out += ' ' + c;
+              } else {
+                if (state === State.KEY_NEXT) close_kv(true);
+                in_kv = state === State.KEY_NEXT;
+                state = State.KEY;
+                out_stack.push(out);
+                out = c;
+              }
+              break;
+            default:
+              if (state === State.PARAGRAPH_NEXT) out += ' ';
+              else {
+                if (state === State.LIST_NEXT) close_list(0);
+                if (state === State.KEY_NEXT) close_kv(false);
+                out += '<p>';
+              }
+              state = State.PARAGRAPH;
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.PARAGRAPH*/ 1: {
+          switch (c) {
+            case '\n':
+              state = State.PARAGRAPH_NEXT;
+              break;
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = c;
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.SPAN*/ 3: {
+          switch (c) {
+            case '\n':
+              out += ' ';
+              break;
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = c;
+              break;
+            case '}':
+              state = State.SPAN_END;
+              out = out.substr(1);
+              break;
+            default: out += c; break;
+          }
+        } break;
+        case /*State.SPAN_END*/ 4: {
+          switch (c) {
+            case '.':
+              if (class_start(n)) {
+                state = State.CLASS;
+                out_stack.push(out);
+                out = c;
+                break;
+              }
+            default:
+              state = stack.pop();
+              out = out_stack.pop() + out;
+              i--;
+              break;
+          }
+        } break;
+        case /*State.CLASS*/ 5: {
+          out += c;
+          if (n === '.') state = State.CLASS_NEXT;
+          else if (!class_midle(n)) {
+            state = stack.pop();
+            out = '<span class="' + make_class(out) + '">'
+              + out_stack.pop() + '</span>';
+            out = out_stack.pop() + out;
+          }
+        } break;
+        case /*State.CLASS_NEXT*/ 6: {
+          switch (c) {
+            case '.':
+              if (class_start(n)) {
+                state = State.CLASS;
+                out += c;
+                break;
+              }
+            default:
+              state = stack.pop();
+              out = '<span class="' + make_class(out) + '">'
+                + out_stack.pop() + '</span>.';
+              out = out_stack.pop() + out;
+              break;
+          }
+        } break;
+        case /*State.HEADING*/ 7: {
+          if (c === '\n') {
+            out = out_stack.pop() + '<p>' + out;
+            state = State.PARAGRAPH;
+            i--;
+            break;
+          }
+          if (c === '!' && out.length < 6) out += c;
+          else {
+            level = out.length;
+            out = out_stack.pop() + '<h' + level + '>';
+            state = State.HEADING_BODY;
+            switch (c) {
+              case '{':
+                stack.push(state);
+                state = State.SPAN;
+                out_stack.push(out);
+                out = c;
+                break;
+              default:
+                out += c;
+                break;
+            }
+          }
+        } break;
+        case /*State.HEADING_BODY*/ 8: {
+          switch (c) {
+            case '\n':
+              state = State.NONE;
+              out += '</h' + level + '>';
+              level = 0;
+              break;
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = '{';
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.LIST*/ 9: {
+          if (c === '\n') {
+            out = out_stack.pop() + '<p>' + out;
+            state = State.PARAGRAPH;
+            i--;
+            break;
+          }
+          if (c === type) out += c;
+          else {
+            state = State.LIST_ITEM;
+            var new_level = out.length;
+            out = out_stack.pop();
+            if (level === new_level && type !== type_last)
+              close_list(0);
+            if (level === new_level) {
+              out += '</li><li>';
+            } else if (level < new_level) {
+              for (; level < new_level; level++) {
+                switch (type) {
+                  case '#': out += '<ol><li>'; list_stack.push('ol'); break;
+                  case '*': out += '<ul><li>'; list_stack.push('ul'); break;
+                }
+              }
+            } else close_list(new_level);
+            switch (c) {
+              case '{':
+                stack.push(state);
+                state = State.SPAN;
+                out_stack.push(out);
+                out = c;
+                break;
+              default:
+                out += c;
+                break;
+            }
+            break;
+          }
+        } break;
+        case /*State.LIST_ITEM*/ 10: {
+          switch (c) {
+            case '\n':
+              type_last = type;
+              state = State.LIST_NEXT;
+              break;
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = '{';
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.KEY*/ 12: {
+          if (c === '\n' || c === '=') {
+            out = out_stack.pop() + (in_kv ? '</dl>' : '') + '<p>' + out;
+            state = State.PARAGRAPH;
+            i--;
+            break;
+          }
+          state = State.KEY_BODY;
+          switch (c) {
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = c;
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.KEY_BODY*/ 13: {
+          if (c === '\n') {
+            out = out_stack.pop() + (in_kv ? '</dl>' : '') + '<p>' + out;
+            state = State.PARAGRAPH;
+            i--;
+            break;
+          }
+          switch (c) {
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = c;
+              break;
+            case '=':
+              state = State.VALUE;
+              out_stack.push(out);
+              out = c;
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.VALUE*/ 14: {
+          if (c === '\n') {
+            out = '<p>' + out_stack.pop() + out;
+            out = out_stack.pop() + (in_kv ? '</dl>' : '') + out;
+            state = State.PARAGRAPH;
+            i--;
+            break;
+          }
+          out = '<dt>' + out_stack.pop().substr(1) + '</dt><dd>';
+          out = (in_kv ? out_stack.pop() : out_stack.pop() + '<dl>') + out;
+          state = State.VALUE_BODY;
+          switch (c) {
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = c;
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        case /*State.VALUE_BODY*/ 15: {
+          switch (c) {
+            case '\n':
+              state = State.KEY_NEXT;
+              break;
+            case '{':
+              stack.push(state);
+              state = State.SPAN;
+              out_stack.push(out);
+              out = '{';
+              break;
+            default:
+              out += c;
+              break;
+          }
+        } break;
+        default: throw 'WAVE.markup(state)';
+      }
+    }
 
-        current += num;
-        _autoInc[seqName] = current;
-        return result;
-    };
+    stack.push(state);
 
-    // Returns true for scalar vars and false for arrays and objects
-    published.isScalar = function(value) {
-      return (/boolean|number|string/).test(typeof(value));
-    };
+    while (typeof (state = stack.pop()) !== tUNDEFINED) {
+      switch (state) {
+        case /*State.NONE*/ 0: break;
+        case /*State.PARAGRAPH*/ 1:
+        case /*State.PARAGRAPH_NEXT*/ 2: out += '</p>'; break;
+        case /*State.VALUE*/ 14: out = out_stack.pop() + out;
+        case /*State.KEY*/ 12:
+        case /*State.KEY_BODY*/ 13: if (in_kv) out_stack.push(out_stack.pop() + '</dl>');
+        case /*State.LIST*/ 9:
+        case /*State.HEADING*/ 7: out = '<p>' + out + '</p>';
+        case /*State.SPAN*/ 3:
+        case /*State.SPAN_END*/ 4: out = out_stack.pop() + out; break;
+        case /*State.HEADING_BODY*/ 8: out += '</h' + level + '>'; break;
+        case /*State.LIST_ITEM*/ 10:
+        case /*State.LIST_NEXT*/ 11: close_list(0); break;
+        case /*State.VALUE_BODY*/ 15:
+        case /*State.KEY_NEXT*/ 16: close_kv(false); break;
+        default:
+          /*State.CLASS*/
+          /*State.CLASS_NEXT*/
+          throw 'WAVE.markup(last.state)';
+      }
+    }
 
-    // Returns random number in the range of min/max where min=0 max =100 by default:  rnd(10,57)
-    published.rnd = function() {
-      var min = 0;
-      var max = 100;
+    return out;
 
-      if (arguments.length === 1)  max = arguments[0];
-      else if (arguments.length === 2)
-      {
-        min = arguments[0];
-        max = arguments[1];
-       }
+    function close_list(new_level) {
+      var lst;
+      while (level > new_level && typeof (lst = list_stack.pop()) !== tUNDEFINED) {
+        out += '</li></' + lst + '>';
+        level--;
+      }
+      if (level !== 0) out += '</li><li>';
+    }
+    function close_kv(in_kv) {
+      out += '</dd>';
+      if (!in_kv) out += '</dl>';
+    }
+  };
 
-      return min+Math.floor(Math.random()*(max-min+1));
-    };
+  function class_start(c) {
+    return '_' === c
+      || ('A' <= c && c <= 'Z')
+      || ('a' <= c && c <= 'z');
+  }
 
+  function class_midle(c) {
+    return '_' === c
+      || '-' === c
+      || ('A' <= c && c <= 'Z')
+      || ('a' <= c && c <= 'z')
+      || ('0' <= c && c <= '9');
+  }
+
+  function make_class(str) {
+    var cls = str.substr(1).split(".");
+    var uni = {};
+    for (var i in cls) uni[cls[i]] = 0;
+    cls = [];
+    for (var k in uni) cls.push('wv-markup-' + k.toLowerCase());
+    return cls.join(' ');
+  }
+})();
+
+//inc/dom.js
+    //returns true if an element is a direct or indirect child of the specified parent
+published.isParentOf = function(parent, elem){
+  if (published.isFunction(parent.contains)) {
+    try {return parent.contains(elem);}
+    catch(e) {return false;}
+  }
+
+  var node = elem;
+  while(true){
+    node = node.parentNode;
+    if(node === null) return false;
+    if(node === parent) return true;
+  }
+};
+
+//returns computed value of specified css style for given elemen
+published.styleOf = function(elem, cssStyle){
+  if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(cssStyle) || !published.isFunction(window.getComputedStyle))
+    return "";
+
+  return window.getComputedStyle(elem, null).getPropertyValue(cssStyle);
+};
+
+//removes html element with given id
+published.removeElem = function(id) {
+  var el = published.id(id);
+  if (el !== null){
+    el.parentNode.removeChild(el);
+    return true;
+  }
+  return false;
+};
+
+published.removeChildren = function(el) {
+  while (true) {
+    var lc = el.lastChild;
+    if (lc) el.removeChild(lc);
+    else break;
+  }
+};
+
+published.addClass = function(elem, className) {
+  if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className)) return;
+
+  published.removeClass(elem, className);
+  elem.className += (" " + className);
+};
+
+published.removeClass = function(elem, className) {
+  if (typeof(elem) === tUNDEFINED || elem === null || published.strEmpty(className) || typeof(elem.className) === tUNDEFINED) return;
+
+  elem.className = elem.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', "g") , '' );
+};
+
+published.fullHieght = function(elem) {
+  if (typeof(elem) === tUNDEFINED || elem === null) return;
+
+  return elem.clientHeight +
+          parseFloat(published.styleOf(elem, "margin-top")) +
+          parseFloat(published.styleOf(elem, "margin-bottom")) +
+          parseFloat(published.styleOf(elem, "padding-top")) +
+          parseFloat(published.styleOf(elem, "padding-bottom")) +
+          parseFloat(published.styleOf(elem, "border-top-width")) +
+          parseFloat(published.styleOf(elem, "border-bottom-width"));
+};
+
+published.fullWidth = function(elem) {
+  if (typeof(elem) === tUNDEFINED || elem === null) return;
+
+  return elem.clientWidth +
+          parseFloat(published.styleOf(elem, "margin-left")) +
+          parseFloat(published.styleOf(elem, "margin-right")) +
+          parseFloat(published.styleOf(elem, "padding-left")) +
+          parseFloat(published.styleOf(elem, "padding-right")) +
+          parseFloat(published.styleOf(elem, "border-left-width")) +
+          parseFloat(published.styleOf(elem, "border-right-width"));
+};
+
+published.addEventHandler = function(object, event, handler, useCapture) {
+  if (typeof(object) === tUNDEFINED || object === null) return;
+
+  if (published.isFunction(object.addEventListener))
+    object.addEventListener(event, handler, useCapture === true);
+  else if (published.isFunction(object.attachEvent))
+    object.attachEvent("on" + event, handler);
+  else
+    object["on"+event] = handler;
+};
+
+published.removeEventHandler = function(object, event, handler, useCapture) {
+  if (typeof(object) === tUNDEFINED || object === null) return;
+
+  if (published.isFunction(object.removeEventListener))
+    object.removeEventListener(event, handler, useCapture === true);
+  else if (published.isFunction(object.detachEvent))
+    object.detachEvent("on" + event, handler);
+  else
+    object["on"+event] = null;
+};
 
     published.id = function(id){
       return document.getElementById(id);
@@ -1491,7 +1512,57 @@ var WAVE = (function(){
       }
     };
 
-    published.getCookie = function(name) {
+//inc/localizer.js
+        published.LOCALIZER =
+    {
+      eng: {},
+      rus: {},
+      deu: {},
+      fra: {},
+      esp: {},
+
+      allLanguageISOs:  function () {
+         var result = [];
+
+         for (var name in published.LOCALIZER)
+           if (published.has(published.LOCALIZER, name) && name.length === 3) result.push(name);
+
+         return result;
+       }
+    };
+
+
+    //Localizes string per supplied lang iso code within schema/field
+    published.strLocalize = function(iso, schema, fld, val){
+      if (arguments.length<4) return val;
+      if (published.strEmpty(iso) || published.strEmpty(val)) return val;
+
+      var ANYSCHEMA = "--ANY-SCHEMA--";
+      var ANYFIELD = "--ANY-FIELD--";
+
+      if (published.strEmpty(schema)) schema = ANYSCHEMA;
+      if (published.strEmpty(fld)) fld = ANYFIELD;
+
+      var node = published.LOCALIZER;
+      if (!node.hasOwnProperty(iso)) return val;
+      node = node[iso];
+
+      if (!node.hasOwnProperty(schema)){
+        if (!node.hasOwnProperty(ANYSCHEMA)) return val;
+        node = node[ANYSCHEMA];
+      } else node = node[schema];
+
+      if (!node.hasOwnProperty(fld)){
+        if (!node.hasOwnProperty(ANYFIELD)) return val;
+        node = node[ANYFIELD];
+      } else node = node[fld];
+
+      if (!node.hasOwnProperty(val)) return val;
+      return node[val];
+    };
+
+//inc/web.js
+        published.getCookie = function(name) {
       var matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
       ));
@@ -1507,122 +1578,190 @@ var WAVE = (function(){
       published.setCookie(name, null, { expires: -1 });
     };
 
-    published.isObjectType = function(tp) { return published.strOneOf(tp, ["object", "json", "map", "array"]);};
-    published.isIntType = function(tp) { return published.strOneOf(tp, ["int", "integer"]);};
-    published.isRealType = function(tp) { return published.strOneOf(tp, ["float", "real", "double", "money"]);};
-    published.isBoolType = function(tp) { return published.strOneOf(tp, ["bool", "boolean", "logical"]);};
-    published.isStringType = function(tp) { return published.strOneOf(tp, ["str", "string", "char[]", "char", "varchar", "text"]);};
-    published.isDateType = function(tp) { return published.strOneOf(tp, ["date", "datetime", "time", "timestamp"]);};
-
-    published.isSimpleKeyStringMap = function (obj) {
-      if (!published.exists(obj) || !published.isObject(obj)) return false;
-      var keys = Object.keys(obj);
-      for (var i in keys) {
-        var key = keys[i];
-        var val = obj[key];
-        if (typeof(val) === tUNDEFINED) return false;
-        if (val !== null && !published.isString(val)) return false;
-      }
-
-      return true;
+    var platform =
+    {
+      iPhone: navigator.userAgent.match(/iPhone/i),
+      iPod: navigator.userAgent.match(/iPod/i),
+      iPad: navigator.userAgent.match(/iPad/i),
+      Android: navigator.userAgent.match(/Android/i),
+      IE: navigator.appName.indexOf("Microsoft") !== -1,
+      IEMobile: navigator.userAgent.match(/IEMobile/i),
+      WinPhone: /windows phone/i.test(navigator.userAgent),
+      Chrome: !!window.chrome, // navigator.userAgent.match(/Chrome/i),
+      Safari: navigator.userAgent.match(/Safari/i) && !window.chrome,
+      FireFox: navigator.userAgent.indexOf("Firefox") > -1,
+      BlackBerry: navigator.userAgent.match(/BlackBerry/i),
+      WebOS: navigator.userAgent.match(/webOS/i),
+      Opera: window.opera, // navigator.userAgent.indexOf("Presto") > -1
+      OperaMini: navigator.userAgent.match(/Opera Mini/i),
+      OperaMobi: navigator.userAgent.match(/Opera Mobi/i),
+      Silk: /silk/i.test(navigator.userAgent)
     };
 
-    //Converts scalar value into the specified type: convertScalarType("12/14/2018", "date", true);
-    published.convertScalarType = function(nullable, value, type, dflt){
+    platform.iOS    = platform.iPhone || platform.iPod || platform.iPad;
 
-         function dfltOrError(){
-            if (typeof(dflt)!==tUNDEFINED && dflt!==null) return dflt;
-            if (value===null) value = '<null>';
-            throw "Can not convert '"+value+"' to type '"+type+"'";
-         }
+    platform.Mobile = platform.iOS || platform.Android ||
+                      platform.OperaMini || platform.OperaMobi ||
+                      platform.BlackBerry ||
+                      platform.WebOS ||
+                      platform.IEMobile || platform.WinPhone ||
+                      platform.Silk;
 
-        if (published.strEmpty(type)) return value;
+    platform.WebKit = platform.Chrome || platform.Safari;
 
-        var t;
+    published.Platform = platform;
 
-        if (published.isObjectType(type)){
-            if (value===null) return nullable ?  null : {};
-            if (published.isObject(value)) return value;
-            t = typeof(value);
-            if (t==="boolean") return value ? {"value": true} : {"value": false};
-            if (published.isFunction(value.getTime) || t==="number") return {"value": value};
-            if (t==="string"){
-               try { return JSON.parse(value); }
-               catch(e){ return {"value": value};}
-            }
-            return dfltOrError();
+//Ajax
+    function ajaxCall(verb, url, data, success, error, fail, a, ct) {
+      a = published.strDefault(a);
+      ct = published.strDefault(ct);
+
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+      xhr.open(verb, url);
+
+      if (WAVE.isFunction(fail))
+        xhr.onerror = fail;
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if (WAVE.isFunction(success))
+              success(xhr.responseText);
+          } else {
+            if (WAVE.isFunction(error))
+              error(xhr.responseText);
+          }
         }
-        else if (published.isIntType(type)){
-            if (value===null) return nullable ?  null : 0;
-            t = typeof(value);
-            if (t==="boolean") return value ? 1 : 0;
-            if (published.isFunction(value.getTime)) return value.getTime();
+      };
+      if (!published.strEmpty(a)) xhr.setRequestHeader('Accept', a);
+      if (!published.strEmpty(ct)) xhr.setRequestHeader('Content-Type', ct);
 
-            if (t==="number" || t==="object"){
-                t="string";
-                value = value.toString();
-            }
-            if (t==="string"){
-                if (published.strEmpty(value)) return nullable ? null : 0;
-                var i = published.tryParseInt(value, true);
-                if (i.ok) return i.value;
-                return dfltOrError();
-            }
-            return dfltOrError();
-        }
-        else if (published.isStringType(type)){
-            if (value===null) return nullable ?  null : "";
-            t = typeof(value);
-            if (t==="string") return value;
-            if (t==="boolean") return value ? "true" : "false";
+      if (data !== null) {
+        if (published.isObject(data) && !published.strEmpty(ct) && ct.indexOf("application/json") !== -1)
+          data = JSON.stringify(data);
+        xhr.send(data);
+      }
+      else
+        xhr.send();
 
-            if (published.isFunction(value.getTime)) return published.toUSDateTimeString(value);
+      return xhr;
+    }
 
-            return value.toString();
-        }
-        else if (published.isRealType(type)){
-            if (value===null) return nullable ?  null : 0.0;
-            t = typeof(value);
-            if (t==="boolean") return value ? 1.0 : 0.0;
-            if (published.isFunction(value.getTime)) return value.getTime();
+    published.ajaxCall = function(verb, url, data, success, error, fail, a, ct) {
+      ajaxCall(verb, url, data, success, error, fail, a, ct);
+    };
 
-            if (t==="number" || t==="object"){
-                t="string";
-                value = value.toString();
-            }
-            if (t==="string"){
-                if (published.strEmpty(value)) return nullable ? null : 0;
-                var num = parseFloat(value);
-                if (!isNaN(num)) return num;
-                return dfltOrError();
-            }
+    published.ajaxGet = function(url, success, error, fail, a) {
+      ajaxCall("GET", url, null, success, error, fail, a);
+    };
 
-            return dfltOrError();
-        }
-        else if (published.isBoolType(type)){
-            if (value) return true;
-            return false;
-        }
-        else if (published.isDateType(type)){
-            if (value===null) return nullable ?  null : dfltOrError();
-            t = typeof(value);
-            if (t==="number") return new Date(Math.round(value));
+    published.ajaxGetJSON = function(url, data, success, error, fail) {
+      ajaxCall("GET", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
+    };
 
-            if (published.strEmpty(value)&&nullable) return null;
+    published.ajaxPost = function(url, data, success, error, fail, a, ct) {
+      ajaxCall("POST", url, data, success, error, fail, a, ct);
+    };
 
-            var ms = Date.parse(value);
-            if (!isNaN(ms)) return new Date(ms);
+    published.ajaxPostJSON = function(url, data, success, error, fail) {
+      ajaxCall("POST", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
+    };
 
-            return dfltOrError();
-        }
+    published.ajaxPatch = function (url, success, error, fail, a) {
+      ajaxCall("PATCH", url, null, success, error, fail, a);
+    };
+
+    published.ajaxPatchJSON = function (url, data, success, error, fail) {
+      ajaxCall("PATCH", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
+    };
 
 
-        return dfltOrError();
-    };//convertType
+    //call func when dom is loaded
+    published.onReady = function(func) {
+      if (!published.isFunction(func)) return;
 
+      if (document.readyState !== 'loading'){
+        func();
+      } else if (published.isFunction(document.addEventListener)) {
+        document.addEventListener('DOMContentLoaded', func);
+      } else if (published.isFunction(document.attachEvent)) {
+        document.attachEvent('onreadystatechange', function() {
+          if (document.readyState !== 'loading')
+            func();
+        });
+      }
+    };
 
+    published.copyToClipboard = function(value) {
+      if (typeof(value) === tUNDEFINED || value === null) return;
 
+      var txtEl,
+          removeTxt = false;
+      if (published.isString(value)) {
+        if (published.strEmpty(value)) return;
 
+        removeTxt = true;
+        txtEl = document.createElement("p");
+        txtEl.style.border = '0';
+        txtEl.style.padding = '0';
+        txtEl.style.margin = '0';
+        txtEl.style.position = 'absolute';
+        txtEl.style.left = '-9999px';
+        txtEl.style.top = '-9999px';
+        txtEl.setAttribute('readonly', '');
+        txtEl.innerHTML = value;
+        document.body.appendChild(txtEl);
+      } else {
+        txtEl = value;
+      }
+
+      var succeeded;
+      try {
+        published.selectElement(txtEl);
+        succeeded = document.execCommand("copy");
+      }
+      catch (err) {
+        succeeded = false;
+      }
+
+      if (removeTxt)
+        document.body.removeChild(txtEl);
+      txtEl = null;
+      return succeeded;
+    };
+
+    published.selectElement = function(element) {
+      var range,
+          selection;
+
+      if (document.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    };
+
+    published.getScrollBarWidth = function() {
+      var scrollDiv = document.createElement("div");
+      scrollDiv.style.height = "100px";
+      scrollDiv.style.position = "absolute";
+      scrollDiv.style.top = "-10000px";
+      scrollDiv.style.width = "100px";
+      scrollDiv.style.overflow = "scroll";
+
+      document.body.appendChild(scrollDiv);
+      var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      document.body.removeChild(scrollDiv);
+      return scrollbarWidth;
+    };
+
+//inc/evt.js
     var any_event = "*";
 
     //Event Manager Mixin - keeps track of event subscriptions and invocations
@@ -1757,8 +1896,7 @@ var WAVE = (function(){
                 return obj[eventSinkListName];
               }
 
-
-
+//inc/utest.js
     var utest = {
       CSS_CLASS_AREA:  "wvUTestArea",
       CSS_CLASS_TESTTITLE:  "wvUTestTitle",
@@ -1919,41 +2057,7 @@ var WAVE = (function(){
 
     published.UTest = utest;
 
-
-    var platform =
-    {
-      iPhone: navigator.userAgent.match(/iPhone/i),
-      iPod: navigator.userAgent.match(/iPod/i),
-      iPad: navigator.userAgent.match(/iPad/i),
-      Android: navigator.userAgent.match(/Android/i),
-      IE: navigator.appName.indexOf("Microsoft") !== -1,
-      IEMobile: navigator.userAgent.match(/IEMobile/i),
-      WinPhone: /windows phone/i.test(navigator.userAgent),
-      Chrome: !!window.chrome, // navigator.userAgent.match(/Chrome/i),
-      Safari: navigator.userAgent.match(/Safari/i) && !window.chrome,
-      FireFox: navigator.userAgent.indexOf("Firefox") > -1,
-      BlackBerry: navigator.userAgent.match(/BlackBerry/i),
-      WebOS: navigator.userAgent.match(/webOS/i),
-      Opera: window.opera, // navigator.userAgent.indexOf("Presto") > -1
-      OperaMini: navigator.userAgent.match(/Opera Mini/i),
-      OperaMobi: navigator.userAgent.match(/Opera Mobi/i),
-      Silk: /silk/i.test(navigator.userAgent)
-    };
-
-    platform.iOS    = platform.iPhone || platform.iPod || platform.iPad;
-
-    platform.Mobile = platform.iOS || platform.Android ||
-                      platform.OperaMini || platform.OperaMobi ||
-                      platform.BlackBerry ||
-                      platform.WebOS ||
-                      platform.IEMobile || platform.WinPhone ||
-                      platform.Silk;
-
-    platform.WebKit = platform.Chrome || platform.Safari;
-
-    published.Platform = platform;
-
-
+//inc/geometry.js
     var geometry = {
                      EARTH_RADIUS_KM: 6371
                    };
@@ -2505,8 +2609,8 @@ var WAVE = (function(){
 
     published.Geometry = geometry;
 
-
-    // Mixin that enables function chaining that facilitates lazy evaluation via lambda-funcs
+//inc/walkable.js
+        // Mixin that enables function chaining that facilitates lazy evaluation via lambda-funcs
     published.Walkable =
     {
         wSelect: function(selector) {
@@ -3494,7 +3598,8 @@ var WAVE = (function(){
       return walkable;
     };
 
-
+//inc/svg.js
+    
     published.SVG = (function () {
       var svg = {};
 
@@ -3596,148 +3701,51 @@ var WAVE = (function(){
       return svg;
     }());
 
-    //Ajax
-
-    function ajaxCall(verb, url, data, success, error, fail, a, ct) {
-      a = published.strDefault(a);
-      ct = published.strDefault(ct);
-
-      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-      xhr.open(verb, url);
-
-      if (WAVE.isFunction(fail))
-        xhr.onerror = fail;
-
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            if (WAVE.isFunction(success))
-              success(xhr.responseText);
-          } else {
-            if (WAVE.isFunction(error))
-              error(xhr.responseText);
-          }
-        }
-      };
-      if (!published.strEmpty(a)) xhr.setRequestHeader('Accept', a);
-      if (!published.strEmpty(ct)) xhr.setRequestHeader('Content-Type', ct);
-
-      if (data !== null) {
-        if (published.isObject(data) && !published.strEmpty(ct) && ct.indexOf("application/json") !== -1)
-          data = JSON.stringify(data);
-        xhr.send(data);
-      }
-      else
-        xhr.send();
-
-      return xhr;
-    }
-
-    published.ajaxCall = function(verb, url, data, success, error, fail, a, ct) {
-      ajaxCall(verb, url, data, success, error, fail, a, ct);
+//inc/rndk.js
+        // Generates random key with specified length from the alphabet of possible characters: rndKey(10,"abcdefzq2")
+    published.genRndKey = function(keyLen, alphabet) {
+      var key = "";
+      if (!published.intValidPositive(keyLen)) keyLen = 8;
+      if (published.strEmpty(alphabet)) alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      while(key.length<keyLen)
+        key += alphabet.charAt(published.rnd(alphabet.length));
+      return key;
     };
 
-    published.ajaxGet = function(url, success, error, fail, a) {
-      ajaxCall("GET", url, null, success, error, fail, a);
+    var _autoInc = {};
+    //returns auto-inced named value: getAutoincKey('card', 1)
+    published.genAutoincKey = function(seqName, num){
+        var current = 0;
+        if (published.strEmpty(seqName)) seqName = "Unspecified";
+        if (!published.intValidPositive(num)) num = 1;
+
+        if (seqName in _autoInc)
+          current = _autoInc[seqName];
+
+        var result = current;
+
+        current += num;
+        _autoInc[seqName] = current;
+        return result;
     };
 
-    published.ajaxGetJSON = function(url, data, success, error, fail) {
-      ajaxCall("GET", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
-    };
+    // Returns random number in the range of min/max where min=0 max =100 by default:  rnd(10,57)
+    published.rnd = function() {
+      var min = 0;
+      var max = 100;
 
-    published.ajaxPost = function(url, data, success, error, fail, a, ct) {
-      ajaxCall("POST", url, data, success, error, fail, a, ct);
-    };
+      if (arguments.length === 1)  max = arguments[0];
+      else if (arguments.length === 2)
+      {
+        min = arguments[0];
+        max = arguments[1];
+       }
 
-    published.ajaxPostJSON = function(url, data, success, error, fail) {
-      ajaxCall("POST", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
-    };
-
-    published.ajaxPatch = function (url, success, error, fail, a) {
-      ajaxCall("PATCH", url, null, success, error, fail, a);
-    };
-
-    published.ajaxPatchJSON = function (url, data, success, error, fail) {
-      ajaxCall("PATCH", url, data, success, error, fail, published.CONTENT_TYPE_JSON, published.CONTENT_TYPE_JSON_UTF8);
-    };
-
-
-    //call func when dom is loaded
-    published.onReady = function(func) {
-      if (!published.isFunction(func)) return;
-
-      if (document.readyState !== 'loading'){
-        func();
-      } else if (published.isFunction(document.addEventListener)) {
-        document.addEventListener('DOMContentLoaded', func);
-      } else if (published.isFunction(document.attachEvent)) {
-        document.attachEvent('onreadystatechange', function() {
-          if (document.readyState !== 'loading')
-            func();
-        });
-      }
-    };
-
-    published.copyToClipboard = function(value) {
-      if (typeof(value) === tUNDEFINED || value === null) return;
-
-      var txtEl,
-          removeTxt = false;
-      if (published.isString(value)) {
-        if (published.strEmpty(value)) return;
-
-        removeTxt = true;
-        txtEl = document.createElement("p");
-        txtEl.style.border = '0';
-        txtEl.style.padding = '0';
-        txtEl.style.margin = '0';
-        txtEl.style.position = 'absolute';
-        txtEl.style.left = '-9999px';
-        txtEl.style.top = '-9999px';
-        txtEl.setAttribute('readonly', '');
-        txtEl.innerHTML = value;
-        document.body.appendChild(txtEl);
-      } else {
-        txtEl = value;
-      }
-
-      var succeeded;
-      try {
-        published.selectElement(txtEl);
-        succeeded = document.execCommand("copy");
-      }
-      catch (err) {
-        succeeded = false;
-      }
-
-      if (removeTxt)
-        document.body.removeChild(txtEl);
-      txtEl = null;
-      return succeeded;
-    };
-
-    published.selectElement = function(element) {
-      var range,
-          selection;
-
-      if (document.body.createTextRange) {
-        range = document.body.createTextRange();
-        range.moveToElementText(element);
-        range.select();
-      } else if (window.getSelection) {
-        selection = window.getSelection();
-        range = document.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
+      return min+Math.floor(Math.random()*(max-min+1));
     };
 
     return published;
 }());//WAVE
-
-//==================================================================================================
-//==================================================================================================
 
 
 WAVE.RecordModel = (function(){
@@ -3822,9 +3830,12 @@ WAVE.RecordModel = (function(){
         CASE_UPPER: 'upper',
         CASE_LOWER: 'lower',
         CASE_CAPS:  'caps',
-        CASE_CAPSNORM:  'capsnorm'
-    };
+        CASE_CAPSNORM: 'capsnorm',
 
+        DATA_RECVIEW_ID_ATTR: 'data-wv-rid',
+        DATA_FIELD_NAME_ATTR: 'data-wv-fname',
+        DATA_CTL_TP_ATTR: 'data-wv-ctl'
+    };
 
     var fRecords = [];
 
@@ -3840,8 +3851,8 @@ WAVE.RecordModel = (function(){
         return false;
     };
 
-
-    //Record class, either pass just string ID with optional field init func:
+    //inc/rm/record.js
+        //Record class, either pass just string ID with optional field init func:
     // var rec = new WAVE.RecordModel.Record("r1",function(rec){ new this.Field()... )
     //or complex init vector:
     // {ID: string, fields: [{def: fieldDef1,val: value1}...}]}
@@ -4623,14 +4634,8 @@ WAVE.RecordModel = (function(){
 
     published.Record.prototype.toString = function(){ return "Record["+this.ID()+"]"; };
 
-
-
-    published.DATA_RECVIEW_ID_ATTR = "data-wv-rid";
-    published.DATA_FIELD_NAME_ATTR = "data-wv-fname";
-    published.DATA_CTL_TP_ATTR = "data-wv-ctl";
-
-
-    //RecordView class
+    //inc/rm/recordview.js
+        //RecordView class
     // id - required, unique in page id of the view
     // rec - required, data record instance
     // gui - GUI library, if null then default script "wv.gui.js" must be included
@@ -4829,23 +4834,15 @@ WAVE.RecordModel = (function(){
         if (!manualViews) this.buildViews();
     };//RecordView
 
-
-
     return published;
 }());//WAVE.RecordModel
 
 
-//==================================================================================================
-//==================================================================================================
-
-
 WAVE.Pay = (function () {
+  var tUNDEFINED = "undefined";
+  var published = { Providers: { } };
 
-    var tUNDEFINED = "undefined";
-
-    var published = { Providers: { } };
-
-    // Credit Card brands
+  // Credit Card brands
     published.Brands =
     {
         VISA: "Visa",
@@ -5031,6 +5028,5 @@ WAVE.Pay = (function () {
         return published.Brands.UNKNOWN;
     };
 
-    return published;
-
+  return published;
 }()); // WAVE.Pay

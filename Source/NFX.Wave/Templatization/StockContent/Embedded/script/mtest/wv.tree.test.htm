@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>VW Tree Test</title>
+
+  <style>
+    body {
+      font-family: "Verdana";
+      font-size: 10px;
+    }
+
+    .wvTreeRoot {
+      background-color: yellow;
+    }
+
+    .wvTreeNode {
+      display: table;
+      background-color: #ffffff;
+    }
+
+    .wvTreeNodeButtonExpanded {
+      display: table-cell;
+      color: black;
+      width: 1em;
+      cursor: pointer;
+    }
+
+    .wvTreeNodeButtonCollapsed {
+      display: table-cell;
+      color: black;
+      width: 1em;
+      cursor: pointer;
+    }
+
+    .wvTreeNodeContent {
+      display: table-cell;
+    }
+
+    .wvTreeNodeOwn {
+      display: block;
+    }
+
+    .wvTreeNodeOwnSelected {
+      display: table;
+      background: linear-gradient(0deg, rgba(160, 170, 255, 0.7), rgba(240, 240, 255, 0.9), rgba(160, 170, 255, 0.3));
+      font-weight: bold;
+    }
+
+
+    .wvTreeNodeOwn_lime {
+      background-color: lime;
+    }
+
+    .wvTreeNodeChildren {
+      display: block;
+      height: auto;
+    }
+
+  </style>
+
+  <script src="../jquery-2.1.4.min.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      function initTV1(){
+        var tree = new WAVE.GUI.Tree({DIV: WAVE.id("tv1"), treeSelectionType: WAVE.GUI.TREE_SELECTION_SINGLE, supressEvents: true});
+        tree.eventBind(WAVE.GUI.EVT_TREE_NODE_ADD, function(sender, evtArgs) {
+          //if (evtArgs.phase === WAVE.GUI.EVT_PHASE_BEFORE && evtArgs.parentNode.id() == "11") evtArgs.abort = true;
+          //console.log(evtArgs);
+        });
+
+        tree.eventBind(WAVE.GUI.EVT_TREE_NODE_REMOVE, function(sender, evtArgs) {
+          //if (evtArgs.phase === WAVE.GUI.EVT_PHASE_BEFORE && evtArgs.childNode.id() === "111") evtArgs.abort = true;
+          //console.log(evtArgs);
+        });
+
+        tree.eventBind(WAVE.GUI.EVT_TREE_NODE_EXPANSION, function(sender, evtArgs) {
+          //if (evtArgs.phase === WAVE.GUI.EVT_PHASE_BEFORE && evtArgs.node.id() == "1") evtArgs.abort = true;
+          //console.log(evtArgs);
+        });
+
+        tree.eventBind(WAVE.GUI.EVT_TREE_NODE_SELECTION, function(sender, evtArgs) {
+          console.log(evtArgs);
+        });
+
+        tree.eventBind(WAVE.GUI.EVT_TREE_NODE_CONTENT, function(sender, evtArgs){
+          //if (evtArgs.phase === WAVE.GUI.EVT_PHASE_BEFORE) evtArgs.abort = true;
+          //console.log(evtArgs);
+        });
+
+        tree.eventBind(WAVE.GUI.EVT_TREE_NODE_DATA, function(sender, evtArgs){
+          //if (evtArgs.phase === WAVE.GUI.EVT_PHASE_BEFORE) evtArgs.abort = true;
+          //console.log(evtArgs);
+        });
+
+        var rootNode1;
+        var rootNode2;
+
+        var childNode11;
+        var childNode111;
+        var childNode112;
+
+        var childNode21;
+        var childNode22;
+
+        function fillNodes() {
+          rootNode1 = tree.root().addChild({html: "1 Root Node", id: 1});
+          rootNode2 = tree.root().addChild({html: "2 Root Node", id: 2/*, wvTreeNode: "wvTreeRoot"*/});
+
+          childNode11 = rootNode1.addChild({html: "1.1 <strong>Child</strong> Node", id: 11, selectable: false});
+          childNode111 = childNode11.addChild({html: "<img src='http://itadapter.com/img/menucontacthotslice.png' style='width:35px;height:24px;'><input type='checkbox'>1.1.1 Child Node <br> another line", id: 111});
+          childNode112 = childNode11.addChild({html: "<img src='http://itadapter.com/img/menuserviceshotslice.png' style='width:35px;height:24px;'><input type='checkbox'>1.1.2 Child Node", id: 112});
+
+          childNode21 = rootNode2.addChild({html: "2.1 <strong>Child</strong> Node", id: 21, selectable: false});
+          childNode22 = rootNode2.addChild({html: "2.2 <strong>Child</strong> Node", id: 22});
+        }
+
+        function removeNodes() {
+          tree.root().removeAllChildren();
+        }
+
+        fillNodes();
+
+
+
+        $("#btnRemove111").click(function() {
+          //childNode111.remove();
+          console.log(childNode111.wvTreeNodeOwn());
+          childNode111.wvTreeNodeOwn("cls");
+        });
+
+        $("#btnRemove11").click(function() {
+          childNode11.remove();
+        });
+
+        $("#btnRemove1").click(function() {
+          rootNode1.remove();
+          //console.log("izmoroz: ", rootNode1.getChild("11"));
+        });
+
+        $("#btnRemoveAllChildren").click(function() {
+          tree.root().removeAllChildren();
+        });
+
+
+        $("#btnFillNodes").click(function() {
+          fillNodes();
+        });
+
+        $("#btnNavigate").click(function() {
+          var path = WAVE.id("txtNavigate").value;
+          var navNode = tree.root().navigate(path);
+          navNode.selected(true);
+        });
+
+        $("#btnUnveil").click(function() {
+          var path = WAVE.id("txtNavigate").value;
+          var navNode = tree.root().navigate(path);
+          navNode.unveil();
+          navNode.selected(true);
+        });
+
+        $("#btnGetSelectedNodes").click(function() {
+          tree.selectedNodes().wEach(function(n) { console.log(n.node.html()); });
+        });
+
+        $("#btnSetSelectedNodes").click(function() {
+          var nodes = ["1", "2", "111"];
+          tree.selectedNodes(nodes);
+        });
+
+        $("#btnAncestors").click(function() {
+          tree.root().getDescendants().wEach(function(a) { console.log(a.level, a.nodeNum, a.node.html());});
+        });
+
+        $("#btnSetNodeStyle").click(function() {
+          childNode11.wvTreeNodeOwn("wvTreeNodeOwn_lime");
+          //rootNode2.getDescendants().wEach(function(a) { console.log(a.level, a.nodeNum, a.node.html());});
+        });
+
+        $("#btnHtml").click(function() {
+          childNode11.html("Zvenigub Zemlynychkin <strong>actor</strong>");
+        });
+
+        $("#btnData").click(function() {
+          childNode11.data(new Date());
+        });
+
+        $("#btnSelected").click(function() {
+          childNode11.selected(true);
+        });
+
+        $("#btnExpansion").click(function() {
+          rootNode1.expanded(!rootNode1.expanded());
+        });
+      }
+
+      function initTV2(){
+        var tree = new WAVE.GUI.Tree({DIV: WAVE.id("tv2"), wvTreeRoot: "wvTreeRoot_2"});
+        var rootNode1 = tree.root().addChild({html: "2 Root Node 1"});
+        var rootNode2 = tree.root().addChild({html: "2 Root Node 2"});
+
+        for(var i=0;i<7;i++) {
+          var subNode = rootNode1.addChild({html: "2 Sub Node 1." + (i+1)});
+          for(var j=0;j<14;j++) {
+            var subNode1 = subNode.addChild({html: "2 Sub Node 1." + (i+1) + "." + (j+1)});
+          }
+        }
+      }
+
+      initTV1();
+      //initTV2();
+    });
+  </script>
+</head>
+<body>
+  <div style="float: left; margin-right: 5px;">
+    <button id="btnRemove111" style="display: block;">Remove 1.1.1</button>
+    <button id="btnRemove11" style="display: block;">Remove 1.1</button>
+    <button id="btnRemove1" style="display: block;">Remove 1</button>
+    <br>
+
+    <button id="btnFillNodes" style="display: block;">Fill Nodes</button>
+    <button id="btnRemoveAllChildren" style="display: block;">Remove All</button>
+
+    <br>
+    <input id="txtNavigate" type="text" style="display: block" />
+    <button id="btnNavigate" style="display: block;">Navigate</button>
+    <button id="btnUnveil" style="display: block;">Unveil</button>
+    <button id="btnGetSelectedNodes" style="display: block;">Get Selected Nodes</button>
+    <button id="btnSetSelectedNodes" style="display: block;">Set Selected Nodes</button>
+    <br>
+
+    <button id="btnAncestors" style="display: block;">Ancestors</button>
+    <button id="btnSetNodeStyle" style="display: block;">Node Style</button>
+    <button id="btnHtml" style="display: block;">Content</button>
+    <button id="btnData" style="display: block;">Data</button>
+    <button id="btnSelected" style="display: block;">Select</button>
+    <button id="btnExpansion" style="display: block;">Expand</button>
+
+  </div>
+
+  <div id="tv1" style="float: left; width: 30%; height: 200px; overflow: scroll;"></div>
+
+  <div id="tv2" style="float: left; width: 30%; overflow: scroll; border: 1px solid black; padding: 10px;"></div>
+
+  <div id="tvMock" style="width: 40%; overflow: scroll;">
+
+    <div class="wvTreeRoot wvTreeNode">
+      <input id="chk01" type="checkbox" class="wvTreeNodeButton"/>
+      <label for="chk01"></label>
+      <div class="wvTreeNodeContent">
+        <div class="wvTreeNodeOwn">Root Item 1</div>
+        <div class="wvTreeNodeChildren">
+          <!-- SubItem 1.1 -->
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn">Sub Item 1.1</div>
+              <div class="wvTreeNodeChildren">
+                <!-- SubItem 1.1.1 -->
+
+                <div class="wvTreeNode">
+                  <input type="checkbox" class="wvTreeNodeButton">
+                  <div class="wvTreeNodeContent">
+                    <div class="wvTreeNodeOwn">Sub Item 1.1.1</div>
+                    <div class="wvTreeNodeChildren">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SubItem 1.1.1 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- SubItem 1.1 -->
+
+          <!-- SubItem 1.2 -->
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn">Sub Item 1.1</div>
+              <div class="wvTreeNodeChildren">
+                <!-- SubItem 1.2.1 -->
+
+                <div class="wvTreeNode">
+                  <input type="checkbox" class="wvTreeNodeButton">
+                  <div class="wvTreeNodeContent">
+                    <div class="wvTreeNodeOwn">Sub Item 1.1.1</div>
+                    <div class="wvTreeNodeChildren">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SubItem 1.2.1 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- SubItem 1.2 -->
+
+          <!-- SubItem 1.3 -->
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn" style="background: red;">
+                Sub Item 1.3<br>Lenin lyubil griby<br>Slava partii<br>Denis
+
+              </div>
+              <div class="wvTreeNodeChildren">
+
+                <div class="wvTreeNode">
+                  <input type="checkbox" class="wvTreeNodeButton">
+                  <div class="wvTreeNodeContent">
+                    <div class="wvTreeNodeOwn">Sub Item 1.3.1</div>
+                    <div class="wvTreeNodeChildren">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="wvTreeNode">
+                  <input type="checkbox" class="wvTreeNodeButton">
+                  <div class="wvTreeNodeContent">
+                    <div class="wvTreeNodeOwn">Vozdi Partii</div>
+                    <div class="wvTreeNodeChildren">
+
+                      <div class="wvTreeNode">
+                        <input type="checkbox" class="wvTreeNodeButton">
+                        <div class="wvTreeNodeContent">
+                          <div class="wvTreeNodeOwn">Lenin</div>
+                          <div class="wvTreeNodeChildren">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="wvTreeNode">
+                        <input type="checkbox" class="wvTreeNodeButton">
+                        <div class="wvTreeNodeContent">
+                          <div class="wvTreeNodeOwn">Stalin on je Rukobludov</div>
+                          <div class="wvTreeNodeChildren">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="wvTreeNode">
+                        <input type="checkbox" class="wvTreeNodeButton">
+                        <div class="wvTreeNodeContent">
+                          <div class="wvTreeNodeOwn">Mau raduet nas (portretom Chelentano) a tak je zyat vojdya kotoriy saaet kok u valentina petrovicha</div>
+                          <div class="wvTreeNodeChildren">
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- SubItem 1.3 -->
+
+          <!-- SubItem 1.4 -->
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn">Sub Item 1.4</div>
+              <div class="wvTreeNodeChildren">
+              </div>
+            </div>
+          </div>
+
+          <!-- SubItem 1.4 -->
+
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="wvTreeRoot wvTreeNode">
+      <input type="checkbox" class="wvTreeNodeButton">
+      <div class="wvTreeNodeContent">
+        <div class="wvTreeNodeOwn">Root Item 2</div>
+        <div class="wvTreeNodeChildren">
+          <!-- SubItem 11 -->
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn">Lenin</div>
+              <div class="wvTreeNodeChildren">
+              </div>
+            </div>
+          </div>
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn">Stalin on je Rukobludov</div>
+              <div class="wvTreeNodeChildren">
+              </div>
+            </div>
+          </div>
+
+          <div class="wvTreeNode">
+            <input type="checkbox" class="wvTreeNodeButton">
+            <div class="wvTreeNodeContent">
+              <div class="wvTreeNodeOwn">Mau raduet nas (portretom Chelentano) a tak je zyat vojdya kotoriy saaet kok u valentina petrovicha</div>
+              <div class="wvTreeNodeChildren">
+              </div>
+            </div>
+          </div>
+
+          <!-- SubItem 11 -->
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</body>
+</html>
+
+// + flag to identify if node is leaf or not leaf

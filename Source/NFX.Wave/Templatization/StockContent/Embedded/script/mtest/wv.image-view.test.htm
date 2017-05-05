@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <script src="../jquery-2.1.4.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+
+  <style>
+    * { padding: 0; margin: 0; }
+    html, body { width: 100%; height: 100%; }
+
+    #image-view0 {
+      position: absolute;
+      width: 50%; height: 50%;
+      left: 0; top: 0; right: 0; bottom: 0;
+      margin: auto;
+    }
+
+    .wvImageBox_loading:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 16px !important;
+      height: 16px !important;
+      background-repeat: no-repeat;
+      background-image: url(data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQACgABACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkEAAoAAgAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkEAAoAAwAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkEAAoABAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQACgAFACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQACgAGACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAAKAAcALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==);
+    }
+    .wvImageBox_wider * { width: 100% !important; }
+    .wvImageBox_higher * { height: 100% !important; }
+
+    .wvImageView {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      box-shadow: 1px 1px 1px 1px gray;
+    }
+
+    .wvImageView .wvImageView_image {
+      position: absolute;
+      display: block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+
+      -webkit-animation: fadein 2s;
+         -moz-animation: fadein 2s;
+          -ms-animation: fadein 2s;
+           -o-animation: fadein 2s;
+              animation: fadein 2s;
+    }
+
+    @-webkit-keyframes fadein { from { opacity: 0; } to   { opacity: 1; } }
+       @-moz-keyframes fadein { from { opacity: 0; } to   { opacity: 1; } }
+        @-ms-keyframes fadein { from { opacity: 0; } to   { opacity: 1; } }
+         @-o-keyframes fadein { from { opacity: 0; } to   { opacity: 1; } }
+            @keyframes fadein { from { opacity: 0; } to   { opacity: 1; } }
+
+    .wvImageView.wvImageView_zoom .wvImageView_image {
+      margin: 0;
+      max-width: none;
+      max-height: none;
+      width: auto !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="image-view0"></div>
+  <div></div>
+  <script>
+    var imageView = new WAVE.GUI.ImageView({
+      DIV: "image-view0",
+      image: "http://wallpaperscraft.ru/image/gorod_moskva_rossiya_kreml_812_1920x1080.jpg"
+    });
+    setTimeout(function () {
+      imageView.image("https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png");
+      setTimeout(function () {
+        imageView.image({ url: "https://www.google.com/images/nav_logo242_hr.png", clip: { top: 0, bottom: 74, left: 48, right: 279 } });
+      }, 10000);
+    }, 10000);
+  </script>
+</body>
+</html>

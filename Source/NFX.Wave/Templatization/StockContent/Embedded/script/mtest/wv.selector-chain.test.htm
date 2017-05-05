@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="../jquery-2.1.4.js"></script>
+  <script src="../wv.js"></script>
+  <script src="../wv.gui.js"></script>
+
+  <style>
+    body {
+      font-family: Verdana;
+      font-size: 12px;
+    }
+
+    .dataCell .fView:last-child {
+      padding-bottom: 8px;
+    }
+    .dataCell .fView {
+      padding-top: 10px;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .fView {
+      padding-top: 2px;
+      font-size: 14px;
+    }
+    .fView {
+      display: block;
+      padding-top: 12px;
+    }
+
+    .wvComboWrap {
+      position: relative;
+      font-size: 14px;
+      font-family: 'RobotoCondensed-Light', 'Verdana', 'sans-serif';
+    }
+
+    .wvComboArrow {
+      position: absolute;
+      right: 0.5em;
+      margin-top: -0.2em;
+      top: 50%;
+      display: block;
+      width: 0;
+      height: 0;
+      border: solid transparent;
+      border-width: 0.4em;
+      border-top-color: #606060;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h3>No styles</h3>
+  <div id="cont1"></div>
+  <br />
+  <br />
+
+  <h3>Styling</h3>
+  <div class="fView fViewCombo hasValue">
+    <div id="cont2"></div>
+  </div>
+  <br />
+  <br />
+
+
+  <script>
+
+    var values1 = [
+        { "id": "n1", "val": "node1", "name":"header 1", "descr": "The node 1" },
+        {
+          "id": "n2",
+          "val": "node2",
+          "name":"header 2",
+          "descr": "The node 2",
+          "children": [
+            { "id": "n21", "val": "node21", "name": "header 21", "descr": "The node 2 subnode 1" },
+            { "id": "n22", "val": "node22", "name": "header 22", "descr": "The node 2 subnode 2" }]
+        },
+        {
+          "id": "n3",
+          "val": "node3",
+          "descr": "The node 3",
+          "name": "header 3",
+          "children": [
+            {
+              "id": "n31", "val": "node31", "name": "header 31", "descr": "The node 3 subnode 1", "children":
+                      [{ "id": "n311", "val": "node311", "name": "header 311", "descr": "The node 3 subnode 1.1" }]
+            },
+            {
+              "id": "n32", "val": "node32", "name": "header 32", "descr": "The node 3 subnode 2", "children":
+                      [{ "id": "n321", "val": "node321", "name": "header 321", "descr": "The node 3 subnode 2.1" },
+                       { "id": "n322", "val": "node322", "name": "header 322", "descr": "The node 3 subnode 2.2" },
+                       { "id": "n323", "val": "node323", "name": "header 323", "descr": "The node 3 subnode 2.3", "children":
+                           [{ "id": "n3231", "val": "node3231", "descr": "The node 3 subnode 2.3.1" }] }
+                      ]
+            }]
+        }
+    ];
+
+    var chain1 = new WAVE.GUI.ChainSelector(
+    {
+      DIV: WAVE.id("cont1"),
+      values: values1
+    });
+
+    var chain2 = new WAVE.GUI.ChainSelector(
+    {
+      DIV: WAVE.id("cont2"),
+      classes: {
+        "divComboWrapCls": "relative",
+        "divArrowCls": "wvComboArrow"
+      },
+      values: values1
+    });
+
+  </script>
+</body>
+</html>
