@@ -8,7 +8,7 @@
     <title>Apache Thrift vs NFX.Glue Benchmark </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Apache Thrift vs NFX.Glue Benchmark ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="apache-thrift-vs-nfxglue-benchmark">Apache Thrift vs NFX.Glue Benchmark</h1>
-
+              <h1 id="apache-thrift-vs-nfxglue-benchmark">Apache Thrift vs NFX.Glue Benchmark</h1>
+              
 <h2 id="why-compare">Why Compare?</h2>
 <p>I have blogged about GLUE <a href="/archive/blog/2014/08/glue-interprocess-communication.html" title="NFX.Glue - Interprocess Communication">here</a>. Glue is the sole communication technology that we use in a cluster. It is very important to achieve the fastest results possible, yet still retain the feature-rich service that Glue provides (security, headers, exceptions, asynchrony etc..). Recently we have invested more time in optimizing the NFX.Serialization.SlimSerializer and NFX.Glue.Native.SyncBinding. The results that we achieved after optimization are very promising, but someone told me recently that we <a href="https://en.wikipedia.org/wiki/Apache_Thrift" target="_blank" title="Apache Thrift">can&#39;t compete with Facebook&#39;s Thrift</a>. Is this truly so? We had to test, so here goes...</p>
 <h2 id="the-test">The Test</h2>
@@ -159,7 +159,8 @@ It may be if one needs to push trees of graphs of complex data. SYNC Glue bindin
 <p>P.S&gt; I just realized that we did not build our test Glue rig with [X]Optimize Code checked. So our results stated in the blog are like 15-20% worse than what they could have been. In other words NFX.Glue is like 15% faster than this post describes if it is built in release config. I also forgot to capture wire message sizes which I&#39;ll do later. The speed test is enough for me.</p>
 <hr>
 <p>Dmitriy Khmaladze<br>March 18, 2015</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -194,9 +195,16 @@ It may be if one needs to push trees of graphs of complex data. SYNC Glue bindin
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>  </body>
 </html>

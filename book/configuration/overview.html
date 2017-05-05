@@ -8,7 +8,7 @@
     <title>Overview </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Overview ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="overview">Overview</h1>
-
+              <h1 id="overview">Overview</h1>
+              
 <p>One of the main purposes of any configuration process is the ability to fill entities with values stored in configuration file. 
 With <strong>NFX</strong> configuration one can do it by placing <code>NFX.Environment.ConfigureAttribute</code> on class members and then calling <code>ConfigAttribute.Apply()</code> to automatically supply your class members with values taken from config. 
 Entities that should have more precise configuration (e.g. recursive configuration by <strong>NFX</strong> infrastructure etc.) must implement interface</p>
@@ -146,11 +146,12 @@ root
 <p>  type=&quot;$(/gv/paths/$ds-mysql)&quot;
   home=&quot;$(/gv/paths/$home-root)&quot;
   nowis=$(::now) // &quot;::&quot; - macro
-}</p>
-<pre><code>
-Here `$(~ENV_HOME_ROOT)` resolves system environment variable, 
-`&quot;$(/gv/paths/$ds-mysql)&quot;` and `&quot;$(/gv/paths/$home-root)&quot;` are resolved into some variables defined above in the code
-</code></pre></article>
+}
+```</p>
+<p>Here <code>$(~ENV_HOME_ROOT)</code> resolves system environment variable, 
+<code>&quot;$(/gv/paths/$ds-mysql)&quot;</code> and <code>&quot;$(/gv/paths/$home-root)&quot;</code> are resolved into some variables defined above in the code</p>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -185,9 +186,16 @@ Here `$(~ENV_HOME_ROOT)` resolves system environment variable,
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../styles/main.js"></script>  </body>
 </html>

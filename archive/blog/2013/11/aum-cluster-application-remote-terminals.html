@@ -8,7 +8,7 @@
     <title>Aum Cluster - Application Remote Terminals </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Aum Cluster - Application Remote Terminals ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="aum-cluster---application-remote-terminals">Aum Cluster - Application Remote Terminals</h1>
-
+              <h1 id="aum-cluster---application-remote-terminals">Aum Cluster - Application Remote Terminals</h1>
+              
 <h2 id="what-is-it">What is it?</h2>
 <p>Aum Clusterware supports a concept of <strong>application remote terminals</strong>. They behave much like a regular command prompt, however the commands are application level - they operate not on OS objects but rather on application objects. Here is a typical command: &quot;gc&quot; - it performs a garbage collection inside your server process.</p>
 <p>The way it works is really simple - take a look at the following contract:</p>
@@ -139,7 +139,8 @@ public interface IRemoteTerminal
 <p>What is remote application console - it is a simple feature that one can not expect to build a reliable cluster-enabled system without, where there are 1000s of machines. Yes, there is SSH and other gooddies, but they are NOT APPLICATION level, they are OS level - and that is <strong>where we hugely differ from the rest in our approach</strong>, our whole framework is cloud-aware, so our services like application containers and other components are built for the cloud from day one. Remote Application Console is a living testimony to this.</p>
 <hr>
 <p>Dmitriy Khmaladze<br>November 15, 2013</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -174,9 +175,16 @@ public interface IRemoteTerminal
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>  </body>
 </html>

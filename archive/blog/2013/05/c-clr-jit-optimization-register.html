@@ -8,7 +8,7 @@
     <title>C# CLR JIT Optimization - Register allocation for primitives </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="C# CLR JIT Optimization - Register allocation for primitives ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="c-clr-jit-optimization---register-allocation-for-primitives">C# CLR JIT Optimization - Register allocation for primitives</h1>
-
+              <h1 id="c-clr-jit-optimization---register-allocation-for-primitives">C# CLR JIT Optimization - Register allocation for primitives</h1>
+              
 <p>Today I have come across a strange effect in C#</p>
 <p>This code took 30 ms to run, and C++ version took 5-8msec. How come?</p>
 <pre><code class="lang-cs">void Runtest()
@@ -108,7 +108,8 @@ Text += s.ToString();
 </code></pre><p>The bottom line is this: JIT does optimize primitives in CPU registers just like C++ does, however because of unified type system it is easy to treat a primitive as struct or object - and that introduces penalty.<br>The truth of the matter is that until the loop exit they (Microsoft) could have kept it in register and then moved to RAM, but there are many edge cases like this and who knows what other issues JIT developers had to solve.</p>
 <hr>
 <p>Dmitriy Khmaladze<br>May 14, 2013</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -143,9 +144,16 @@ Text += s.ToString();
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>  </body>
 </html>

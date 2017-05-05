@@ -8,7 +8,7 @@
     <title>Relational Schema </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Relational Schema ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="relational-schema">Relational Schema</h1>
-
+              <h1 id="relational-schema">Relational Schema</h1>
+              
 <p>Relational Schema is the conceptual scripting language that allows for declarative database structure creation of:</p>
 <ul>
 <li>Tables</li>
@@ -78,7 +78,8 @@ For example one can invoke the <a href="/tools/rsc.html"><strong>RSC</strong> (R
 <p>RSC generates proper prefixes for related objects, for example if a table is called &quot;USER&quot;, the foreign key constraint would be called &quot;FK_USER…&quot;.</p>
 <p>The key feature of RSC is the ability to use injectable domains definitions. This is true EVEN for databases that do not support domains, for example one could use <code>THumanName</code>  and define it as <code>varchar(25)</code>, so now in multiple places <code>THumanName</code> can be used as a domain, resulting script will have <code>varchar(25)</code>.
 RSC also has capabilities for macro/mixins and scripts. This is very useful for example for including column block such as &quot;customer address&quot;.</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -113,9 +114,16 @@ RSC also has capabilities for macro/mixins and scripts. This is very useful for 
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../styles/main.js"></script>  </body>
 </html>

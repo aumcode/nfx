@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> </title>
+    <title>Laconic JavaScript (LJS) </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="title" content="Laconic JavaScript (LJS) ">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -64,10 +64,160 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+              <h1 id="laconic-javascript-ljs">Laconic JavaScript (LJS)</h1>
+              
+<p><a href="/tools/ntc.html">NFX Template Compiler Tool</a> allows making special <a href="/specs/configuration/laconic.html">laconic-syntax</a> inserts (we named that technology as Laconic Java Script - LJS) into javascript. These code segments present structure of HTML DOM elements in laconic format. The tool translates them into javascript statements of DOM elements building. To make ntc tool take into account LJS code you should specify certain compiler <code>NFX.Templatization.TextJSTemplateCompiler</code> or <code>NFX.Templatization.NHTCompiler</code> (for whole page):</p>
+<pre><code>ntc.exe src.js -ext &quot;.result&quot; /src /c &quot;NFX.Templatization.TextJSTemplateCompiler, NFX&quot;
+ntc.exe my_page.nht -r -ext &quot;.auto.cs&quot; /src /c &quot;NFX.Templatization.NHTCompiler, NFX&quot;
+</code></pre><p><br>
+LJS code is surrounded with <code>/***</code> and <code>***/</code> bounds. In laconic format terms every DOM element becomes a segment and its parameters become attributes of that section, nested elements become sub-section, inner text of the element is transfered into value of the segment. You can specify which element will be root for the new tree - first argument of function with LJS (id or element itself). Other arguments also can be used in LJS code through <code>? js_code</code> syntax but in this case the first argument of the function will be considered as a root even if you are not going specify it so you should add corresponding parameter.</p>
+<pre><code class="lang-js">function buildChangeSNameForm(root, dfltName) {
+  /***
+  form {
+    id=frmChangeSName
+    action=&quot;#&quot;
+    method=post
+    div=&quot;Please enter new screen name:&quot; {}
+    input {
+      type=text
+      name=sname
+      value=?dfltName
+    }
+    input {
+      type=submit
+      value=Submit
+      class=uiSmallButton
+    }
+  }
+  ***/
+}
+</code></pre><p>After compilation that LJS code turns into:</p>
+<pre><code class="lang-js">function buildChangeSNameForm(root, dfltName) {
+  var Ør = arguments[0];
+  //try to find the root element by id
+  if (WAVE.isString(Ør)) Ør = WAVE.id(Ør);
 
-<p>JavaScript</p>
-<p>...</p>
-</article>
+  var Ø1 = WAVE.ce(&#39;form&#39;); // create new element-form
+  Ø1.setAttribute(&#39;id&#39;, &#39;frmChangeSName&#39;);
+  Ø1.setAttribute(&#39;action&#39;, &#39;#&#39;);
+  Ø1.setAttribute(&#39;method&#39;, &#39;post&#39;);
+
+  var Ø2 = WAVE.ce(&#39;div&#39;);
+  Ø2.innerText=&#39;Please enter new screen name:&#39;;
+  Ø1.appendChild(Ø2);
+
+  var Ø3 = WAVE.ce(&#39;input&#39;);
+  Ø3.setAttribute(&#39;type&#39;, &#39;text&#39;);
+  Ø3.setAttribute(&#39;name&#39;, &#39;sname&#39;);
+  Ø3.setAttribute(&#39;value&#39;, dfltName);
+  Ø1.appendChild(Ø3);
+
+  var Ø4 = WAVE.ce(&#39;input&#39;);
+  Ø4.setAttribute(&#39;type&#39;, &#39;submit&#39;);
+  Ø4.setAttribute(&#39;value&#39;, &#39;Submit&#39;);
+  Ø4.setAttribute(&#39;class&#39;, &#39;uiSmallButton&#39;);
+  Ø1.appendChild(Ø4);
+
+  // if some root is specified, then append the new tree to it
+  if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+  return Ø1;
+}
+</code></pre><p>And somewhere in your code you can call this function: <code>var form = buildChangeSNameForm(null, user.first_name)</code>.</p>
+<p><br>
+More complicated than references to the arguments javascript statements (conditions, loops, etc.) should be defined as laconic section:</p>
+<pre><code class="lang-js">function withCondition(root, count) {
+  /***
+  &quot;? var a=count*2;&quot; {}
+  input {
+    id=limitExceeded
+    type=checkbox
+    checked=&quot;?(a&gt;10)&quot;
+  }
+  &quot;?if (a&gt;10)&quot; {
+    div {
+      class=&quot;? a&gt;100 ? &#39;divCritical&#39; : &#39;divWarning&#39;&quot;
+    }
+  }
+  ***/
+}
+</code></pre><p>After compilation we have:</p>
+<pre><code class="lang-js">function withCondition(root, count) {
+  var Ør = arguments[0];
+  if (WAVE.isString(Ør)) Ør = WAVE.id(Ør);
+
+  var Ø1 = WAVE.ce(&#39;nfx&#39;);
+  var a = count * 2;
+  var Ø2 = WAVE.ce(&#39;input&#39;);
+  Ø2.setAttribute(&#39;id&#39;, &#39;limitExceeded&#39;);
+  Ø2.setAttribute(&#39;type&#39;, &#39;checkbox&#39;);
+  Ø2.checked = (a &gt; 10);
+  Ø1.appendChild(Ø2);
+  if (a &gt; 10) {
+    var Ø3 = WAVE.ce(&#39;div&#39;);
+    Ø3.setAttribute(&#39;class&#39;, a &gt; 100 ? &#39;divCritical&#39; : &#39;divWarning&#39;);
+    Ø1.appendChild(Ø3);
+  }
+  if (WAVE.isObject(Ør)) Ør.appendChild(Ø1);
+  return Ø1;
+}
+</code></pre><p><br>
+You can use <code>?this</code> as a pointer on current html element:</p>
+<pre><code class="lang-js">/***
+table {
+  &quot;? buildRow(?this);&quot; {}
+}
+***/
+</code></pre><p>And we get:</p>
+<pre><code class="lang-js">var Ø1 = WAVE.ce(&#39;table&#39;);
+buildRow(Ø1);
+</code></pre><p><br>
+Also you can create pointer on any item in tree with construction <code>ljsid=&lt;your_identifier&gt;</code> and use it:</p>
+<pre><code class="lang-js">/***
+div {
+  ljsid=root
+  div = &quot;some text&quot; {}
+  &quot;? if(root.hasChild())&quot; {
+     ...
+   }
+}
+***/
+</code></pre><p>Result:</p>
+<pre><code class="lang-js">var Ø1 = WAVE.ce(&#39;div&#39;);
+var Ø2 = WAVE.ce(&#39;div&#39;);
+Ø2.innerText = &#39;some text&#39;;
+Ø1.appendChild(Ø2);
+if (Ø1.hasChild()) {
+  ...
+}
+</code></pre><p><br>
+Besides that there is a possibility to make &quot;inline&quot; LJS insertions:</p>
+<pre><code class="lang-js">var div = &quot;*#* div { h2=&#39;Header&#39; {} p=&#39;Paragraph&#39; {} } *#*&quot;;
+</code></pre><p>turns into:</p>
+<pre><code class="lang-js">  var div = (
+    function() {
+      var Ø1 = WAVE.ce(&#39;div&#39;);
+      var Ø2 = WAVE.ce(&#39;h2&#39;);
+      Ø2.innerText = &#39;Header&#39;;
+      Ø1.appendChild(Ø2);
+      var Ø3 = WAVE.ce(&#39;p&#39;);
+      Ø3.innerText =&#39;Paragraph&#39;;
+      Ø1.appendChild(Ø3);
+      return Ø1;
+    })();
+</code></pre><p><br>
+Using of NHT code in LJS looks like:</p>
+<pre><code class="lang-js">/***
+  span=&quot;?&#39;?[:SomeVariable]&#39;&quot;
+***/
+</code></pre><p>And output file will contain something like that:</p>
+<pre><code class="lang-csharp">const string s1 = @&quot;var Ø1=WAVE.ce(&#39;span&#39;); Ø1.innerText=&#39;&quot;;
+const string s2 = @&quot;&#39;;return Ø1;&quot;;
+
+Target.Write(s1);
+Target.Write(SomeVariable);
+Target.Write(s2);
+</code></pre>
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -102,9 +252,16 @@
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../styles/main.js"></script>  </body>
 </html>
