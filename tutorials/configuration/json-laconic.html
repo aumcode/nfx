@@ -8,7 +8,7 @@
     <title>JSON-Laconic Conversion </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="JSON-Laconic Conversion ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="json-laconic-conversion">JSON-Laconic Conversion</h1>
-
+              <h1 id="json-laconic-conversion">JSON-Laconic Conversion</h1>
+              
 <p>JSON and Laconic formats are completely 
 You can easily convert laconic configuration to JSON format and backwards by using methods <code>NFX.Environment.ConfigNode.ToJSONDataMap()</code> and <code>NFX.Serialization.JSON.JSONDataMap.ToConfigNode()</code>.</p>
 <p>Suppose string variable <code>confStr</code> contains the following laconic configuration section:</p>
@@ -107,7 +107,8 @@ var result = map.ToJSON(JSONWritingOptions.PrettyPrint);
 var node = map.ToConfigNode();
 var result = node.ToLaconicString();
 </code></pre><p>will do the opposite task.</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -142,9 +143,16 @@ var result = node.ToLaconicString();
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../styles/main.js"></script>  </body>
 </html>

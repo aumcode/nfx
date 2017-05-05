@@ -8,7 +8,7 @@
     <title>Data Objects, Schema and Metadata </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Data Objects, Schema and Metadata ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="data-objects-schema-and-metadata">Data Objects, Schema and Metadata</h1>
-
+              <h1 id="data-objects-schema-and-metadata">Data Objects, Schema and Metadata</h1>
+              
 <p><strong>NFX</strong> data access concept revolves around CRUD primitives: Rows and Rowsets/Tables.</p>
 <p>A Row represents a row of data, not necessarily relational, that has fields. 
 A row may have a hierarchical (nested) structure. A row may represent a row from RDBMS, file, document (i.e. MongoDB) and other sources. 
@@ -92,7 +92,8 @@ The exception is not thrown, it is returned instead, this is done for speed (thr
 <p>Rows can be used in <code>List&lt;&gt;</code>, however NFX provides a more handy structure: Rowsets and Tables. 
 The difference stems from the recognition of the primary key by the Table - it is a form of a sorted -by-pk rowset (with binary search findkey). 
 Tables are good for data sync in distributed systems (i.e. used in trading system fed from Erlang OTP).</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -127,9 +128,16 @@ Tables are good for data sync in distributed systems (i.e. used in trading syste
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../styles/main.js"></script>  </body>
 </html>

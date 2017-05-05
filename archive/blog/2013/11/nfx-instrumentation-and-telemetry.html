@@ -8,7 +8,7 @@
     <title>NFX Instrumentation and Telemetry </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="NFX Instrumentation and Telemetry ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="nfx-instrumentation-and-telemetry">NFX Instrumentation and Telemetry</h1>
-
+              <h1 id="nfx-instrumentation-and-telemetry">NFX Instrumentation and Telemetry</h1>
+              
 <h2 id="nfxinstrumentation-overview">NFX.Instrumentation Overview</h2>
 <p>Instrumentation is an ability to insert various level and event counters that allow for detailed runtime monitoring of the instrumented software. In Windows paradigm there is a concept of &quot;PerformanceCounter&quot; which is similar to the one in NFX, however Windows performance counters are OS-specific and do not scale well in hierarchical server clusters. NFX, on the other hand, provides 100% native code cluster-enabled (can run in large server farms) platform-independent concept, i.e. JFX will support the same concept for applications written in JAVA.</p>
 <p>Instrumentation is a built-in function in the NFX library. It is a service of IApplication, so any application that runs inside of NFX application container has the luxury of being instrumented. It all comes down to the single method called &quot;Record&quot;:</p>
@@ -241,7 +241,8 @@ public interface ITelemetryReceiver
 <p>NFX instrumentation architecture is very simple and scalable in cluster environments. Aum Clusterware is built using NFX and aggregates real-time telemetry data from 1000s of live running cluster nodes.</p>
 <hr>
 <p>Dmitriy Khmaladze<br>November 30, 2013</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -276,9 +277,16 @@ public interface ITelemetryReceiver
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>  </body>
 </html>

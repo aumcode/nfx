@@ -8,7 +8,7 @@
     <title>Querying and CRUD </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Querying and CRUD ">
-    <meta name="generator" content="docfx 2.17.0.572">
+    <meta name="generator" content="docfx 2.12.1.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="querying-and-crud">Querying and CRUD</h1>
-
+              <h1 id="querying-and-crud">Querying and CRUD</h1>
+              
 <p><strong>NFX</strong> data access does not use LINQ on purpose. 
 This is because it is impossible to efficiently map LINQ to a possibly non-homogeneous data store that joins/takes data from different sources. 
 Instead, data access in <strong>NFX</strong> is based on virtual queries. Queries get resolved by CRUDDataStore into <code>ICRUDQueryHandler</code>.  </p>
@@ -83,7 +83,7 @@ var patients = MyApp.Data.LoadOneRowset(qryPatients);
 foreach(var patient in patients)
 {
   // patient is of type PatientRow
-} 
+}
 </code></pre><p>The &quot;GetPatientsByProvider&quot; name will get resolved into either of the two the ICRUDQueryHandler implementations:</p>
 <ul>
 <li>An embedded textual script <code>ICRUDScriptQueryHandler</code></li>
@@ -96,7 +96,8 @@ The difference would be in the file suffixes.</p>
 so in case some target does not support some function (i.e. MySQL does not support CONNECT BY), 
 we can implement this (just)for MySQL using a few query requests and C# code, while ORACLE implementation remains script-only. 
 This approach allows for an infinite flexibility.</p>
-</article>
+
+            </article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -131,9 +132,16 @@ This approach allows for an infinite flexibility.</p>
         </div>
       </footer>
     </div>
+    <script type="text/javascript">
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
+      ga('create', 'UA-98640025-1', 'auto');
+      ga('send', 'pageview');
+    </script>
     <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
-  </body>
+    <script type="text/javascript" src="../../styles/main.js"></script>  </body>
 </html>
