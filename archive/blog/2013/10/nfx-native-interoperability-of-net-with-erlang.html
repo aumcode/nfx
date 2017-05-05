@@ -8,7 +8,7 @@
     <title>NFX: Native Interoperability of .NET with Erlang </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="NFX: Native Interoperability of .NET with Erlang ">
-    <meta name="generator" content="docfx 2.12.1.0">
+    <meta name="generator" content="docfx 2.17.0.572">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -32,7 +32,7 @@
                 <span class="icon-bar"></span>
               </button>
               <a href="../../../../index.html">
-                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.png" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="nfx-native-interoperability-of-net-with-erlang">NFX: Native Interoperability of .NET with Erlang</h1>
-              
+<h1 id="nfx-native-interoperability-of-net-with-erlang">NFX: Native Interoperability of .NET with Erlang</h1>
+
 <p>One of the components included in the NFX library under NFX.Erlang namespace is a set of classes that represent Erlang language types and the connectivity transport that allows to start an Erlang distributed node in a running .NET process and perform demultiplexed communication with other Erlang nodes in the network. This includes ability to redirect I/O, perform RPC calls, etc.</p>
 <p>The component can be logically broken down into two parts:</p>
 <ul>
@@ -113,7 +113,7 @@ ErlList    l1 = &quot;[a, ~w, c]&quot;.To&lt;ErlList&gt;(1);
 </code></pre><h2 id="what-can-you-do-with-erlang-objects-terms">What can you do with Erlang objects (terms)?</h2>
 <p>The most useful thing you can do with Erlang types is pattern matching.</p>
 <p>The basic idea behind pattern matching is that you can overlay a pattern over an Erlang object, such that the pattern can extract values of sub-objects and bind them with variables.  In order to familiarize yourself with pattern matching, we&#39;ll introduce another .NET type, called <strong>ErlVarBind</strong>. It is actually a dictionary mapping variable names to ErlObject&#39;s.</p>
-<p>In order to illustrate the execution of the code snippets below, we can use the <a href="http://www.linqpad.net/" title="LINQPad">LINQPad</a> program. Once you install it, open it in the &quot;C# Statement(s)&quot; language mode, and add the reference to <strong>NFX.dll</strong> by right-clicking the query section, going to &quot;Query Properties&quot;, and adding <strong>NFX.dll</strong> to the list of &quot;Additional References&quot;, and &quot;NFX.Erlang&quot; to the tab of &quot;Additional Namespace Imports&quot;. After having done that, type the following code in the query window, and press &quot;F5&quot; to execute:</p>
+<p>In order to illustrate the execution of the code snippets below, we can use the <a href="http://www.linqpad.net/" target="_blank">LINQPad</a> program. Once you install it, open it in the &quot;C# Statement(s)&quot; language mode, and add the reference to <strong>NFX.dll</strong> by right-clicking the query section, going to &quot;Query Properties&quot;, and adding <strong>NFX.dll</strong> to the list of &quot;Additional References&quot;, and &quot;NFX.Erlang&quot; to the tab of &quot;Additional Namespace Imports&quot;. After having done that, type the following code in the query window, and press &quot;F5&quot; to execute:</p>
 <pre><code class="lang-cs">var V = new ErlVar(&quot;V&quot;);           // Create a variable named &quot;V&quot;
 var p = &quot;{ok, ~w}&quot;.ToErlObject(V); // V is stored as a variable that can be bound
 var t = &quot;{ok, 123}&quot;.ToErlObject(); // Erlang term to match
@@ -274,11 +274,10 @@ static void run()
 </code></pre><h2 id="conclusion">Conclusion</h2>
 <p>NFX implementation of Erlang terms and distributed transport provides a rich set of primitives needed to communicate with applications running Erlang nodes very efficiently with minimal memory with processing overhead.</p>
 <p>The implementation takes advantage of modern C# concepts that include Linq, Enumerators, and other paradigms that make writing distributed systems a very pleasant experience.</p>
-<p>NFX Erlang is a complete rewrite of its predecessor <a href="https://github.com/saleyn/otp.net">otp.net</a>. Current version eliminates all deficiencies of the former inherited from initial auto-conversion from corresponding Java code, contains a much cleaner and simpler conceptual model, and gives a .NET programmer a very powerful tool of exploring Erlang interoperability.</p>
+<p>NFX Erlang is a complete rewrite of its predecessor <a href="https://github.com/saleyn/otp.net" target="_blank">otp.net</a>. Current version eliminates all deficiencies of the former inherited from initial auto-conversion from corresponding Java code, contains a much cleaner and simpler conceptual model, and gives a .NET programmer a very powerful tool of exploring Erlang interoperability.</p>
 <hr>
 <p>Sergey Aleynikov<br>October 8, 2013</p>
-
-            </article>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -303,9 +302,9 @@ static void run()
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2006-2017 <strong>ITAdapter Corp Inc </strong>
-            <a href="http://itadapter.com/" target="_blank">
-              <img id="itadapter-logo-small" src="../../../../images/itadapter.Logo.png">
+            <span>Copyright © 2006-2017 
+            <a href="http://itadapter.com/" target="_blank" title="ITAdapter Corp Inc">
+              <img id="itadapter-logo-small" src="../../../../images/itadapter.Logo.png" alt="ITAdapter Corp Inc">
             </a>
             <br>
             Generated by <strong>DocFX</strong></span>

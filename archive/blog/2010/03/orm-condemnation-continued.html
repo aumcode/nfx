@@ -8,7 +8,7 @@
     <title>ORM Condemnation (....Continued) </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="ORM Condemnation (....Continued) ">
-    <meta name="generator" content="docfx 2.12.1.0">
+    <meta name="generator" content="docfx 2.17.0.572">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -32,7 +32,7 @@
                 <span class="icon-bar"></span>
               </button>
               <a href="../../../../index.html">
-                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.png" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="orm-condemnation-continued">ORM Condemnation (....Continued)</h1>
-              
+<h1 id="orm-condemnation-continued">ORM Condemnation (....Continued)</h1>
+
 <p>Did I tell you that I am not a fan of OR Mapping solutions at all?<br>Why?<br>Because of concept and code bloat and very little benefit (if any). I am teaching developers this way:</p>
 <p>Majority of business applications are comprised of 3 major parts:</p>
 <ol>
@@ -75,11 +75,10 @@
 </ol>
 <p>The fact of life is that &quot;Master Data&quot; tables (hundreds of them in big systems) are very dummy in the most cases, and any credible architect would build interfaces/CRUD logic in a template-based way. For those templates (base classes probably) SQLs are usually very simple, the row count is mostly &lt;1000 per table (not always), and really there is NO BUSINESS logic needed to be applied but map SQL columns to on-screen controls (be it Forms, Web or anything else). Making developer maintain a bloat of 100s of classes just to map A to A does not make much sense. What does make sense - build your general ancestor class smart enough to supply tons of metadata from your back-end automatically (such as max-length, required (not null), format etc...). I don&#39;t really need to map DB to object for that.</p>
 <p>Now about [b] item - OLTP screens or entry processes(be it GUI or ETL or...who knows). Those definitely need to go through good interface in terms of classes, but again, if you have ever built &quot;big&quot; software that contains 100s of data-entry screens - the pattern becomes trending - you are NOT dealing with simple SQLs - now when user hits  &quot;Save&quot; you probably touch 3-10 tables etc. I personally never user ORM for that but write classes by hand with plenty of XML comments and human methods that are centered around business , not around schema. Database schema is designed for normal-forms compliance (most of the times), not class/interface usability by developers. So, in a financial system, I would have &quot;Portfolio&quot; class and &quot;Save&quot; method, and maybe even &quot;IStorage&quot; provider that implements direct SQL backing store so portfolios could save ,or maybe middle-tier store. So SQL is not the sole solution now.<br>The hand-written code makes sense though, and there is no bloat. Using LINQ to SQL would not have helped really as &quot;Save&quot; method for portfolios touches 10s of tables due to business rules. And I don&#39;t really want to have database code in C#, maybe database orchestration code I do, I&#39;d rather use stored proc, or maybe some other middle tier process as an abstraction layer. So now I need to use ORM there, again, I need to write good well-though queries that don&#39;t put unneeded locks etc...<br>So what benefit does LINQ to SQL/Hibernate/EF or any other tool would give in my case?<br><strong>None.</strong></p>
-<p>Check out this link regarding Microsoft ORM technologies trending: <a href="http://www.infoq.com/news/2008/11/DLINQ-Future">Is LINQ to SQL Truly Dead?</a></p>
+<p>Check out this link regarding Microsoft ORM technologies trending: <a href="http://www.infoq.com/news/2008/11/DLINQ-Future" target="_blank">Is LINQ to SQL Truly Dead?</a></p>
 <hr>
 <p>Dmitriy Khmaladze<br>March 29, 2010</p>
-
-            </article>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -104,9 +103,9 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2006-2017 <strong>ITAdapter Corp Inc </strong>
-            <a href="http://itadapter.com/" target="_blank">
-              <img id="itadapter-logo-small" src="../../../../images/itadapter.Logo.png">
+            <span>Copyright © 2006-2017 
+            <a href="http://itadapter.com/" target="_blank" title="ITAdapter Corp Inc">
+              <img id="itadapter-logo-small" src="../../../../images/itadapter.Logo.png" alt="ITAdapter Corp Inc">
             </a>
             <br>
             Generated by <strong>DocFX</strong></span>

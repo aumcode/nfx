@@ -8,7 +8,7 @@
     <title>ORM Idiotizm </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="ORM Idiotizm ">
-    <meta name="generator" content="docfx 2.12.1.0">
+    <meta name="generator" content="docfx 2.17.0.572">
     
     <link rel="shortcut icon" href="../../../../images/favicon.ico">
     <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
@@ -32,7 +32,7 @@
                 <span class="icon-bar"></span>
               </button>
               <a href="../../../../index.html">
-                <img id="nfx-logo" src="../../../../images/NFX.Logo.Source.png" alt="">
+                <img id="nfx-logo" src="../../../../images/NFX.Logo.png" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -64,8 +64,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-              <h1 id="orm-idiotizm">ORM Idiotizm</h1>
-              
+<h1 id="orm-idiotizm">ORM Idiotizm</h1>
+
 <p>For the over 10 past years I have been a strong critic of ORM concept. I feel that majority of people just don&#39;t understand the root of the problem with ORM, don&#39;t understand what ORM is for, and even should it be there in the first place. I truly think that it should not, the whole concept of ORM is wrong and here is why. I&#39;ll be talking in very practical terms. </p>
 <p>What is ORM? ORM allows us to map relational entities (read &quot;tables&quot; with keys and references) into objects in your code. Sounds very cool. Let me ask you a &quot;stupid&quot; question -  <strong>why do you need to have those objects in your code to begin with?</strong> Huh? No, wait, don&#39;t close this page, keep on  reading... why? Ah... because you need to show the grid of customers then change selected customer and save it back to db.</p>
 <p> Ok, let&#39;s start from display grid(or any kind of list, such as a treeview), so grid is object-oriented piece of software that &quot;draws&quot; lines on screen (or HTML)  that mimics a table, also it draws little string values in those &quot;cells&quot;, so grid needs to get some data to draw. OK, but don&#39;t we have data in database? WE DO. Can we read this data? WE CAN. Can we read different column types? WE CAN. Can we know what columns are in there (in database/table). Yes, WE CAN. Can we build grid directly from database. WE CAN. Can we do this automatically relying on database meta-data (data about columns, sizes, requirement etc...)? WE CAN.</p>
@@ -77,11 +77,10 @@
 <p>Ok, now another part - working with &quot;BUSINESS&quot; objects. The truth is that in may cases you just don&#39;t need a business object because you are interfacing with table that has limited functionality, column and row count (think US_STATES table). For complex objects such as &quot;Patient Medical Record&quot; Hibernate and the like dont do you much good anyway, reason being - you need to have 100% control over SQL code/stored procedures being sent to database, and yes HQL is a language of Hibernate, but wait, why do I need it, I already know PL/SQL or t-SQL and know it well, and it has operators that Hibernate does not even dream about (think of compilation hints, things like grouping sets, CONNECT BY etc...).  So when I save &#39;Patient Medical Record&quot; I certainly use CRUD-like helpers but definitely not a monster like Hibernate or MS Entity framework.</p>
 <p>One last thought -  when you use LINQ that you all love so much, don&#39;t forget that LINQ knows nothing about your collections in terms of indexes.... binary searches... consequently it is all very slow linear search... some food for thought... LINQ to SQL? I&#39;d rather use SQL to C# (it&#39;s a joke).</p>
 <p>Let&#39;s use excavator to dig swimming pool and spoon to eat cake but not vice-versa.</p>
-<p>Read this link below, it will open you eyes!<br><a href="http://incubator.apache.org/empire-db/empiredb/hibernate.htm">What&#39;s wrong with Hibernate and JPA</a></p>
+<p>Read this link below, it will open you eyes!<br><a href="http://incubator.apache.org/empire-db/empiredb/hibernate.htm" target="_blank">What&#39;s wrong with Hibernate and JPA</a></p>
 <hr>
 <p>Dmitriy Khmaladze<br>January 27, 2010</p>
-
-            </article>
+</article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
@@ -106,9 +105,9 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2006-2017 <strong>ITAdapter Corp Inc </strong>
-            <a href="http://itadapter.com/" target="_blank">
-              <img id="itadapter-logo-small" src="../../../../images/itadapter.Logo.png">
+            <span>Copyright © 2006-2017 
+            <a href="http://itadapter.com/" target="_blank" title="ITAdapter Corp Inc">
+              <img id="itadapter-logo-small" src="../../../../images/itadapter.Logo.png" alt="ITAdapter Corp Inc">
             </a>
             <br>
             Generated by <strong>DocFX</strong></span>
