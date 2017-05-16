@@ -98,7 +98,8 @@
               <h6><strong>Assembly</strong>:NFX.MongoDB.dll</h6>
               <h5 id="NFX_DataAccess_MongoDB_Connector_CRUDWriteError_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public struct CRUDWriteError</code></pre>
+                <pre><code class="lang-csharp hljs">[Serializable]
+public struct CRUDWriteError</code></pre>
               </div>
               <h3 id="fields">Fields
               </h3>
@@ -157,7 +158,7 @@
               <h4 id="NFX_DataAccess_MongoDB_Connector_CRUDWriteError_Info" data-uid="NFX.DataAccess.MongoDB.Connector.CRUDWriteError.Info">Info</h4>
               <div class="markdown level1 summary"><p>Optional field, with a BSONObj format. This field contains structured information about an error that can be processed programmatically.
 For example, if a request returns with a shard version error, we may report the proper shard version as a sub-field here.
-For another example, if a write concern timeout occurred, the information previously reported on wtimeout would be reported here. 
+For another example, if a write concern timeout occurred, the information previously reported on wtimeout would be reported here.
 The format of this field depends on the code above</p>
 </div>
               <div class="markdown level1 conceptual"></div>

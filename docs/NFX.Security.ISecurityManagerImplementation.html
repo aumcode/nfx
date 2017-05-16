@@ -91,6 +91,12 @@
                   <a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_Authorize_NFX_Security_User_NFX_Security_Permission_">ISecurityManager.Authorize(User, Permission)</a>
                 </div>
                 <div>
+                  <a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_GetUserLogArchiveDimensions_NFX_Security_User_">ISecurityManager.GetUserLogArchiveDimensions(User)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_LogSecurityMessage_NFX_Log_Message_NFX_Security_User_">ISecurityManager.LogSecurityMessage(Message, User)</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.ApplicationModel.IApplicationComponent.html#NFX_ApplicationModel_IApplicationComponent_ComponentSID">IApplicationComponent.ComponentSID</a>
                 </div>
                 <div>
@@ -112,6 +118,60 @@
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">public interface ISecurityManagerImplementation : ISecurityManager, IApplicationComponent, IDisposable, IConfigurable</code></pre>
               </div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Security_ISecurityManagerImplementation_LogLevel_" data-uid="NFX.Security.ISecurityManagerImplementation.LogLevel*"></a>
+              <h4 id="NFX_Security_ISecurityManagerImplementation_LogLevel" data-uid="NFX.Security.ISecurityManagerImplementation.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"><p>Defines the level above which the messages are logged</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">MessageType LogLevel { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Security_ISecurityManagerImplementation_LogMask_" data-uid="NFX.Security.ISecurityManagerImplementation.LogMask*"></a>
+              <h4 id="NFX_Security_ISecurityManagerImplementation_LogMask" data-uid="NFX.Security.ISecurityManagerImplementation.LogMask">LogMask</h4>
+              <div class="markdown level1 summary"><p>Defines what events ehould be logged by the system</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">SecurityLogMask LogMask { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Security.SecurityLogMask.html">SecurityLogMask</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>

@@ -104,7 +104,7 @@
               <h5 id="NFX_Log_Message_syntax">Syntax</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class Message</code></pre>
+public sealed class Message : IArchiveLoggable</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -184,6 +184,59 @@ public sealed class Message</code></pre>
               </table>
               <h3 id="properties">Properties
               </h3>
+              
+              
+              <a id="NFX_Log_Message_ArchiveDimensions_" data-uid="NFX.Log.Message.ArchiveDimensions*"></a>
+              <h4 id="NFX_Log_Message_ArchiveDimensions" data-uid="NFX.Log.Message.ArchiveDimensions">ArchiveDimensions</h4>
+              <div class="markdown level1 summary"><p>Gets/Sets archive dimension content for later retrieval of messages by key, i.e. a user ID may be used.
+In most cases JSON or Laconic content is stored, the format depends on a concrete system</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string ArchiveDimensions { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Log_Message_Channel_" data-uid="NFX.Log.Message.Channel*"></a>
+              <h4 id="NFX_Log_Message_Channel" data-uid="NFX.Log.Message.Channel">Channel</h4>
+              <div class="markdown level1 summary"><p>Gets/Sets logical partition for messages. This property is usually used in Archive for splitting destinations</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Channel { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="NFX_Log_Message_Exception_" data-uid="NFX.Log.Message.Exception*"></a>
