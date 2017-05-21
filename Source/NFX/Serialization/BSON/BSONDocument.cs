@@ -218,6 +218,18 @@ namespace NFX.Serialization.BSON
     #endregion
 
     #region Pub Methods
+
+      /// <summary>
+      /// Tries to get an element by name and if found returns its object value, null otherwise
+      /// </summary>
+      public object TryGetObjectValueOf(string name)
+      {
+        var i = IndexOfName(name);
+        if (i<0) return null;
+        var elm = this[i];
+        return elm.ObjectValue;
+      }
+
       /// <summary>
       /// Returns index of named BSONElement or -1 if it does not exist
       /// </summary>

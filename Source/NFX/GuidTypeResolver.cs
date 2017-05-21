@@ -13,6 +13,12 @@ namespace NFX
   public interface IGuidTypeResolver
   {
     /// <summary>
+    /// Tries to resolves the GUID into type or return null
+    /// </summary>
+    Type TryResolve(Guid guid);
+
+
+    /// <summary>
     /// Resolves the GUID into type or throws
     /// </summary>
     Type Resolve(Guid guid);
@@ -27,8 +33,7 @@ namespace NFX
     /// Returns TypeGuidAttribute for a type encapsulated in guid.
     /// If type is not decorated by the attribute then exception is thrown
     /// </summary>
-    public static A GetGuidTypeAttribute<T, A>(Guid guid, IGuidTypeResolver resolver)
-      where A : GuidTypeAttribute
+    public static A GetGuidTypeAttribute<T, A>(Guid guid, IGuidTypeResolver resolver) where A : GuidTypeAttribute
     {
       if (resolver == null)
         throw new NFXException(StringConsts.ARGUMENT_ERROR + typeof(A).FullName + ".GetGuidTypeAttribute(resolver==null)");
@@ -41,22 +46,20 @@ namespace NFX
     /// Returns TypeGuidAttribute for a type.
     /// If type is not decorated by the attribute then exception is thrown
     /// </summary>
-    public static A GetGuidTypeAttribute<T, A>(Type type)
-      where A : GuidTypeAttribute
+    public static A GetGuidTypeAttribute<T, A>(Type type) where A : GuidTypeAttribute
     {
       if (type == null || !typeof(T).IsAssignableFrom(type))
         throw new NFXException(StringConsts.ARGUMENT_ERROR + typeof(A).FullName + ".GetGuidTypeAttribute(todo=null|!" + typeof(T).FullName + ")");
 
       var result = getGuidTypeAttributeCore<A>(type);
       if (result == null)
-        throw new NFXException(StringConsts.GUID_TYPE_RESOLVER_MISSING_ATTRIBUTE_ERROR.Args(typeof(T).FullName, typeof(A).FullName));
+        throw new NFXException(StringConsts.GUID_TYPE_RESOLVER_MISSING_ATTRIBUTE_ERROR.Args(type.FullName, typeof(A).FullName));
 
       return result;
     }
 
     private static Dictionary<Type, GuidTypeAttribute> s_Cache = new Dictionary<Type, GuidTypeAttribute>();
-    private static A getGuidTypeAttributeCore<A>(Type type)
-      where A : GuidTypeAttribute
+    private static A getGuidTypeAttributeCore<A>(Type type) where A : GuidTypeAttribute
     {
       GuidTypeAttribute result;
       if (!s_Cache.TryGetValue(type, out result))
@@ -89,15 +92,39 @@ namespace NFX
   /// Provides default type resolver implementation which looks for types in listed assemblies
   /// looking for types decorated with specified attribute
   /// </summary>
-  public sealed class GuidTypeResolver<T, A> : IGuidTypeResolver
-    where A : GuidTypeAttribute
+  public class GuidTypeResolver<T, A> : IGuidTypeResolver where T: class where A : GuidTypeAttribute
   {
     public const string CONFIG_ASSEMBLY_SECTION = "assembly";
     public const string CONFIG_NS_ATTR = "ns";
 
+
+    public GuidTypeResolver(params Type[] types)
+    {
+       if (types==null || types.Length==0) throw new NFXException(StringConsts.ARGUMENT_ERROR + "GuidTypeResolver.ctor(types==null|Empty)");
+
+       var mappings = types.ToDictionary( t => GuidTypeAttribute.GetGuidTypeAttribute<T, A>(t).TypeGuid, t => t );
+       ctor(mappings);
+    }
+
+    public GuidTypeResolver(IDictionary<Guid, Type> mappings)
+    {
+      if (mappings==null || !mappings.Any()) throw new NFXException(StringConsts.ARGUMENT_ERROR + "GuidTypeResolver.ctor(mappings==null|Empty)");
+      ctor(mappings);
+    }
+
+    private void ctor(IDictionary<Guid, Type> mappings)
+    {
+      if (mappings.Count != mappings.Distinct().Count())
+        throw new NFXException(StringConsts.ARGUMENT_ERROR + "GuidTypeResolver.ctor(mappings has duplicates)");
+
+      m_Cache = new Dictionary<Guid,Type>(mappings);
+    }
+
     public GuidTypeResolver(IConfigSectionNode conf)
     {
-      if (conf == null || !conf.Exists) throw new NFXException(StringConsts.ARGUMENT_ERROR + "GuidTypeResolver.ctor(conf==null|!Exists)");
+      m_Cache = new Dictionary<Guid, Type>();
+
+      if (conf == null || !conf.Exists) return;
 
       foreach (var nasm in conf.Children.Where(n => n.IsSameName(CONFIG_ASSEMBLY_SECTION)))
       {
@@ -130,7 +157,18 @@ namespace NFX
         });
     }
 
-    private Dictionary<Guid, Type> m_Cache = new Dictionary<Guid, Type>();
+    private Dictionary<Guid, Type> m_Cache;
+
+
+    /// <summary>
+    /// Resolves the GUID into type object or return null
+    /// </summary>
+    public Type TryResolve(Guid guid)
+    {
+      Type result;
+      if (m_Cache.TryGetValue(guid, out result)) return result;
+      return null;
+    }
 
     /// <summary>
     /// Resolves the GUID into type object or throws

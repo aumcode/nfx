@@ -119,6 +119,7 @@
     <Compile Include="Serialization\ARowAllTypes.cs" />
     <Compile Include="Serialization\ARowAmorphous.cs" />
     <Compile Include="Serialization\ARowBenchmarkingParallel.cs" />
+    <Compile Include="Serialization\BSONDirectSerialization.cs" />
     <Compile Include="Serialization\CSVWriterTest.cs" />
     <Compile Include="DataAccess\SchemaAndRowsetJSONSerializationTests.cs" />
     <Compile Include="Serialization\CSVParserTest.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Wave\URIPatternTests.cs" />
     <Compile Include="Web\Client\RecordTest.cs" />
     <Compile Include="Web\EscapeJSLiteralTest.cs" />
+    <Compile Include="Web\Messaging\MessageAddressBuilderTest.cs" />
     <Compile Include="Web\MultiPart\MultipartTest.cs" />
     <Compile Include="Web\PortalHubTests.cs" />
     <Compile Include="Web\MultiPart\MultiPartContentTest.cs" />

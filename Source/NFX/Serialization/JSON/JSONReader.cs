@@ -120,6 +120,7 @@ namespace NFX.Serialization.JSON
             /// <param name="type">TypedRow subtype to convert into</param>
             /// <param name="jsonMap">JSON data to convert into row</param>
             /// <param name="fromUI">When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</param>
+            /// <param name="nameBinding">Used for backend name matching or null (any target)</param>
             public static TypedRow ToRow(Type type, JSONDataMap jsonMap, bool fromUI = true, NameBinding? nameBinding = null)
             {
               if (!typeof(TypedRow).IsAssignableFrom(type) || jsonMap==null)
@@ -154,7 +155,7 @@ namespace NFX.Serialization.JSON
             /// <param name="row">Row instance to convert into</param>
             /// <param name="jsonMap">JSON data to convert into row</param>
             /// <param name="fromUI">When true indicates that data came from UI, hence NonUI-marked fields should be skipped. True by default</param>
-            /// <param name="targetName">targetName used for backend name matching or null (any target)</param>
+            /// <param name="nameBinding">Used for backend name matching or null (any target)</param>
             public static void ToRow(Row row, JSONDataMap jsonMap, bool fromUI = true, NameBinding? nameBinding = null)
             {
               if (row == null || jsonMap == null)

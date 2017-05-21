@@ -14,6 +14,7 @@
               [/r | /recurse]
               [/c | /compiler  fully_qualified_type_name]
               [/src]
+              [/dest]
               [/ext file_extension]
               [/replace file_segment]
 
@@ -42,6 +43,7 @@
   When omitted, default language extension will be appended to source file name
  <f color=darkCyan>/replace<f color=gray> - replaces the specified file segment
  <f color=darkCyan>/src<f color=gray> - writes compiled source files to disk
+ <f color=darkCyan>/dest<f color=gray> - specifies destination folder for compiled source files
 
 
 <f color=magenta>

@@ -195,6 +195,11 @@ namespace NFX.Wave
     {
       if (info == null)
         throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
+      info.AddValue(FILTER_TYPE_FLD_NAME, FilterType);
+      info.AddValue(FILTER_NAME_FLD_NAME, FilterName);
+      info.AddValue(FILTER_ORDER_FLD_NAME, FilterOrder);
+      info.AddValue(HANDLER_TYPE_FLD_NAME, HandlerType);
+      info.AddValue(HANDLER_NAME_FLD_NAME, HandlerName);
       base.GetObjectData(info, context);
     }
   }

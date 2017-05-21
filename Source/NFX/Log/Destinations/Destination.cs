@@ -125,11 +125,11 @@ namespace NFX.Log.Destinations
         private TimeSpan? m_StartTime;
         private TimeSpan? m_EndTime;
 
-
         private bool m_GenerateFailoverMessages;
         private bool m_OnlyFailures;
         private string m_Failover;
         private bool m_TestOnStart;
+        private string m_Channel;
 
         private int? m_MaxProcessingTimeMs;
         private float m_AverageProcessingTimeMs;
@@ -372,6 +372,14 @@ namespace NFX.Log.Destinations
           }
         }
 
+        [Config]
+        [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG)]
+        public string Channel
+        {
+          get { return m_Channel ?? string.Empty; }
+          set { m_Channel = value; }
+        }
+
         /// <summary>
         /// Returns average time it takes destination implementation to write the log message to actual sink.
         /// This property is only computed when MaxProcessingTimeMs limit is imposed, otherwise it returns 0f
@@ -475,6 +483,8 @@ namespace NFX.Log.Destinations
 
           try
           {
+            if (!Channel.EqualsOrdIgnoreCase(msg.Channel))
+              return;
 
             if (!satisfyFilter(msg)) return;
 

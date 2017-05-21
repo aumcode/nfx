@@ -59,7 +59,7 @@ namespace NFX.Serialization.JSON
     {
         /// <summary>
         /// Reads entitie's data/state from low-level IJSONDataObject which is supplied right by JSONParser.
-        /// An implementer may elect to throw various types of esceptions to signal such conditions as:
+        /// An implementer may elect to throw various types of exceptions to signal such conditions as:
         ///  unknown key map, or too many fields not supplied etc.
         /// </summary>
         /// <param name="data">JSONParser-supplied object</param>

@@ -90,6 +90,7 @@ namespace NFX.Web.Messaging
     #endregion
 
     #region Protected
+
     protected override void DoConfigure(IConfigSectionNode node)
     {
       ConfigAttribute.Apply(this, node);
@@ -99,17 +100,12 @@ namespace NFX.Web.Messaging
     /// MessageSink DoSendMsg implementation
     /// </summary>
     /// <param name="msg">Message</param>
-    protected override void DoSendMsg(Message msg)
+    protected override bool DoSendMsg(Message msg)
     {
-      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return;
+      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return false;
 
-      var request = new WebClient.RequestParams(this)
-      {
-        Method = HTTPRequestMethod.POST,
-        BodyParameters = new Dictionary<string, string>(),
-        UserName = "api",
-        Password = AuthorizationKey
-      };
+      var addressees =
+        msg.MessageAddress.All.Where(a => SupportedChannelNames.Any(n => n.EqualsOrdIgnoreCase(a.ChannelName)));
 
       var fa = msg.FROMAddress;
       var fn = msg.FROMName;
@@ -119,32 +115,57 @@ namespace NFX.Web.Messaging
 
       var fromAddress = "{0} <{1}>".Args(fn, fa);
 
-      addParameter(request.BodyParameters, MAIL_PARAM_FROM, fromAddress);
-      addParameter(request.BodyParameters, MAIL_PARAM_TO, "{0} <{1}>".Args(msg.TOName, msg.TOAddress));
-      if (msg.CC.IsNotNullOrWhiteSpace())
-        addParameter(request.BodyParameters, MAIL_PARAM_CC, msg.CC);
-      if (msg.BCC.IsNotNullOrWhiteSpace())
-        addParameter(request.BodyParameters, MAIL_PARAM_BCC, msg.BCC);
-      if (msg.Subject.IsNotNullOrWhiteSpace())
-        addParameter(request.BodyParameters, MAIL_PARAM_SUBJECT, msg.Subject);
-      if (msg.Body.IsNotNullOrWhiteSpace())
-        addParameter(request.BodyParameters, MAIL_PARAM_TEXT, msg.Body);
-      if (msg.HTMLBody.IsNotNullOrWhiteSpace())
-        addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.HTMLBody);
-
-      if (msg.Attachments != null)
+      var sent = false;
+      foreach (var addressee in addressees)
       {
-        foreach (var attachment in msg.Attachments.Where(a => a.Content != null))
+        var request = new WebClient.RequestParams(this)
         {
-          //TODO
+          Method = HTTPRequestMethod.POST,
+          BodyParameters = new Dictionary<string, string>(),
+          UserName = "api",
+          Password = AuthorizationKey
+        };
+
+        addParameter(request.BodyParameters, MAIL_PARAM_FROM, fromAddress);
+        addParameter(request.BodyParameters, MAIL_PARAM_TO,
+                     "{0} <{1}>".Args(addressee.Name, addressee.ChannelAddress));
+        if (msg.CC.IsNotNullOrWhiteSpace())
+          addParameter(request.BodyParameters, MAIL_PARAM_CC, msg.CC);
+        if (msg.BCC.IsNotNullOrWhiteSpace())
+          addParameter(request.BodyParameters, MAIL_PARAM_BCC, msg.BCC);
+        if (msg.Subject.IsNotNullOrWhiteSpace())
+          addParameter(request.BodyParameters, MAIL_PARAM_SUBJECT, msg.Subject);
+        if (msg.Body.IsNotNullOrWhiteSpace())
+          addParameter(request.BodyParameters, MAIL_PARAM_TEXT, msg.Body);
+        if (msg.HTMLBody.IsNotNullOrWhiteSpace())
+          addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.HTMLBody);
+
+        if (msg.Attachments != null)
+        {
+          foreach (var attachment in msg.Attachments.Where(a => a.Content != null))
+          {
+            //TODO
+          }
+        }
+
+        try
+        {
+          if (TestMode)
+            request.BodyParameters.Add(API_PARAM_TESTMODE, "yes");
+
+          WebClient.GetString(ServiceUrl, request);
+          sent = true;
+        }
+        catch (Exception error)
+        {
+          var et = error.ToMessageWithType();
+          Log(MessageType.Error, "{0}.DoSendMsg(msg): {1}".Args(this.GetType().FullName, et), et);
         }
       }
 
-      if (TestMode)
-        request.BodyParameters.Add(API_PARAM_TESTMODE, "yes");
-
-      WebClient.GetString(ServiceUrl, request);
+      return sent;
     }
+
     #endregion
 
     #region IWebClientCaller
@@ -161,6 +182,14 @@ namespace NFX.Web.Messaging
 
     [Config(Default = false)]
     public bool Pipelined { get; set; }
+
+    public override MsgChannels SupportedChannels
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+    }
     #endregion
 
     #region .pvt. impl.

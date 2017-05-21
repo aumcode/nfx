@@ -5,7 +5,6 @@
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="../../stl/select.test.css">
   <script src="../jquery-2.1.4.js"></script>
   <script src="../wv.js"></script>
   <script src="../wv.gui.js"></script>
@@ -155,5 +154,140 @@
     var justChoices = new WAVE.GUI.Choice({data:states, DIV:WAVE.id("divChoice")});
 
   </script>
+  <style>
+    * {
+      box-sizing: border-box;
+      line-height: 1.5;
+    }
+
+    body {
+      background-color: #fef8ff;
+      font-size: 16px;
+      padding: 20px 20px 40px;
+    }
+
+    .tests {
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    .wvSelectContainer {
+      width: 300px;
+    }
+
+    .wvSelectDropdown {
+      background-color: #fff;
+      border: 1px solid #404040;
+      max-height: 250px;
+      overflow: auto;
+      margin-bottom: 20px;
+      position: absolute;
+      width: 300px;
+    }
+
+      .wvSelectDropdown.wvHidden {
+        display: none;
+      }
+
+    .wvSelectCombobox {
+      background-color: #999;
+      min-height: calc(1.5 * 16px + 4px);
+      padding: 2px;
+      position: relative;
+    }
+
+    .wvSelectContainer.wvSingle .wvSelectDisplay {
+      padding-right: calc(1.5 * 16px + 2px);
+    }
+
+    .wvSelectContainer.wvSingle .wvSelectArrow {
+      background-color: #0094ff;
+      height: calc(1.5 * 16px);
+      right: 2px;
+      position: absolute;
+      top: 2px;
+      width: calc(1.5 * 16px);
+    }
+
+    .wvSelectContainer.wvMulti .wvSelectArrow {
+      display: none;
+    }
+
+    .wvChoice {
+      cursor: pointer;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+
+
+      .wvChoice.wvSelected {
+        background-color: #efefef;
+        cursor: default;
+      }
+
+      .wvChoice:hover {
+        background-color: #ccc;
+      }
+    /*.wvChoiceParent + .wvChoiceParent {
+  padding-left: 25px;
+}*/
+    .wvChoiceLabel {
+      background-color: #404040;
+      color: #f0f0f0;
+      padding: 3px 6px;
+    }
+
+    .wvChoiceParentLabeled {
+      padding: 0;
+    }
+
+    .wvChoiceValueBox {
+      background-color: #f0f0f0;
+      padding-left: 3px;
+      padding-right: calc(1.5 * 16px);
+      position: relative;
+    }
+
+      .wvChoiceValueBox > div {
+        padding-right: 10px;
+      }
+
+      .wvChoiceValueBox .wvChoiseUnselect {
+        background-color: salmon;
+        cursor: pointer;
+        height: calc(1.5 * 16px - 4px);
+        right: 2px;
+        position: absolute;
+        top: 2px;
+        width: calc(1.5 * 16px - 4px);
+      }
+
+    .wvSelectContainer.wvMulti .wvChoiceValueBox {
+      margin: 1.5px;
+    }
+
+    .wvSelectContainer.wvMulti .wvSelectDisplay {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .wvSelectAutocomplete {
+      border: none;
+      height: 25px;
+      padding: 0 2px;
+      width: 100%;
+    }
+
+    .wvSelectContainer.wvMulti .wvSelectDisplay .wvChoiceValueBox,
+    .wvSelectContainer.wvMulti .wvSelectDisplay .wvSelectAutocomplete {
+    }
+
+    #divChoice {
+      border: 1px solid #404040;
+      height: 300px;
+      overflow: auto;
+    }
+  </style>
 </body>
 </html>

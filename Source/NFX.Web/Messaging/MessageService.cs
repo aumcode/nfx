@@ -42,12 +42,13 @@ namespace NFX.Web.Messaging
     #region CONSTS
 
     public const string CONFIG_MESSAGING_SECTION = "messaging";
-    public const string CONFIG_MAILER_SECTION = "mailer";
     public const string CONFIG_SINK_SECTION = "sink";
     public const string CONFIG_FALLBACK_SINK_SECTION = "fallback-sink";
 
     private const string THREAD_NAME = "MailerService Thread";
     private const int INSTRUMENTATION_GRANULARITY_MS = 10000;
+    private const MessageType DEFAULT_LOG_LEVEL = MessageType.Warning;
+    private const string LOG_TOPIC = "Messaging.MessageService";
     #endregion
 
     #region .ctor and static/lifecycle
@@ -68,7 +69,7 @@ namespace NFX.Web.Messaging
           instance = s_Instance;
           if (instance != null) return instance;
 
-          instance = FactoryUtils.MakeAndConfigure<IMessengerImplementation>(App.ConfigRoot[CONFIG_MESSAGING_SECTION][CONFIG_MAILER_SECTION], typeof(MessageService));
+          instance = FactoryUtils.MakeAndConfigure<IMessengerImplementation>(App.ConfigRoot[CONFIG_MESSAGING_SECTION], typeof(MessageService));
           instance.Start();
           App.Instance.RegisterAppFinishNotifiable(instance);
           s_Instance = instance;
@@ -112,6 +113,10 @@ namespace NFX.Web.Messaging
 
     #region Properties
 
+    [Config(Default = DEFAULT_LOG_LEVEL)]
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_MESSAGING)]
+    public MessageType LogLevel { get; set; }
+
     /// <summary>
     /// Gets/sets sink that performs sending
     /// </summary>
@@ -123,7 +128,7 @@ namespace NFX.Web.Messaging
         CheckServiceInactive();
 
         if (value != null && value.ComponentDirector != this)
-          throw new WebException(StringConsts.MAILER_SINK_IS_NOT_OWNED_ERROR);
+          throw new WebException(StringConsts.MESSAGE_SINK_IS_NOT_OWNED_ERROR);
         m_Sink = value as MessageSink;
       }
     }
@@ -136,7 +141,7 @@ namespace NFX.Web.Messaging
         CheckServiceInactive();
 
         if (value != null && value.ComponentDirector != this)
-          throw new WebException(StringConsts.MAILER_SINK_IS_NOT_OWNED_ERROR);
+          throw new WebException(StringConsts.MESSAGE_SINK_IS_NOT_OWNED_ERROR);
         m_FallbackSink = value as MessageSink;
       }
     }
@@ -300,18 +305,29 @@ namespace NFX.Web.Messaging
     #endregion
 
     #region .pvt. impl.
-    private void log(MessageType type, string message, string parameters)
+    private Guid log(MessageType type,
+                     string from,
+                     string message,
+                     Exception error = null,
+                     Guid? relatedMessageID = null,
+                     string parameters = null)
     {
-      App.Log.Write(
-              new Log.Message
-              {
-                Text = message ?? string.Empty,
-                Type = type,
-                From = this.Name,
-                Topic = StringConsts.MAILER_LOG_TOPIC,
-                Parameters = parameters ?? string.Empty
-              }
-            );
+      if (type < LogLevel) return Guid.Empty;
+
+      var logMessage = new Log.Message
+      {
+        Topic = LOG_TOPIC,
+        Text = message ?? string.Empty,
+        Type = type,
+        From = "{0}.{1}".Args(this.GetType().Name, from),
+        Exception = error,
+        Parameters = parameters
+      };
+      if (relatedMessageID.HasValue) logMessage.RelatedTo = relatedMessageID.Value;
+
+      App.Log.Write(logMessage);
+
+      return logMessage.Guid;
     }
 
     private void threadSpin()
@@ -368,19 +384,20 @@ namespace NFX.Web.Messaging
           break;
         }
 
+        var sent = false;
         try
         {
           statSend();
-          m_Sink.SendMsg(msg);
+          sent = m_Sink.SendMsg(msg);
         }
         catch (Exception error)
         {
           statSendError();
           var et = error.ToMessageWithType();
           log(MessageType.Error, "{0}.Write(msg) leaked {1}".Args(m_Sink.GetType().FullName, et), et);
-
-          writeFallback(msg);
         }
+
+        if (!sent) writeFallback(msg);
 
         processed++;
       }

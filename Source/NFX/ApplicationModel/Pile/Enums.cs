@@ -41,9 +41,9 @@ namespace NFX.ApplicationModel.Pile
     Distributed,
 
     /// <summary>
-    /// The pile is distributed - it runs across many machines using Aum Cluster
+    /// The pile is distributed - it runs across many machines using server cluster
     /// </summary>
-    AumCluster
+    Cluster
   }
 
   /// <summary>

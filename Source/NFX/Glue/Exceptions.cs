@@ -82,7 +82,7 @@ namespace NFX.Glue
   /// Thrown by the Glue framework when client message inspector fails with exception
   /// </summary>
   [Serializable]
-  public class ClientMsgInspectionException : GlueException, IWrappedDataSource
+  public class ClientMsgInspectionException : GlueException, IWrappedExceptionDataSource
   {
     public ClientMsgInspectionException(IClientMsgInspector inspector, Exception error)
       : base(StringConsts.GLUE_CLIENT_INSPECTORS_THREW_ERROR + error.Message, error) { m_Inspector = inspector; }
@@ -98,8 +98,7 @@ namespace NFX.Glue
 
     public string GetWrappedData()
     {
-#warning TODO
-      throw new NotImplementedException();
+      return "{0}(Name = {1})".Args(m_Inspector.GetType().Name, m_Inspector.Name);
     }
   }
 

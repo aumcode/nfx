@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.Log;
 using NFX.Environment;
 using NFX.ApplicationModel;
 
@@ -93,6 +94,43 @@ namespace NFX.Security
        /// <param name="permission">An instance of permission to get</param>
        /// <returns>AccessLevel granted to specified permission</returns>
        AccessLevel Authorize(User user, Permission permission);
+
+
+       /// <summary>
+       /// Extracts values for archive dimensions to store the log message for the specified user.
+       /// The method only fills the fields specific to user identity
+       /// </summary>
+       IConfigSectionNode GetUserLogArchiveDimensions(User user);
+
+       /// <summary>
+       /// Logs security-related message
+       /// </summary>
+       /// <param name="msg">A message to log</param>
+       /// <param name="user">If msg.ArchiveDim is not set, sets to  GetUserLogArchiveDimensions(user | currentCallContext)</param>
+       void LogSecurityMessage(Message msg, User user = null);
+    }
+
+    /// <summary>
+    /// Defines what events should be logged by the system
+    /// </summary>
+    [Flags]
+    public enum SecurityLogMask
+    {
+      Off = 0,
+
+      Custom               = 1 << 0,
+      AuthenticationsOK    = 1 << 1,
+      AuthenticationsError = 1 << 2,
+
+      AuthorizationsOK     = 1 << 3,
+      AuthorizationsError  = 1 << 4,
+
+      GateErrors           = 1 << 5,
+      Login                = 1 << 6,
+      Logout               = 1 << 7,
+      LoginChange          = 1 << 8,
+
+      All = -1
     }
 
 
@@ -101,6 +139,14 @@ namespace NFX.Security
     /// </summary>
     public interface ISecurityManagerImplementation : ISecurityManager, IDisposable, IConfigurable
     {
+      /// <summary>
+      /// Defines what events ehould be logged by the system
+      /// </summary>
+      SecurityLogMask LogMask{ get; set;}
 
+      /// <summary>
+      /// Defines the level above which the messages are logged
+      /// </summary>
+      MessageType LogLevel{ get; set;}
     }
 }

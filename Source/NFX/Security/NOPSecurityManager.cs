@@ -57,5 +57,19 @@ namespace NFX.Security
     public void Authenticate(User user) {}
 
     public AccessLevel Authorize(User user, Permission permission) { return new AccessLevel(user, permission, Rights.None.Root); }
+
+    public SecurityLogMask LogMask{ get; set;}
+    public Log.MessageType LogLevel { get; set;}
+
+
+    public Environment.IConfigSectionNode GetUserLogArchiveDimensions(User user)
+    {
+      return null;
+    }
+
+    public void LogSecurityMessage(Log.Message msg, User user = null)
+    {
+
+    }
   }
 }

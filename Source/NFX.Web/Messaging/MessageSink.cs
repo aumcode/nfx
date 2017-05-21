@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using NFX.Log;
 using NFX.Environment;
 using NFX.ServiceModel;
 
@@ -38,26 +38,81 @@ namespace NFX.Web.Messaging
   /// </summary>
   public abstract class MessageSink : Service<MessageService>, IMessageSink, IConfigurable
   {
-      protected MessageSink(MessageService director) : base(director)
+    private const string LOG_TOPIC = "Messaging.MessageSink";
+
+    protected MessageSink(MessageService director) : base(director)
+    {
+      m_ErrorHandlingMode = SendMessageErrorHandling.Throw;
+    }
+
+    private SendMessageErrorHandling m_ErrorHandlingMode;
+
+    #region Properties
+
+    public abstract MsgChannels SupportedChannels { get; }
+
+    public virtual IEnumerable<string> SupportedChannelNames { get { return new string[] { Name }; } }
+
+    public SendMessageErrorHandling ErrorHandlingMode
+    {
+      get { return m_ErrorHandlingMode; }
+      set { m_ErrorHandlingMode = value; }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Performs actual sending of msg. This method does not have to be thread-safe as it is called by a single thread
+    /// </summary>
+    public bool SendMsg(Message msg)
+    {
+      if (msg == null) throw new WebException(StringConsts.ARGUMENT_ERROR + "MessageSink.SendMsg(msg==null)");
+
+      if (!Running) return false;
+      if (!Filter(msg)) return false;
+
+      var sent = DoSendMsg(msg);
+      if (!sent && ErrorHandlingMode == SendMessageErrorHandling.Throw)
+        throw new WebException(StringConsts.SENDING_MESSAGE_IS_NOT_SUCCEDED);
+      return sent;
+    }
+
+    #region Protected
+
+      protected virtual bool Filter(Message msg)
       {
-
+        return msg.MessageAddress.MatchNamedChannel(this.SupportedChannelNames);
       }
-
 
       /// <summary>
       /// Performs actual sending of msg. This method does not have to be thread-safe as it is called by a single thread
       /// </summary>
-      public void SendMsg(Message msg)
+      protected abstract bool DoSendMsg(Message msg);
+
+      protected Guid Log(MessageType type,
+                         string from,
+                         string message,
+                         Exception error = null,
+                         Guid? relatedMessageID = null,
+                         string parameters = null)
       {
-        if (!Running) return;
-        DoSendMsg(msg);
+        if (type < ComponentDirector.LogLevel) return Guid.Empty;
+
+        var logMessage = new Log.Message
+        {
+          Topic = LOG_TOPIC,
+          Text = message ?? string.Empty,
+          Type = type,
+          From = "{0}.{1}".Args(this.GetType().Name, from),
+          Exception = error,
+          Parameters = parameters
+        };
+        if (relatedMessageID.HasValue) logMessage.RelatedTo = relatedMessageID.Value;
+
+        App.Log.Write(logMessage);
+
+        return logMessage.Guid;
       }
-
-      /// <summary>
-      /// Performs actual sending of msg. This method does not have to be thread-safe as it is called by a single thread
-      /// </summary>
-      protected abstract void DoSendMsg(Message msg);
-
+    #endregion
   }
-
 }

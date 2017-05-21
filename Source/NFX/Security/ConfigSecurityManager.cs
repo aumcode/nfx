@@ -83,9 +83,43 @@ namespace NFX.Security
 
       public IPasswordManager PasswordManager { get { return m_PasswordManager; } }
 
+      [Config(Default = SecurityLogMask.Custom)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG, CoreConsts.EXT_PARAM_GROUP_SECURITY)]
+      public SecurityLogMask LogMask { get; set;}
+
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_LOG, CoreConsts.EXT_PARAM_GROUP_SECURITY)]
+      public Log.MessageType LogLevel { get; set;}
+
+
     #endregion
 
     #region Public
+
+      public IConfigSectionNode GetUserLogArchiveDimensions(User user)
+      {
+        if (user==null) return null;
+        if (user.Status==UserStatus.Invalid) return null;
+        var cfg = new MemoryConfiguration();
+        cfg.Create("ad");
+        cfg.Root.AddAttributeNode("un", user.Name);
+        return cfg.Root;
+      }
+
+      public void LogSecurityMessage(Log.Message msg, User user = null)
+      {
+        if ((LogMask & SecurityLogMask.Custom) == 0) return;
+        if (msg==null) return;
+        if (msg.ArchiveDimensions.IsNullOrWhiteSpace())
+        {
+          if (user==null)
+            user = ExecutionContext.Session.User;
+
+          msg.ArchiveDimensions = GetUserLogArchiveDimensions(user).ToLaconicString();
+        }
+
+        logSecurityMessage(msg);
+      }
+
       public User Authenticate(Credentials credentials)
       {
         var sect = m_Config ?? App.ConfigRoot[CommonApplicationLogic.CONFIG_SECURITY_SECTION];
@@ -211,6 +245,18 @@ namespace NFX.Security
 
         return new IDPasswordCredentials(seg[0], seg[1]);
       }
+
+
+      private void logSecurityMessage(Log.Message msg)
+      {
+        msg.From = "{0}.{1}".Args(GetType().Name, msg.From);
+        App.Log.Write(msg);
+      }
+
     #endregion
+
+
+
+
   }
 }

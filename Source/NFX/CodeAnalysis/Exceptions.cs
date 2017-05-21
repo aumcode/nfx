@@ -35,7 +35,7 @@ namespace NFX.CodeAnalysis
   /// Thrown by code processors such as lexers, parsers ,  symantic analyzers, compilers etc...
   /// </summary>
   [Serializable]
-  public class CodeProcessorException : CodeAnalysisException, IWrappedDataSource
+  public class CodeProcessorException : CodeAnalysisException, IWrappedExceptionDataSource
   {
     public CodeProcessorException(ICodeProcessor codeProcessor) { CodeProcessor = codeProcessor; }
     public CodeProcessorException(ICodeProcessor codeProcessor, string message) : base(message) { CodeProcessor = codeProcessor; }
@@ -46,8 +46,9 @@ namespace NFX.CodeAnalysis
 
     public string GetWrappedData()
     {
-#warning TODO
-      throw new NotImplementedException();
+      return "{0}({1}{2}){3}".Args(CodeProcessor.GetType().Name, CodeProcessor.Language,
+        CodeProcessor.Context != null ? ", context=" + CodeProcessor.Context.GetType().Name : string.Empty,
+        CodeProcessor.Messages != null ? ": " + CodeProcessor.Messages.ToString() : string.Empty);
     }
   }
 

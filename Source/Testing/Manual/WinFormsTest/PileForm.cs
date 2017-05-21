@@ -63,7 +63,7 @@ namespace WinFormsTest
             LastName = "Buxarinovich-"+_id.ToString("00000"),
             DOB = _id%7==0 ? (DateTime?)null : DateTime.UtcNow,
             Balance = 2131m,
-           // Data = new object[]{1,2,3}
+           // Data = new float[]{12.388f, -32.9090f, 2343434.893f}
           };
         }
 
@@ -73,7 +73,7 @@ namespace WinFormsTest
         [Field]public string LastName { get; set;}       //16 hdr + 4 + (18*2) = 56
         [Field]public DateTime? DOB { get; set;}         //10
         [Field]public decimal Balance { get; set;}       //8
-        [Field]public object[] Data { get; set;}         //8
+        [Field]public float[] Data { get; set;}          //8
 
         [Field]public byte[] BinData { get; set;}        //8
                                                          //-------------
@@ -99,7 +99,7 @@ namespace WinFormsTest
             LastName = "Lokomaz-"+_id.ToString(),
             DOB = _id%7==0 ? (DateTime?)null : DateTime.UtcNow,
             Balance = 2131m,
-           // Data = new object[]{1,2,3}
+            Data = new float[]{1f, 2f, 3f},
 
             Flag1 = true,
             Flag2 = true,
@@ -424,6 +424,9 @@ namespace WinFormsTest
                   if (w<wc)
                   {
                     var obj = Person.MakeFake();
+                    //var obj = new byte[256]; //Person.MakeFake();
+                    //var obj = "Gortes Burdak Ashvoizxuini  Zei Budanovikaoxdod"; //Person.MakeFake();
+                    //var obj = Person2.MakeFake2();
 
                     if (__payloadVariance>0)
                      obj.BinData = new byte[__payloadVariance];

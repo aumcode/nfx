@@ -151,6 +151,7 @@ namespace ntc
                                   {
                                      var ext = configRoot["ext"].AttrByIndex(0).ValueAsString(compiler.LanguageSourceFileExtension);
                                      var re = configRoot["replace"].AttrByIndex(0).ValueAsString();
+                                     var dest = configRoot["dest"].AttrByIndex(0).ValueAsString();
 
                                       foreach(var cu in compiler)
                                       {
@@ -159,7 +160,14 @@ namespace ntc
                                         if (fs==null) continue;
 
                                         var fn = (re.IsNotNullOrWhiteSpace() ? fs.FileName.Replace(re, string.Empty) : fs.FileName) + ext;
-                                        File.WriteAllText(fn , cu.CompiledSource);
+                                        if (dest.IsNullOrWhiteSpace())
+                                          File.WriteAllText(fn , cu.CompiledSource);
+                                        else
+                                        {
+                                          var path = Path.Combine(dest, Path.GetFileName(fn));
+                                          if (!Directory.Exists(path)) Directory.CreateDirectory(dest);
+                                          File.WriteAllText(path, cu.CompiledSource);
+                                        }
                                       }
                                   }
 

@@ -23,6 +23,7 @@ using System.Net;
 using System.Net.Mail;
 
 using NFX.Environment;
+using NFX.Log;
 
 namespace NFX.Web.Messaging
 {
@@ -32,148 +33,174 @@ namespace NFX.Web.Messaging
   public class SMTPMessageSink : MessageSink
   {
     #region CONSTS
-         public const int DEFAULT_SMTP_PORT = 587;
+
+    public const int DEFAULT_SMTP_PORT = 587;
+
     #endregion
 
     #region .ctor
 
-        public SMTPMessageSink(MessageService director) : base(director)
+    public SMTPMessageSink(MessageService director) : base(director)
+    {
+      SmtpPort = DEFAULT_SMTP_PORT;
+    }
+
+    protected override void Destructor()
+    {
+      base.Destructor();
+    }
+
+    #endregion
+
+    #region Private Fields
+
+    private SmtpClient m_Smtp;
+
+    #endregion
+
+    #region Properties
+
+      [Config]
+      public string SmtpHost { get; set; }
+      
+      [Config(Default=DEFAULT_SMTP_PORT)]
+      public int SmtpPort { get; set; }
+      
+      [Config]
+      public bool SmtpSSL { get; set; }
+      
+      [Config]
+      public string CredentialsID { get; set; }
+      
+      [Config]
+      public string CredentialsPassword { get; set; }
+      
+      [Config]
+      public string DefaultFromAddress { get; set; }
+      
+      [Config]
+      public string DefaultFromName { get; set; }
+      
+      [Config]
+      public string DropFolder { get; set; }
+
+      public override MsgChannels SupportedChannels
+      {
+        get
         {
-          SmtpPort = DEFAULT_SMTP_PORT;
+          return MsgChannels.EMail;
         }
+      }
 
-        protected override void Destructor()
+    #endregion
+
+    #region Protected
+
+    protected override void DoStart()
+    {
+      m_Smtp = new SmtpClient();
+
+      if (DropFolder.IsNotNullOrWhiteSpace() && System.IO.Directory.Exists(DropFolder))
+      {
+        m_Smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+        m_Smtp.PickupDirectoryLocation = DropFolder;
+      }
+      else
+      {
+        if (SmtpHost.IsNullOrWhiteSpace())
+        throw new WebException(StringConsts.MAILER_SINK_SMTP_IS_NOT_CONFIGURED_ERROR+"SmtpHost==null|empty|0");
+
+        m_Smtp.Host = this.SmtpHost;
+        m_Smtp.Port = this.SmtpPort;
+        m_Smtp.EnableSsl = this.SmtpSSL;
+        m_Smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+        m_Smtp.UseDefaultCredentials = false;
+        m_Smtp.Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword);
+      }
+    }
+
+    protected override void DoWaitForCompleteStop()
+    {
+      if (m_Smtp != null)
+      {
+        m_Smtp.Dispose();
+        m_Smtp = null;
+      }
+    }
+
+    protected override bool DoSendMsg(Message msg)
+    {
+      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return false;
+
+      var fa = msg.FROMAddress;
+      var fn = msg.FROMName;
+
+      if (fa.IsNullOrWhiteSpace()) fa = DefaultFromAddress;
+      if (fn.IsNullOrWhiteSpace()) fn = DefaultFromName;
+
+      var addressees =
+        msg.MessageAddress.All.Where(a => SupportedChannelNames.Any(n => n.EqualsOrdIgnoreCase(a.ChannelName)));
+
+      var from = new MailAddress(fa, fn);
+      var sent = false;
+      foreach (var addressee in addressees)
+      {
+        var to = new MailAddress(addressee.ChannelAddress, addressee.Name);
+
+        using (var email = new MailMessage(from, to))
         {
-          base.Destructor();
-        }
-      #endregion
+          email.Subject = msg.Subject;
 
-      #region Private Fields
+          if (msg.CC.IsNotNullOrWhiteSpace()) email.CC.Add(msg.CC);
 
-        private SmtpClient m_Smtp;
+          if (msg.BCC.IsNotNullOrWhiteSpace()) email.Bcc.Add(msg.BCC);
 
-      #endregion
-
-       #region Properties
-
-        [Config]
-        public string SmtpHost { get; set; }
-
-        [Config(Default=DEFAULT_SMTP_PORT)]
-        public int SmtpPort { get; set; }
-
-        [Config]
-        public bool SmtpSSL { get; set; }
-
-        [Config]
-        public string CredentialsID { get; set; }
-
-        [Config]
-        public string CredentialsPassword { get; set; }
-
-        [Config]
-        public string DefaultFromAddress { get; set; }
-
-        [Config]
-        public string DefaultFromName { get; set; }
-
-        [Config]
-        public string DropFolder { get; set; }
-
-
-      #endregion
-
-
-        protected override void DoStart()
-        {
-          m_Smtp = new SmtpClient();
-
-          if (DropFolder.IsNotNullOrWhiteSpace() && System.IO.Directory.Exists(DropFolder))
+          if (msg.HTMLBody.IsNullOrWhiteSpace())
           {
-             m_Smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-             m_Smtp.PickupDirectoryLocation = DropFolder;
+            email.Body = msg.Body;
           }
           else
           {
-             if (SmtpHost.IsNullOrWhiteSpace())
-             throw new WebException(StringConsts.MAILER_SINK_SMTP_IS_NOT_CONFIGURED_ERROR+"SmtpHost==null|empty|0");
-
-
-             m_Smtp.Host = this.SmtpHost;
-             m_Smtp.Port = this.SmtpPort;
-             m_Smtp.EnableSsl = this.SmtpSSL;
-             m_Smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-             m_Smtp.UseDefaultCredentials = false;
-             m_Smtp.Credentials = new NetworkCredential(this.CredentialsID, this.CredentialsPassword);
+            if (msg.Body.IsNullOrWhiteSpace())
+            {
+              email.IsBodyHtml = true;
+              email.Body = msg.HTMLBody;
+            }
+            else
+            {
+              email.Body = msg.Body;
+              var alternateHTML = AlternateView.CreateAlternateViewFromString(msg.HTMLBody, new System.Net.Mime.ContentType(ContentType.HTML));
+              email.AlternateViews.Add(alternateHTML);
+            }
           }
-        }
 
-        protected override void DoWaitForCompleteStop()
-        {
-          if (m_Smtp!=null)
+          if (msg.Attachments!=null)
+            foreach(var att in msg.Attachments.Where(a => a.Content != null))
+            {
+              var ema = new Attachment(new System.IO.MemoryStream(att.Content), new System.Net.Mime.ContentType( att.ContentType ));
+
+              if (att.Name.IsNotNullOrWhiteSpace())
+                ema.ContentDisposition.FileName = att.Name;
+
+              email.Attachments.Add( ema );
+            }
+
+          try
           {
-             m_Smtp.Dispose();
-             m_Smtp = null;
+            m_Smtp.Send(email);
+            sent = true;
+          }
+          catch (Exception error)
+          {
+            var et = error.ToMessageWithType();
+            Log(MessageType.Error, "{0}.DoSendMsg(msg): {1}".Args(this.GetType().FullName, et), et);
           }
         }
+      }
 
-
-    protected override void DoSendMsg(Message msg)
-    {
-        if (msg==null || msg.TOAddress.IsNullOrWhiteSpace()) return;
-
-           var fa = msg.FROMAddress;
-           var fn = msg.FROMName;
-
-           if (fa.IsNullOrWhiteSpace()) fa = DefaultFromAddress;
-           if (fn.IsNullOrWhiteSpace()) fn = DefaultFromName;
-
-
-           var from = new MailAddress(fa, fn);
-           var to = new MailAddress(msg.TOAddress, msg.TOName);
-
-
-           using (var email = new MailMessage(from, to))
-           {
-
-                email.Subject = msg.Subject;
-
-                if (msg.CC.IsNotNullOrWhiteSpace())  email.CC.Add(msg.CC);
-
-                if (msg.BCC.IsNotNullOrWhiteSpace()) email.Bcc.Add(msg.BCC);
-
-                if (msg.HTMLBody.IsNullOrWhiteSpace())
-                {
-                  email.Body = msg.Body;
-                }
-                else
-                {
-                  if (msg.Body.IsNullOrWhiteSpace())
-                  {
-                    email.IsBodyHtml = true;
-                    email.Body = msg.HTMLBody;
-                  }
-                  else
-                  {
-                    email.Body = msg.Body;
-                    var alternateHTML = AlternateView.CreateAlternateViewFromString(msg.HTMLBody, new System.Net.Mime.ContentType(ContentType.HTML));
-                    email.AlternateViews.Add(alternateHTML);
-                  }
-                }
-
-                if (msg.Attachments!=null)
-                 foreach(var att in msg.Attachments.Where(a => a.Content != null))
-                 {
-                   var ema = new Attachment(new System.IO.MemoryStream(att.Content), new System.Net.Mime.ContentType( att.ContentType ));
-
-                   if (att.Name.IsNotNullOrWhiteSpace())
-                     ema.ContentDisposition.FileName = att.Name;
-
-                   email.Attachments.Add( ema );
-                 }
-
-                m_Smtp.Send(email);
-           }
+      return sent;
     }
+
+    #endregion
   }
 }

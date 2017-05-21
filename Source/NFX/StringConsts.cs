@@ -527,7 +527,7 @@ namespace NFX
       "Cannot include path: '{0}'. Exception: {1}";
 
     public const string PARAMETER_MAY_NOT_BE_NULL_ERROR =
-        "Parameter '{0}' may not be null";
+        "Parameter '{0}' may not be null. \n Caller: \n ----------------------\n {1}";
 
 
     public const string STREAM_READ_EOF_ERROR =
@@ -1133,6 +1133,18 @@ namespace NFX
 
     public const string BSON_DECIMAL_INT32_INT64_CONVERTION_ERROR =
         "Either BSONInt32 or BSONInt64 required for convertion to decimal";
+
+    public const string BSON_DESERIALIZER_DOC_MISSING_TID_ERROR =
+        "BSONSerializer.Deserialize() document missing the '{0}' type id string field";
+
+    public const string BSON_DESERIALIZER_DOC_TID_GUID_ERROR =
+        "BSONSerializer.Deserialize() document '{0}' field contain an invalid GUID string: '{1}'";
+
+    public const string BSON_DESERIALIZER_MAKE_TYPE_ERROR =
+        "BSONSerializer.Deserialize() error making type '{0}': {1}";
+
+    public const string BSON_DESERIALIZER_DFB_ERROR = "BSONSerializer DeserializeFromBSON() leaked: {0}";
+    public const string BSON_SERIALIZER_STB_ERROR =   "BSONSerializer SerializeToBSON() leaked: {0}";
 
     public const string GDID_BUFFER_ERROR =
         "Error converting GDID data buffer: {0}";

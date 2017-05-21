@@ -267,14 +267,21 @@
   </glue>
 
   <messaging>
-    <mailer>
+    <sink type="NFX.Web.Messaging.CompositeMessageSink, NFX.Web">
+      <sink type="NFX.Web.Messaging.TwilioSink, NFX.Web"
+            name="Twilio"
+            account-sid='ACf6593667b4f06ad797e6d0b5f2ab161c'
+            auth-token='9e89ee913671bd735711f21a723dc903'
+            from='+12512199871'>
+      </sink>
       <sink type="NFX.Web.Messaging.MailgunMailerSink, NFX.Web"
+            name="Mailgun"
             authorization-key="key-d8745ba952f49f9973a47336cf54229e"
             domain="sandboxc102342e2f7c4a65aeed218b96286043.mailgun.org"
             default-from-address="service@ttt.com"
             default-from-name="Service">
       </sink>
-    </mailer>
+    </sink>
   </messaging>
 
 </nfx>

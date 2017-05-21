@@ -86,7 +86,7 @@ namespace NFX.Wave.CMS
       public FileSystemSessionConnectParams ContentFileSystemConnectParams{ get{ return m_ContentFSConnect;}}
 
       /// <summary>
-      /// Returns root path for content file system
+      /// Returns root path for the content file system
       /// </summary>
       public string ContentFileSystemRootPath{ get{ return m_ContentFSRootPath;}}
 

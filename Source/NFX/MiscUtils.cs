@@ -63,14 +63,18 @@ namespace NFX
     /// Checks the value for null and throws exception if it is.
     /// The method is useful for .ctor call chaining to preclude otherwise anonymous NullReferenceException
     /// </summary>
-    public static T NonNull<T>(this T obj, Func<Exception> error = null, string text = null) where T : class
+    public static T NonNull<T>(this T obj,
+                               Func<Exception> error = null,
+                               string text = null) where T : class
     {
       if (obj==null)
       {
         if (error!=null)
          throw error();
         else
-         throw new NFXException(StringConsts.PARAMETER_MAY_NOT_BE_NULL_ERROR.Args(text ?? CoreConsts.UNKNOWN));
+         throw new NFXException(StringConsts.PARAMETER_MAY_NOT_BE_NULL_ERROR
+                                            .Args(text ?? CoreConsts.UNKNOWN,
+                                                  new StackTrace(1, false).ToString()));
       }
       return obj;
     }
@@ -230,7 +234,8 @@ namespace NFX
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static string ToMessageWithType(this Exception error)
     {
-      return string.Format("[{0}] {1}", error.GetType().FullName, error.Message);
+      if (error==null) return null;
+      return "[{0}] {1}".Args(error.GetType().FullName, error.Message);
     }
 
     /// <summary>

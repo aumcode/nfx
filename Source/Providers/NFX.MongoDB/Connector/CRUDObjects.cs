@@ -79,6 +79,7 @@ namespace NFX.DataAccess.MongoDB.Connector
   /// Returned by CRUD operations from the server, contains information about total docs affected and write errors.
   /// The caller needs to inspect the TotalDocumentsAffected and WriteErrors to handle error conditions
   /// </summary>
+  [Serializable]
   public struct CRUDResult
   {
       internal CRUDResult(int n, int nModified, CRUDWriteError[] wErrors, CRUDUpsertInfo[] upserted)
@@ -88,20 +89,20 @@ namespace NFX.DataAccess.MongoDB.Connector
         WriteErrors = wErrors;
         Upserted = upserted;
       }
-      
+
       /// <summary>
-      /// This field contains the aggregated number of documents successfully matched (n) by the entire write command. 
-      /// This includes the number of documents inserted, upserted, updated, and deleted. We do not report on the 
-      /// individual number of documents affected by each batch item. If the application would wish so, then the 
+      /// This field contains the aggregated number of documents successfully matched (n) by the entire write command.
+      /// This includes the number of documents inserted, upserted, updated, and deleted. We do not report on the
+      /// individual number of documents affected by each batch item. If the application would wish so, then the
       /// application should issue one-item batches.
       /// </summary>
       public readonly int TotalDocumentsAffected;
 
 
       /// <summary>
-      /// Optional field, with a positive numeric type or zero. 
-      /// Zero is the default value. This field is only and always present for batch updates. 
-      /// nModified is the physical number of documents affected by an update, while TotalDocumentsMatched is the logical number of documents matched by 
+      /// Optional field, with a positive numeric type or zero.
+      /// Zero is the default value. This field is only and always present for batch updates.
+      /// nModified is the physical number of documents affected by an update, while TotalDocumentsMatched is the logical number of documents matched by
       /// the update's query.
       /// </summary>
       public readonly int TotalDocumentsUpdatedAffected;
@@ -120,6 +121,7 @@ namespace NFX.DataAccess.MongoDB.Connector
   /// <summary>
   /// Provides information about document write error
   /// </summary>
+  [Serializable]
   public struct CRUDWriteError
   {
       internal CRUDWriteError(int idx, int code, string msg, object info)
@@ -129,7 +131,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         Message = msg;
         Info = info;
       }
-      
+
       /// <summary>
       /// WRITE ERROR ONLY, The index of the erroneous batch item relative to request batch order. Batch items indexes start with 0
       /// </summary>
@@ -148,7 +150,7 @@ namespace NFX.DataAccess.MongoDB.Connector
       /// <summary>
       /// Optional field, with a BSONObj format. This field contains structured information about an error that can be processed programmatically.
       /// For example, if a request returns with a shard version error, we may report the proper shard version as a sub-field here.
-      /// For another example, if a write concern timeout occurred, the information previously reported on wtimeout would be reported here. 
+      /// For another example, if a write concern timeout occurred, the information previously reported on wtimeout would be reported here.
       /// The format of this field depends on the code above
       /// </summary>
       public readonly object Info;
@@ -157,6 +159,7 @@ namespace NFX.DataAccess.MongoDB.Connector
   /// <summary>
   /// Provides information about an upserted document
   /// </summary>
+  [Serializable]
   public struct CRUDUpsertInfo
   {
       internal CRUDUpsertInfo(int idx, object id)
@@ -164,7 +167,7 @@ namespace NFX.DataAccess.MongoDB.Connector
         Index = idx;
         ID = id;
       }
-      
+
       /// <summary>
       /// Index of the document in the batch
       /// </summary>

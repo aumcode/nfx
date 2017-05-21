@@ -94,19 +94,19 @@
     <Compile Include="SysConsts.cs" />
     <Compile Include="Templatization\ResponseRenderingTarget.cs" />
     <Compile Include="Handlers\StockContentSiteHandler.cs" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\chain.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\curtain.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\details.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\dialog.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\gallery.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\mtb.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\oeditor.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\pseditor.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\ruleman.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\select.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\tabs.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\toast.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\tree.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\chain.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\curtain.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\details.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\dialog.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\gallery.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\mtb.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\oeditor.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\pseditor.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\ruleman.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\select.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\tabs.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\toast.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\tree.js" />
     <Compile Include="Templatization\StockContent\Error.htm.auto.cs">
       <DependentUpon>Error.htm</DependentUpon>
     </Compile>
@@ -140,37 +140,35 @@
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.object-editor.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.PropSetEditor.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.tabs.test.htm" />
-    <None Include="Templatization\StockContent\Embedded\stl\select.test.css" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.html.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\js-compiler.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\array.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\dom.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\evt.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\geometry.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\localizer.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\markup.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\pay.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\rm\record.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\rm\recordview.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\rndk.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\str.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\svg.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\type.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\pzlk.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\ui\wincon.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\utest.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\walkable.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\inc\web.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\array.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\dom.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\evt.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\geometry.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\localizer.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\markup.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\pay.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\rm\record.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\rm\recordview.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\rndk.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\str.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\svg.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\type.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\pzlk.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\wincon.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\utest.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\walkable.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\web.js" />
     <Content Include="Templatization\StockContent\Embedded\script\mtest\js-compiler.test.html" />
     <Content Include="Templatization\StockContent\Embedded\script\mtest\js-compiler-include.ntc.js" />
     <Content Include="Templatization\StockContent\Embedded\script\mtest\wv.dialog.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\js-compiler.ntc.js" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.rmgui.js" />
-    <None Include="Templatization\StockContent\Embedded\script\wv.rmgui.ntc.js" />
-    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\wv.ntc.js">
+    <None Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\wv.rmgui.ntc.js" />
+    <EmbeddedResource Include="Templatization\StockContent\Embedded\script\ljs\wv.ntc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Templatization\StockContent\Embedded\script\wv.gui.ntc.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\wv.gui.ntc.js" />
     <Content Include="Templatization\StockContent\Embedded\stl\utest.css" />
     <EmbeddedResource Include="Templatization\StockContent\Embedded\script\jquery-2.1.4.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -477,9 +475,9 @@
   <PropertyGroup>
     <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"
 
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" /src /c "NFX.Templatization.NHTCompiler, NFX"
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" -src -c "NFX.Templatization.NHTCompiler, NFX"
 
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.ntc.js" -r -ext ".js" -replace ".ntc.js" /src /c "NFX.Templatization.TextJSTemplateCompiler, NFX" -o dom-gen="cmp{pretty=1}"
+"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\Embedded\script\ljs\*.ntc.js" -ext ".js" -replace ".ntc.js" -dest "$(ProjectDir)\Templatization\StockContent\Embedded\script" -src -c "NFX.Templatization.TextJSTemplateCompiler, NFX" -o dom-gen="cmp{pretty=1}"
 
 
 where /q java

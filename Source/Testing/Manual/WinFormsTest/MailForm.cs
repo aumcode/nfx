@@ -36,18 +36,19 @@ namespace WinFormsTest
 
         private void btSend_Click(object sender, EventArgs e)
         {
-            var message = new NFX.Web.Messaging.Message(null)
-            {
-                FROMName = tbFROMName.Text,
-                FROMAddress = tbFROMAddress.Text,
-                TOName = tbTOName.Text,
-                TOAddress = tbTOAddress.Text,
-                Subject = tbSubject.Text,
-                Body = tbBody.Text,
-                HTMLBody = tbHTML.Text
-            };
+          // note that ToAddress has complex structure - laconic config, look MessageBuilder.Addressee
+          var message = new NFX.Web.Messaging.Message(null)
+          {
+            FROMName = tbFROMName.Text,
+            FROMAddress = tbFROMAddress.Text,
+            TOName = tbTOName.Text,
+            TOAddress = tbTOAddress.Text,
+            Subject = tbSubject.Text,
+            Body = tbBody.Text,
+            HTMLBody = tbHTML.Text
+          };
 
-            MessageService.Instance.SendMsg(message);
+          MessageService.Instance.SendMsg(message);
         }
     }
 }

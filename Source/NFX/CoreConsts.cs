@@ -34,6 +34,7 @@ namespace NFX
       public const string EXT_PARAM_GROUP_PILE = "pile";
       public const string EXT_PARAM_GROUP_GLUE = "glue";
       public const string EXT_PARAM_GROUP_LOCKING = "locking";
+      public const string EXT_PARAM_GROUP_MESSAGING = "messaging";
       public const string EXT_PARAM_GROUP_OBJSTORE = "objectstore";
       public const string EXT_PARAM_GROUP_WEB = "web";
       public const string EXT_PARAM_GROUP_INSTRUMENTATION = "instrumentation";
@@ -43,7 +44,7 @@ namespace NFX
       public const string EXT_PARAM_GROUP_TIME = "time";
       public const string EXT_PARAM_GROUP_PAY = "pay";
       public const string EXT_PARAM_GROUP_SHIPPING = "shipping";
-      public const string EXT_PARAM_GROUP_TAX = "tax";
+      public const string EXT_PARAM_GROUP_SECURITY = "security";
       public const string EXT_PARAM_GROUP_SOCIAL = "social";
 
       public const string CS_LANGUAGE = "C#";

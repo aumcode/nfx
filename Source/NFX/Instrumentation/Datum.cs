@@ -28,7 +28,7 @@ namespace NFX.Instrumentation
     /// Base class for single measurement events (datums) reported to instrumentation
     /// </summary>
     [Serializable]
-    public abstract class Datum : IJSONWritable
+    public abstract class Datum : NFX.Log.IArchiveLoggable, IJSONWritable
     {
        public const string UNSPECIFIED_SOURCE = "*";
        public const string FRAMEWORK_SOURCE = "Frmwrk";
@@ -272,5 +272,20 @@ namespace NFX.Instrumentation
           }
        }
 
+
+       public virtual void SerializeToBSON(Serialization.BSON.BSONSerializer serializer, Serialization.BSON.BSONDocument doc,  Serialization.BSON.IBSONSerializable parent, ref object context)
+       {
+         throw new NotImplementedException();
+       }
+
+       public virtual bool IsKnownTypeForBSONDeserialization(Type type)
+       {
+         throw new NotImplementedException();
+       }
+
+       public virtual void DeserializeFromBSON(Serialization.BSON.BSONSerializer serializer, Serialization.BSON.BSONDocument doc, ref object context)
+       {
+         throw new NotImplementedException();
+       }
     }
 }

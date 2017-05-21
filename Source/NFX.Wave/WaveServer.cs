@@ -88,6 +88,13 @@ namespace NFX.Wave
       public const int ACCEPT_THREAD_GRANULARITY_MS = 250;
 
       public const int INSTRUMENTATION_DUMP_PERIOD_MS = 3377;
+
+      public const ushort DEFAULT_DRAIN_ENTITY_BODY_TIMEOUT_SEC = 120;
+      public const ushort DEFAULT_ENTITY_BODY_TIMEOUT_SEC = 120;
+      public const ushort DEFAULT_HEADER_WAIT_TIMEOUT_SEC = 120;
+      public const ushort DEFAULT_IDLE_CONNECTION_TIMEOUT_SEC = 120;
+      public const ushort DEFAULT_REQUEST_QUEUE_TIMEOUT_SEC = 120;
+      public const uint   DEFAULT_MIN_SEND_BYTES_PER_SECOND = 150;
     #endregion
 
     #region Static
@@ -126,6 +133,14 @@ namespace NFX.Wave
       private int m_KernelHttpQueueLimit = DEFAULT_KERNEL_HTTP_QUEUE_LIMIT;
       private int m_ParallelAccepts = DEFAULT_PARALLEL_ACCEPTS;
       private int m_ParallelWorks = DEFAULT_PARALLEL_WORKS;
+
+      private ushort m_DrainEntityBodyTimeoutSec = DEFAULT_DRAIN_ENTITY_BODY_TIMEOUT_SEC;
+      private ushort m_EntityBodyTimeoutSec      = DEFAULT_ENTITY_BODY_TIMEOUT_SEC;
+      private ushort m_HeaderWaitTimeoutSec      = DEFAULT_HEADER_WAIT_TIMEOUT_SEC;
+      private ushort m_IdleConnectionTimeoutSec  = DEFAULT_IDLE_CONNECTION_TIMEOUT_SEC;
+      private ushort m_RequestQueueTimeoutSec    = DEFAULT_REQUEST_QUEUE_TIMEOUT_SEC;
+      private uint   m_MinSendBytesPerSecond     = DEFAULT_MIN_SEND_BYTES_PER_SECOND;
+
       private HttpListener m_Listener;
       private bool m_IgnoreClientWriteErrors = true;
       private bool m_LogHandleExceptionErrors;
@@ -302,6 +317,79 @@ namespace NFX.Wave
            else
             if (value > MAX_PARALLEL_WORKS) value = MAX_PARALLEL_WORKS;
           m_ParallelWorks = value;
+        }
+      }
+
+      [Config(Default=DEFAULT_DRAIN_ENTITY_BODY_TIMEOUT_SEC)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
+      public ushort DrainEntityBodyTimeoutSec
+      {
+        get { return m_DrainEntityBodyTimeoutSec; }
+        set
+        {
+          m_DrainEntityBodyTimeoutSec = value;
+          if (m_Listener != null && m_Listener.IsListening)
+            m_Listener.TimeoutManager.DrainEntityBody = TimeSpan.FromSeconds(m_DrainEntityBodyTimeoutSec);
+        }
+      }
+      [Config(Default=DEFAULT_ENTITY_BODY_TIMEOUT_SEC)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
+      public ushort EntityBodyTimeoutSec
+      {
+        get { return m_EntityBodyTimeoutSec; }
+        set
+        {
+          m_EntityBodyTimeoutSec = value;
+          if (m_Listener != null && m_Listener.IsListening)
+            m_Listener.TimeoutManager.EntityBody = TimeSpan.FromSeconds(m_EntityBodyTimeoutSec);
+        }
+      }
+      [Config(Default=DEFAULT_HEADER_WAIT_TIMEOUT_SEC)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
+      public ushort HeaderWaitTimeoutSec
+      {
+        get { return m_HeaderWaitTimeoutSec; }
+        set
+        {
+          m_HeaderWaitTimeoutSec = value;
+          if (m_Listener != null && m_Listener.IsListening)
+            m_Listener.TimeoutManager.HeaderWait = TimeSpan.FromSeconds(m_HeaderWaitTimeoutSec);
+        }
+      }
+      [Config(Default=DEFAULT_IDLE_CONNECTION_TIMEOUT_SEC)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
+      public ushort IdleConnectionTimeoutSec
+      {
+        get { return m_IdleConnectionTimeoutSec; }
+        set
+        {
+          m_IdleConnectionTimeoutSec = value;
+          if (m_Listener != null && m_Listener.IsListening)
+            m_Listener.TimeoutManager.IdleConnection = TimeSpan.FromSeconds(m_IdleConnectionTimeoutSec);
+        }
+      }
+      [Config(Default=DEFAULT_REQUEST_QUEUE_TIMEOUT_SEC)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
+      public ushort RequestQueueTimeoutSec
+      {
+        get { return m_RequestQueueTimeoutSec; }
+        set
+        {
+          m_RequestQueueTimeoutSec = value;
+          if (m_Listener != null && m_Listener.IsListening)
+            m_Listener.TimeoutManager.RequestQueue = TimeSpan.FromSeconds(m_RequestQueueTimeoutSec);
+        }
+      }
+      [Config(Default=DEFAULT_MIN_SEND_BYTES_PER_SECOND)]
+      [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_WEB)]
+      public uint MinSendBytesPerSecond
+      {
+        get { return m_MinSendBytesPerSecond; }
+        set
+        {
+          m_MinSendBytesPerSecond = value;
+          if (m_Listener != null && m_Listener.IsListening)
+            m_Listener.TimeoutManager.MinSendBytesPerSecond = m_MinSendBytesPerSecond;
         }
       }
 
@@ -597,6 +685,12 @@ namespace NFX.Wave
       /// </summary>
       protected virtual void BeforeListenerStart(HttpListener listener)
       {
+        m_Listener.TimeoutManager.DrainEntityBody       = TimeSpan.FromSeconds(m_DrainEntityBodyTimeoutSec);
+        m_Listener.TimeoutManager.EntityBody            = TimeSpan.FromSeconds(m_EntityBodyTimeoutSec);
+        m_Listener.TimeoutManager.HeaderWait            = TimeSpan.FromSeconds(m_HeaderWaitTimeoutSec);
+        m_Listener.TimeoutManager.IdleConnection        = TimeSpan.FromSeconds(m_IdleConnectionTimeoutSec);
+        m_Listener.TimeoutManager.RequestQueue          = TimeSpan.FromSeconds(m_RequestQueueTimeoutSec);
+        m_Listener.TimeoutManager.MinSendBytesPerSecond = m_MinSendBytesPerSecond;
       }
 
       /// <summary>
@@ -604,11 +698,6 @@ namespace NFX.Wave
       /// </summary>
       protected virtual void AfterListenerStart(HttpListener listener)
       {
-          //this setting does not do anything on Windows 7
-          //todo test on Windows 2008/20012
-          m_Listener.TimeoutManager.MinSendBytesPerSecond = 16;
-
-          //todo Need to add server-wide properties for all timeouts
       }
 
 

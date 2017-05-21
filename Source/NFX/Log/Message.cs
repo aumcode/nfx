@@ -32,6 +32,7 @@ using System.Threading;
 using NFX.Time;
 using NFX.Log.Destinations;
 using NFX.Serialization.JSON;
+using NFX.Serialization.BSON;
 
 namespace NFX.Log
 {
@@ -39,25 +40,29 @@ namespace NFX.Log
   /// Represents a Log message
   /// </summary>
   [Serializable]
-  public sealed class Message
+  [BSONSerializable("A05AEE0F-A33C-4B1D-AA45-CDEAF894A095")]
+  public sealed class Message : IArchiveLoggable
   {
     public static string DefaultHostName;
 
     #region Private Fields
-    private Guid m_Guid;
-    private Guid m_RelatedTo;
-    private MessageType m_Type;
-    private int m_Source;
-    private DateTime m_TimeStamp;
-    private string m_Host;
-    private string m_From;
-    private string m_Topic;
-    private string m_Text;
-    private string m_Parameters;
-    private Exception m_Exception;
+      private Guid m_Guid;
+      private Guid m_RelatedTo;
+      private MessageType m_Type;
+      private int m_Source;
+      private DateTime m_TimeStamp;
+      private string m_Host;
+      private string m_From;
+      private string m_Topic;
+      private string m_Text;
+      private string m_Parameters;
+      private Exception m_Exception;
+      private string m_ArchiveDimensions;
+      private string m_Channel;
     #endregion
 
     #region Properties
+
     /// <summary>
     /// Returns global unique identifier for this particular message
     /// </summary>
@@ -160,8 +165,29 @@ namespace NFX.Log
       get { return m_Exception; }
       set { m_Exception = value; }
     }
+
+    /// <summary>
+    /// Gets/Sets archive dimension content for later retrieval of messages by key, i.e. a user ID may be used.
+    /// In most cases JSON or Laconic content is stored, the format depends on a concrete system
+    /// </summary>
+    public string ArchiveDimensions
+    {
+      get { return m_ArchiveDimensions ?? string.Empty; }
+      set { m_ArchiveDimensions = value; }
+    }
+
+    /// <summary>
+    /// Gets/Sets logical partition for messages. This property is usually used in Archive for splitting destinations
+    /// </summary>
+    public string Channel
+    {
+      get { return m_Channel ?? string.Empty; }
+      set { m_Channel = value; }
+    }
+
     #endregion
 
+    [NFX.Serialization.Slim.SlimDeserializationCtorSkip]
     public Message()
     {
       m_Guid = Guid.NewGuid();
@@ -240,6 +266,68 @@ namespace NFX.Log
         m_Exception = m_Exception
       };
     }
+
+
+    #region BSON Serialization
+
+      public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)
+      {
+        serializer.AddTypeIDField(doc, parent, this, context);
+
+        doc.Set( new BSONStringElement("id", m_Guid.ToString("N")) );
+        if (m_RelatedTo!=Guid.Empty)
+         doc.Set( new BSONStringElement("rel", m_RelatedTo.ToString("N")) );
+
+
+        doc.Set( new BSONStringElement("tp", m_Type.ToString()) )
+           .Set( new BSONInt32Element("src", m_Source) )
+           .Set( new BSONDateTimeElement("time", m_TimeStamp.ToUniversalTime()) )
+           .Set( new BSONStringElement("hst", m_Host) )
+           .Set( new BSONStringElement("frm", m_From) )
+           .Set( new BSONStringElement("top", m_Topic) )
+           .Set( new BSONStringElement("txt", m_Text) )
+           .Set( new BSONStringElement("par", m_Parameters) )
+           .Set( new BSONStringElement("arc", m_ArchiveDimensions) )
+           .Set( new BSONStringElement("chan", m_Channel) );
+
+        if (m_Exception==null) return;
+
+        var we = m_Exception as WrappedException;
+        if (we==null)
+         we = WrappedException.ForException(m_Exception);
+
+        doc.Set( new BSONDocumentElement("exc", serializer.Serialize(we, parent: this) ));
+      }
+
+      public bool IsKnownTypeForBSONDeserialization(Type type)
+      {
+        return type==typeof(WrappedException);
+      }
+
+      public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)
+      {
+        m_Guid = doc.TryGetObjectValueOf("id").AsGUID(Guid.Empty);
+
+        m_RelatedTo = doc.TryGetObjectValueOf("rel").AsGUID(Guid.Empty);
+
+        m_Type              = doc.TryGetObjectValueOf("tp").AsEnum(MessageType.Info);
+        m_Source            = doc.TryGetObjectValueOf("src").AsInt();
+        m_TimeStamp         = doc.TryGetObjectValueOf("time").AsDateTime(App.TimeSource.UTCNow);
+        m_Host              = doc.TryGetObjectValueOf("hst").AsString();
+        m_From              = doc.TryGetObjectValueOf("frm").AsString();
+        m_Topic             = doc.TryGetObjectValueOf("top").AsString();
+        m_Text              = doc.TryGetObjectValueOf("txt").AsString();
+        m_Parameters        = doc.TryGetObjectValueOf("par").AsString();
+        m_ArchiveDimensions = doc.TryGetObjectValueOf("arc").AsString();
+        m_Channel           = doc.TryGetObjectValueOf("chan").AsString();
+
+        var ee = doc["exc"] as BSONDocumentElement;
+        if (ee==null) return;
+
+        m_Exception = WrappedException.MakeFromBSON(serializer, ee.Value);
+      }
+
+    #endregion
   }
 
   public static class MessageExtensions
@@ -249,7 +337,7 @@ namespace NFX.Log
       if (msg == null || msg.Exception == null || msg.Exception is WrappedException) return msg;
 
       var clone = msg.Clone();
-      clone.Exception = new WrappedException(new WrappedExceptionData(msg.Exception, captureStack));
+      clone.Exception = WrappedException.ForException(msg.Exception, captureStack);
       return clone;
     }
   }

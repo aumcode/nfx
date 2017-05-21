@@ -24,17 +24,22 @@ namespace NFX.Web.Messaging
 {
   public sealed class NOPMessageSink : MessageSink
   {
-    #region .ctor
     public NOPMessageSink(MessageService director)
       : base(director)
     {
     }
-    #endregion
 
-    #region Protected
-    protected override void DoSendMsg(Message msg)
+    public override MsgChannels SupportedChannels
     {
+      get
+      {
+        return MsgChannels.Unspecified;
+      }
     }
-    #endregion
+
+    protected override bool DoSendMsg(Message msg)
+    {
+      return true;
+    }
   }
 }

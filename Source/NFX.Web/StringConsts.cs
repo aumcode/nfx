@@ -242,7 +242,8 @@ namespace NFX.Web
           "GEO lookup service start canceled";
 
     public const string MAILER_SINK_IS_NOT_SET_ERROR = "Mailer sink is not set";
-    public const string MAILER_SINK_IS_NOT_OWNED_ERROR = "Mailer sink being set is not owned by this mailer service";
+    public const string MESSAGE_SINK_IS_NOT_OWNED_ERROR = "The message sink being set is not owned by this service";
+    public const string SENDING_MESSAGE_IS_NOT_SUCCEDED = "Sending message operation is not succeeded";
 
     public const string MAILER_SINK_SMTP_IS_NOT_CONFIGURED_ERROR = "SMTP Mailer sink is not configured: ";
 

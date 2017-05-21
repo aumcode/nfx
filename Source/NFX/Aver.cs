@@ -210,7 +210,7 @@ namespace NFX
          if (tp.IsPrimitive) return "({0}){1}".Args(tp.Name, arg);
          if (arg is Type) return "({0}){1}".Args(tp.Name, ((Type)arg).FullNameWithExpandedGenericArgs());
 
-         return "({0})obj".Args(arg.GetType().FullNameWithExpandedGenericArgs(false));
+         return "({0})`{1}`".Args(arg.GetType().FullNameWithExpandedGenericArgs(false), arg == null ? "<null>" : arg.ToString().TakeFirstChars(64));
       }
     #endregion
 

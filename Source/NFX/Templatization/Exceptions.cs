@@ -66,7 +66,7 @@ namespace NFX.Templatization
   /// Thrown by  template code compilers
   /// </summary>
   [Serializable]
-  public class TemplateCodeCompilerException : TemplateCompilerException, IWrappedDataSource
+  public class TemplateCodeCompilerException : TemplateCompilerException, IWrappedExceptionDataSource
   {
     public TemplateCodeCompilerException(CompilerError err) : base(err.ErrorText) { Error = err; }
     protected TemplateCodeCompilerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -87,8 +87,7 @@ namespace NFX.Templatization
 
     public string GetWrappedData()
     {
-#warning TODO
-      throw new NotImplementedException();
+      return ToString();
     }
   }
 }

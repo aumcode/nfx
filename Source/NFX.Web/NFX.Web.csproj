@@ -83,6 +83,7 @@
     <Compile Include="Cloud\CloudSystem.cs" />
     <Compile Include="Cloud\CloudSession.cs" />
     <Compile Include="ContentType.cs" />
+    <Compile Include="Messaging\CompositeMessageSink.cs" />
     <Compile Include="Messaging\Instrumentation\Gauges.cs" />
     <Compile Include="Messaging\MailSink\MailgunMailSink.cs" />
     <Compile Include="Messaging\MailSink\NOPMessageSink.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Messaging\IMessenger.cs" />
     <Compile Include="Messaging\MessageSink.cs" />
     <Compile Include="Messaging\NOPMessenger.cs" />
+    <Compile Include="Messaging\SMSSink\TwilioSink.cs" />
     <Compile Include="Messaging\SMTPMessageSink.cs" />
     <Compile Include="GeoLookup\BinaryTree.cs" />
     <Compile Include="GeoLookup\Exceptions.cs" />

@@ -185,6 +185,7 @@
     <Compile Include="GuidTypeResolver.cs" />
     <Compile Include="IEndableInstance.cs" />
     <Compile Include="Instrumentation\BaseGauges.cs" />
+    <Compile Include="Log\IArchiveLoggable.cs" />
     <Compile Include="Instrumentation\SelfInstruments.cs" />
     <Compile Include="Instrumentation\NOPInstrumentationProvider.cs" />
     <Compile Include="Instrumentation\Gauge.cs" />
@@ -312,6 +313,9 @@
     <Compile Include="Serialization\Arow\Reader.cs" />
     <Compile Include="Serialization\Arow\Exceptions.cs" />
     <Compile Include="Serialization\Arow\Writer.cs" />
+    <Compile Include="Serialization\BSON\Attributes.cs" />
+    <Compile Include="Serialization\BSON\BSONSerializer.cs" />
+    <Compile Include="Serialization\BSON\Intfs.cs" />
     <Compile Include="Serialization\CSV\CSVParser.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />

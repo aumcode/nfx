@@ -104,6 +104,11 @@ namespace NFX.Log
     InfoZ,
 
     /// <summary>
+    /// The message instance represents many others - probably aggregated with time multiple records into one
+    /// </summary>
+    Aggregate,
+
+    /// <summary>
     /// Permission audit, usualy a result of client user action, no danger to system operation
     /// </summary>
     SecurityAudit = 200,

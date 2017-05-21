@@ -24,6 +24,7 @@ using System;
 using System.Runtime.Serialization;
 
 using NFX.ApplicationModel;
+using NFX.Serialization.BSON;
 
 namespace NFX
 {
@@ -117,8 +118,15 @@ namespace NFX
     }
   }
 
-  public interface IWrappedDataSource
+  /// <summary>
+  /// Provides textual portable data about this exception which will be used in wrapped exception.
+  /// Wrapped exceptions are used to marshall non serializable exceptions
+  /// </summary>
+  public interface IWrappedExceptionDataSource
   {
+    /// <summary>
+    /// Gets portable textual representation of exception data for inclusion in wrapped exception
+    /// </summary>
     string GetWrappedData();
   }
 
@@ -126,13 +134,19 @@ namespace NFX
   /// Marshalls exception details
   /// </summary>
   [Serializable]
-  public sealed class WrappedExceptionData
+  [BSONSerializable("A339F46F-6637-4396-B148-094BAFFB4BE6")]
+  public sealed class WrappedExceptionData : IBSONSerializable, IBSONDeserializable
   {
+
+    internal WrappedExceptionData(){}
+
     /// <summary>
     /// Initializes instance form local exception
     /// </summary>
     public WrappedExceptionData(Exception error, bool captureStack = true)
     {
+      if (error==null) throw new NFXException(StringConsts.ARGUMENT_ERROR+"WrappedExceptionData.ctor(error=null)");
+
       var tp = error.GetType();
       m_TypeName = tp.FullName;
       m_Message = error.Message;
@@ -148,7 +162,7 @@ namespace NFX
       if (error.InnerException != null)
         m_InnerException = new WrappedExceptionData(error.InnerException);
 
-      var source = error as IWrappedDataSource;
+      var source = error as IWrappedExceptionDataSource;
       if (source != null)
         m_WrappedData = source.GetWrappedData();
     }
@@ -206,19 +220,86 @@ namespace NFX
     {
       return string.Format("[{0}:{1}:{2}] {3}", TypeName, Code, ApplicationName, Message);
     }
+
+    public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)
+    {
+      serializer.AddTypeIDField(doc, parent, this, context);
+
+      doc.Set( new BSONStringElement("tname", TypeName))
+         .Set( new BSONStringElement("msg",   Message))
+         .Set( new BSONInt32Element ("code",  Code))
+         .Set( new BSONStringElement("app",   ApplicationName))
+         .Set( new BSONStringElement("src",   Source))
+         .Set( new BSONStringElement("trace", StackTrace));
+
+      if (WrappedData!=null)
+        doc.Set( new BSONStringElement("wdata", WrappedData));
+
+      if (m_InnerException==null) return;
+
+      doc.Set( new BSONDocumentElement("inner", serializer.Serialize(m_InnerException, parent: this)) );
+    }
+
+    public bool IsKnownTypeForBSONDeserialization(Type type)
+    {
+      return type==typeof(WrappedExceptionData);
+    }
+
+    public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)
+    {
+      m_TypeName        = doc.TryGetObjectValueOf("tname").AsString();
+      m_Message         = doc.TryGetObjectValueOf("msg").AsString();
+      m_Code            = doc.TryGetObjectValueOf("code").AsInt();
+      m_ApplicationName = doc.TryGetObjectValueOf("app").AsString();
+      m_Source          = doc.TryGetObjectValueOf("src").AsString();
+      m_StackTrace      = doc.TryGetObjectValueOf("trace").AsString();
+      m_WrappedData     = doc.TryGetObjectValueOf("wdata").AsString();
+
+      var iv = doc["inner"] as BSONDocumentElement;
+      if (iv==null) return;
+
+      m_InnerException = new WrappedExceptionData();
+      serializer.Deserialize(iv.Value, m_InnerException);
+    }
   }
 
   /// <summary>
   /// Represents exception that contains data about causing exception with all of it's chain
   /// </summary>
   [Serializable]
-  public sealed class WrappedException : NFXException
+  [BSONSerializable("A43ABD0D-22B2-4012-8A24-280A038FD943")]
+  public sealed class WrappedException : NFXException, IBSONSerializable, IBSONDeserializable
   {
     public const string WRAPPED_FLD_NAME = "WE-W";
 
-    public WrappedException(WrappedExceptionData data) : base(data.ToString()) { m_Wrapped = data; }
+    /// <summary>
+    /// Returns an exception wrapped into WrappedException. If the exception is already wrapped, it is returned as-is
+    /// </summary>
+    public static WrappedException ForException(Exception root, bool captureStack = true)
+    {
+      if (root==null) return null;
+
+      var we = root as WrappedException;
+      if (we==null)
+       we = new WrappedException( new WrappedExceptionData(root, captureStack) );
+
+      return we;
+    }
+
+    public static WrappedException MakeFromBSON(BSONSerializer serializer, BSONDocument doc)
+    {
+      var wrp = doc["wrp"] as BSONDocumentElement;
+      var result = wrp==null ? new WrappedException() : new WrappedException(wrp.Value.TryGetObjectValueOf("msg").AsString());
+      serializer.Deserialize(doc, result);
+      return result;
+    }
+
+    internal WrappedException() {}
+    internal WrappedException(string msg): base(msg){}
+
+
+    public WrappedException(WrappedExceptionData data) : base(data.Message) { m_Wrapped = data; }
     public WrappedException(string message, WrappedExceptionData data) : base(message) { m_Wrapped = data; }
-    public WrappedException(string message, WrappedExceptionData data, Exception inner) : base(message, inner) { m_Wrapped = data; }
 
     internal WrappedException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
@@ -238,6 +319,26 @@ namespace NFX
         throw new NFXException(StringConsts.ARGUMENT_ERROR + GetType().Name + ".GetObjectData(info=null)");
       info.AddValue(WRAPPED_FLD_NAME, m_Wrapped);
       base.GetObjectData(info, context);
+    }
+
+    public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)
+    {
+      serializer.AddTypeIDField(doc, parent, this, context);
+      doc.Set( new BSONDocumentElement("wrp", serializer.Serialize(m_Wrapped, parent: this)));
+    }
+
+    public bool IsKnownTypeForBSONDeserialization(Type type)
+    {
+      return type==typeof(WrappedExceptionData);
+    }
+
+    public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)
+    {
+      var iv = doc["wrp"] as BSONDocumentElement;
+      if (iv==null) return;
+
+      m_Wrapped = new WrappedExceptionData();
+      serializer.Deserialize(iv.Value, m_Wrapped);
     }
   }
 }
