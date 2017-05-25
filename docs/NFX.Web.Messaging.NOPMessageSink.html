@@ -85,7 +85,19 @@
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
                 <div>
+                  <a class="xref" href="NFX.Web.Messaging.MessageSink.html#NFX_Web_Messaging_MessageSink_SupportedChannelNames">MessageSink.SupportedChannelNames</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Web.Messaging.MessageSink.html#NFX_Web_Messaging_MessageSink_ErrorHandlingMode">MessageSink.ErrorHandlingMode</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.Web.Messaging.MessageSink.html#NFX_Web_Messaging_MessageSink_SendMsg_NFX_Web_Messaging_Message_">MessageSink.SendMsg(Message)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Web.Messaging.MessageSink.html#NFX_Web_Messaging_MessageSink_Filter_NFX_Web_Messaging_Message_">MessageSink.Filter(Message)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Web.Messaging.MessageSink.html#NFX_Web_Messaging_MessageSink_Log_NFX_Log_MessageType_System_String_System_String_System_Exception_System_Nullable_System_Guid__System_String_">MessageSink.Log(MessageType, String, String, Exception, Nullable&lt;Guid&gt;, String)</a>
                 </div>
                 <div>
                   <a class="xref" href="NFX.ServiceModel.Service-1.html#NFX_ServiceModel_Service_1_ComponentDirector">Service&lt;MessageService&gt;.ComponentDirector</a>
@@ -261,6 +273,35 @@
                   </tr>
                 </tbody>
               </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Web_Messaging_NOPMessageSink_SupportedChannels_" data-uid="NFX.Web.Messaging.NOPMessageSink.SupportedChannels*"></a>
+              <h4 id="NFX_Web_Messaging_NOPMessageSink_SupportedChannels" data-uid="NFX.Web.Messaging.NOPMessageSink.SupportedChannels">SupportedChannels</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override MsgChannels SupportedChannels { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Messaging.MsgChannels.html">MsgChannels</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="NFX.Web.Messaging.MessageSink.html#NFX_Web_Messaging_MessageSink_SupportedChannels">MessageSink.SupportedChannels</a></div>
               <h3 id="methods">Methods
               </h3>
               
@@ -271,7 +312,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected override void DoSendMsg(Message msg)</code></pre>
+                <pre><code class="lang-csharp hljs">protected override bool DoSendMsg(Message msg)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -286,6 +327,21 @@
                   <tr>
                     <td><a class="xref" href="NFX.Web.Messaging.Message.html">Message</a></td>
                     <td><span class="parametername">msg</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
                     <td></td>
                   </tr>
                 </tbody>

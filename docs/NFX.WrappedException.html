@@ -145,7 +145,8 @@
               <h5 id="NFX_WrappedException_syntax">Syntax</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class WrappedException : NFXException, ISerializable, _Exception</code></pre>
+[BSONSerializable(&quot;A43ABD0D-22B2-4012-8A24-280A038FD943&quot;)]
+public sealed class WrappedException : NFXException, ISerializable, _Exception, IBSONSerializable, IBSONDeserializable</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -208,43 +209,6 @@ public sealed class WrappedException : NFXException, ISerializable, _Exception</
                   </tr>
                 </tbody>
               </table>
-              
-              
-              <a id="NFX_WrappedException__ctor_" data-uid="NFX.WrappedException.#ctor*"></a>
-              <h4 id="NFX_WrappedException__ctor_System_String_NFX_WrappedExceptionData_System_Exception_" data-uid="NFX.WrappedException.#ctor(System.String,NFX.WrappedExceptionData,System.Exception)">WrappedException(String, WrappedExceptionData, Exception)</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public WrappedException(string message, WrappedExceptionData data, Exception inner)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">message</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="NFX.WrappedExceptionData.html">WrappedExceptionData</a></td>
-                    <td><span class="parametername">data</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Exception</span></td>
-                    <td><span class="parametername">inner</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
               <h3 id="fields">Fields
               </h3>
               
@@ -303,6 +267,93 @@ public sealed class WrappedException : NFXException, ISerializable, _Exception</
               </h3>
               
               
+              <a id="NFX_WrappedException_DeserializeFromBSON_" data-uid="NFX.WrappedException.DeserializeFromBSON*"></a>
+              <h4 id="NFX_WrappedException_DeserializeFromBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_System_Object__" data-uid="NFX.WrappedException.DeserializeFromBSON(NFX.Serialization.BSON.BSONSerializer,NFX.Serialization.BSON.BSONDocument,System.Object@)">DeserializeFromBSON(BSONSerializer, BSONDocument, ref Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializer.html">BSONSerializer</a></td>
+                    <td><span class="parametername">serializer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONDocument.html">BSONDocument</a></td>
+                    <td><span class="parametername">doc</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.BSON.IBSONDeserializable.html#NFX_Serialization_BSON_IBSONDeserializable_DeserializeFromBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_System_Object__">IBSONDeserializable.DeserializeFromBSON(BSONSerializer, BSONDocument, ref Object)</a></div>
+              
+              
+              <a id="NFX_WrappedException_ForException_" data-uid="NFX.WrappedException.ForException*"></a>
+              <h4 id="NFX_WrappedException_ForException_System_Exception_System_Boolean_" data-uid="NFX.WrappedException.ForException(System.Exception,System.Boolean)">ForException(Exception, Boolean)</h4>
+              <div class="markdown level1 summary"><p>Returns an exception wrapped into WrappedException. If the exception is already wrapped, it is returned as-is</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static WrappedException ForException(Exception root, bool captureStack = true)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Exception</span></td>
+                    <td><span class="parametername">root</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td><span class="parametername">captureStack</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WrappedException.html">WrappedException</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_WrappedException_GetObjectData_" data-uid="NFX.WrappedException.GetObjectData*"></a>
               <h4 id="NFX_WrappedException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="NFX.WrappedException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
               <div class="markdown level1 summary"></div>
@@ -335,6 +386,141 @@ public sealed class WrappedException : NFXException, ISerializable, _Exception</
               </table>
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="NFX.NFXException.html#NFX_NFXException_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_">NFXException.GetObjectData(SerializationInfo, StreamingContext)</a></div>
+              
+              
+              <a id="NFX_WrappedException_IsKnownTypeForBSONDeserialization_" data-uid="NFX.WrappedException.IsKnownTypeForBSONDeserialization*"></a>
+              <h4 id="NFX_WrappedException_IsKnownTypeForBSONDeserialization_System_Type_" data-uid="NFX.WrappedException.IsKnownTypeForBSONDeserialization(System.Type)">IsKnownTypeForBSONDeserialization(Type)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsKnownTypeForBSONDeserialization(Type type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.BSON.IBSONSerializable.html#NFX_Serialization_BSON_IBSONSerializable_IsKnownTypeForBSONDeserialization_System_Type_">IBSONSerializable.IsKnownTypeForBSONDeserialization(Type)</a></div>
+              
+              
+              <a id="NFX_WrappedException_MakeFromBSON_" data-uid="NFX.WrappedException.MakeFromBSON*"></a>
+              <h4 id="NFX_WrappedException_MakeFromBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_" data-uid="NFX.WrappedException.MakeFromBSON(NFX.Serialization.BSON.BSONSerializer,NFX.Serialization.BSON.BSONDocument)">MakeFromBSON(BSONSerializer, BSONDocument)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static WrappedException MakeFromBSON(BSONSerializer serializer, BSONDocument doc)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializer.html">BSONSerializer</a></td>
+                    <td><span class="parametername">serializer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONDocument.html">BSONDocument</a></td>
+                    <td><span class="parametername">doc</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.WrappedException.html">WrappedException</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_WrappedException_SerializeToBSON_" data-uid="NFX.WrappedException.SerializeToBSON*"></a>
+              <h4 id="NFX_WrappedException_SerializeToBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_NFX_Serialization_BSON_IBSONSerializable_System_Object__" data-uid="NFX.WrappedException.SerializeToBSON(NFX.Serialization.BSON.BSONSerializer,NFX.Serialization.BSON.BSONDocument,NFX.Serialization.BSON.IBSONSerializable,System.Object@)">SerializeToBSON(BSONSerializer, BSONDocument, IBSONSerializable, ref Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializer.html">BSONSerializer</a></td>
+                    <td><span class="parametername">serializer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONDocument.html">BSONDocument</a></td>
+                    <td><span class="parametername">doc</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.IBSONSerializable.html">IBSONSerializable</a></td>
+                    <td><span class="parametername">parent</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.BSON.IBSONSerializable.html#NFX_Serialization_BSON_IBSONSerializable_SerializeToBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_NFX_Serialization_BSON_IBSONSerializable_System_Object__">IBSONSerializable.SerializeToBSON(BSONSerializer, BSONDocument, IBSONSerializable, ref Object)</a></div>
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
                   <a class="xref" href="NFX.Wave.ExceptionExtensions.html#NFX_Wave_ExceptionExtensions_ToClientResponseJSONMap_System_Exception_System_Boolean_">ExceptionExtensions.ToClientResponseJSONMap(Exception, Boolean)</a>

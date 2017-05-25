@@ -342,32 +342,6 @@ public string CC { get; set; }</code></pre>
               </table>
               
               
-              <a id="NFX_Web_Messaging_Message_Channels_" data-uid="NFX.Web.Messaging.Message.Channels*"></a>
-              <h4 id="NFX_Web_Messaging_Message_Channels" data-uid="NFX.Web.Messaging.Message.Channels">Channels</h4>
-              <div class="markdown level1 summary"></div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[Field(&quot;*&quot;, StoreFlag.LoadAndStore, false, DataKind.Text, false, true, null, null, null, null, 0, 0, CharCase.AsIs, &quot;ch&quot;, null, null, null, false, null, null, null, true)]
-public MsgChannels Channels { get; set; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Web.Messaging.MsgChannels.html">MsgChannels</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
               <a id="NFX_Web_Messaging_Message_FROMAddress_" data-uid="NFX.Web.Messaging.Message.FROMAddress*"></a>
               <h4 id="NFX_Web_Messaging_Message_FROMAddress" data-uid="NFX.Web.Messaging.Message.FROMAddress">FROMAddress</h4>
               <div class="markdown level1 summary"></div>
@@ -499,6 +473,32 @@ public MsgImportance Importance { get; set; }</code></pre>
               </table>
               
               
+              <a id="NFX_Web_Messaging_Message_MessageAddress_" data-uid="NFX.Web.Messaging.Message.MessageAddress*"></a>
+              <h4 id="NFX_Web_Messaging_Message_MessageAddress" data-uid="NFX.Web.Messaging.Message.MessageAddress">MessageAddress</h4>
+              <div class="markdown level1 summary"><p>returns message address accessor</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public MessageAddressBuilder MessageAddress { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Messaging.MessageAddressBuilder.html">MessageAddressBuilder</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_Web_Messaging_Message_Priority_" data-uid="NFX.Web.Messaging.Message.Priority*"></a>
               <h4 id="NFX_Web_Messaging_Message_Priority" data-uid="NFX.Web.Messaging.Message.Priority">Priority</h4>
               <div class="markdown level1 summary"></div>
@@ -597,6 +597,35 @@ public string TOName { get; set; }</code></pre>
                 <tbody>
                   <tr>
                     <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="NFX_Web_Messaging_Message_AddAddressee_" data-uid="NFX.Web.Messaging.Message.AddAddressee*"></a>
+              <h4 id="NFX_Web_Messaging_Message_AddAddressee_NFX_Web_Messaging_MessageAddressBuilder_Addressee_" data-uid="NFX.Web.Messaging.Message.AddAddressee(NFX.Web.Messaging.MessageAddressBuilder.Addressee)">AddAddressee(MessageAddressBuilder.Addressee)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void AddAddressee(MessageAddressBuilder.Addressee addressee)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Messaging.MessageAddressBuilder.Addressee.html">MessageAddressBuilder.Addressee</a></td>
+                    <td><span class="parametername">addressee</span></td>
                     <td></td>
                   </tr>
                 </tbody>

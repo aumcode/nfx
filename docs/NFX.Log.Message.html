@@ -104,7 +104,8 @@
               <h5 id="NFX_Log_Message_syntax">Syntax</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class Message : IArchiveLoggable</code></pre>
+[BSONSerializable(&quot;A05AEE0F-A33C-4B1D-AA45-CDEAF894A095&quot;)]
+public sealed class Message : IArchiveLoggable, IBSONSerializable, IBSONDeserializable</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -116,7 +117,8 @@ public sealed class Message : IArchiveLoggable</code></pre>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public Message()</code></pre>
+                <pre><code class="lang-csharp hljs">[SlimDeserializationCtorSkip]
+public Message()</code></pre>
               </div>
               
               
@@ -556,6 +558,45 @@ Note about logging errors. Use caught exception.ToMessageWithType() method, then
               </table>
               
               
+              <a id="NFX_Log_Message_DeserializeFromBSON_" data-uid="NFX.Log.Message.DeserializeFromBSON*"></a>
+              <h4 id="NFX_Log_Message_DeserializeFromBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_System_Object__" data-uid="NFX.Log.Message.DeserializeFromBSON(NFX.Serialization.BSON.BSONSerializer,NFX.Serialization.BSON.BSONDocument,System.Object@)">DeserializeFromBSON(BSONSerializer, BSONDocument, ref Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializer.html">BSONSerializer</a></td>
+                    <td><span class="parametername">serializer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONDocument.html">BSONDocument</a></td>
+                    <td><span class="parametername">doc</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.BSON.IBSONDeserializable.html#NFX_Serialization_BSON_IBSONDeserializable_DeserializeFromBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_System_Object__">IBSONDeserializable.DeserializeFromBSON(BSONSerializer, BSONDocument, ref Object)</a></div>
+              
+              
               <a id="NFX_Log_Message_FormatCallerParams_" data-uid="NFX.Log.Message.FormatCallerParams*"></a>
               <h4 id="NFX_Log_Message_FormatCallerParams_System_Object_System_String_System_Int32_" data-uid="NFX.Log.Message.FormatCallerParams(System.Object,System.String,System.Int32)">FormatCallerParams(Object, String, Int32)</h4>
               <div class="markdown level1 summary"><p>Supplants the from string with caller as JSON string</p>
@@ -607,6 +648,94 @@ Note about logging errors. Use caught exception.ToMessageWithType() method, then
                   </tr>
                 </tbody>
               </table>
+              
+              
+              <a id="NFX_Log_Message_IsKnownTypeForBSONDeserialization_" data-uid="NFX.Log.Message.IsKnownTypeForBSONDeserialization*"></a>
+              <h4 id="NFX_Log_Message_IsKnownTypeForBSONDeserialization_System_Type_" data-uid="NFX.Log.Message.IsKnownTypeForBSONDeserialization(System.Type)">IsKnownTypeForBSONDeserialization(Type)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsKnownTypeForBSONDeserialization(Type type)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Type</span></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.BSON.IBSONSerializable.html#NFX_Serialization_BSON_IBSONSerializable_IsKnownTypeForBSONDeserialization_System_Type_">IBSONSerializable.IsKnownTypeForBSONDeserialization(Type)</a></div>
+              
+              
+              <a id="NFX_Log_Message_SerializeToBSON_" data-uid="NFX.Log.Message.SerializeToBSON*"></a>
+              <h4 id="NFX_Log_Message_SerializeToBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_NFX_Serialization_BSON_IBSONSerializable_System_Object__" data-uid="NFX.Log.Message.SerializeToBSON(NFX.Serialization.BSON.BSONSerializer,NFX.Serialization.BSON.BSONDocument,NFX.Serialization.BSON.IBSONSerializable,System.Object@)">SerializeToBSON(BSONSerializer, BSONDocument, IBSONSerializable, ref Object)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializer.html">BSONSerializer</a></td>
+                    <td><span class="parametername">serializer</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONDocument.html">BSONDocument</a></td>
+                    <td><span class="parametername">doc</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.Serialization.BSON.IBSONSerializable.html">IBSONSerializable</a></td>
+                    <td><span class="parametername">parent</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">context</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.Serialization.BSON.IBSONSerializable.html#NFX_Serialization_BSON_IBSONSerializable_SerializeToBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_NFX_Serialization_BSON_IBSONSerializable_System_Object__">IBSONSerializable.SerializeToBSON(BSONSerializer, BSONDocument, IBSONSerializable, ref Object)</a></div>
               
               
               <a id="NFX_Log_Message_SetParamsAsObject_" data-uid="NFX.Log.Message.SetParamsAsObject*"></a>

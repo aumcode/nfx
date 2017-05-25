@@ -160,6 +160,15 @@
                   <a class="xref" href="NFX.Instrumentation.Datum.html#NFX_Instrumentation_Datum_WriteJSONFields_System_Collections_Generic_IDictionary_System_String_System_Object__NFX_Serialization_JSON_JSONWritingOptions_">Datum.WriteJSONFields(IDictionary&lt;String, Object&gt;, JSONWritingOptions)</a>
                 </div>
                 <div>
+                  <a class="xref" href="NFX.Instrumentation.Datum.html#NFX_Instrumentation_Datum_SerializeToBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_NFX_Serialization_BSON_IBSONSerializable_System_Object__">Datum.SerializeToBSON(BSONSerializer, BSONDocument, IBSONSerializable, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Instrumentation.Datum.html#NFX_Instrumentation_Datum_IsKnownTypeForBSONDeserialization_System_Type_">Datum.IsKnownTypeForBSONDeserialization(Type)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Instrumentation.Datum.html#NFX_Instrumentation_Datum_DeserializeFromBSON_NFX_Serialization_BSON_BSONSerializer_NFX_Serialization_BSON_BSONDocument_System_Object__">Datum.DeserializeFromBSON(BSONSerializer, BSONDocument, Object)</a>
+                </div>
+                <div>
                   <span class="xref">System.Object.Equals(System.Object)</span>
                 </div>
                 <div>
@@ -183,7 +192,7 @@
               <h5 id="NFX_Glue_Instrumentation_ClientTotalMsgSent_syntax">Syntax</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Serializable]
-public class ClientTotalMsgSent : ClientGauge, IArchiveLoggable, IJSONWritable, INetInstrument, IIOInstrumentClass, IOperationClass, IInstrumentClass</code></pre>
+public class ClientTotalMsgSent : ClientGauge, IArchiveLoggable, IBSONSerializable, IBSONDeserializable, IJSONWritable, INetInstrument, IIOInstrumentClass, IOperationClass, IInstrumentClass</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>

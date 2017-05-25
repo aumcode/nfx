@@ -67,15 +67,18 @@
               <h1 id="hello-wave">Hello WAVE</h1>
               
 <p>NFX.WAVE represents &quot;(W)eb(A)pp(V)iew(E)nhanced&quot; web server which provides DYNAMIC web site services.
-This server is not meant to be exposed directly to the public Internet, rather it should be used as an application server behind the reverse proxy, such as NGINX. This server is designed to serve dynamic data-driven requests/APIs and not meant to be used for serving static content files (although it can). The implementation is based on a lightweight HttpListener that processes incoming Http requests via an injectable WorkDispatcher which governs the threading and WorkContext lifecycle.</p>
+This server is not meant to be exposed directly to the public Internet, rather it should be used as an application server behind the reverse proxy, such as NGINX. 
+This server is designed to serve dynamic data-driven requests/APIs and not meant to be used for serving static content files (although it can). 
+The implementation is based on a lightweight HttpListener that processes incoming Http requests via an injectable <code>WorkDispatcher</code> which governs the threading and <code>WorkContext</code> lifecycle.</p>
 <p>Below is step-by-step guide to create the simplest NFX.Wave application that outputs &quot;Hello WAVE!&quot; message to your browser.</p>
 <ol>
 <li><p>Create new C# Console Application project <code>HelloWorld</code>.</p>
 </li>
 <li><p>Add reference to <strong>NFX</strong> (e.g. <a href="https://www.nuget.org/packages/NFX" target="_target">via NuGet</a>).</p>
 </li>
-<li><p><code>Program.cs</code> must contain following code:</p>
-<pre><code class="lang-cs">using NFX.ApplicationModel;
+<li><p>Add the following code to <code>Program.cs</code>:</p>
+<pre><code class="lang-cs">using System;
+using NFX.ApplicationModel;
 using NFX.Wave;
 
 namespace HelloWorld
@@ -104,9 +107,11 @@ namespace HelloWorld
     }
   }
 }
-</code></pre><p>Here we create application container (<code>ServiceBaseApplication</code>) and than within it we create web server service (WaveServer). In this example the server is configurated with application-level configuration (it must have the same name as application) - <code>server.Configure(null)</code>, but  you can configure web server with specific configuration. </p>
+</code></pre><p>Here we create web server instance (<code>WaveServer</code>) in the scope of application container (<code>ServiceBaseApplication</code>). 
+In this example the server is configured with application-level configuration - <code>server.Configure(null)</code> (to be added below), 
+but one can configure web server with any specific configuration. </p>
 </li>
-<li><p>Add to the project <code>Pages\Index.html</code>:</p>
+<li><p>Create project folder <code>Pages</code> and add a file <code>Pages\Index.nht</code> with the following contents:</p>
 <pre><code class="lang-html">#&lt;laconf&gt;
  compiler
  {
@@ -117,19 +122,20 @@ namespace HelloWorld
 
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
-&lt;head&gt;
-&lt;/head&gt;
-&lt;body&gt;
- &lt;div id=&quot;root&quot;&gt;Hello WAVE!&lt;/div&gt;
-&lt;/body&gt;
+ &lt;head&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+   &lt;div id=&quot;root&quot;&gt;Hello WAVE!&lt;/div&gt;
+ &lt;/body&gt;
 &lt;/html&gt;
-</code></pre><p>This is the simplest <a href="/specs/template.html">NTC template</a> of start page of this application. Here code in <code>#&lt;laconf&gt;</code> brackets contains directives for <a href="/tools/ntc.html">NFX Template Compiler</a> which generates C# class from the template.</p>
+</code></pre><p>This is the simplest <a href="/specs/template.html">NTC template</a> of application start page. 
+The code in <code>#&lt;laconf&gt;</code> brackets contains directives for <a href="/tools/ntc.html">NFX Template Compiler</a> which generates C# class from the template.</p>
 </li>
-<li><p>To obtain a file with C# class from the <code>Index</code> page template you can choose from two variants: explicitly run <a href="/tools/ntc.html">ntc tool</a> with proper parameters or add following call (fix path to ntc tool if it is necessary) to project pre-build events with the subsequent project building:</p>
-<pre><code>&quot;$(SolutionDir)packages\NFX.3.4.0.1\tools\ntc&quot; &quot;$(ProjectDir)Pages\*.html&quot; -r -ext &quot;.auto.cs&quot; /src
-</code></pre><p>Add the resulting file (e.g. Index.html.auto.cs) with <code>Index</code> class to the project.</p>
+<li><p>To obtain a file with C# class from the <code>Index</code> page template you can choose from two variants: explicitly run <a href="/tools/ntc.html">ntc tool</a> with proper parameters or add following line (fix path to ntc tool if it is necessary) to project pre-build events</p>
+<pre><code>&quot;$(SolutionDir)packages\NFX.3.4.0.1\tools\ntc&quot; &quot;$(ProjectDir)Pages\*.nht&quot; -r -ext &quot;.auto.cs&quot; /src
+</code></pre><p>Add the resulting file (e.g. Index.nht.auto.cs) with <code>Index</code> class to the project.</p>
 </li>
-<li><p>Add cotroller <code>Controllers\Hello.cs</code> with contents:</p>
+<li><p>Create project folder <code>Controllers</code> and add a class <code>Controllers\Hello.cs</code>:</p>
 <pre><code class="lang-cs">using NFX.Wave.MVC;
 using HelloWorld.Pages;
 
@@ -145,7 +151,7 @@ namespace HelloWorld.Contollers
   }
 }
 </code></pre></li>
-<li><p>We need setup server configuration i.e. address, handlers. Add configuration file <code>HelloWorld.laconf</code> with the following contents:</p>
+<li><p>Add configuration file <code>HelloWorld.laconf</code> with the following contents:</p>
 <pre><code class="lang-js">application
 {
   wave
@@ -169,10 +175,13 @@ namespace HelloWorld.Contollers
     }
   }
 }
-</code></pre><p>In <code>prefix</code> section we define the address where we can send a request to the server. In <code>handler</code> section we define type of the handler, assembly where corresponding controllers are placed and pattern of path to controller and action.</p>
+</code></pre><p>Make sure that Build Action is set to None and Copy to Output Directory is set to Copy Always.</p>
 </li>
-<li><p>Run the <code>HelloWorld</code> application, open browser and type <code>http://localhost:8070/hello/index</code> or just <code>http://localhost:8070</code> in the address bar.</p>
-</li>
+</ol>
+<p>In <code>prefix</code> section we define the address where we can send a request to the server. 
+In <code>handler</code> section we define type of the handler, assembly where corresponding controllers are placed and pattern of path to controller and action.</p>
+<ol>
+<li>Run the <code>HelloWorld</code> application, open browser and type <code>http://localhost:8070/hello/index</code> or just <code>http://localhost:8070</code> in the address bar.</li>
 </ol>
 
             </article>

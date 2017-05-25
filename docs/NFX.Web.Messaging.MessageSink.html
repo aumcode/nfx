@@ -263,6 +263,83 @@
                   </tr>
                 </tbody>
               </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_Web_Messaging_MessageSink_ErrorHandlingMode_" data-uid="NFX.Web.Messaging.MessageSink.ErrorHandlingMode*"></a>
+              <h4 id="NFX_Web_Messaging_MessageSink_ErrorHandlingMode" data-uid="NFX.Web.Messaging.MessageSink.ErrorHandlingMode">ErrorHandlingMode</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public SendMessageErrorHandling ErrorHandlingMode { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Messaging.SendMessageErrorHandling.html">SendMessageErrorHandling</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Messaging_MessageSink_SupportedChannelNames_" data-uid="NFX.Web.Messaging.MessageSink.SupportedChannelNames*"></a>
+              <h4 id="NFX_Web_Messaging_MessageSink_SupportedChannelNames" data-uid="NFX.Web.Messaging.MessageSink.SupportedChannelNames">SupportedChannelNames</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;string&gt; SupportedChannelNames { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Messaging_MessageSink_SupportedChannels_" data-uid="NFX.Web.Messaging.MessageSink.SupportedChannels*"></a>
+              <h4 id="NFX_Web_Messaging_MessageSink_SupportedChannels" data-uid="NFX.Web.Messaging.MessageSink.SupportedChannels">SupportedChannels</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract MsgChannels SupportedChannels { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Messaging.MsgChannels.html">MsgChannels</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               <h3 id="methods">Methods
               </h3>
               
@@ -274,7 +351,7 @@
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected abstract void DoSendMsg(Message msg)</code></pre>
+                <pre><code class="lang-csharp hljs">protected abstract bool DoSendMsg(Message msg)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -293,16 +370,30 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
-              <a id="NFX_Web_Messaging_MessageSink_SendMsg_" data-uid="NFX.Web.Messaging.MessageSink.SendMsg*"></a>
-              <h4 id="NFX_Web_Messaging_MessageSink_SendMsg_NFX_Web_Messaging_Message_" data-uid="NFX.Web.Messaging.MessageSink.SendMsg(NFX.Web.Messaging.Message)">SendMsg(Message)</h4>
-              <div class="markdown level1 summary"><p>Performs actual sending of msg. This method does not have to be thread-safe as it is called by a single thread</p>
-</div>
+              <a id="NFX_Web_Messaging_MessageSink_Filter_" data-uid="NFX.Web.Messaging.MessageSink.Filter*"></a>
+              <h4 id="NFX_Web_Messaging_MessageSink_Filter_NFX_Web_Messaging_Message_" data-uid="NFX.Web.Messaging.MessageSink.Filter(NFX.Web.Messaging.Message)">Filter(Message)</h4>
+              <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void SendMsg(Message msg)</code></pre>
+                <pre><code class="lang-csharp hljs">protected virtual bool Filter(Message msg)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -317,6 +408,131 @@
                   <tr>
                     <td><a class="xref" href="NFX.Web.Messaging.Message.html">Message</a></td>
                     <td><span class="parametername">msg</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Messaging_MessageSink_Log_" data-uid="NFX.Web.Messaging.MessageSink.Log*"></a>
+              <h4 id="NFX_Web_Messaging_MessageSink_Log_NFX_Log_MessageType_System_String_System_String_System_Exception_System_Nullable_System_Guid__System_String_" data-uid="NFX.Web.Messaging.MessageSink.Log(NFX.Log.MessageType,System.String,System.String,System.Exception,System.Nullable{System.Guid},System.String)">Log(MessageType, String, String, Exception, Nullable&lt;Guid&gt;, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected Guid Log(MessageType type, string from, string message, Exception error = null, Guid? relatedMessageID = null, string parameters = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">message</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Exception</span></td>
+                    <td><span class="parametername">error</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+                    <td><span class="parametername">relatedMessageID</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">parameters</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Web_Messaging_MessageSink_SendMsg_" data-uid="NFX.Web.Messaging.MessageSink.SendMsg*"></a>
+              <h4 id="NFX_Web_Messaging_MessageSink_SendMsg_NFX_Web_Messaging_Message_" data-uid="NFX.Web.Messaging.MessageSink.SendMsg(NFX.Web.Messaging.Message)">SendMsg(Message)</h4>
+              <div class="markdown level1 summary"><p>Performs actual sending of msg. This method does not have to be thread-safe as it is called by a single thread</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool SendMsg(Message msg)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Web.Messaging.Message.html">Message</a></td>
+                    <td><span class="parametername">msg</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
                     <td></td>
                   </tr>
                 </tbody>

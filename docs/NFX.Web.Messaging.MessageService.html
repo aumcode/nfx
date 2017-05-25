@@ -413,6 +413,33 @@ public bool InstrumentationEnabled { get; set; }</code></pre>
                   <div><a class="xref" href="NFX.Instrumentation.IInstrumentable.html#NFX_Instrumentation_IInstrumentable_InstrumentationEnabled">IInstrumentable.InstrumentationEnabled</a></div>
               
               
+              <a id="NFX_Web_Messaging_MessageService_LogLevel_" data-uid="NFX.Web.Messaging.MessageService.LogLevel*"></a>
+              <h4 id="NFX_Web_Messaging_MessageService_LogLevel" data-uid="NFX.Web.Messaging.MessageService.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = MessageType.Warning)]
+[ExternalParameter(new string[]{&quot;messaging&quot;})]
+public MessageType LogLevel { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_Web_Messaging_MessageService_Sink_" data-uid="NFX.Web.Messaging.MessageService.Sink*"></a>
               <h4 id="NFX_Web_Messaging_MessageService_Sink" data-uid="NFX.Web.Messaging.MessageService.Sink">Sink</h4>
               <div class="markdown level1 summary"><p>Gets/sets sink that performs sending</p>
