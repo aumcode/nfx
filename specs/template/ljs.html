@@ -66,11 +66,19 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="laconic-javascript-ljs">Laconic JavaScript (LJS)</h1>
               
-<p><a href="/tools/ntc.html">NFX Template Compiler Tool</a> allows making special <a href="/specs/configuration/laconic.html">laconic-syntax</a> inserts (we named that technology as Laconic Java Script - LJS) into javascript. These code segments present structure of HTML DOM elements in laconic format. The tool translates them into javascript statements of DOM elements building. To make ntc tool take into account LJS code you should specify certain compiler <code>NFX.Templatization.TextJSTemplateCompiler</code> or <code>NFX.Templatization.NHTCompiler</code> (for whole page):</p>
+<p><a href="/tools/ntc.html">NFX Template Compiler Tool</a> supports the LJS (Laconic Java Script - LJS) sytax inserts right in the template content.
+The LJS is based on <a href="/specs/configuration/laconic.html">laconic-syntax</a>. 
+LJS is a Laconic representation of HTML DOM elements used for custom controls (i.e. dialogs, widgets etc.) dynamic rendering.
+LJS compiler translates LJS into Javascript statements that build DOM elements. 
+Specify LJS compiler on <code>ntc</code> cli: <code>NFX.Templatization.TextJSTemplateCompiler</code> - compiles java script files or <code>NFX.Templatization.NHTCompiler</code> - compiles the whole page:</p>
 <pre><code>ntc.exe src.js -ext &quot;.result&quot; /src /c &quot;NFX.Templatization.TextJSTemplateCompiler, NFX&quot;
 ntc.exe my_page.nht -r -ext &quot;.auto.cs&quot; /src /c &quot;NFX.Templatization.NHTCompiler, NFX&quot;
 </code></pre><p><br>
-LJS code is surrounded with <code>/***</code> and <code>***/</code> bounds. In laconic format terms every DOM element becomes a segment and its parameters become attributes of that section, nested elements become sub-section, inner text of the element is transfered into value of the segment. You can specify which element will be root for the new tree - first argument of function with LJS (id or element itself). Other arguments also can be used in LJS code through <code>? js_code</code> syntax but in this case the first argument of the function will be considered as a root even if you are not going specify it so you should add corresponding parameter.</p>
+LJS code is marked with <code>/***</code> and <code>***/</code> delimiters. In the terms of Laconic config, every config segment becomes a DOM element and
+config section attributes become become attributes of the DOM element, nested sub-section become sub-elements, section value becomes an inner text of the DOM element.
+You can specify which element will be root for the new tree - first argument of function with LJS (id or element itself). 
+Other arguments also can be used in LJS code through <code>? js_code</code> syntax but in this case the first argument of the function will be considered as a root 
+even if you are not going specify it so you should add corresponding parameter.</p>
 <pre><code class="lang-js">function buildChangeSNameForm(root, dfltName) {
   /***
   form {
@@ -170,8 +178,8 @@ table {
 </code></pre><p>And we get:</p>
 <pre><code class="lang-js">var Ø1 = WAVE.ce(&#39;table&#39;);
 buildRow(Ø1);
-</code></pre><p><br>
-Also you can create pointer on any item in tree with construction <code>ljsid=&lt;your_identifier&gt;</code> and use it:</p>
+</code></pre><p><br></p>
+<p>Also you can create pointer to any item in tree with the construct <code>ljsid=&lt;your_identifier&gt;</code> and use it:</p>
 <pre><code class="lang-js">/***
 div {
   ljsid=root
@@ -205,7 +213,7 @@ Besides that there is a possibility to make &quot;inline&quot; LJS insertions:</
       return Ø1;
     })();
 </code></pre><p><br>
-Using of NHT code in LJS looks like:</p>
+Usage of NHT code in LJS looks like:</p>
 <pre><code class="lang-js">/***
   span=&quot;?&#39;?[:SomeVariable]&#39;&quot;
 ***/
