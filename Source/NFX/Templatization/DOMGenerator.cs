@@ -16,7 +16,8 @@ namespace NFX.Templatization
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
     public const string CONFIG_JS_PREFIX_ATTR = "?";
     public const string CONFIG_LJS_ID_ATTR = "ljsid";
-    private readonly string[] CONFIG_BOOL_ATTRS = new string[] {"readonly", "disabled", "checked", "required", "selected"};
+    public const string CONFIG_SECT_NAME_TEXT_NODE = "ljstext";
+    private readonly string[] CONFIG_BOOL_ATTRS = new string[] {"readOnly", "disabled", "checked", "required", "selected"};
 
     public const string JS_ROOT_VAR = "Ør";
     public const string JS_CURRENT_ELEMENT = "?this";
@@ -101,6 +102,7 @@ namespace NFX.Templatization
       var nName = node.Name;
       var hasChildren = node.HasChildren;
       var isJsNode = nName.StartsWith(CONFIG_JS_PREFIX_ATTR, StringComparison.Ordinal);
+      var isTextNode = nName.EqualsOrdSenseCase(CONFIG_SECT_NAME_TEXT_NODE);
       var elemId = isJsNode ? container : "Ø{0}".Args(++counter);
 
       if (isRootNode)
@@ -112,9 +114,22 @@ namespace NFX.Templatization
 
       if (isJsNode)
         sb.AppendFormat("{0}{1}{4}{2}{3}", getIndent(extraSpaces), jsWrap(node.Name, elemId), hasChildren ? "{" : string.Empty, LineEnding, Space);
+      else if (isTextNode)
+        sb.AppendFormat("{0}var {1}{4}={4}WAVE.ctn({2});{3}",
+                        getIndent(extraSpaces),
+                        elemId,
+                        wrapValue(node.Value, elemId),
+                        LineEnding,
+                        Space);
       else
       {
-        sb.AppendFormat("{0}var {1}{4}={4}WAVE.ce('{2}');{3}", getIndent(extraSpaces), elemId, MiscUtils.EscapeJSLiteral(nName), LineEnding, Space);
+        sb.AppendFormat("{0}var {1}{4}={4}WAVE.ce('{2}');{3}",
+                        getIndent(extraSpaces),
+                        elemId,
+                        MiscUtils.EscapeJSLiteral(nName),
+                        LineEnding,
+                        Space);
+
         if (node.Value.IsNotNullOrWhiteSpace())
           sb.AppendFormat("{3}{0}.innerText{4}={4}{1};{2}", elemId, wrapValue(node.Value, elemId), LineEnding, getIndent(extraSpaces), Space);
 
@@ -134,10 +149,15 @@ namespace NFX.Templatization
 
             m_MapLjsIdsToJsIds.Add(value, elemId);
           }
+          else if (name.StartsWith(CONFIG_ESCAPE_ATTR))
+          {
+            sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, name, wrapValue(value, elemId), LineEnding, Space));
+          }
           else
           {
-            if (CONFIG_BOOL_ATTRS.Any(s => s.EqualsSenseCase(name)) || name.StartsWith(CONFIG_ESCAPE_ATTR))
-              sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, name, wrapValue(value, elemId), LineEnding, Space));
+            var attrName = CONFIG_BOOL_ATTRS.FirstOrDefault(s => s.EqualsOrdIgnoreCase(name));
+            if (attrName != null)
+              sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, attrName, wrapValue(value, elemId), LineEnding, Space));
             else
               sb.AppendFormat("{4}{0}.setAttribute('{1}',{5}{2});{3}", elemId, name, wrapValue(value, elemId), LineEnding, getIndent(extraSpaces), Space);
           }

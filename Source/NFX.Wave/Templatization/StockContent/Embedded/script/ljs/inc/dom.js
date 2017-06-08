@@ -106,6 +106,10 @@ published.ce = function(tag){
   return document.createElement(tag);
 };
 
+published.ctn = function (text) {
+  return document.createTextNode(text);
+};
+
 published.getRadioGroupValue = function(groupName){
   var group = document.getElementsByName(groupName);
   for (var i = 0; i < group.length; i++) {

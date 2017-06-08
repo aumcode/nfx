@@ -1057,10 +1057,12 @@
            assertTrue( WAVE.strSame("A","A"));
            assertTrue( WAVE.strSame("A","a"));
            assertTrue( WAVE.strSame("A","A "));
-           assertTrue( WAVE.strSame(" A ","A"));
+           assertTrue( WAVE.strSame(" A ", "A"));
+           assertTrue( WAVE.strSame("1", 1));
+           assertTrue( WAVE.strSame(2, "2 "));
            assertTrue( WAVE.strSame("A BCD","   A bcd"));
            assertFalse( WAVE.strSame("A BCD","   A b cd"));
-           assertFalse( WAVE.strSame("AB","A B"));
+           assertFalse( WAVE.strSame("3", 1));
        });
 
        run("Strings", "strOneOf", function(){

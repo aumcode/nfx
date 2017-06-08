@@ -179,6 +179,8 @@ published.strContains = function(str, seg, scase) {
 published.strSame = function(str1, str2) {
   if (typeof (str1) === tUNDEFINED || typeof (str2) === tUNDEFINED) return false;
   if (str1 === null || str2 === null) return false;
+  if (!WAVE.isString(str1)) str1 = str1.toString();
+  if (!WAVE.isString(str2)) str2 = str2.toString();
   return published.strTrim(str1).toLowerCase() === published.strTrim(str2).toLowerCase();
 };
 
