@@ -203,6 +203,30 @@ implement IBSONSerializable/IBSONDeserializable</p>
               </table>
               
               
+              <h4 id="NFX_Serialization_BSON_BSONSerializer_DEFAULT_PK_NAME_FIELD" data-uid="NFX.Serialization.BSON.BSONSerializer.DEFAULT_PK_NAME_FIELD">DEFAULT_PK_NAME_FIELD</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string DEFAULT_PK_NAME_FIELD = &quot;__id&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <h4 id="NFX_Serialization_BSON_BSONSerializer_DEFAULT_TYPE_ID_FIELD" data-uid="NFX.Serialization.BSON.BSONSerializer.DEFAULT_TYPE_ID_FIELD">DEFAULT_TYPE_ID_FIELD</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
@@ -253,15 +277,15 @@ implement IBSONSerializable/IBSONDeserializable</p>
               </h3>
               
               
-              <a id="NFX_Serialization_BSON_BSONSerializer_Purpose_" data-uid="NFX.Serialization.BSON.BSONSerializer.Purpose*"></a>
-              <h4 id="NFX_Serialization_BSON_BSONSerializer_Purpose" data-uid="NFX.Serialization.BSON.BSONSerializer.Purpose">Purpose</h4>
+              <a id="NFX_Serialization_BSON_BSONSerializer_Flags_" data-uid="NFX.Serialization.BSON.BSONSerializer.Flags*"></a>
+              <h4 id="NFX_Serialization_BSON_BSONSerializer_Flags" data-uid="NFX.Serialization.BSON.BSONSerializer.Flags">Flags</h4>
               <div class="markdown level1 summary"><p>Defines the purpose/level of detail of serialization</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[Config]
-public BSONSerializationPurpose Purpose { get; set; }</code></pre>
+public BSONSerializationFlags Flags { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -273,7 +297,33 @@ public BSONSerializationPurpose Purpose { get; set; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializationPurpose.html">BSONSerializationPurpose</a></td>
+                    <td><a class="xref" href="NFX.Serialization.BSON.BSONSerializationFlags.html">BSONSerializationFlags</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_Serialization_BSON_BSONSerializer_PKFieldName_" data-uid="NFX.Serialization.BSON.BSONSerializer.PKFieldName*"></a>
+              <h4 id="NFX_Serialization_BSON_BSONSerializer_PKFieldName" data-uid="NFX.Serialization.BSON.BSONSerializer.PKFieldName">PKFieldName</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(&quot;$pk-name&quot;)]
+public string PKFieldName { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -287,7 +337,7 @@ public BSONSerializationPurpose Purpose { get; set; }</code></pre>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[Config]
+                <pre><code class="lang-csharp hljs">[Config(&quot;$type-id-name&quot;)]
 public string TypeIDFieldName { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
@@ -471,6 +521,12 @@ decorated with BSONSerializableAttribute(guid)</p>
               </table>
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
+              <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
               <div>
@@ -625,12 +681,6 @@ decorated with BSONSerializableAttribute(guid)</p>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

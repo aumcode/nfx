@@ -78,11 +78,17 @@
                   <section><p>Provides read/write-through extensions</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.DefaultPile.html">DefaultPile</a></h4>
-                  <section><p>Provides default implementation of IPile which stores objects on a local machine</p>
+                  <section><p>Provides default implementation of IPile which stores objects in the local machine RAM</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.DefaultPileBase.html">DefaultPileBase</a></h4>
+                  <section><p>Provides base for default implementation of IPile which stores objects on a local machine in memory or in the MMF</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.LocalCache.html">LocalCache</a></h4>
                   <section><p>Provides default implementation of a cache that stores the mapping locally.
 The mapped-to objects may reside in local or distributed pile as configured</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.MMFPile.html">MMFPile</a></h4>
+                  <section><p>Provides default implementation of IPile which stores objects in Memory Mapped Files</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileAccessViolationException.html">PileAccessViolationException</a></h4>
                   <section><p>Thrown by pile memory manager when a supplied PilePointer is not pointing to a valid buffer</p>
@@ -111,7 +117,7 @@ The ISO code is case-insensitive</p>
 The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.
 The ISO code is case-insensitive</p>
 </section>
-                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.DefaultPile.SegmentCrawlStatus.html">DefaultPile.SegmentCrawlStatus</a></h4>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.DefaultPileBase.SegmentCrawlStatus.html">DefaultPileBase.SegmentCrawlStatus</a></h4>
                   <section><p>Holds information obtained after a segment crawl</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.GDIDWithInt.html">GDIDWithInt</a></h4>

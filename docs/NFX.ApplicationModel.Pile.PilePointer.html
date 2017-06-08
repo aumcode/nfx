@@ -102,39 +102,6 @@ should more than 1 pile be allocated than this pointer would need to be wrapped 
               
               
               <a id="NFX_ApplicationModel_Pile_PilePointer__ctor_" data-uid="NFX.ApplicationModel.Pile.PilePointer.#ctor*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_PilePointer__ctor_System_Byte___System_Int32_" data-uid="NFX.ApplicationModel.Pile.PilePointer.#ctor(System.Byte[],System.Int32)">PilePointer(Byte[], Int32)</h4>
-              <div class="markdown level1 summary"><p>Reads the pointer from the byte[] written to by RawWrite() at the specified address</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public PilePointer(byte[] buf, int addr)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Byte</span>[]</td>
-                    <td><span class="parametername">buf</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Int32</span></td>
-                    <td><span class="parametername">addr</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <a id="NFX_ApplicationModel_Pile_PilePointer__ctor_" data-uid="NFX.ApplicationModel.Pile.PilePointer.#ctor*"></a>
               <h4 id="NFX_ApplicationModel_Pile_PilePointer__ctor_System_Int32_System_Int32_" data-uid="NFX.ApplicationModel.Pile.PilePointer.#ctor(System.Int32,System.Int32)">PilePointer(Int32, Int32)</h4>
               <div class="markdown level1 summary"><p>Create local pointer</p>
 </div>
@@ -239,31 +206,6 @@ should more than 1 pile be allocated than this pointer would need to be wrapped 
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">public readonly int NodeID</code></pre>
-              </div>
-              <h5 class="fieldValue">Field Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Int32</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
-              <h4 id="NFX_ApplicationModel_Pile_PilePointer_RAW_BYTE_SIZE" data-uid="NFX.ApplicationModel.Pile.PilePointer.RAW_BYTE_SIZE">RAW_BYTE_SIZE</h4>
-              <div class="markdown level1 summary"><p>The size of the pointer when directly written to byte[]</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public const int RAW_BYTE_SIZE = 12</code></pre>
               </div>
               <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -505,39 +447,6 @@ Even if this is a valid local pointer it may be an invalid distributed pointer</
               <div><span class="xref">System.ValueType.GetHashCode()</span></div>
               
               
-              <a id="NFX_ApplicationModel_Pile_PilePointer_RawWrite_" data-uid="NFX.ApplicationModel.Pile.PilePointer.RawWrite*"></a>
-              <h4 id="NFX_ApplicationModel_Pile_PilePointer_RawWrite_System_Byte___System_Int32_" data-uid="NFX.ApplicationModel.Pile.PilePointer.RawWrite(System.Byte[],System.Int32)">RawWrite(Byte[], Int32)</h4>
-              <div class="markdown level1 summary"><p>Writes this this instance directly to byte[] without any headers</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void RawWrite(byte[] buf, int addr)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="xref">System.Byte</span>[]</td>
-                    <td><span class="parametername">buf</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">System.Int32</span></td>
-                    <td><span class="parametername">addr</span></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              
               <a id="NFX_ApplicationModel_Pile_PilePointer_ToString_" data-uid="NFX.ApplicationModel.Pile.PilePointer.ToString*"></a>
               <h4 id="NFX_ApplicationModel_Pile_PilePointer_ToString" data-uid="NFX.ApplicationModel.Pile.PilePointer.ToString">ToString()</h4>
               <div class="markdown level1 summary"></div>
@@ -660,6 +569,12 @@ Even if this is a valid local pointer it may be an invalid distributed pointer</
                 </tbody>
               </table>
               <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
@@ -812,12 +727,6 @@ Even if this is a valid local pointer it may be an invalid distributed pointer</
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>
