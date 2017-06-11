@@ -161,12 +161,12 @@ namespace ntc
 
                                         var fn = (re.IsNotNullOrWhiteSpace() ? fs.FileName.Replace(re, string.Empty) : fs.FileName) + ext;
                                         if (dest.IsNullOrWhiteSpace())
-                                          File.WriteAllText(fn , cu.CompiledSource);
+                                          File.WriteAllText(fn , cu.CompiledSource, Encoding.UTF8);
                                         else
                                         {
                                           var path = Path.Combine(dest, Path.GetFileName(fn));
                                           if (!Directory.Exists(path)) Directory.CreateDirectory(dest);
-                                          File.WriteAllText(path, cu.CompiledSource);
+                                          File.WriteAllText(path, cu.CompiledSource, Encoding.UTF8);
                                         }
                                       }
                                   }
