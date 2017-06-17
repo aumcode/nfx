@@ -5,6 +5,8 @@ Server UNISTACK framework.
 
 License: Apache 2.0
 
+Runs/Builds:  .NET 4.5+, Mono 3.x+ as of 2017/06; .NET Core 2 planned Aug 2017
+
 [<img src="https://ci.appveyor.com/api/projects/status/github/aumcode/nfx?svg=true" alt="Project Badge" width="200">](https://ci.appveyor.com/project/itadapter/nfx/history)
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
@@ -41,9 +43,9 @@ good for:
 
 
 **GUIDES**:
-NEW 20160117, we are adding:
+NEW 20170617, all Guides and Docs/Samples/Tutorials are on NFXLIB:
 
- [NFX Documentation/Guides are here](Guides/README.md)
+ [NFXLIB - Documentation/Guides/Tutorials](http://nfxlib.com)
  
  
 
@@ -55,7 +57,7 @@ NEW 20160117, we are adding:
 
 **Various Demo Projects**:
  https://github.com/aumcode/nfx-demos
-
+ https://github.com/aumcode/howto
  
  
 NFX Provides:
