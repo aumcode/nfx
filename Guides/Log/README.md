@@ -1,2 +1,0 @@
-# NFX Logging
-Logging Framework
