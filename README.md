@@ -1,17 +1,17 @@
-# NFX - .NET Unified Software Stack
+# NFX - .NET Unified Software Stack + Big Memory
 <img src="https://github.com/aumcode/nfx/blob/master/Elements/NFXLogo/New.NFX.Logo.50.png" alt="Logo">
 
-Server UNISTACK framework.
+Server UNISTACK *(unified full software stack, no 3rd paty libs)* framework. 
 
-License: Apache 2.0
+License: **Apache 2.0**
 
-Runs/Builds:  .NET 4.5+, Mono 3.x+ as of 2017/06; .NET Core 2 planned Aug 2017
+Runs/Builds:  **.NET 4.5+**, **Mono 3.x+** as of 2017/06; .NET **Core 2** planned Aug 2017
 
 [<img src="https://ci.appveyor.com/api/projects/status/github/aumcode/nfx?svg=true" alt="Project Badge" width="200">](https://ci.appveyor.com/project/itadapter/nfx/history)
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
 
-NFX is a modern .NET full stack framework designed for building cloud and on-premises apps.
+NFX is a modern .NET full stack framework designed for building **cloud** and **on-premises** apps.
 It is written in C# and runs on a CLR machine. 
 NFX supports app containers, configuration, big memory heaps, IPC, and functions that significantly simplify 
 the development of large distributed systems. It boosts performance and simplifies the development (such as services/web). 
@@ -19,7 +19,7 @@ The majority of the achievements are possible because of the following key featu
 
 * Unification of design - all components are written in the same way
 * Sophisticated serialization mechanism - moves objects between distributed processes/nodes (aka "teleportation")
-* Object Pile - a 100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of RAM without GC stalls
+* Object Pile - a **100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of RAM** without GC stalls
 
 promoting:
 
@@ -35,15 +35,16 @@ good for:
 * General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)
 * Distributed Macro/micro/nano services, REST or RPC
 * Actor-model systems with message passing and supervisors
-* In-memory processing, for hundreds of millions of objects in-RAM with full GC < 20ms
-* Supercomputer/Cluster/Farm applications (i.e. bulk rendering cluster, social graphs etc.)
-* High-performance business apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a general server 
+* **In-memory processing**, for **hundreds of millions of objects** in-RAM with full GC < 20ms
+* **Supercomputer/Cluster/Farm** applications (i.e. bulk rendering cluster, social graphs etc.)
+* **High-performance business** apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a general server 
   looking up data in a 300,000,000 business object cache in-RAM)
 * non-trivial CLR cases like: structs with read-only fields, arrays of structs of structs, custom streamers like Dictionary<> with comparers etc. In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances
 
 
 **GUIDES**:
-NEW 20170617, all Guides and Docs/Samples/Tutorials are on NFXLIB:
+NEW 20170617,
+ all Guides and Docs/Samples/Tutorials are on NFXLIB:
 
  [NFXLIB - Documentation/Guides/Tutorials](http://nfxlib.com)
  
@@ -51,12 +52,15 @@ NEW 20170617, all Guides and Docs/Samples/Tutorials are on NFXLIB:
 
  
 **NUGET**:
+
  https://www.nuget.org/packages/NFX/
  
  `pm> install-package NFX`
 
 **Various Demo Projects**:
+
  https://github.com/aumcode/nfx-demos
+ 
  https://github.com/aumcode/howto
  
  
@@ -69,7 +73,7 @@ NFX Provides:
   - Logger: async file, debug, db destinations with graphs, SLA rules, filtering and routing
   - Security: declr and/or imperative permission model, strong password manager, virtual credentials 
   
-* Big Memory Model 
+* **Big Memory Pile** 
   - Pile memory manager: keeps hundreds of millions of CLR objects in memory without GC pauses
   - Distributed Pile (objects stored on cluster nodes)
   - Pile Cache: materialize 2,000,000 CLR objects/sec in-memory on a 4 core machine
@@ -84,7 +88,7 @@ NFX Provides:
 * Hybrid data access layer
   - RDBMS (we use: MySQL, MsSQL)
   - NoSQL (we use: MongoDB, Elastic search, Erlang OTP)
-  - Native ultra-fast MongoDB driver (socket based)
+  - Native ultra-fast MongoDB driver (socket based achieving 200K+reads/sec)
   
 * Full Instrumentation Suite
   - Gauges and Events keyed on business enities
@@ -113,7 +117,7 @@ NFX Provides:
 
 **IMPORTANT!**
 
-NFX uses very Base-Class-Lib of .NET:
+NFX uses the very Base-Class-Lib of .NET:
 * Basic/primitive types: string, ints, doubles, decimal, dates, +Math
 * Parallel task library: 25% of features - create, run, wait for completion,
   Task, Parallel.For/Each
@@ -123,4 +127,6 @@ NFX uses very Base-Class-Lib of .NET:
 * Some ADO references (Reader/SQLStatement) in segregated data-access components
 * Reflection API
 * Drawing 2D (Graphics)
-NFX does not use any 3rd party components.
+
+**NFX does not use any 3rd party components.** *(with the exception of MySQL/Postgresql drivers)*
+
