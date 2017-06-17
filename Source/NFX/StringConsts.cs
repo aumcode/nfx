@@ -1013,6 +1013,8 @@ namespace NFX
     public const string FINANCIAL_AMOUNT_PARSE_ERROR =
             "Could not parse amount '{0}'";
 
+    public const string PILE_AV_BAD_PILEID_ERROR =  "Pile access violation. Piled '{0}' does not resolve to IPile instance by PileID";
+
     public const string PILE_AV_BAD_SEGMENT_ERROR =  "Pile access violation. Bad segment: ";
 
     public const string PILE_AV_BAD_ADDR_EOF_ERROR =  "Pile access violation. Bad address points beyond buf length: ";
@@ -1025,11 +1027,15 @@ namespace NFX
 
     public const string PILE_CONFIG_PROPERTY_ERROR =  "Pile configuration error in property '{0}'. Error: {1}";
 
+    public const string PILE_DUPLICATE_ID_ERROR =  "Pile '{0}' duplicate identity '{1}'";
+
     public const string PILE_CRAWL_INTERNAL_SEGMENT_CORRUPTION_ERROR =  "Pile segment crawl internal error: chunk flag corrupted at address {0}";
 
     public const string PILE_OUT_OF_SPACE_ERROR =  "Pile is out of allowed space of {0:n} max bytes, {1} max segments @ {2:n} bytes/segment";
 
     public const string PILE_OBJECT_LARGER_SEGMENT_ERROR =  "Pile could not put object of {0:n0} bytes as this size exceeds the size of a segment of {1:n0} bytes";
+
+    public const string PILE_MMF_NO_DATA_DIRECTORY_ROOT_ERROR =  "MMFPile data directory root '{0}' does not exist";
 
 
     public const string IO_STREAM_POSITION_ERROR =  "Stream position of {0} is beyond the length of stream {1}";

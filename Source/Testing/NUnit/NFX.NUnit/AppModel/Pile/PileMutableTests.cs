@@ -429,9 +429,14 @@ namespace NFX.NUnit.AppModel.Pile
              }
           }
 
-          Aver.AreEqual(lst.Count(), pile.ObjectCount);
+          Aver.AreEqual(lst.Count, pile.ObjectCount);
+          var n = 0;
           foreach(var pp in lst)
-           Aver.IsTrue( pile.Delete(pp) );
+          {
+            Console.WriteLine(   "iteration#{0} of {1}".Args(n, lst.Count) );
+            Aver.IsTrue( pile.Delete(pp) );
+            n++;
+          }
 
           Aver.AreEqual(0, pile.AllocatedMemoryBytes);
           Aver.AreEqual(0, pile.ObjectCount);
@@ -453,7 +458,7 @@ namespace NFX.NUnit.AppModel.Pile
 
           var data = new PilePointer[cnt];
           for(var i=0; i<cnt; i++)
-            data[i] = pile.Put(new byte[0], preallocateBlockSize: PilePointer.RAW_BYTE_SIZE + (137 * (i%17)));
+            data[i] = pile.Put(new byte[0], preallocateBlockSize: Memory.PTR_RAW_BYTE_SIZE + (137 * (i%17)));
 
           var lst = new List<Task>();
 

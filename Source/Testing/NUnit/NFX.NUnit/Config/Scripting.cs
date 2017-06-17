@@ -25,11 +25,11 @@ using NFX.CodeAnalysis.Laconfig;
 
 namespace NFX.NUnit.Config
 {
-    [TestFixture]   
+    [TestFixture]
     public class Scripting
     {
 
-    const string src1 = 
+    const string src1 =
 @"
 root
 {
@@ -55,7 +55,7 @@ root
          _loop='$(../cnt) < 5'
          {
                 _set{ path=/sub_Loop/cnt to=$(/sub_Loop/cnt)+1}
-                
+
                 _if='$(/sub_Loop/cnt)==3'
                 {
                     fromSubLoopFOR_THREE { name=section_$(/sub_Loop/cnt) value='3 gets special handling'}
@@ -65,7 +65,7 @@ root
                     fromSubLoop { name=section_$(/sub_Loop/cnt) value='something'}
                 }
          }
-        
+
    }
 
    benzin{}
@@ -162,7 +162,7 @@ root
           var result = new NFX.Environment.LaconicConfiguration();
 
           new ScriptRunner().Execute(src, result);
-           
+
           var got =  result.SaveToString();
           Console.WriteLine( got );
           Assert.AreEqual(expected1, got);
@@ -177,22 +177,22 @@ root
 {
    a=12
    b=true
-   
+
    var1=0{script-only=true}
    var2=175.4{script-only=true}
    var3=true{script-only=true}
-   
+
    _block
    {
        _set{ path=/var1 to=(?$(/var2)>10;15;-10)+100 }
        RESULT=$(/var1){}
-   }   
+   }
 }
 ");
           var result = new NFX.Environment.LaconicConfiguration();
 
           new ScriptRunner().Execute(src, result);
-           
+
           var got =  result.SaveToString();
           Console.WriteLine( got );
 
@@ -209,22 +209,22 @@ root
 {
    a=12
    b=true
-   
+
    var1=0{script-only=true}
    var2=175.4{script-only=true}
    var3=true{script-only=true}
-   
+
    _block
    {
        _set{ path=/var1 to='((?$(/var3);$(/var2);-10)+100)+kozel' }
        RESULT=$(/var1){}
-   }   
+   }
 }
 ");
           var result = new NFX.Environment.LaconicConfiguration();
 
           new ScriptRunner().Execute(src, result);
-           
+
           var got =  result.SaveToString();
           Console.WriteLine( got );
 
@@ -328,7 +328,7 @@ root
           Assert.AreEqual("section_0", result.Root[0].Name);
           Assert.AreEqual("section_9", result.Root[9].Name);
           Assert.IsFalse( result.Root[10].Exists);
-          
+
         }
 
 
@@ -359,7 +359,7 @@ schema{
         column=change_user_id {type=TMeaningfulID required=true}
         column=change_date {type=TTimeStamp required=true}
     }
- 
+
 }";
 
 const string rschemaExpected=
@@ -471,7 +471,7 @@ root
           Assert.AreEqual("section_1", result.Root[5].Name);
           Assert.AreEqual("section_1.2", result.Root[6].Name);
           Assert.IsFalse( result.Root[7].Exists);
-          
+
         }
 
 

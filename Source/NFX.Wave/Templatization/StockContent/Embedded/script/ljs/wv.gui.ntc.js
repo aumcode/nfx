@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 /*jshint devel: true,browser: true, sub: true */
 /*global WAVE: true,$: true */
 
@@ -277,7 +277,7 @@ WAVE.GUI = (function(){
     /***@ inc/ui/dialog.js ***/
 
 // inc/ui/pzlk.js
-    /***@ inc/ui/pzlk.js ***/
+    /***@ inc/ui/pzlk.ntc.js ***/
 
 // inc/ui/ruleman.js
     /***@ inc/ui/ruleman.js ***/

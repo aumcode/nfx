@@ -28,18 +28,18 @@ using NFX.Environment;
 namespace NFX.NUnit.Config
 {
 
-    [TestFixture]   
+    [TestFixture]
     public class VariableEvaluation
     {
-        static string xml = 
+        static string xml =
 @"<root>
-   
+
      <varEscaped>$(###)This is not var: $(../AAA)</varEscaped>
      <varIncomplete1>$()</varIncomplete1>
      <varIncomplete2>$(</varIncomplete2>
-   
+
    <vars>
-     
+
      <var1>val1</var1>
      <var2>$(../var1)</var2>
 
@@ -58,9 +58,9 @@ namespace NFX.NUnit.Config
      <var6>$(../var7)</var6>
      <var7>$(../var1)$(../var3)$(../var2)</var7>
    </vars>
-   
-   
-   <MyClass> 
+
+
+   <MyClass>
     <data pvt-name='private'
           prot-name='protected'
           pub-name='public'
@@ -74,7 +74,7 @@ namespace NFX.NUnit.Config
 
             <fuzzy>true</fuzzy>
             <jazzy></jazzy>
-          
+
           </extra>
     </data>
   </MyClass>
@@ -94,7 +94,7 @@ namespace NFX.NUnit.Config
  </root>
 ";
 
-       
+
         [TestCase]
         public void EscapedVar()
         {
@@ -166,7 +166,7 @@ namespace NFX.NUnit.Config
           Assert.AreEqual(2, conf.Root.Navigate("/vars/many/a[age=25]").ValueAsInt());
         }
 
-            
+
 
         [ExpectedException(typeof(ConfigException), ExpectedMessage="syntax", MatchType=MessageMatch.Contains)]
         [TestCase]
@@ -187,7 +187,7 @@ namespace NFX.NUnit.Config
         }
 
 
-      
+
         [ExpectedException(typeof(ConfigException), ExpectedMessage="syntax", MatchType=MessageMatch.Contains)]
         [TestCase]
         public void PathWithBadIndexerSyntax3()
@@ -197,14 +197,14 @@ namespace NFX.NUnit.Config
           conf.Root.Navigate("/[/$value");
         }
 
-       
-        
-        
+
+
+
         [TestCase]
         public void TestNavigationinVarNames()
         {
           var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-                                                              
+
 
           Assert.AreEqual("val1", conf.Root["vars"]["var1"].Value);
           Assert.AreEqual("val1", conf.Root["vars"]["var1"].VerbatimValue);
@@ -313,7 +313,7 @@ namespace NFX.NUnit.Config
         public void EvalFromString_1()
         {
           var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-          
+
            Assert.AreEqual("Hello val1", "Hello $(vars/var1)".EvaluateVarsInConfigScope(conf));
            Assert.AreEqual("Hello val1", "Hello $(vars/var1)".EvaluateVarsInXMLConfigScope(xml));
            Assert.AreEqual("Hello 123 suslik!", "Hello $(/$v) suslik!".EvaluateVarsInXMLConfigScope("<a v='123'> </a>"));
@@ -323,7 +323,7 @@ namespace NFX.NUnit.Config
         public void EvalFromString_2_manysame()
         {
           var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-          
+
            Assert.AreEqual("Hello val1val1val1", "Hello $(vars/var1)$(vars/var1)$(vars/var1)".EvaluateVarsInConfigScope(conf));
         }
 
@@ -339,9 +339,10 @@ namespace NFX.NUnit.Config
         [TestCase]
         public void EvalFromStringWithEnvVarInline()
         {
-           Assert.AreEqual("Hello, your age is 123", "$(~GreEtInG), your age is $(~AGE)".EvaluateVars( new Vars{ 
-                            {"Greeting", "Hello"}, 
-                            {"Age", "123"}}));
+           Assert.AreEqual("Hello, your age is 123", "$(~GreEtInG), your age is $(~AGE)".EvaluateVars( new Vars(new VarsDictionary {
+                            {"Greeting", "Hello"},
+                            {"Age", "123"}
+           })));
         }
 
 
@@ -367,16 +368,16 @@ namespace NFX.NUnit.Config
         [TestCase]
         public void EvalFromStringMacroDefault2()
         {
-           Assert.AreEqual("James, the value is 12 OK?", 
+           Assert.AreEqual("James, the value is 12 OK?",
                            "$(/$name::as-string dflt=\"James\"), the value is $(/dont-exist::as-int dflt=\"12\") OK?".EvaluateVars());
         }
 
         [TestCase]
         public void EvalFromStringMacroDefault3()
         {
-           Assert.AreEqual("Mark Spenser, the value is 12 OK?", 
+           Assert.AreEqual("Mark Spenser, the value is 12 OK?",
                            "$(~name::as-string dflt=\"James\"), the value is $(/dont-exist::as-int dflt=\"12\") OK?".EvaluateVars(
-                            new Vars { {"name", "Mark Spenser"}  }
+                            new Vars( new VarsDictionary { {"name", "Mark Spenser"}  })
                            ));
         }
 
@@ -390,7 +391,7 @@ namespace NFX.NUnit.Config
         public void NodePaths()
         {
           var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-                                                              
+
 
           Assert.AreEqual("/vars/path2", conf.Root["vars"]["path2"].RootPath);
           Assert.AreEqual("/vars/path2/$value", conf.Root["vars"]["path2"].AttrByIndex(0).RootPath);
@@ -404,7 +405,7 @@ namespace NFX.NUnit.Config
         public void NavigateBackToNodePaths()
         {
           var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-                                                              
+
           Assert.AreEqual("/vars/path2",           conf.Root.Navigate( conf.Root["vars"]["path2"].RootPath                  ).RootPath);
           Assert.AreEqual("/vars/path2/$value",    conf.Root.Navigate( conf.Root["vars"]["path2"].AttrByIndex(0).RootPath   ).RootPath);
           Assert.AreEqual("/vars/many/[0]",        conf.Root.Navigate( conf.Root["vars"]["many"][0].RootPath                ).RootPath);
@@ -420,16 +421,17 @@ namespace NFX.NUnit.Config
                         class MyVars : IEnvironmentVariableResolver
                         {
 
-                            public string ResolveEnvironmentVariable(string name)
-                            {
-                                if (name=="A") return "1";
-                                if (name=="B") return "2";
-                                if (name=="C") return "01/18/1901 2:03PM";
-                                return null;
-                            }
+                          public bool ResolveEnvironmentVariable(string name, out string value)
+                          {
+                            value = null;
+                            if (name == "A") value = "1";
+                            if (name == "B") value = "2";
+                            if (name ==  "C") value = "01/18/1901 2:03PM";
+                            return true;
+                          }
                         }
 
-                       
+
 
 
 }

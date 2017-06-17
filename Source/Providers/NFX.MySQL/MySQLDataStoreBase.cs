@@ -50,22 +50,22 @@ namespace NFX.DataAccess.MySQL
 
 
     #region .ctor/.dctor
-     
+
       protected MySQLDataStoreBase():base()
-      {      
+      {
       }
 
       protected MySQLDataStoreBase(string connectString):base()
-      {  
-        ConnectString = connectString;    
+      {
+        ConnectString = connectString;
       }
-      
+
     #endregion
 
 
     #region Private Fields
-      
-      private string m_ConnectString;     
+
+      private string m_ConnectString;
 
       private string m_TargetName;
 
@@ -75,6 +75,8 @@ namespace NFX.DataAccess.MySQL
       private string m_StringForFalse = STR_FOR_FALSE;
 
       private bool m_FullGDIDS = true;
+
+      private DateTimeKind m_DateTimeKind = DateTimeKind.Utc;
 
       private bool m_InstrumentationEnabled;
     #endregion
@@ -96,8 +98,8 @@ namespace NFX.DataAccess.MySQL
       /// Returns named parameters that can be used to control this component
       /// </summary>
       public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-      { 
-        return ExternalParameterAttribute.GetParameters(this, groups); 
+      {
+        return ExternalParameterAttribute.GetParameters(this, groups);
       }
 
       /// <summary>
@@ -107,7 +109,7 @@ namespace NFX.DataAccess.MySQL
       {
           return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
       }
-          
+
       /// <summary>
       /// Sets external parameter value returning true if parameter was found and set
       /// </summary>
@@ -119,7 +121,7 @@ namespace NFX.DataAccess.MySQL
     #endregion
 
     #region Properties
-    
+
       /// <summary>
       /// Get/Sets MySql database connection string
       /// </summary>
@@ -128,22 +130,22 @@ namespace NFX.DataAccess.MySQL
       {
         get
         {
-           return m_ConnectString ?? string.Empty;  
+           return m_ConnectString ?? string.Empty;
         }
         set
         {
            m_ConnectString = value;
         }
       }
-      
+
       [Config]
       public StoreLogLevel LogLevel { get; set;}
-     
+
       [Config]
       public string TargetName
       {
-         get{ return m_TargetName.IsNullOrWhiteSpace() ? "MySQL" : m_TargetName;}
-         set{ m_TargetName = value;}
+        get{ return m_TargetName.IsNullOrWhiteSpace() ? "MySQL" : m_TargetName;}
+        set{ m_TargetName = value;}
       }
 
     /// <summary>
@@ -160,7 +162,8 @@ namespace NFX.DataAccess.MySQL
     /// When true (default) writes gdid as byte[](era+id), false - uses ulong ID only
     /// </summary>
     [Config(Default=true)] public bool FullGDIDS{ get { return m_FullGDIDS; } set {m_FullGDIDS = value;}}
-    
+
+    [Config(Default=DateTimeKind.Utc)] public DateTimeKind DateTimeKind { get { return m_DateTimeKind; } set { m_DateTimeKind = value; } }
     #endregion
 
     #region Public
@@ -195,7 +198,7 @@ namespace NFX.DataAccess.MySQL
       }
 
     #endregion
-    
+
     #region Protected
 
       /// <summary>
@@ -217,6 +220,6 @@ namespace NFX.DataAccess.MySQL
 
     #endregion
 
-  
+
   }
 }

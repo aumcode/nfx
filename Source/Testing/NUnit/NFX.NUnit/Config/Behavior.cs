@@ -33,7 +33,7 @@ namespace NFX.NUnit.Config
 
     static string conf1 = @"
  <root>
-    
+
     <log>
      <behaviors>
        <behavior type='NFX.NUnit.Config.AlwaysLogBehavior, NFX.NUnit' />
@@ -108,7 +108,7 @@ static string conf3 = @"
             var root = NFX.Environment.XMLConfiguration.CreateFromXML(conf3).Root;
             using(var app = new ServiceBaseApplication(new string[0],  root ))
             {
-                
+
             }
 
         }
@@ -123,7 +123,7 @@ static string conf3 = @"
 
                             protected internal override void DoSend(Message entry)
                             {
-                              List.Add(entry);  
+                              List.Add(entry);
                             }
                         }
 

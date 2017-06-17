@@ -33,8 +33,8 @@ namespace BusinessLogic
       public string Text;
       public string Info;
     }
-    
-    
+
+
     [Glued]
     //[SultanPermission( 1000 )]
     [AuthenticationSupport]
@@ -43,13 +43,13 @@ namespace BusinessLogic
       [AdHocPermission("/TestPermissions/Space/Flight", "Echo", AccessLevel.VIEW_CHANGE)]
       [SultanPermission(9)]
       string Echo(string text);
-      
+
       /// <summary>
       /// Echo without permissions
       /// </summary>
       string UnsecureEcho(string text);
 
-      
+
       [ArgsMarshalling(typeof(RequestMsg_IJokeContract_UnsecEchoMar))]
       string UnsecEchoMar(string text);
 
@@ -65,7 +65,7 @@ namespace BusinessLogic
       /// </summary>
       object DBWork(string id, int recCount, int waitMs);
 
-      [OneWay] 
+      [OneWay]
       //[SultanPermission(AccessLevel.VIEW)]
       void Notify(string text);
 
@@ -101,14 +101,14 @@ namespace BusinessLogic
     {
        [Constructor]
        void Init(int value);
-       
+
        [SultanPermission( 250 )]
        int Add(int value);
        int Sub(int value);
 
        [Destructor]
        int Done();
-      
+
     }
 
 

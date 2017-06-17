@@ -29,17 +29,17 @@ namespace NFX.NUnit.DataAccess
     [TestFixture]
     public class DynamicRows
     {
-       
+
         [TestCase]
         public void BuildUsingTypedSchema()
         {
             var person = new DynamicRow(Schema.GetForTypedRow(typeof(Person)));
-            
+
             person["ID"] = "POP1";
             person["FirstName"] = "Oleg";
             person["LastName"] = "Popov";
             person["DOB"] = new DateTime(1953, 12, 10);
-            person["YearsInSpace"] = 12; 
+            person["YearsInSpace"] = 12;
 
             Assert.AreEqual( "POP1",                       person["ID"] );
             Assert.AreEqual( "Oleg",                       person["FirstName"] );
@@ -48,35 +48,35 @@ namespace NFX.NUnit.DataAccess
             Assert.AreEqual( 12,                           person["YearsInSpace"] );
         }
 
-        
+
         [TestCase]
         public void BuildUsingAdHockSchema()
         {
-            var schema = new Schema("TEZT", 
+            var schema = new Schema("TEZT",
                            new Schema.FieldDef("ID", typeof(int), new List<FieldAttribute>{ new FieldAttribute(required: true, key: true)}),
                            new Schema.FieldDef("Description", typeof(string), new List<FieldAttribute>{ new FieldAttribute(required: true)})
             );
 
             var person = new DynamicRow(schema);
-            
+
             person["ID"] = 123;
             person["Description"] = "Tank";
 
             Assert.AreEqual( 123,                       person["ID"] );
             Assert.AreEqual( "Tank",                    person["Description"] );
         }
-        
-        
+
+
         [TestCase]
         public void SetValuesAsDifferentTypes()
         {
             var person = new DynamicRow(Schema.GetForTypedRow(typeof(Person)));
-            
+
             person["ID"] = "POP1";
             person["FirstName"] = "Oleg";
             person["LastName"] = "Popov";
             person["DOB"] = new DateTime(1953, 12, 10);
-            person["YearsInSpace"] = 12; 
+            person["YearsInSpace"] = 12;
 
             Assert.AreEqual( "POP1",                       person["ID"] );
             Assert.AreEqual( "Oleg",                       person["FirstName"] );
@@ -107,17 +107,17 @@ namespace NFX.NUnit.DataAccess
 
         }
 
-        
+
         [TestCase]
         public void SetGetAndValidate_NoError()
         {
             var person = new DynamicRow(Schema.GetForTypedRow(typeof(Person)));
-            
+
             person["ID"] = "POP1";
             person["FirstName"] = "Oleg";
             person["LastName"] = "Popov";
             person["DOB"] = new DateTime(1953, 12, 10);
-            person["YearsInSpace"] = 12; 
+            person["YearsInSpace"] = 12;
 
             var error = person.Validate();
             Assert.IsNull( error );
@@ -138,7 +138,7 @@ namespace NFX.NUnit.DataAccess
             person["LastName"] = null;
             person["DOB"] = new DateTime(1953, 12, 10);
             person["YearsInSpace"] = 12;
-                
+
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -154,7 +154,7 @@ namespace NFX.NUnit.DataAccess
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1953, 12, 10);
            // person["YearsInSpace"] = 12;  NOT SET!!!
-            
+
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -169,9 +169,9 @@ namespace NFX.NUnit.DataAccess
             person["FirstName"] = "Oleg";
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1953, 12, 10);
-            person["YearsInSpace"] = 45;  
+            person["YearsInSpace"] = 45;
             person["Amount"] = -100;
-            
+
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -187,7 +187,7 @@ namespace NFX.NUnit.DataAccess
             person["FirstName"] = "Oleg";
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1953, 12, 10);
-            person["YearsInSpace"] = 45;  
+            person["YearsInSpace"] = 45;
             person["Amount"] = 2000000;
 
             var error = person.Validate();
@@ -206,10 +206,10 @@ namespace NFX.NUnit.DataAccess
             person["FirstName"] = "Oleg";
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1899, 12, 10);
-            person["YearsInSpace"] = 45;  
+            person["YearsInSpace"] = 45;
             person["Amount"] = 100;
 
-            
+
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -225,9 +225,9 @@ namespace NFX.NUnit.DataAccess
             person["FirstName"] = "Oleg";
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1899, 12, 10);
-            person["YearsInSpace"] = 45;  
+            person["YearsInSpace"] = 45;
             person["Amount"] = 100;
-                
+
             var error = person.Validate("sparta_system");
             Assert.IsNull (error);
         }
@@ -240,10 +240,10 @@ namespace NFX.NUnit.DataAccess
             person["FirstName"] = "Oleg";
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1981, 2, 12);
-            person["YearsInSpace"] = 45;  
+            person["YearsInSpace"] = 45;
             person["Amount"] = 100;
             person["Description"] = "0123456789012345678901234567890";
-            
+
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -260,11 +260,11 @@ namespace NFX.NUnit.DataAccess
             person["FirstName"] = "Oleg";
             person["LastName"] ="Popov";
             person["DOB"] = new DateTime(1981, 2, 12);
-            person["YearsInSpace"] = 45;  
+            person["YearsInSpace"] = 45;
             person["Amount"] = 100;
             person["Description"] = "0123";
             person["Classification"] = "INVALID";
-                 
+
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -301,7 +301,7 @@ namespace NFX.NUnit.DataAccess
             person2["DOB"] = new DateTime(1982, 5, 2);
             person2["YearsInSpace"] = 4;
             person2["Amount"] = 1000000;
-                                   
+
             Assert.IsTrue( person1.Equals(person2) );
 
             person2["ID"] = "POP2";

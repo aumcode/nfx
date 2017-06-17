@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+SCRIPT=`realpath -s $0`
+SCRIPTPATH=`dirname $SCRIPT`
+
+SOLUTION_DIR=$1
+PROJECT_DIR=${SCRIPTPATH}/
+
+mono buildinfo.exe > "${PROJECT_DIR}BUILD_INFO.txt"
+mono ntc.exe "${PROJECT_DIR}Templatization/StockContent/*.htm" -r -ext ".auto.cs" -src -c "NFX.Templatization.NHTCompiler, NFX"
+mono ntc.exe "${PROJECT_DIR}Templatization/StockContent/Embedded/script/ljs/*.ntc.js" -ext ".js" -replace ".ntc.js" -dest "${PROJECT_DIR}Templatization/StockContent/Embedded/script" -src -c "NFX.Templatization.TextJSTemplateCompiler, NFX" -o dom-gen="cmp{pretty=1}"
+
+hash java 2>/dev/null || { echo >&2 "I require JAVA but it's not installed. Aborting."; exit 0; }
+
+java -jar "${SOLUTION_DIR}lib/closure-compiler/compiler.jar" \
+   --js "${PROJECT_DIR}Templatization/StockContent/Embedded/script/wv.js" \
+        "${PROJECT_DIR}Templatization/StockContent/Embedded/script/wv.gui.js" \
+        "${PROJECT_DIR}Templatization/StockContent/Embedded/script/wv.chart.svg.js" \
+        "${PROJECT_DIR}Templatization/StockContent/Embedded/script/wv.braintree.js" \
+        "${PROJECT_DIR}Templatization/StockContent/Embedded/script/wv.stripe.js" \
+   --js_output_file "${PROJECT_DIR}Templatization/StockContent/Embedded/script/wv.all.min.js" \
+   --compilation_level SIMPLE_OPTIMIZATIONS \
+   --language_in ECMASCRIPT5_STRICT > "${PROJECT_DIR}Templatization/StockContent/Embedded/script/CLOSURE_ERROR_OUT.txt" 2>&1

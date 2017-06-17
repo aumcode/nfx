@@ -42,14 +42,14 @@ namespace NFX.NUnit.Integration.CRUD
 
         [Field(required: true, backendName: "fname")]
         public string First_Name {get; set;}
-        
+
         [Field(required: true, backendName: "lname")]
         public string Last_Name {get; set;}
-        
+
         [Field(required: true)]
         public DateTime DOB {get; set;}
 
-        
+
         [Field()]
         public string Address1 {get; set;}
         [Field()]
@@ -99,42 +99,42 @@ namespace NFX.NUnit.Integration.CRUD
     public class Types : TypedRow
     {
       [Field(key: true)]
-      public GDID GDID{ get; set;} 
+      public GDID GDID{ get; set;}
 
       [Field]
-      public string Screen_Name{ get; set;} 
+      public string Screen_Name{ get; set;}
 
       [Field]
       public string String_Name{ get; set;}
-      
-      [Field]
-      public string Char_Name{ get; set;} 
 
       [Field]
-      public bool? Bool_Char{ get; set;} 
+      public string Char_Name{ get; set;}
+
+      [Field]
+      public bool? Bool_Char{ get; set;}
 
       [Field]
       public bool? Bool_Bool{ get; set;}
-      
-      [Field]
-      public decimal? Amount{ get; set;}
-      
-      
-      [Field]
-      public DateTime? DOB{ get; set;} 
 
       [Field]
-      public int? Age{ get; set;} 
+      public decimal? Amount{ get; set;}
+
+
+      [Field]
+      public DateTime? DOB{ get; set;}
+
+      [Field]
+      public int? Age{ get; set;}
     }
 
 
     public class FullGDID : TypedRow
     {
       [Field]
-      public GDID GDID{ get; set;} 
- 
+      public GDID GDID{ get; set;}
+
       [Field]
-      public GDID VARGDID{ get; set;} 
+      public GDID VARGDID{ get; set;}
 
 
       [Field]

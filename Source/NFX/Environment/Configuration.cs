@@ -482,17 +482,18 @@ namespace NFX.Environment
         /// </summary>
         public string ResolveEnvironmentVar(string name, IEnvironmentVariableResolver resolver = null)
         {
-          if (resolver!=null)
-           return resolver.ResolveEnvironmentVariable(name);
+          string value;
+          if (resolver != null && resolver.ResolveEnvironmentVariable(name, out value)) return value;
 
-          if (m_EnvironmentVarResolver != null)
-            return m_EnvironmentVarResolver.ResolveEnvironmentVariable(name);
+          resolver = m_EnvironmentVarResolver;
+          if (resolver != null && resolver.ResolveEnvironmentVariable(name, out value)) return value;
 
-          var process = ProcesswideEnvironmentVarResolver;
-          if (process != null)
-            return process.ResolveEnvironmentVariable(name);
+          resolver = ProcesswideEnvironmentVarResolver;
+          if (resolver != null && resolver.ResolveEnvironmentVariable(name, out value)) return value;
 
-          return WindowsEnvironmentVariableResolver.Instance.ResolveEnvironmentVariable(name);
+          resolver = OSEnvironmentVariableResolver.Instance;
+          if (resolver != null && resolver.ResolveEnvironmentVariable(name, out value)) return value;
+          return string.Empty;
         }
 
 

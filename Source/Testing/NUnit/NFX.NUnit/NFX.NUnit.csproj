@@ -80,6 +80,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModel\Pile\PileEnumerationTest.cs" />
+    <Compile Include="AppModel\Pile\MMFPileLifecycleTests.cs" />
+    <Compile Include="AppModel\Pile\MMFPileTestBase.cs" />
+    <Compile Include="AppModel\Pile\MMFPileTest.cs" />
     <Compile Include="AppModel\Pile\PointerCacheTest.cs" />
     <Compile Include="AppModel\Pile\PilePrimitivesTest.cs" />
     <Compile Include="AppModel\Pile\PileMutableTests.cs" />
@@ -262,6 +266,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="post-build" />
+    <None Include="post-build.cmd" />
+    <None Include="pre-build" />
+    <None Include="pre-build.cmd" />
     <None Include="UTEZT-1.laconf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -329,6 +337,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)pre-build $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)post-build $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

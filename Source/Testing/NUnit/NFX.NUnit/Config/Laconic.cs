@@ -25,11 +25,11 @@ using NFX.CodeAnalysis.Laconfig;
 
 namespace NFX.NUnit.Config
 {
-    [TestFixture]   
+    [TestFixture]
     public class Laconic
     {
 
-    static string src1 = 
+    static string src1 =
 @"
 root
 {
@@ -54,10 +54,10 @@ root
      var6=$(../var7){}
      var7=$(../var1)$(../var3)$(../var2){}
    }
-   
-   
+
+
    MyClass
-   { 
+   {
     data
     {  pvt-name='private'
        prot-name='protected'
@@ -69,11 +69,11 @@ root
             enum='B'
             when='05/12/1982'
             cycle='$(/vars/var5)'
-           
+
 
             fuzzy=true{}
             jazzy=''{}
-          
+
           }
     }//data
    }//MyClass
@@ -100,7 +100,7 @@ root
         public void JustRoot()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root{}");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
         }
 
@@ -108,7 +108,7 @@ root
         public void RootAndSub()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root{sub{}}");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
           Assert.AreEqual("sub", conf.Root["sub"].Name);
         }
@@ -117,7 +117,7 @@ root
         public void RootAttrAsByteArray()
         {
           var root = src1.AsLaconicConfig();
-          
+
           var bytes = root.AttrByName("bytes").ValueAsByteArray();
           Assert.AreEqual(3, bytes.Length);
           Assert.AreEqual(0x3d, bytes[0]);
@@ -129,7 +129,7 @@ root
         public void RootWithAttrAndSub()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root{ atr=val sub{}}");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
           Assert.IsTrue(conf.Root.AttrByName("atr").Exists);
           Assert.AreEqual("val", conf.Root.AttrByName("atr").Value);
@@ -139,7 +139,7 @@ root
         public void RootWithAttrWithSpace()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root{ atr = val }");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
           Assert.IsTrue(conf.Root.AttrByName("atr").Exists);
           Assert.AreEqual("val", conf.Root.AttrByName("atr").Value);
@@ -149,7 +149,7 @@ root
         public void RootWithAttrWithSpace2()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root{ atr = val atr2   =                                 'string   3'}");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
           Assert.IsTrue(conf.Root.AttrByName("atr").Exists);
           Assert.AreEqual("val", conf.Root.AttrByName("atr").Value);
@@ -157,13 +157,13 @@ root
           Assert.AreEqual("string   3", conf.Root.AttrByName("atr2").Value);
         }
 
-       
+
 
         [TestCase]
         public void RootWithManyAttrs()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root{ atr1=val1 atr2=val2 'atr 3'='value{3}'}");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
           Assert.AreEqual("val1", conf.Root.AttrByName("atr1").Value);
           Assert.AreEqual("val2", conf.Root.AttrByName("atr2").Value);
@@ -174,7 +174,7 @@ root
         public void RootWithManyAttrsAndSectionValues()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString("root=yes{ atr1=val1 atr2=val2 'atr 3'='value{3}' log=12{}}");
-          
+
           Assert.AreEqual("root", conf.Root.Name);
           Assert.AreEqual("yes", conf.Root.Value);
           Assert.AreEqual("val1", conf.Root.AttrByName("atr1").Value);
@@ -183,12 +183,12 @@ root
 
           Assert.AreEqual("12", conf.Root["log"].Value);
         }
-    
+
         [TestCase]
         public void TestNavigationinVarNames()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString(src1);
-                                                              
+
 
           Assert.AreEqual("val1", conf.Root["vars"]["var1"].Value);
           Assert.AreEqual("val1", conf.Root["vars"]["var1"].VerbatimValue);
@@ -212,7 +212,7 @@ root
         public void TestNavigationinVarNames_Parallel()
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString(src1);
-                                                              
+
           System.Threading.Tasks.Parallel.For(0, 100000,
             (_)=>
             {
@@ -352,7 +352,7 @@ root
         {
           var conf = NFX.Environment.LaconicConfiguration.CreateFromString(src1);
 
-                                                              
+
 
           Assert.AreEqual("/vars/path2", conf.Root["vars"]["path2"].RootPath);
           Assert.AreEqual("/vars/path2/$value", conf.Root["vars"]["path2"].AttrByIndex(0).RootPath);
@@ -369,7 +369,7 @@ root
 
            System.Threading.Tasks.Parallel.For(0, 100000,
             (_)=>
-            {                                                    
+            {
                 Assert.AreEqual("/vars/path2", conf.Root["vars"]["path2"].RootPath);
                 Assert.AreEqual("/vars/path2/$value", conf.Root["vars"]["path2"].AttrByIndex(0).RootPath);
                 Assert.AreEqual("/vars/many/[0]", conf.Root["vars"]["many"][0].RootPath);
@@ -476,7 +476,7 @@ root
           Assert.IsTrue(conf2.Root.Navigate("child2/$name").Exists);
           Assert.IsTrue(conf2.Root.Navigate("child3/$atr{3}").Exists);
           Assert.IsTrue(conf2.Root.Navigate("child3/child3.2/child3.2.1").Exists);
-          
+
           Assert.AreEqual("Muxa", conf2.Root.Navigate("child2").Value);
           Assert.AreEqual("1", conf2.Root.Navigate("child3/$atr with space").Value);
           Assert.AreEqual("val with space", conf2.Root.Navigate("child3/$atr2").Value);
@@ -514,7 +514,7 @@ Console.WriteLine(txt);
           Assert.IsTrue(conf2.Root.Navigate("child2/$name").Exists);
           Assert.IsTrue(conf2.Root.Navigate("child3/$atr{3}").Exists);
           Assert.IsTrue(conf2.Root.Navigate("child3/child3.2/child3.2.1").Exists);
-          
+
           Assert.AreEqual("Muxa", conf2.Root.Navigate("child2").Value);
           Assert.AreEqual("1", conf2.Root.Navigate("child3/$atr with space").Value);
           Assert.AreEqual("val with space", conf2.Root.Navigate("child3/$atr2").Value);
@@ -528,7 +528,7 @@ Console.WriteLine(txt);
         {
           var conf1 = NFX.Environment.LaconicConfiguration.CreateFromString("root{}");
           var conf2 = NFX.Environment.LaconicConfiguration.CreateFromString("root{ sect1{ a=1 b=2 subsect1{c=3 d=4}}}");
-          
+
           conf1.Root.AddChildNode(conf2.Root["sect1"]);
 
           Console.WriteLine(conf1.ContentView);

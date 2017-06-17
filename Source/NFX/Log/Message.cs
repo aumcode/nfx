@@ -43,22 +43,35 @@ namespace NFX.Log
   [BSONSerializable("A05AEE0F-A33C-4B1D-AA45-CDEAF894A095")]
   public sealed class Message : IArchiveLoggable
   {
+    public const string BSON_FLD_RELATED_TO = "rel";
+    public const string BSON_FLD_TYPE = "tp";
+    public const string BSON_FLD_SOURCE = "src";
+    public const string BSON_FLD_TIMESTAMP = "time";
+    public const string BSON_FLD_HOST = "host";
+    public const string BSON_FLD_FROM = "from";
+    public const string BSON_FLD_TOPIC = "top";
+    public const string BSON_FLD_TEXT = "text";
+    public const string BSON_FLD_PARAMETERS = "prms";
+    public const string BSON_FLD_EXCEPTION = "exc";
+    public const string BSON_FLD_ARCHIVE_DIMENSIONS = "arc";
+    public const string BSON_FLD_CHANNEL = "chan";
+
     public static string DefaultHostName;
 
     #region Private Fields
-      private Guid m_Guid;
-      private Guid m_RelatedTo;
-      private MessageType m_Type;
-      private int m_Source;
-      private DateTime m_TimeStamp;
-      private string m_Host;
-      private string m_From;
-      private string m_Topic;
-      private string m_Text;
-      private string m_Parameters;
-      private Exception m_Exception;
-      private string m_ArchiveDimensions;
-      private string m_Channel;
+    private Guid m_Guid;
+    private Guid m_RelatedTo;
+    private MessageType m_Type;
+    private int m_Source;
+    private DateTime m_TimeStamp;
+    private string m_Host;
+    private string m_From;
+    private string m_Topic;
+    private string m_Text;
+    private string m_Parameters;
+    private Exception m_Exception;
+    private string m_ArchiveDimensions;
+    private string m_Channel;
     #endregion
 
     #region Properties
@@ -263,70 +276,69 @@ namespace NFX.Log
         m_Topic = m_Topic,
         m_Text = m_Text,
         m_Parameters = m_Parameters,
-        m_Exception = m_Exception
+        m_Exception = m_Exception,
+        m_ArchiveDimensions = m_ArchiveDimensions,
+        m_Channel = m_Channel
       };
     }
 
 
     #region BSON Serialization
+    public bool IsKnownTypeForBSONDeserialization(Type type)
+    {
+      return type == typeof(WrappedException);
+    }
 
-      public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)
-      {
-        serializer.AddTypeIDField(doc, parent, this, context);
+    public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)
+    {
+      serializer.AddTypeIDField(doc, parent, this, context);
 
-        doc.Set( new BSONStringElement("id", m_Guid.ToString("N")) );
-        if (m_RelatedTo!=Guid.Empty)
-         doc.Set( new BSONStringElement("rel", m_RelatedTo.ToString("N")) );
+      var skipNull = (serializer.Flags ^ BSONSerializationFlags.KeepNull) == 0;
 
+      doc.Add(serializer.PKFieldName, m_Guid, required: true)
+        .Add(BSON_FLD_RELATED_TO, m_RelatedTo, skipNull)
+        .Add(BSON_FLD_TYPE, m_Type.ToString(), skipNull, required: true)
+        .Add(BSON_FLD_SOURCE, m_Source, skipNull)
+        .Add(BSON_FLD_TIMESTAMP, m_TimeStamp.ToUniversalTime(), skipNull)
+        .Add(BSON_FLD_HOST, m_Host, skipNull)
+        .Add(BSON_FLD_FROM, m_From, skipNull)
+        .Add(BSON_FLD_TOPIC, m_Topic, skipNull)
+        .Add(BSON_FLD_TEXT, m_Text, skipNull)
+        .Add(BSON_FLD_PARAMETERS, m_Parameters, skipNull)
+        .Add(BSON_FLD_ARCHIVE_DIMENSIONS, m_ArchiveDimensions, skipNull)
+        .Add(BSON_FLD_CHANNEL, m_Channel, skipNull);
 
-        doc.Set( new BSONStringElement("tp", m_Type.ToString()) )
-           .Set( new BSONInt32Element("src", m_Source) )
-           .Set( new BSONDateTimeElement("time", m_TimeStamp.ToUniversalTime()) )
-           .Set( new BSONStringElement("hst", m_Host) )
-           .Set( new BSONStringElement("frm", m_From) )
-           .Set( new BSONStringElement("top", m_Topic) )
-           .Set( new BSONStringElement("txt", m_Text) )
-           .Set( new BSONStringElement("par", m_Parameters) )
-           .Set( new BSONStringElement("arc", m_ArchiveDimensions) )
-           .Set( new BSONStringElement("chan", m_Channel) );
+      if (m_Exception == null) return;
 
-        if (m_Exception==null) return;
+      var we = m_Exception as WrappedException;
+      if (we == null)
+        we = WrappedException.ForException(m_Exception);
 
-        var we = m_Exception as WrappedException;
-        if (we==null)
-         we = WrappedException.ForException(m_Exception);
+      doc.Add(BSON_FLD_EXCEPTION, serializer.Serialize(we, parent: this), skipNull);
+    }
 
-        doc.Set( new BSONDocumentElement("exc", serializer.Serialize(we, parent: this) ));
-      }
+    public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)
+    {
+      m_Guid = doc.TryGetObjectValueOf(serializer.PKFieldName).AsGUID(Guid.Empty);
 
-      public bool IsKnownTypeForBSONDeserialization(Type type)
-      {
-        return type==typeof(WrappedException);
-      }
+      m_RelatedTo = doc.TryGetObjectValueOf(BSON_FLD_RELATED_TO).AsGUID(Guid.Empty);
 
-      public void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)
-      {
-        m_Guid = doc.TryGetObjectValueOf("id").AsGUID(Guid.Empty);
+      m_Type = doc.TryGetObjectValueOf(BSON_FLD_TYPE).AsEnum(MessageType.Info);
+      m_Source = doc.TryGetObjectValueOf(BSON_FLD_SOURCE).AsInt();
+      m_TimeStamp = doc.TryGetObjectValueOf(BSON_FLD_TIMESTAMP).AsDateTime(App.TimeSource.UTCNow);
+      m_Host = doc.TryGetObjectValueOf(BSON_FLD_HOST).AsString();
+      m_From = doc.TryGetObjectValueOf(BSON_FLD_FROM).AsString();
+      m_Topic = doc.TryGetObjectValueOf(BSON_FLD_TOPIC).AsString();
+      m_Text = doc.TryGetObjectValueOf(BSON_FLD_TEXT).AsString();
+      m_Parameters = doc.TryGetObjectValueOf(BSON_FLD_PARAMETERS).AsString();
+      m_ArchiveDimensions = doc.TryGetObjectValueOf(BSON_FLD_ARCHIVE_DIMENSIONS).AsString();
+      m_Channel = doc.TryGetObjectValueOf(BSON_FLD_CHANNEL).AsString();
 
-        m_RelatedTo = doc.TryGetObjectValueOf("rel").AsGUID(Guid.Empty);
+      var ee = doc[BSON_FLD_EXCEPTION] as BSONDocumentElement;
+      if (ee == null) return;
 
-        m_Type              = doc.TryGetObjectValueOf("tp").AsEnum(MessageType.Info);
-        m_Source            = doc.TryGetObjectValueOf("src").AsInt();
-        m_TimeStamp         = doc.TryGetObjectValueOf("time").AsDateTime(App.TimeSource.UTCNow);
-        m_Host              = doc.TryGetObjectValueOf("hst").AsString();
-        m_From              = doc.TryGetObjectValueOf("frm").AsString();
-        m_Topic             = doc.TryGetObjectValueOf("top").AsString();
-        m_Text              = doc.TryGetObjectValueOf("txt").AsString();
-        m_Parameters        = doc.TryGetObjectValueOf("par").AsString();
-        m_ArchiveDimensions = doc.TryGetObjectValueOf("arc").AsString();
-        m_Channel           = doc.TryGetObjectValueOf("chan").AsString();
-
-        var ee = doc["exc"] as BSONDocumentElement;
-        if (ee==null) return;
-
-        m_Exception = WrappedException.MakeFromBSON(serializer, ee.Value);
-      }
-
+      m_Exception = WrappedException.MakeFromBSON(serializer, ee.Value);
+    }
     #endregion
   }
 
@@ -344,7 +356,7 @@ namespace NFX.Log
 
   internal class MessageList : List<Message>
   {
-        public MessageList() {}
-        public MessageList(IEnumerable<Message> other) : base(other) {}
+    public MessageList() { }
+    public MessageList(IEnumerable<Message> other) : base(other) { }
   }
 }

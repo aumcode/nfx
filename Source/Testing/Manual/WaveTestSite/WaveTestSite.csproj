@@ -85,6 +85,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="post-build" />
+    <None Include="post-build.cmd" />
+    <None Include="pre-build" />
+    <None Include="pre-build.cmd" />
     <None Include="WaveTestSite.laconf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -134,7 +138,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Pages\*.htm" -r -ext ".auto.cs" /src</PreBuildEvent>
+    <PreBuildEvent>$(ProjectDir)pre-build $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)post-build $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

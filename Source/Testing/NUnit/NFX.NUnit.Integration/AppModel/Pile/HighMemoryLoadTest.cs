@@ -30,11 +30,18 @@ namespace NFX.NUnit.Integration.AppModel.Pile
         [TestFixtureSetUp]
         public void RigSetup()
         {
+            System.GC.Collect();
             var ms = NFX.OS.Computer.GetMemoryStatus();
 
             var has = ms.TotalPhysicalBytes;
             if (has < MinRAM)
                 Assert.Ignore("The machine has to have at least {0:n0} bytes of ram for this test, but it only has {1:n0} bytes".Args(MinRAM, has));
+        }
+
+        [TestFixtureTearDown]
+        public void Shutdown()
+        {
+           System.GC.Collect();
         }
     }
 

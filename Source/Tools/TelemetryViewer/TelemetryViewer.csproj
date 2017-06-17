@@ -92,6 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="post-build" />
+    <None Include="post-build.cmd" />
+    <None Include="pre-build" />
+    <None Include="pre-build.cmd" />
     <None Include="Resources\table.bmp" />
     <Content Include="Resources\line.png" />
     <Content Include="Resources\logscale.png" />
@@ -126,6 +130,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)pre-build $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)post-build $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -375,6 +375,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt32(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt32(sval.Substring(2), 16);
                 }
+                if (val is uint) return (int)(uint)val;
                 return Convert.ToInt32(val);
               }
               catch
@@ -396,6 +397,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt32(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt32(sval.Substring(2), 16);
                 }
+                if (val is uint) return (int)(uint)val;
                 return Convert.ToInt32(val);
               }
               catch
@@ -422,6 +424,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt32(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt32(sval.Substring(2), 16);
                 }
+                if (val is int) return (uint)(int)val;
                 return Convert.ToUInt32(val);
               }
               catch
@@ -443,6 +446,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt32(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt32(sval.Substring(2), 16);
                 }
+                if (val is int) return (uint)(int)val;
                 return Convert.ToUInt32(val);
               }
               catch
@@ -466,6 +470,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt64(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt64(sval.Substring(2), 16);
                 }
+                if (val is ulong) return (long)(ulong)val;
                 return Convert.ToInt64(val);
               }
               catch
@@ -487,6 +492,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt64(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt64(sval.Substring(2), 16);
                 }
+                if (val is ulong) return (long)(ulong)val;
                 return Convert.ToInt64(val);
               }
               catch
@@ -510,6 +516,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt64(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt64(sval.Substring(2), 16);
                 }
+                if (val is long) return (ulong)(long)val;
                 return Convert.ToUInt64(val);
               }
               catch
@@ -531,6 +538,7 @@ namespace NFX
                    if (sval.StartsWith(RADIX_BIN, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt64(sval.Substring(2), 2);
                    if (sval.StartsWith(RADIX_HEX, StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt64(sval.Substring(2), 16);
                 }
+                if (val is long) return (ulong)(long)val;
                 return Convert.ToUInt64(val);
               }
               catch

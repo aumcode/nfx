@@ -27,7 +27,7 @@ using NFX.Environment;
 
 namespace NFX.NUnit.Config
 {
-    [TestFixture]   
+    [TestFixture]
     public class XMLConfiguration
     {
         [TestCase]
@@ -56,8 +56,8 @@ namespace NFX.NUnit.Config
         public void ReadOnlyErrorOnNodeCreate()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
-           
+           conf.Create();
+
            conf.SetReadOnly(true);
 
            conf.Root.AddChildNode("A", null);
@@ -67,7 +67,7 @@ namespace NFX.NUnit.Config
         public void NodeCreate()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
 
            Assert.AreEqual("A", conf.Root["A"].Name);
@@ -78,7 +78,7 @@ namespace NFX.NUnit.Config
         public void EmptySectionAndAttributeNodes()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null).AddChildNode("A.A", "haha!").AddAttributeNode("good", true);
 
            Assert.AreEqual("haha!", conf.Root["A"]["A.A"].Value);
@@ -99,58 +99,58 @@ namespace NFX.NUnit.Config
         public void ReadOnlyErrorOnNodeRename()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.SetReadOnly(true);
            conf.Root.Name = "changed-name";
         }
-        
+
         [TestCase]
         [ExpectedException(typeof(ConfigException))]
         public void ReadOnlyErrorOnNodeDelete()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.SetReadOnly(true);
            conf.Root["A"].Delete();
         }
-        
+
         [TestCase]
         public void NodeDelete()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.Root.AddChildNode("B", null).AddChildNode("B1");
            conf.Root["A"].Delete();
            Assert.AreEqual(false, conf.Root["A"].Exists);
            Assert.AreEqual(true, conf.Root["B"].Exists);
-           
+
            conf.Root.ResetModified();
            Assert.AreEqual(false, conf.Root["B"].Modified);
            conf.Root["B"]["B1"].Delete();
            Assert.AreEqual(true, conf.Root["B"].Modified);
         }
-        
+
         [TestCase]
         public void RootDelete()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
-           
+
            Assert.AreEqual(true, conf.Root.Exists);
            conf.Root.Delete();
            Assert.AreEqual(false, conf.Root.Exists);
         }
-        
+
 
         [TestCase]
         public void NodeRename()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.Root["A"].Name = "B";
            Assert.AreEqual("B", conf.Root["B"].Name);
@@ -160,7 +160,7 @@ namespace NFX.NUnit.Config
         public void NavigationAndValueAccessors()
         {
            var conf = new NFX.Environment.XMLConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", 10).AddChildNode("A.A", 20);
            conf.Root.AddChildNode("B", 789);
            conf.Root.AddChildNode("URI", UriKind.RelativeOrAbsolute);
@@ -185,9 +185,9 @@ namespace NFX.NUnit.Config
             </a>
             <web.world>who knows?</web.world>
            </root>";
-                                   
+
            var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-           
+
            Assert.AreEqual(UriKind.Absolute, conf.Root.AttrByName("kind").ValueAsEnum<UriKind>(UriKind.Relative));
            Assert.AreEqual(true, conf.Root["a"]["b"].AttrByName("cool").ValueAsBool(false));
            Assert.AreEqual(75, conf.Root["a"]["b"]["c"].ValueAsInt());
@@ -215,9 +215,9 @@ namespace NFX.NUnit.Config
             </a>
             <web.world>who knows?</web.world>
            </root>";
-                                   
+
            var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-           
+
            Assert.AreEqual(UriKind.Absolute, conf.Root.Navigate("$kind").ValueAsEnum<UriKind>(UriKind.Relative));
            Assert.AreEqual(UriKind.Absolute, conf.Root.Navigate("!$kind").ValueAsEnum<UriKind>(UriKind.Relative));
 
@@ -232,7 +232,7 @@ namespace NFX.NUnit.Config
            Assert.AreEqual(false, conf.Root.Navigate("/a/b/$snake").ValueAsBool());
            Assert.AreEqual("b", conf.Root.Navigate("/a/b").Name);
            Assert.AreEqual(conf.Root, (conf.Root.Navigate("a/b") as ConfigSectionNode).Navigate("../.."));
-           
+
         }
 
         [TestCase]
@@ -240,33 +240,33 @@ namespace NFX.NUnit.Config
         public void PathNavigationWithRequiredNodes()
         {
            var xml = @"<root>
-           
+
             <a>
               <b cool=""true"" snake=""false""> <c> 75 </c> </b>
             </a>
 
            </root>";
-                                   
+
            var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-           
+
            Assert.AreEqual(75, conf.Root.Navigate("a/b/c").ValueAsInt());
 
            //this should throw
            Assert.AreEqual(false, conf.Root.Navigate("!a/b/c/d").Exists);
-           
+
         }
 
         [TestCase]
         public void ModifiedFlag()
         {
           var xml = @"<root>
-           
+
             <a>
               <b cool=""true"" snake=""false""> <c> 75 </c> </b>
             </a>
 
            </root>";
-                                   
+
            var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
 
            Assert.IsFalse(conf.Root.Modified);
@@ -292,9 +292,9 @@ namespace NFX.NUnit.Config
             </a>
             <web.world>who knows?</web.world>
            </root>";
-                                   
+
            var conf = NFX.Environment.XMLConfiguration.CreateFromXML(xml);
-           
+
            Assert.AreEqual("GAGARIN", conf.Root.Value);
            Assert.AreEqual(true, conf.Root["a"]["b"].AttrByName("cool").ValueAsBool(false));
            Assert.AreEqual(75, conf.Root["a"]["b"]["c"].ValueAsInt());

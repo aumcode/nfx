@@ -87,6 +87,13 @@
     <Compile Include="ApplicationModel\LifecycleIntfs.cs" />
     <Compile Include="ApplicationModel\NOPSession.cs" />
     <Compile Include="ApplicationModel\Pile\CacheExtensions.cs" />
+    <Compile Include="ApplicationModel\Pile\Piled.cs" />
+    <Compile Include="ApplicationModel\Pile\MMFPile.cs" />
+    <Compile Include="ApplicationModel\Pile\PileEntry.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\DefaultPileBase.pileEnumerator.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\MMFMemory.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\DefaultPileBase.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\DefaultPile_Original.cs" />
     <Compile Include="ApplicationModel\Pile\DefaultPile.cs" />
     <Compile Include="ApplicationModel\Pile\Enums.cs" />
     <Compile Include="ApplicationModel\Pile\Exceptions.cs" />
@@ -97,6 +104,11 @@
     <Compile Include="ApplicationModel\Pile\KeyStructs.cs" />
     <Compile Include="ApplicationModel\Pile\LocalCache.cs" />
     <Compile Include="ApplicationModel\Pile\LocalCacheTable.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\LocalMemory.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\Memory.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\DefaultPileBase.Segment.cs" />
+    <Compile Include="ApplicationModel\Pile\PileImpl\DefaultPileBase.SegmentCrawlStatus.cs" />
+    <Compile Include="ApplicationModel\Pile\PileInstances.cs" />
     <Compile Include="ApplicationModel\Pile\PilePointer.cs" />
     <Compile Include="ApplicationModel\Pile\TableOptions.cs" />
     <Compile Include="ApplicationModel\ServiceBaseApplication.cs" />
@@ -185,6 +197,7 @@
     <Compile Include="GuidTypeResolver.cs" />
     <Compile Include="IEndableInstance.cs" />
     <Compile Include="Instrumentation\BaseGauges.cs" />
+    <Compile Include="IO\ImageUtils.cs" />
     <Compile Include="Log\IArchiveLoggable.cs" />
     <Compile Include="Instrumentation\SelfInstruments.cs" />
     <Compile Include="Instrumentation\NOPInstrumentationProvider.cs" />
@@ -314,6 +327,7 @@
     <Compile Include="Serialization\Arow\Exceptions.cs" />
     <Compile Include="Serialization\Arow\Writer.cs" />
     <Compile Include="Serialization\BSON\Attributes.cs" />
+    <Compile Include="Serialization\BSON\BSONExtensions.cs" />
     <Compile Include="Serialization\BSON\BSONSerializer.cs" />
     <Compile Include="Serialization\BSON\Intfs.cs" />
     <Compile Include="Serialization\CSV\CSVParser.cs" />
@@ -632,6 +646,10 @@
     <Compile Include="CodeAnalysis\Laconfig\LaconfigParser.Impl.cs" />
     <Compile Include="Media\TagCodes\QR\QRMatrix.Mask.cs" />
     <None Include="Media\TagCodes\CHANGES" />
+    <None Include="post-build" />
+    <None Include="post-build.cmd" />
+    <None Include="pre-build" />
+    <None Include="pre-build.cmd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -669,6 +687,12 @@
     <EmbeddedResource Include="Parsing\ConanDoyle.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)pre-build $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)post-build $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -676,7 +700,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"</PreBuildEvent>
-  </PropertyGroup>
 </Project>

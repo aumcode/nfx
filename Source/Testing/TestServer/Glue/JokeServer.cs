@@ -31,7 +31,7 @@ namespace TestServer.Glue
     {
         public string Echo(string text)
         {
-          
+
           //StringBuilder sb = null;
           //TextInfoHeader th = null;
           //foreach(var h in NFX.Glue.ServerCallContext.Request.Headers)
@@ -41,13 +41,13 @@ namespace TestServer.Glue
           //  sb.Append(h.ToString());
           //  sb.Append(" ");
           //}
-         
-         
+
+
           //ExecutionContext.Application.Log.Write(MessageType.Info, "MarazmServer.Echo. Headers: " + sb.ToString(), from: text + (th==null?string.Empty : th.Text + th.Info));
-          
-          
+
+
           //NFX.Glue.ServerCallContext.ResponseHeaders.Add( new MyHeader());
-          return "Server echoed " + text;// + "' on "+App.LocalizedTime.ToString(); 
+          return "Server echoed " + text;// + "' on "+App.LocalizedTime.ToString();
         }
 
         public string UnsecureEcho(string text)
@@ -115,7 +115,7 @@ namespace TestServer.Glue
         public void Notify(string text)
         {
             NotifyEvent.Happened();
-            //ExecutionContext.Application.Log.Write(MessageType.Info, from: "MarazmServer.Notify", text: text);  
+            //ExecutionContext.Application.Log.Write(MessageType.Info, from: "MarazmServer.Notify", text: text);
         }
 
         public object ObjectWork(object dummy)

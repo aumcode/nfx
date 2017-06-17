@@ -46,6 +46,12 @@ namespace WinFormsTest
       InitializeComponent();
     }
 
+    public PileForm(bool mmf)
+    {
+      InitializeComponent();
+      MMF = mmf;
+    }
+
 
 
     #region PERZON
@@ -113,6 +119,19 @@ namespace WinFormsTest
             Long3 = 134324324334,
 
             S1 = "This is a very long and longer and long line of text that takes many bytes indeed it does but how does it affect perf?"
+            /*ObjectArray = new object[]{ Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        Person.MakeFake(), new object[]{Person.MakeFake()}, Person.MakeFake(), Person.MakeFake(), Person.MakeFake(), Person.MakeFake(),
+                                        1, true, "dausyhiduhaiushdahsuidhuia", false, null, null, null }
+             */
           };
         }
 
@@ -134,21 +153,32 @@ namespace WinFormsTest
         [Field]public double Dbl3 { get; set;}
 
         [Field]public string S1 { get; set;}
+
+        [Field]public object[] ObjectArray{get; set;}
       }
 
 
     #endregion
 
 
+    public bool MMF;
 
-
-    private DefaultPile m_Pile;
+   // private DefaultPile m_Pile;
+    private DefaultPileBase m_Pile;
 
 
     private void PileForm_Load(object sender, EventArgs e)
     {
-      m_Pile = new DefaultPile();
+      if (!MMF)
+       m_Pile = new DefaultPile();
+      else
+      {
+        m_Pile = new MMFPile(null);
+        ((MMFPile)m_Pile).DataDirectoryRoot = @"c:\nfx";
+      }
+
       m_Pile.Configure(null);
+
       chkSpeed_CheckedChanged(null, null);
     }
 
@@ -380,10 +410,14 @@ namespace WinFormsTest
         public bool STOP;
       }
 
+
+      private enum ptype{Person, Person2, String, ByteArray}
+
       private int __threadCount;
       private int __writesSec;
       private int __delSec;
       private int __payloadVariance;
+      private ptype __payloadType;
 
 
       private ConcurrentQueue<string> m_Errors = new ConcurrentQueue<string>();
@@ -394,6 +428,7 @@ namespace WinFormsTest
         __writesSec = tbTraxWrites.Text.AsInt(0);
         __delSec = tbTraxDeletes.Text.AsInt(0);
         __payloadVariance = tbTraxVariance.Text.AsInt(0);
+        __payloadType = rbtPerson.Checked ? ptype.Person : rbtPerson2.Checked ? ptype.Person2 : rbtString.Checked ? ptype.String : ptype.ByteArray;
 
         var added = 0;
         while (chkTraxer.Checked &&  m_Traxers.Count < __threadCount)
@@ -404,7 +439,7 @@ namespace WinFormsTest
           {
             try
             {
-              var pps = new PilePointer[2000000];
+              var pps = new PilePointer[4000000];
               for(var i=0; i<pps.Length; i++) pps[i] = PilePointer.Invalid;
               var ppi = 0;
               var di=0;
@@ -421,43 +456,54 @@ namespace WinFormsTest
                 var d=0;
                 while(w<wc || d<dc)
                 {
-                  if (w<wc)
-                  {
-                    var obj = Person.MakeFake();
-                    //var obj = new byte[256]; //Person.MakeFake();
-                    //var obj = "Gortes Burdak Ashvoizxuini  Zei Budanovikaoxdod"; //Person.MakeFake();
-                    //var obj = Person2.MakeFake2();
-
-                    if (__payloadVariance>0)
-                     obj.BinData = new byte[__payloadVariance];
-
-                    var pp = m_Pile.Put( obj );
-                    pps[ppi] = pp;
-                    ppi++;
-                    if (ppi==pps.Length) ppi = 0;
-                    w++;
-                  }
-
-                  if (d<dc)
-                  {
-                      if (di==pps.Length) di = 0;
-                      var pp = pps[di];
-                      if (pp.Address>=0)
+                      if (w<wc)
                       {
-                        m_Pile.Delete( pp );
-                        pps[di] = PilePointer.Invalid;
-                      }
-                      d++;
-                      di++;
-                  }
-                }
-    //            Thread.Sleep(90+ExternalRandomGenerator.Instance.NextScaledRandomInteger(0, 20));
+                          object payload;
 
+                          if (__payloadType== ptype.Person)
+                          {
+                            var p = Person.MakeFake();
+                            if (__payloadVariance>0)
+                              p.BinData = new byte[ IntMath.ChangeByRndPct(__payloadVariance, -0.25f) ];
+                            payload = p;
+                          }
+                          else if (__payloadType== ptype.Person2)
+                          {
+                            var p = Person2.MakeFake2();
+                            if (__payloadVariance>0)
+                              p.BinData = new byte[ IntMath.ChangeByRndPct(__payloadVariance, -0.25f) ];
+                            payload = p;
+                          }
+                          else if (__payloadType== ptype.String) payload = new string(' ', __payloadVariance);
+                          else payload = new byte[__payloadVariance];
+
+
+
+                          var pp = m_Pile.Put( payload );
+                          pps[ppi] = pp;
+                          ppi++;
+                          if (ppi==pps.Length) ppi = 0;
+                          w++;
+                      }
+
+                      if (d<dc)
+                      {
+                          if (di==pps.Length) di = 0;
+                          var pp = pps[di];
+                          if (pp.Address>=0)
+                          {
+                            m_Pile.Delete( pp );
+                            pps[di] = PilePointer.Invalid;
+                          }
+                          d++;
+                          di++;
+                      }
+                }
               }
             }
             catch(Exception error)//abort etc..
             {
-              m_Errors.Enqueue(error.ToMessageWithType());
+              m_Errors.Enqueue( error.ToMessageWithType() );
             }
           });
           m_Traxers.Add(context);

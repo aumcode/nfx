@@ -79,7 +79,7 @@ namespace NFX.Templatization
       return createElement(node, true, null, ref counter, 0, out id);
     }
 
-    public string GenerateAnonymousFunction(IConfigSectionNode node, int indent, ref int indexInSource, ref Dictionary<string, string> dictIds)
+    public string GenerateSEFFunction(IConfigSectionNode node, int indent, ref int indexInSource, ref Dictionary<string, string> dictIds)
     {
       m_IndexInSource = indexInSource;
       m_Indent = indent;

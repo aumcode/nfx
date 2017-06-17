@@ -1,4 +1,4 @@
-﻿WAVE.RecordModel.GUI = (function () {
+WAVE.RecordModel.GUI = (function () {
 
     var tUNDEFINED = "undefined";
 

@@ -182,12 +182,22 @@
     <None Include="IO\FileSystem\GoogleDrive\GDRIVE_README.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\Escape.txt" />
     <Content Include="IO\FileSystem\SVN\Esc Folder+\NestedFolder\Escape.txt" />
+    <None Include="post-build" />
+    <None Include="post-build.cmd" />
+    <None Include="pre-build" />
+    <None Include="pre-build.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)pre-build $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)post-build $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

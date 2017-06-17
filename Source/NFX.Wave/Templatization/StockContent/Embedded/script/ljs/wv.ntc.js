@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 /*jshint devel: true,browser: true, sub: true */
 /*global escape: true */
 

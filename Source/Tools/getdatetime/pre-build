@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+SCRIPT=`realpath -s $0`
+SCRIPTPATH=`dirname $SCRIPT`
+
+SOLUTION_DIR=$1
+PROJECT_DIR=${SCRIPTPATH}/

@@ -247,29 +247,34 @@ namespace NFX.DataAccess.MySQL
 
               for (int i = 0; i < reader.FieldCount; i++)
               {
-                  var fdef = toLoad[i];
-                  if (fdef==null) continue;
+                var fdef = toLoad[i];
+                if (fdef==null) continue;
 
-                  var val = reader.GetValue(i);
+                var val = reader.GetValue(i);
 
-                  if (val==null || val is DBNull)
+                if (val==null || val is DBNull)
+                {
+                  row[fdef.Order] = null;
+                  continue;
+                }
+
+                if (fdef.NonNullableType == typeof(bool))
+                {
+                  if (store.StringBool)
                   {
-                    row[fdef.Order] = null;
-                    continue;
-                  }
-
-                  if (fdef.NonNullableType==typeof(bool))
-                  {
-                      if (store.StringBool)
-                      {
-                        var bval = (val is bool) ? (bool)val : val.ToString().EqualsIgnoreCase(store.StringForTrue);
-                        row[fdef.Order] = bval;
-                      }
-                      else
-                      row[fdef.Order] = val.AsNullableBool();
+                    var bval = (val is bool) ? (bool)val : val.ToString().EqualsIgnoreCase(store.StringForTrue);
+                    row[fdef.Order] = bval;
                   }
                   else
-                      row[fdef.Order] = val;
+                    row[fdef.Order] = val.AsNullableBool();
+                }
+                else if (fdef.NonNullableType == typeof(DateTime))
+                {
+                  var dtVal = val.AsNullableDateTime();
+                  row[fdef.Order] = dtVal.HasValue ? DateTime.SpecifyKind(dtVal.Value, store.DateTimeKind) : (DateTime?)null;
+                }
+                else
+                  row[fdef.Order] = val;
               }
 
               return row;

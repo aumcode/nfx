@@ -36,6 +36,12 @@ namespace NFX.ApplicationModel.Pile
   {
 
     /// <summary>
+    /// Returns a node-global ID of this pile instance
+    /// </summary>
+    int Identity { get;}
+
+
+    /// <summary>
     /// Returns whether pile is local or distributed
     /// </summary>
     LocalityKind Locality { get;}
@@ -98,15 +104,18 @@ namespace NFX.ApplicationModel.Pile
   /// <summary>
   /// Represents a pile of objects - a custom memory heap that can store native CLR objects in a tightly-serialized form.
   /// Piles can be either local (allocate local RAM on the server), or distributed (allocate RAM on many servers).
-  /// This class is designed primarily for applications that need to store/cache very many (100s of millions on local, billions on distributed) of objects in RAM
-  /// (and/or possibly on disk) without causing the local CLR's GC scans of huge object graphs.
-  /// Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at the cost of higher CPU usage.
-  /// The implementor must be thread-safe for all operations unless stated otherwise on a member level.
-  /// The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like Interlocked-family, Lock, MemoryBarriers and the like
-  ///  that regular RAM supports. Should a need arise to interlock within the pile - a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
+  /// This class is designed primarily for applications that need to store/cache very many
+  /// (100s of millions on local, billions on distributed) of objects in RAM (and/or possibly on disk) without causing
+  /// the local CLR's GC scans of huge object graphs.
+  /// Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at
+  /// the cost of higher CPU usage. The implementor must be thread-safe for all operations unless stated otherwise on a member level.
+  /// The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like
+  /// Interlocked-family, Lock, MemoryBarriers and the like that regular RAM supports. Should a need arise to interlock within the pile -
+  /// a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
   ///   a Get does not impose a lock on ALL concurrent writes throught the pile (a write does not block all gets either).
+  /// The enumeration of the pile is thread-safe, however it does not guarantee the snapshot stability as parallel mutations may happen while enumeration takes place.
   /// </summary>
-  public interface IPile : IPileStatus, IApplicationComponent
+  public interface IPile : IPileStatus, IEnumerable<PileEntry>, IApplicationComponent
   {
     /// <summary>
     /// Puts a CLR object into the pile and returns a newly-allocated pointer.

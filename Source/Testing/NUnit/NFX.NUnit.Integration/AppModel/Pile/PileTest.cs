@@ -32,8 +32,6 @@ namespace NFX.NUnit.Integration.AppModel.Pile
   [TestFixture]
   public class PileTest
   {
-    #region Tests
-
       [Test]
       public void SegmentAddedDeleted()
       {
@@ -58,7 +56,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
         }
       }
 
-      
+
       [Test]
       public void Parallel_PutGet()
       {
@@ -82,7 +80,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           Parallel.ForEach(tuples, t => {
             Assert.AreEqual(t.Item2, ipile.Get(t.Item1));
           });
-        }  
+        }
       }
 
       [Test]
@@ -136,11 +134,11 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           {
             Console.WriteLine("Thread '{0}' {1:n0} times accessed deleted pointer", kvp.Key, kvp.Value);
           }
-        }  
+        }
       }
 
-      [TestCase(128,      64,128,134,  152,  170,180,190,200,250,512,1024,2000,3000,4000,5000,6000)]
-      [TestCase(32000,    64,88,128,134,170,180,190,200,250,512,1024,2000,3000,4000,5000,  32024)]  
+      [TestCase(128,      64, 128, 144, 152,  170,180,190,200,250,512,1024,2000,3000,4000,5000,6000)]
+      [TestCase(32000,    64,88,128,134,170,180,190,200,250,512,1024,2000,3000,4000,5000, 32000)]
       public void PileSmallObjects(int payloadSize, params int[] freeChunkSizes)
       {
         using (var pile = new DefaultPile() { SegmentSize = PileCacheTestCore.SEG_SIZE, AllocMode = AllocationMode.ReuseSpace })
@@ -156,7 +154,8 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           pile.Delete(pps.Last());
           pps.RemoveAt(pps.Count-1);
 
-          Console.WriteLine("just removed the last added payload and segment should be 1 now, real segment count is {0}", pile.SegmentCount);
+          Console.WriteLine("Just removed the last added payload and segment should be 1 now, real segment count is {0}", pile.SegmentCount);
+          Aver.AreEqual(1, pile.SegmentCount);
 
           var objectsInFirstSegment = pps.Count;
 
@@ -166,7 +165,11 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           for (int i = 0; i < pps.Count; i+=2, deletedObjectCount++)
             Assert.IsTrue(pile.Delete(pps[i]));
 
-          Console.WriteLine("deleted {0:N0} objects, pile.ObjectCount {1:N0}", deletedObjectCount, pile.ObjectCount);
+          var objectsInFirstSegmentAfterDelete = pile.ObjectCount;
+          Console.WriteLine("Deleted {0:N0} objects from 1st segment, pile.ObjectCount {1:N0}", deletedObjectCount, pile.ObjectCount);
+          Aver.AreEqual(objectsInFirstSegment / 2 , objectsInFirstSegmentAfterDelete);
+          Console.WriteLine("---------------------------------------------------------");
+
 
           var crawlStatus = pile.Crawl(false);
           Console.WriteLine("crawl: {0}", crawlStatus);
@@ -183,13 +186,16 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           pile.Delete(pps1.Last());
           pps1.RemoveAt(pps1.Count-1);
 
-          Console.WriteLine("again just removed the last added payload and segment should be 2 now, real segment count is {0}", pile.SegmentCount);
+          Console.WriteLine("Again just removed the last added payload and segment should be 2 now, real segment count is {0}", pile.SegmentCount);
+          Aver.AreEqual(2, pile.SegmentCount);
 
-          var objectsInSecondSegment = pps1.Count;
+          var objectsInSecondRound = pps1.Count;
 
-          Console.WriteLine("put {0:N0} objects in second segment, pile.ObjectCount {1:N0}", objectsInSecondSegment, pile.ObjectCount);
+          Console.WriteLine("Put {0:N0} objects in second round, pile.ObjectCount {1:N0}", objectsInSecondRound, pile.ObjectCount);
 
-          Assert.AreEqual(objectsInFirstSegment * 2, pile.ObjectCount, "Object count in pile with two full segments must be equal to double object count in full first segment!");
+          Aver.AreWithin( objectsInFirstSegment + objectsInFirstSegmentAfterDelete, objectsInSecondRound, 2d, "#1");
+
+          Aver.AreEqual(objectsInFirstSegmentAfterDelete + objectsInSecondRound, pile.ObjectCount, "#2");
         }
       }
 
@@ -212,7 +218,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
           Assert.AreEqual(1, pile.SegmentCount);
           Assert.AreEqual(1, pile.SegmentTotalCount);
 
-        }   
+        }
       }
 
       [TestCase(200)]
@@ -245,7 +251,7 @@ namespace NFX.NUnit.Integration.AppModel.Pile
 
           Assert.AreEqual(2, pile.SegmentCount);
           Assert.AreEqual(3, pile.SegmentTotalCount);
-        }   
+        }
       }
 
       [TestCase(32, 16000, 300, 500)]
@@ -266,6 +272,5 @@ namespace NFX.NUnit.Integration.AppModel.Pile
                 return new byte[size];
               }
 
-    #endregion
   }
 }

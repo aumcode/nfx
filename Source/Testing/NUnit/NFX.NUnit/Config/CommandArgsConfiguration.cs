@@ -28,7 +28,7 @@ using CAC = NFX.Environment.CommandArgsConfiguration;
 
 namespace NFX.NUnit.Config
 {
-    [TestFixture]   
+    [TestFixture]
     public class CmdArgsConfiguration
     {
         private string[] args = {
@@ -41,10 +41,10 @@ namespace NFX.NUnit.Config
            @"-shadow",
            @"fast",
            @"swap=1024",
-           @"-large"        
+           @"-large"
          };
-        
-        
+
+
         [TestCase]
         public void GeneralCmdArgs()
         {

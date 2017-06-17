@@ -25,7 +25,7 @@ using NFX.DataAccess.Distributed;
 
 namespace NFX.NUnit.DataAccess
 {
-   
+
     [Serializable]
     [Table(targetName: "SPARTA_SYSTEM", name: "dimperson")]
     public class Person : TypedRow
@@ -37,13 +37,13 @@ namespace NFX.NUnit.DataAccess
 
         [Field]
         public string FirstName {get; set;}
-        
+
         [Field(required: true)]
         public string LastName {get; set;}
 
         [Field(valueList: "GOOD,BAD,UGLY")]
         public string Classification {get; set;}
-        
+
         [Field(required: true, min: "01/01/1900")]
         [Field(targetName: "SPARTA_SYSTEM", required: true, backendName: "brthdt", min: "01/01/1800")]
         public DateTime DOB {get; set;}
@@ -84,7 +84,7 @@ namespace NFX.NUnit.DataAccess
 
         [Field(required: true)]
         public string Description {get; set;}
-        
+
     }
 
     [Serializable]
@@ -106,12 +106,12 @@ namespace NFX.NUnit.DataAccess
           var error = base.Validate(targetName);
           if (error!=null) return error;
 
-          if (!Description.Contains("Chaplin")) 
+          if (!Description.Contains("Chaplin"))
             return new CRUDFieldValidationException("Chaplin is required in description", "Description");
 
           return null;
         }
-        
+
     }
 
 
@@ -131,8 +131,8 @@ namespace NFX.NUnit.DataAccess
     }
 
     [Serializable]
-    public class ExtendedPerson : Person 
-    {            
+    public class ExtendedPerson : Person
+    {
         [Field]
         public string Info { get; set; }
 
@@ -173,12 +173,12 @@ namespace NFX.NUnit.DataAccess
        public enum HumanStatus{Ok, NotOk, Unknown}
 
        public class Human : TypedRow
-       { 
+       {
          [Field]public GDID ID{ get; set;}
          [Field]public string Name{ get; set;}
          [Field]public DateTime DOB{ get; set;}
          [Field]public HumanStatus Status{ get; set;}
-         
+
          [Field]public Human Father{ get; set;}
          [Field]public Human Mother{ get; set;}
 
@@ -201,19 +201,19 @@ namespace NFX.NUnit.DataAccess
 
       public override bool ReadOnly  {   get { return false; }   }
       protected override void DoValidate(IBank bank){}
-      
+
     }
 
-    
+
     //used only for test
     public class FakeNOPBank : IBank
     {
 
       public static readonly FakeNOPBank Instance = new FakeNOPBank();
-      
-      
+
+
       public IDistributedDataStore DataStore {get { return null;}}
-     
+
 
       public ISchema Schema {get { return null;}}
 

@@ -61,7 +61,7 @@ namespace NFX.NUnit.Config
 
         private void test(Configuration config)
         {
-           Assert.AreEqual( "USA", config.Root.Navigate("behaviors/behavior/$type").Value); 
+           Assert.AreEqual( "USA", config.Root.Navigate("behaviors/behavior/$type").Value);
         }
 
     }

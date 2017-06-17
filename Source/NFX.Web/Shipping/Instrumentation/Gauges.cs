@@ -15,6 +15,7 @@
 * limitations under the License.
 </FILE_LICENSE>*/
 using NFX.Instrumentation;
+using NFX.Serialization.BSON;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace NFX.Web.Shipping.Instrumentation
   }
 
   [Serializable]
+  [BSONSerializable("811BEE94-E9B8-4A2D-A0F7-592631A69C97")]
   public class LabelCount : ShippingLongGauge
   {
     protected LabelCount(string source, long value) : base(source, value) { }
@@ -52,6 +54,7 @@ namespace NFX.Web.Shipping.Instrumentation
   }
 
   [Serializable]
+  [BSONSerializable("F52805B2-BB94-4AEF-AE65-BD23AE0A0DC6")]
   public class LabelErrorCount : ShippingLongGauge
   {
     protected LabelErrorCount(string source, long value) : base(source, value) { }

@@ -20,12 +20,6 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Net;
 using System.Text;
-
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using NFX.Security;
 using System.Security.Principal;
 
 namespace NFX
@@ -937,67 +931,5 @@ namespace NFX
           return new string(buf);
         }
 
-
-       /// <summary>
-       /// Scales source image so it fits in the desired image size preserving aspect ratio.
-       /// This function is usable for profile picture size/aspect normalization
-       /// </summary>
-       public static Image NormalizeCenteredImage(this Image srcImage, int targetWidth = 128, int targetHeight = 128, int xDpi = 96, int yDpi = 96)
-       {
-         if (srcImage==null || targetWidth<1 ||targetHeight<1 || xDpi<1 || yDpi<1)
-          throw new NFXException(StringConsts.ARGUMENT_ERROR + "NormalizeCenteredImage(...)");
-
-         var result = new Bitmap(targetWidth, targetHeight);
-         result.SetResolution(xDpi, yDpi);
-         using(var gr = Graphics.FromImage(result))
-         {
-            var scx = srcImage.Width / 2;
-            var scy = srcImage.Height / 2;
-
-            var sar = srcImage.Width / (double)srcImage.Height;
-
-            int sx,sy,sw,sh;
-
-
-
-            if (targetHeight>targetWidth)
-            {
-                var ky = srcImage.Height / (double)targetHeight;
-                sw = (int)(ky * targetWidth);
-                sh = srcImage.Height;
-            }
-            else
-            {
-                var kx = srcImage.Width / (double)targetWidth;
-                sw = srcImage.Width;
-                sh = (int)(kx * targetHeight);
-            }
-
-            if (sw>srcImage.Width)
-            {
-               var k = (sw-srcImage.Width) / (double)srcImage.Width;
-               sw = srcImage.Width;
-               sh = (int)(sh * (1.0-k*sar));
-            }
-            if (sh>srcImage.Height)
-            {
-               var k = (sh-srcImage.Height) / (double)srcImage.Height;
-               sh = srcImage.Height;
-               sw = (int)(sw * (1.0-k/sar));
-            }
-
-
-            sx = scx - sw / 2;
-            sy = scy - sh / 2;
-
-            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            gr.DrawImage(srcImage,
-                         new Rectangle(0, 0, targetWidth, targetHeight),
-                         sx, sy, sw, sh, GraphicsUnit.Pixel);
-
-//gr.DrawRectangle(Pens.Red, 0,0,targetWidth-1,targetHeight-1);
-         }
-         return result;
-       }
     }
 }

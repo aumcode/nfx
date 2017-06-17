@@ -650,6 +650,12 @@ namespace NFX.Serialization.BSON
           return name != null ? new BSONBinaryElement(name, bsonBin) : new BSONBinaryElement(bsonBin);
         }
 
+        public static BSONElement String_CLRtoBSON(string name, string str)
+        {
+          if (str == null) return new BSONNullElement(name);
+          return name != null ? new BSONStringElement(name, str) : new BSONStringElement(str);
+        }
+
       #endregion
 
       #region BSONtoCLR

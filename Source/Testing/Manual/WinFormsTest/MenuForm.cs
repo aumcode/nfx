@@ -47,6 +47,11 @@ namespace WinFormsTest
       new SerializerForm2().Show();
     }
 
+    private void btnImages_Click(object sender, EventArgs e)
+    {
+      new ImagesForm().Show();
+    }
+
     private void btnWave_Click(object sender, EventArgs e)
     {
       new WaveForm().Show();
@@ -92,7 +97,7 @@ namespace WinFormsTest
       new PileForm().Show();
     }
 
-    
+
     private void btnPDF_Click(object sender, EventArgs e)
     {
      new PdfTestForm().Show();
@@ -120,7 +125,7 @@ namespace WinFormsTest
       optimizerconfuser = null;
 
       var sw = Stopwatch.StartNew();
-      
+
       for(var i=0; i<CNT; i++)
       {
          var buf = getGarbageBuffer(BLEN);
@@ -163,8 +168,8 @@ System
  (03) CPU Count: {2}
  (04) 64 Bit process: {3}
  (05) 64 Bit OS: {4}
- (06) OS Family: {5} 
- (07) Network Signature: {6} 
+ (06) OS Family: {5}
+ (07) Network Signature: {6}
 
 Performance
 -----------
@@ -212,6 +217,11 @@ Performance
         private void btnMailSink_Click(object sender, EventArgs e)
         {
             new MailForm().Show();
+        }
+
+        private void btnMMFPile_Click(object sender, EventArgs e)
+        {
+            new PileForm(true).Show();
         }
     }
 }

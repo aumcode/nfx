@@ -32,7 +32,7 @@ namespace NFX.Templatization
   ///   argument[1] - context for variable evaluation
   ///   <code>
   ///   function() {
-  ///     /***
+  ///     /*** #preprocessor_directive#
   ///     {
   ///       tag-name="inner text"
   ///       property-name="property value"
@@ -46,6 +46,7 @@ namespace NFX.Templatization
   public class TextJSTemplateCompiler : TemplateCompiler
   {
     public const string CONFIG_DOM_GENERATOR_SECT = "dom-gen";
+    public const string DOM_GENERATOR_SKIP_PRAGMA = " #skip#";
 
     #region .ctor
     public TextJSTemplateCompiler() : base() { }
@@ -103,8 +104,8 @@ namespace NFX.Templatization
       var text =  getSource(unit);
 
       var blockCount = 0;
-      var result = transpile(text, @"\/\*{3}(.*?)\*{3}\/", false, ref blockCount);
-      result = transpile(result, "\"\\*\\#\\*(.*?)\\*\\#\\*\"", true, ref blockCount);
+      var result = transpile(text, "\"\\*{3}(.*?)\\*{3}\"", true, ref blockCount);
+      result = transpile(result, @"\/\*{3}(.*?)\*{3}\/", false, ref blockCount);
       unit.CompiledSource = evaluateIds(result);
     }
 
@@ -119,7 +120,7 @@ namespace NFX.Templatization
     private string getSource(CompileUnit unit)
     {
       var source = unit.TemplateSource.GetSourceContent().ToString().Trim();
-      var r = new Regex(@"\/\*{3}\@(.*?)\*{3}\/", RegexOptions.Singleline);
+      var r = new Regex(@"\/\*{3}\@(.*?)\*{3}\/", RegexOptions.Singleline); //Include files, /***@ path ***/
       var path = string.Empty;
       try
       {
@@ -142,6 +143,20 @@ namespace NFX.Templatization
         var bc = blockCount;
         var result = r.Replace(source, m =>
         {
+          //check skip pragma
+          var sourcePart = m.Groups[1].Value;
+
+          var sourceLength = sourcePart.Length;
+          var pragmaLength = DOM_GENERATOR_SKIP_PRAGMA.Length;
+          if (sourceLength >= pragmaLength)
+          {
+            var checkedValue = sourcePart.TakeFirstChars(pragmaLength);
+            if (checkedValue.EqualsOrdIgnoreCase(DOM_GENERATOR_SKIP_PRAGMA))
+            {
+               return m.Value.Remove(m.Value.IndexOf(checkedValue), pragmaLength);
+            }
+          }
+
           bc++;
 
           var spacesCount = 0;
@@ -156,11 +171,11 @@ namespace NFX.Templatization
             spacesCount++;
           }
 
-          var conf = m.Groups[1].AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+          var conf = sourcePart.AsLaconicConfig(handling: ConvertErrorHandling.Throw);
           if (!wrapWithFunction)
             return DOMGenerator.Generate(conf, spacesCount, ref bc, ref m_MapLjsIdsToJsIds);
           else
-            return DOMGenerator.GenerateAnonymousFunction(conf, spacesCount, ref bc, ref m_MapLjsIdsToJsIds);
+            return DOMGenerator.GenerateSEFFunction(conf, spacesCount, ref bc, ref m_MapLjsIdsToJsIds);
         });
         blockCount = bc;
         return result;

@@ -12,19 +12,20 @@ namespace NFX.Serialization.BSON
   /// Depending on this parameter IBSONWritable implementors may include additional details
   /// that are otherwise not needed
   /// </summary>
-  public enum BSONSerializationPurpose
+  [Flags]
+  public enum BSONSerializationFlags
   {
       Unspecified = 0,
 
       /// <summary>
-      /// UI Interface feeding - include only the data needed to show to the user
+      /// UI Only - minimum date only needed for ui
       /// </summary>
-      UIFeed,
+      UIOnly      = 0x1,
 
       /// <summary>
       /// Include as much data as possible for remote object reconstruction
       /// </summary>
-      Marshalling
+      KeepNull    = 0x2
   }
 
 

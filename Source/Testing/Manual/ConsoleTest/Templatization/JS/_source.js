@@ -3,7 +3,34 @@
 }
 
 function inline() {
-  return "*#* div{ id=someText } *#*";
+  return "*** div{ id=someText } ***";
+}
+
+function skip() {
+  /*** #skIp#**********
+
+  div {
+  }
+
+  ***/
+}
+
+function skip2() {
+  /*** #skIp#    **********
+
+  div {
+  }
+
+  ***/
+}
+
+function skip2() {
+  /*** #skIp# #skIp#    **********
+
+  div {
+  }
+
+  ***/
 }
 
 /***@ _include.js ***/

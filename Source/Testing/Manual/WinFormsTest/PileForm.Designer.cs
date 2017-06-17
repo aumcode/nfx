@@ -61,6 +61,7 @@ namespace WinFormsTest
       this.btnStop = new System.Windows.Forms.Button();
       this.tmrStatus = new System.Windows.Forms.Timer(this.components);
       this.grpPerson = new System.Windows.Forms.GroupBox();
+      this.chkRaw = new System.Windows.Forms.CheckBox();
       this.btnPersonParaGet = new System.Windows.Forms.Button();
       this.btnStruct = new System.Windows.Forms.Button();
       this.btnPersonSizeOf = new System.Windows.Forms.Button();
@@ -84,6 +85,10 @@ namespace WinFormsTest
       this.label10 = new System.Windows.Forms.Label();
       this.tbMaxMemoryMb = new System.Windows.Forms.TextBox();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.rbtByteArray = new System.Windows.Forms.RadioButton();
+      this.rbtString = new System.Windows.Forms.RadioButton();
+      this.rbtPerson2 = new System.Windows.Forms.RadioButton();
+      this.rbtPerson = new System.Windows.Forms.RadioButton();
       this.tbTraxVariance = new System.Windows.Forms.TextBox();
       this.lbVar = new System.Windows.Forms.Label();
       this.tbTraxDeletes = new System.Windows.Forms.TextBox();
@@ -104,7 +109,6 @@ namespace WinFormsTest
       this.label17 = new System.Windows.Forms.Label();
       this.stbMemCapacityBytes = new System.Windows.Forms.TextBox();
       this.btnCompact = new System.Windows.Forms.Button();
-      this.chkRaw = new System.Windows.Forms.CheckBox();
       this.grpPerson.SuspendLayout();
       this.groupBox1.SuspendLayout();
       this.SuspendLayout();
@@ -137,7 +141,6 @@ namespace WinFormsTest
       // 
       // label1
       // 
-      this.label1.AutoSize = true;
       this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label1.Location = new System.Drawing.Point(12, 13);
       this.label1.Name = "label1";
@@ -147,7 +150,6 @@ namespace WinFormsTest
       // 
       // label2
       // 
-      this.label2.AutoSize = true;
       this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label2.Location = new System.Drawing.Point(12, 42);
       this.label2.Name = "label2";
@@ -170,7 +172,6 @@ namespace WinFormsTest
       // 
       // label3
       // 
-      this.label3.AutoSize = true;
       this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label3.Location = new System.Drawing.Point(12, 129);
       this.label3.Name = "label3";
@@ -193,7 +194,6 @@ namespace WinFormsTest
       // 
       // label4
       // 
-      this.label4.AutoSize = true;
       this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label4.Location = new System.Drawing.Point(12, 71);
       this.label4.Name = "label4";
@@ -216,7 +216,6 @@ namespace WinFormsTest
       // 
       // label5
       // 
-      this.label5.AutoSize = true;
       this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label5.Location = new System.Drawing.Point(12, 216);
       this.label5.Name = "label5";
@@ -239,7 +238,6 @@ namespace WinFormsTest
       // 
       // label6
       // 
-      this.label6.AutoSize = true;
       this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label6.Location = new System.Drawing.Point(12, 187);
       this.label6.Name = "label6";
@@ -303,6 +301,16 @@ namespace WinFormsTest
       this.grpPerson.TabStop = false;
       this.grpPerson.Text = "Person";
       // 
+      // chkRaw
+      // 
+      this.chkRaw.AutoSize = true;
+      this.chkRaw.Location = new System.Drawing.Point(143, 111);
+      this.chkRaw.Name = "chkRaw";
+      this.chkRaw.Size = new System.Drawing.Size(79, 17);
+      this.chkRaw.TabIndex = 38;
+      this.chkRaw.Text = "Raw Buffer";
+      this.chkRaw.UseVisualStyleBackColor = true;
+      // 
       // btnPersonParaGet
       // 
       this.btnPersonParaGet.Location = new System.Drawing.Point(155, 38);
@@ -347,7 +355,6 @@ namespace WinFormsTest
       // 
       // label16
       // 
-      this.label16.AutoSize = true;
       this.label16.Location = new System.Drawing.Point(140, 371);
       this.label16.Name = "label16";
       this.label16.Size = new System.Drawing.Size(90, 13);
@@ -356,7 +363,6 @@ namespace WinFormsTest
       // 
       // label8
       // 
-      this.label8.AutoSize = true;
       this.label8.Location = new System.Drawing.Point(104, 19);
       this.label8.Name = "label8";
       this.label8.Size = new System.Drawing.Size(46, 13);
@@ -421,7 +427,6 @@ namespace WinFormsTest
       // 
       // label7
       // 
-      this.label7.AutoSize = true;
       this.label7.Location = new System.Drawing.Point(9, 22);
       this.label7.Name = "label7";
       this.label7.Size = new System.Drawing.Size(58, 13);
@@ -475,7 +480,6 @@ namespace WinFormsTest
       // 
       // chkSpeed
       // 
-      this.chkSpeed.AutoSize = true;
       this.chkSpeed.Location = new System.Drawing.Point(226, 344);
       this.chkSpeed.Name = "chkSpeed";
       this.chkSpeed.Size = new System.Drawing.Size(85, 17);
@@ -486,7 +490,6 @@ namespace WinFormsTest
       // 
       // label9
       // 
-      this.label9.AutoSize = true;
       this.label9.Location = new System.Drawing.Point(799, 71);
       this.label9.Name = "label9";
       this.label9.Size = new System.Drawing.Size(67, 13);
@@ -503,7 +506,6 @@ namespace WinFormsTest
       // 
       // label10
       // 
-      this.label10.AutoSize = true;
       this.label10.Location = new System.Drawing.Point(799, 135);
       this.label10.Name = "label10";
       this.label10.Size = new System.Drawing.Size(85, 13);
@@ -520,6 +522,10 @@ namespace WinFormsTest
       // 
       // groupBox1
       // 
+      this.groupBox1.Controls.Add(this.rbtByteArray);
+      this.groupBox1.Controls.Add(this.rbtString);
+      this.groupBox1.Controls.Add(this.rbtPerson2);
+      this.groupBox1.Controls.Add(this.rbtPerson);
       this.groupBox1.Controls.Add(this.tbTraxVariance);
       this.groupBox1.Controls.Add(this.lbVar);
       this.groupBox1.Controls.Add(this.tbTraxDeletes);
@@ -538,12 +544,50 @@ namespace WinFormsTest
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Traxer";
       // 
+      // rbtByteArray
+      // 
+      this.rbtByteArray.Location = new System.Drawing.Point(12, 163);
+      this.rbtByteArray.Name = "rbtByteArray";
+      this.rbtByteArray.Size = new System.Drawing.Size(51, 17);
+      this.rbtByteArray.TabIndex = 36;
+      this.rbtByteArray.Text = "byte[]";
+      this.rbtByteArray.UseVisualStyleBackColor = true;
+      // 
+      // rbtString
+      // 
+      this.rbtString.Location = new System.Drawing.Point(12, 139);
+      this.rbtString.Name = "rbtString";
+      this.rbtString.Size = new System.Drawing.Size(52, 17);
+      this.rbtString.TabIndex = 35;
+      this.rbtString.Text = "String";
+      this.rbtString.UseVisualStyleBackColor = true;
+      // 
+      // rbtPerson2
+      // 
+      this.rbtPerson2.Location = new System.Drawing.Point(12, 116);
+      this.rbtPerson2.Name = "rbtPerson2";
+      this.rbtPerson2.Size = new System.Drawing.Size(67, 17);
+      this.rbtPerson2.TabIndex = 34;
+      this.rbtPerson2.Text = "Person 2";
+      this.rbtPerson2.UseVisualStyleBackColor = true;
+      // 
+      // rbtPerson
+      // 
+      this.rbtPerson.Checked = true;
+      this.rbtPerson.Location = new System.Drawing.Point(12, 93);
+      this.rbtPerson.Name = "rbtPerson";
+      this.rbtPerson.Size = new System.Drawing.Size(58, 17);
+      this.rbtPerson.TabIndex = 33;
+      this.rbtPerson.TabStop = true;
+      this.rbtPerson.Text = "Person";
+      this.rbtPerson.UseVisualStyleBackColor = true;
+      // 
       // tbTraxVariance
       // 
       this.tbTraxVariance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
       this.tbTraxVariance.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tbTraxVariance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-      this.tbTraxVariance.Location = new System.Drawing.Point(6, 166);
+      this.tbTraxVariance.Location = new System.Drawing.Point(8, 227);
       this.tbTraxVariance.Name = "tbTraxVariance";
       this.tbTraxVariance.Size = new System.Drawing.Size(64, 21);
       this.tbTraxVariance.TabIndex = 32;
@@ -553,7 +597,7 @@ namespace WinFormsTest
       // lbVar
       // 
       this.lbVar.AutoSize = true;
-      this.lbVar.Location = new System.Drawing.Point(3, 150);
+      this.lbVar.Location = new System.Drawing.Point(3, 211);
       this.lbVar.Name = "lbVar";
       this.lbVar.Size = new System.Drawing.Size(90, 13);
       this.lbVar.TabIndex = 31;
@@ -615,7 +659,6 @@ namespace WinFormsTest
       // 
       // chkTraxer
       // 
-      this.chkTraxer.AutoSize = true;
       this.chkTraxer.Location = new System.Drawing.Point(54, 0);
       this.chkTraxer.Name = "chkTraxer";
       this.chkTraxer.Size = new System.Drawing.Size(56, 17);
@@ -625,7 +668,6 @@ namespace WinFormsTest
       // 
       // label13
       // 
-      this.label13.AutoSize = true;
       this.label13.Location = new System.Drawing.Point(158, 37);
       this.label13.Name = "label13";
       this.label13.Size = new System.Drawing.Size(45, 13);
@@ -634,7 +676,6 @@ namespace WinFormsTest
       // 
       // label12
       // 
-      this.label12.AutoSize = true;
       this.label12.Location = new System.Drawing.Point(83, 37);
       this.label12.Name = "label12";
       this.label12.Size = new System.Drawing.Size(54, 13);
@@ -643,7 +684,6 @@ namespace WinFormsTest
       // 
       // label11
       // 
-      this.label11.AutoSize = true;
       this.label11.Location = new System.Drawing.Point(15, 37);
       this.label11.Name = "label11";
       this.label11.Size = new System.Drawing.Size(46, 13);
@@ -666,7 +706,6 @@ namespace WinFormsTest
       // 
       // label14
       // 
-      this.label14.AutoSize = true;
       this.label14.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label14.Location = new System.Drawing.Point(12, 100);
       this.label14.Name = "label14";
@@ -689,7 +728,6 @@ namespace WinFormsTest
       // 
       // label15
       // 
-      this.label15.AutoSize = true;
       this.label15.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label15.Location = new System.Drawing.Point(12, 158);
       this.label15.Name = "label15";
@@ -724,7 +762,6 @@ namespace WinFormsTest
       // 
       // label17
       // 
-      this.label17.AutoSize = true;
       this.label17.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label17.Location = new System.Drawing.Point(12, 256);
       this.label17.Name = "label17";
@@ -757,20 +794,8 @@ namespace WinFormsTest
       this.btnCompact.UseVisualStyleBackColor = true;
       this.btnCompact.Click += new System.EventHandler(this.btnCompact_Click);
       // 
-      // chkRaw
-      // 
-      this.chkRaw.AutoSize = true;
-      this.chkRaw.Location = new System.Drawing.Point(143, 111);
-      this.chkRaw.Name = "chkRaw";
-      this.chkRaw.Size = new System.Drawing.Size(79, 17);
-      this.chkRaw.TabIndex = 38;
-      this.chkRaw.Text = "Raw Buffer";
-      this.chkRaw.UseVisualStyleBackColor = true;
-      // 
       // PileForm
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(970, 742);
       this.Controls.Add(this.btnCompact);
       this.Controls.Add(this.label17);
@@ -880,5 +905,9 @@ namespace WinFormsTest
     private System.Windows.Forms.Button btnPersonParaGet;
     private System.Windows.Forms.Button btnCompact;
     private System.Windows.Forms.CheckBox chkRaw;
+    private System.Windows.Forms.RadioButton rbtByteArray;
+    private System.Windows.Forms.RadioButton rbtString;
+    private System.Windows.Forms.RadioButton rbtPerson2;
+    private System.Windows.Forms.RadioButton rbtPerson;
   }
 }

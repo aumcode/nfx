@@ -30,7 +30,7 @@ namespace NFX.Environment
     {
         #region CONSTS
             public const string CONFIG_SCRIPT_RUNNER_SECTION = "script-runner";
-            public const string CONFIG_SCRIPT_RUNNER_PATH = "/" + CONFIG_SCRIPT_RUNNER_SECTION + "/";
+            public const string CONFIG_SCRIPT_RUNNER_PATH = "/" + CONFIG_SCRIPT_RUNNER_SECTION;
 
             public const string DEFAULT_KEYWORD_BLOCK   = "_BLOCK";
             public const string DEFAULT_KEYWORD_IF   = "_IF";
@@ -47,33 +47,32 @@ namespace NFX.Environment
         #endregion
 
         #region .ctor
-
         #endregion
 
         #region Fields
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_KEYWORD_BLOCK, DEFAULT_KEYWORD_BLOCK)]
+            [Config("$" + DEFAULT_KEYWORD_BLOCK, DEFAULT_KEYWORD_BLOCK)]
             private string m_KeywordBLOCK;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_KEYWORD_IF, DEFAULT_KEYWORD_IF)]
+            [Config("$" + DEFAULT_KEYWORD_IF, DEFAULT_KEYWORD_IF)]
             private string m_KeywordIF;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_KEYWORD_ELSE, DEFAULT_KEYWORD_ELSE)]
+            [Config("$" + DEFAULT_KEYWORD_ELSE, DEFAULT_KEYWORD_ELSE)]
             private string m_KeywordELSE;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_KEYWORD_LOOP, DEFAULT_KEYWORD_LOOP)]
+            [Config("$" + DEFAULT_KEYWORD_LOOP, DEFAULT_KEYWORD_LOOP)]
             private string m_KeywordLOOP;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_KEYWORD_SET, DEFAULT_KEYWORD_SET)]
+            [Config("$" + DEFAULT_KEYWORD_SET, DEFAULT_KEYWORD_SET)]
             private string m_KeywordSET;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_KEYWORD_CALL, DEFAULT_KEYWORD_CALL)]
+            [Config("$" + DEFAULT_KEYWORD_CALL, DEFAULT_KEYWORD_CALL)]
             private string m_KeywordCALL;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + DEFAULT_SCRIPT_ONLY_ATTR, DEFAULT_SCRIPT_ONLY_ATTR)]
+            [Config("$" + DEFAULT_SCRIPT_ONLY_ATTR, DEFAULT_SCRIPT_ONLY_ATTR)]
             private string m_AttributeScriptOnly;
 
-            [Config(CONFIG_SCRIPT_RUNNER_PATH + "$" + CONFIG_TIMEOUT_ATTR, DEFAULT_TIMEOUT_MS)]
+            [Config("$" + CONFIG_TIMEOUT_ATTR, DEFAULT_TIMEOUT_MS)]
             private int m_TimeoutMs = DEFAULT_TIMEOUT_MS;
 
         #endregion
@@ -165,7 +164,7 @@ namespace NFX.Environment
             /// <summary>
             /// Runs script on the configuration
             /// </summary>
-            public void Execute(Configuration source, Configuration target)
+            public virtual void Execute(Configuration source, Configuration target)
             {
                try
                {
@@ -176,8 +175,8 @@ namespace NFX.Environment
                         throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_TARGET_CONFIGURATION_MUST_BE_EMPTY_ERROR);
 
                     target.Root.Name = source.Root.Name;
-                    cloneAttributes(source.Root, target.Root);
-                    doNode(sw, source.Root, target.Root);
+                    CloneAttributes(source.Root, target.Root);
+                    DoNode(sw, source.Root, target.Root);
                }
                catch(Exception error)
                {
@@ -186,16 +185,18 @@ namespace NFX.Environment
             }
 
 
-            public void Configure(IConfigSectionNode node)
+            public virtual void Configure(IConfigSectionNode node)
             {
+                if (node == null || !node.Exists)
+                    node = App.ConfigRoot[CONFIG_SCRIPT_RUNNER_PATH];
                 ConfigAttribute.Apply(this, node);
             }
 
         #endregion
 
-        #region .pvt
+        #region Protected
 
-            private void doNode(Stopwatch sw, ConfigSectionNode source, ConfigSectionNode target)
+            protected virtual void DoNode(Stopwatch sw, ConfigSectionNode source, ConfigSectionNode target)
             {
                 if (source==null || !source.Exists) return;
                 if (target==null || !target.Exists) return;
@@ -208,12 +209,12 @@ namespace NFX.Environment
                 ConfigSectionNode priorStatement = null;
                 foreach(var subSource in source.Children)
                 {
-                    if      (subSource.IsSameName(KeywordBLOCK)) doBLOCK(sw, subSource, target);
-                    else if (subSource.IsSameName(KeywordIF))    doIF  (sw, subSource, target);
-                    else if (subSource.IsSameName(KeywordELSE))  doELSE(sw, subSource, priorStatement, target);
-                    else if (subSource.IsSameName(KeywordLOOP))  doLOOP(sw, subSource, target);
-                    else if (subSource.IsSameName(KeywordSET))   doSET (sw, subSource);
-                    else if (subSource.IsSameName(KeywordCALL))  doCALL(sw, subSource, target);
+                    if      (subSource.IsSameName(KeywordBLOCK)) DoBLOCK(sw, subSource, target);
+                    else if (subSource.IsSameName(KeywordIF))    DoIF  (sw, subSource, target);
+                    else if (subSource.IsSameName(KeywordELSE))  DoELSE(sw, subSource, priorStatement, target);
+                    else if (subSource.IsSameName(KeywordLOOP))  DoLOOP(sw, subSource, target);
+                    else if (subSource.IsSameName(KeywordSET))   DoSET (sw, subSource);
+                    else if (subSource.IsSameName(KeywordCALL))  DoCALL(sw, subSource, target);
                     else
                     {
                         var scriptOnly = false;
@@ -235,9 +236,9 @@ namespace NFX.Environment
                                 p = p.Parent;
                             }
                             var newTarget = target.AddChildNode( subSource.EvaluateValueVariables( subSource.Name ), underStatement ? subSource.Value : subSource.VerbatimValue);
-                            cloneAttributes(subSource, newTarget, underStatement);
+                            CloneAttributes(subSource, newTarget, underStatement);
 
-                            doNode(sw, subSource, newTarget);
+                            DoNode(sw, subSource, newTarget);
                         }
 
                         priorStatement = null;
@@ -249,57 +250,57 @@ namespace NFX.Environment
 
 
 
-                            private void doBLOCK(Stopwatch sw, ConfigSectionNode blockStatement, ConfigSectionNode target)
+                            protected virtual void DoBLOCK(Stopwatch sw, ConfigSectionNode blockStatement, ConfigSectionNode target)
                             {
-                                initStatement(blockStatement);
-                                doNode(sw, blockStatement, target);
+                                InitStatement(blockStatement);
+                                DoNode(sw, blockStatement, target);
                             }
 
-                            private void doIF(Stopwatch sw, ConfigSectionNode ifStatement, ConfigSectionNode target)
+                            protected virtual void DoIF(Stopwatch sw, ConfigSectionNode ifStatement, ConfigSectionNode target)
                             {
-                                initStatement(ifStatement);
+                                InitStatement(ifStatement);
 
-                                var condition = evaluateBooleanConditionExpression(ifStatement);
+                                var condition = EvaluateBooleanConditionExpression(ifStatement);
                                 if (!condition) return;
 
-                                doNode(sw, ifStatement, target);
+                                DoNode(sw, ifStatement, target);
                             }
 
-                            private void doELSE(Stopwatch sw, ConfigSectionNode elseStatement, ConfigSectionNode priorStatement, ConfigSectionNode target)
+                            protected virtual void DoELSE(Stopwatch sw, ConfigSectionNode elseStatement, ConfigSectionNode priorStatement, ConfigSectionNode target)
                             {
 
                                 if (priorStatement==null || !priorStatement.IsSameName(DEFAULT_KEYWORD_IF))
                                     throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_ELSE_NOT_AFTER_IF_ERROR.Args(elseStatement.RootPath));
 
-                                initStatement(elseStatement);
+                                InitStatement(elseStatement);
 
                                 var condition =  priorStatement.m_Script_Bool_Condition_Result;
                                 if (condition) return;
 
-                                doNode(sw, elseStatement, target);
+                                DoNode(sw, elseStatement, target);
                             }
 
-                            private void doLOOP(Stopwatch sw, ConfigSectionNode loopStatement, ConfigSectionNode target)
+                            protected virtual void DoLOOP(Stopwatch sw, ConfigSectionNode loopStatement, ConfigSectionNode target)
                             {
-                                initStatement(loopStatement);
+                                InitStatement(loopStatement);
 
                                 while(true)
                                 {
-                                    var condition = evaluateBooleanConditionExpression(loopStatement);
+                                    var condition = EvaluateBooleanConditionExpression(loopStatement);
                                     if (!condition) break;
 
-                                    doNode(sw, loopStatement, target);
+                                    DoNode(sw, loopStatement, target);
                                 }
                             }
 
-                            private void doSET(Stopwatch sw, ConfigSectionNode setStatement)
+                            protected virtual void DoSET(Stopwatch sw, ConfigSectionNode setStatement)
                             {
-                                initStatement(setStatement);
+                                InitStatement(setStatement);
 
                                 var path = setStatement.AttrByName("path").Value ?? StringConsts.NULL_STRING;
                                 var to =  setStatement.AttrByName("to").Value;
 
-                                to = evaluateAnyExpression(setStatement, to);
+                                to = EvaluateAnyExpression(setStatement, to);
 
                                 var target = setStatement.Navigate(path);
                                 if (!target.Exists)
@@ -308,26 +309,26 @@ namespace NFX.Environment
                                 target.Value = to;
                             }
 
-                            private void doCALL(Stopwatch sw, ConfigSectionNode callStatement, ConfigSectionNode target)
+                            protected virtual void DoCALL(Stopwatch sw, ConfigSectionNode callStatement, ConfigSectionNode target)
                             {
-                                initStatement(callStatement);
+                                InitStatement(callStatement);
 
                                 var path = callStatement.Value;
                                 var callTarget = callStatement.NavigateSection(path);
                                 if (!callTarget.Exists)
                                     throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_CALL_TARGET_PATH_ERROR.Args(callStatement.RootPath, path) );
 
-                                doNode(sw, callTarget, target);
+                                DoNode(sw, callTarget, target);
                             }
 
 
-                            private void initStatement(ConfigSectionNode statement)
+                            protected virtual void InitStatement(ConfigSectionNode statement)
                             {
                                 statement.m_Script_Statement = true;
                             }
 
 
-                            private bool evaluateBooleanConditionExpression(ConfigSectionNode exprContainer)
+                            protected virtual bool EvaluateBooleanConditionExpression(ConfigSectionNode exprContainer)
                             {
                                 string expression = CoreConsts.UNKNOWN;
                                 try
@@ -354,7 +355,7 @@ namespace NFX.Environment
 
                             }
 
-                            private string evaluateAnyExpression(ConfigSectionNode exprContainer, string expression)
+                            protected virtual string EvaluateAnyExpression(ConfigSectionNode exprContainer, string expression)
                             {
                                 try
                                 {
@@ -371,7 +372,7 @@ namespace NFX.Environment
 
                             }
 
-                            private void cloneAttributes(ConfigSectionNode from, ConfigSectionNode to, bool evaluate = false)
+                            protected virtual void CloneAttributes(ConfigSectionNode from, ConfigSectionNode to, bool evaluate = false)
                             {
                                 if (evaluate)
                                    foreach(var atr in from.Attributes) to.AddAttributeNode(atr.Name, atr.Value);

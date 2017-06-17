@@ -204,6 +204,21 @@ namespace NFX
           return GetPrimeCapacityOfAtLeast(capacity);
         }
 
+        /// <summary>
+        /// Changes the number by a random margin of up to the specified pct
+        /// </summary>
+        public static int ChangeByRndPct(int value, float pct)
+        {
+          return value + (int)((value * pct) * ExternalRandomGenerator.Instance.NextRandomDouble);
+        }
+
+        /// <summary>
+        /// Changes the number by a random margin of up to the specified pct
+        /// </summary>
+        public static long ChangeByRndPct(long value, float pct)
+        {
+          return value + (long)((value * pct) * ExternalRandomGenerator.Instance.NextRandomDouble);
+        }
 
     }
 }

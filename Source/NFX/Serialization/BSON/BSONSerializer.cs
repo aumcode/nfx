@@ -59,6 +59,7 @@ namespace NFX.Serialization.BSON
   {
     public const string CONFIG_RESOLVER_SECTON = "type-resolver";
     public const string DEFAULT_TYPE_ID_FIELD = "__t";
+    public const string DEFAULT_PK_NAME_FIELD = "__id";
 
 
     public BSONSerializer()
@@ -84,22 +85,30 @@ namespace NFX.Serialization.BSON
 
 
     private string m_TypeIDFieldName;
+    private string m_PKFieldName;
     protected BSONTypeResolver m_Resolver;
 
     /// <summary>
     /// Defines the purpose/level of detail of serialization
     /// </summary>
     [Config]
-    public BSONSerializationPurpose Purpose { get; set;}
+    public BSONSerializationFlags Flags { get; set;}
 
     /// <summary>
     /// Returns the name of the field which is used to store type ID, by default DEFAULT_TYPE_ID_FIELD/"__t" is assumed
     /// </summary>
-    [Config]
+    [Config("$type-id-name")]
     public string TypeIDFieldName
     {
       get { return m_TypeIDFieldName.IsNullOrWhiteSpace() ? DEFAULT_TYPE_ID_FIELD : m_TypeIDFieldName; }
       set { m_TypeIDFieldName = value;}
+    }
+
+    [Config("$pk-name")]
+    public string PKFieldName
+    {
+      get { return m_PKFieldName.IsNullOrWhiteSpace() ? DEFAULT_PK_NAME_FIELD : m_PKFieldName; }
+      set { m_PKFieldName = value; }
     }
 
     /// <summary>
@@ -119,10 +128,9 @@ namespace NFX.Serialization.BSON
       if (add)
       {
         var id = BSONSerializableAttribute.GetGuidTypeAttribute<object, BSONSerializableAttribute>(t)
-                                          .TypeGuid
-                                          .ToString("N");
+                                          .TypeGuid;
 
-        var telm = new BSONStringElement(TypeIDFieldName, id);
+        var telm = new BSONBinaryElement(TypeIDFieldName, new BSONBinary(BSONBinaryType.UUID, id.ToByteArray()));
         doc.Set( telm );
         return true;
       }
@@ -161,12 +169,12 @@ namespace NFX.Serialization.BSON
 
       if (result==null)
       {
-        var telm = doc[TypeIDFieldName] as BSONStringElement;
+        var telm = doc[TypeIDFieldName] as BSONBinaryElement;
 
         if (telm==null)
           throw new BSONException(StringConsts.BSON_DESERIALIZER_DOC_MISSING_TID_ERROR.Args(TypeIDFieldName));
 
-        var tid = telm.Value.AsGUID(Guid.Empty);
+        var tid = telm.Value.Data.AsGUID(Guid.Empty);
 
         if (tid==Guid.Empty)
           throw new BSONException(StringConsts.BSON_DESERIALIZER_DOC_TID_GUID_ERROR.Args(TypeIDFieldName, telm.Value));

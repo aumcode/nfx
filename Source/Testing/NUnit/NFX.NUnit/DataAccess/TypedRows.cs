@@ -37,18 +37,18 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
-                                   };     
-            
+                                    YearsInSpace = 12
+                                   };
+
             var cnt = person.Count();
 
             Assert.AreEqual( cnt, person.Schema.FieldCount);
             Assert.AreEqual( "Popov", person.ElementAt(2));
         }
 
-        
-        
-        
+
+
+
         [TestCase]
         public void Validate_NoError()
         {
@@ -57,12 +57,12 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
-                                   };     
+                                    YearsInSpace = 12
+                                   };
             var error = person.Validate();
             Assert.IsNull( error );
         }
-        
+
 
         [TestCase]
         public void SetAndGetByName()
@@ -72,11 +72,11 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
-                                   };    
-                                   
-            person["dEscRipTION"] = "moon"; //field names are case-insensitive                       
-           
+                                    YearsInSpace = 12
+                                   };
+
+            person["dEscRipTION"] = "moon"; //field names are case-insensitive
+
             Assert.AreEqual(person.ID, person["ID"]);
             Assert.AreEqual(person.FirstName, person["FirstName"]);
             Assert.AreEqual(person.LastName, person["LastName"]);
@@ -93,16 +93,16 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
-                                   };     
-           
+                                    YearsInSpace = 12
+                                   };
+
             Assert.AreEqual(person.ID,               person[person.Schema["ID"].Order]);
             Assert.AreEqual(person.FirstName,        person[person.Schema["FirstName"].Order]);
             Assert.AreEqual(person.LastName,         person[person.Schema["LastName"].Order]);
             Assert.AreEqual(person.DOB,              person[person.Schema["DOB"].Order]);
             Assert.AreEqual(person.YearsWithCompany, person[person.Schema["YearsWithCompany"].Order]);
             Assert.AreEqual(person.YearsInSpace,     person[person.Schema["YearsInSpace"].Order]);
-            
+
         }
 
 
@@ -114,8 +114,8 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = null,
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12  
-                                   };     
+                                    YearsInSpace = 12
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -129,8 +129,8 @@ namespace NFX.NUnit.DataAccess
                                     ID = "POP1",
                                     FirstName = "Oleg",
                                     LastName = "Popov",
-                                    DOB = new DateTime(1953, 12, 10) 
-                                   };     
+                                    DOB = new DateTime(1953, 12, 10)
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -147,7 +147,7 @@ namespace NFX.NUnit.DataAccess
                                     DOB = new DateTime(1953, 12, 10),
                                     YearsInSpace = 45,
                                     Amount = -100
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -165,7 +165,7 @@ namespace NFX.NUnit.DataAccess
                                     DOB = new DateTime(1953, 12, 10),
                                     YearsInSpace = 45,
                                     Amount = 2000000
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -184,7 +184,7 @@ namespace NFX.NUnit.DataAccess
                                     DOB = new DateTime(1899, 12, 10),
                                     YearsInSpace = 45,
                                     Amount = 100
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -202,7 +202,7 @@ namespace NFX.NUnit.DataAccess
                                     DOB = new DateTime(1899, 12, 10),
                                     YearsInSpace = 45,
                                     Amount = 100
-                                   };     
+                                   };
             var error = person.Validate("sparta_system");
             Assert.IsNull (error);
         }
@@ -218,7 +218,7 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 45,
                                     Amount = 100,
                                     Description="0123456789012345678901234567890"
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -239,7 +239,7 @@ namespace NFX.NUnit.DataAccess
                                     Amount = 100,
                                     Description="012345",
                                     Classification = "INVALID"
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -256,7 +256,7 @@ namespace NFX.NUnit.DataAccess
         }
 
 
-        
+
 
 
 
@@ -271,7 +271,7 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 45,
                                     Amount = 100,
                                     Description="Wanted to go to the moon"
-                                   };     
+                                   };
             var person2 = new Person{
                                     ID = "POP1",
                                     FirstName = "Egor",
@@ -302,7 +302,7 @@ namespace NFX.NUnit.DataAccess
                                     Amount = 100,
                                     History1  = new List<HistoryItem>(),
                                    // History2  = new HistoryItem[2]
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -322,7 +322,7 @@ namespace NFX.NUnit.DataAccess
                                     LatestHistory = new HistoryItem{ ID = "111", StartDate = DateTime.Now, Description="Someone is an idiot!" },
                                     History1  = new List<HistoryItem>(),
                                     History2  = new HistoryItem[2]
-                                   };     
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);
@@ -343,7 +343,7 @@ namespace NFX.NUnit.DataAccess
                                     LatestHistory = new HistoryItem{ ID = null, StartDate = DateTime.Now, Description="Chaplin is here" },
                                     History1  = new List<HistoryItem>(),
                                     History2  = new HistoryItem[2]
-                                   };        
+                                   };
             var error = person.Validate();
             Console.WriteLine( error );
             Assert.IsInstanceOf(typeof(CRUDFieldValidationException), error);

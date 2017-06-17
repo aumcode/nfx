@@ -86,14 +86,6 @@ namespace NFX.IO
               }
 
 
-          public override byte ReadByte()
-          {
-            var b = m_Stream.ReadByte();
-            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadByte(): eof");
-
-            return (byte)b;
-          }
-
               public override byte? ReadNullableByte()
               {
                 var has = this.ReadBool();

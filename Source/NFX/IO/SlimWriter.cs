@@ -90,12 +90,6 @@ namespace NFX.IO
                 this.Write(false);
               }
 
-
-          public override void Write(byte value)
-          {
-            m_Stream.WriteByte(value);
-          }
-
               public override void Write(byte? value)
               {
                 if (value.HasValue)

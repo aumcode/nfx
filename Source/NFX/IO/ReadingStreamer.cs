@@ -70,7 +70,13 @@ namespace NFX.IO
 
 
 
-          public abstract byte ReadByte();
+          public byte ReadByte()
+          {
+            var b = m_Stream.ReadByte();
+            if (b<0) throw new NFXIOException(StringConsts.SLIM_STREAM_CORRUPTED_ERROR + "ReadByte(): eof");
+
+            return (byte)b;
+          }
 
 
               public abstract byte? ReadNullableByte();

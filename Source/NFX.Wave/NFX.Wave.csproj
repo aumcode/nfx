@@ -130,6 +130,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />
+    <None Include="post-build" />
+    <None Include="post-build.cmd" />
+    <None Include="pre-build" />
+    <None Include="pre-build.cmd" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.CopyAndSelect.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.select.test.htm" />
     <None Include="Templatization\StockContent\Embedded\script\mtest\wv.selector-chain.test.htm" />
@@ -155,7 +159,7 @@
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\str.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\svg.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\type.js" />
-    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\pzlk.js" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\pzlk.ntc.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\wincon.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\utest.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\walkable.js" />
@@ -473,28 +477,10 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(TargetDir)buildinfo" &gt; "$(ProjectDir)BUILD_INFO.txt"
-
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\*.htm" -r -ext ".auto.cs" -src -c "NFX.Templatization.NHTCompiler, NFX"
-
-"$(SolutionDir)..\Output\$(ConfigurationName)\ntc" "$(ProjectDir)\Templatization\StockContent\Embedded\script\ljs\*.ntc.js" -ext ".js" -replace ".ntc.js" -dest "$(ProjectDir)\Templatization\StockContent\Embedded\script" -src -c "NFX.Templatization.TextJSTemplateCompiler, NFX" -o dom-gen="cmp{pretty=1}"
-
-
-where /q java
-if ERRORLEVEL 1 goto NO_JAVA
- 
-java -jar "$(SolutionDir)lib\closure-compiler\compiler.jar" ^
-  --js "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.js" ^
-         "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.gui.js" ^
-         "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.chart.svg.js" ^
-         "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.braintree.js" ^
-         "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.stripe.js" ^
-   --js_output_file "$(ProjectDir)Templatization\StockContent\Embedded\script\wv.all.min.js" ^
-   --compilation_level SIMPLE_OPTIMIZATIONS ^
-   --language_in ECMASCRIPT5_STRICT &gt; "$(ProjectDir)Templatization\StockContent\Embedded\script\CLOSURE_ERROR_OUT.txt" 2&gt;&amp;1
-
-:NO_JAVA
-exit 0</PreBuildEvent>
+    <PreBuildEvent>$(ProjectDir)pre-build $(SolutionDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)post-build $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

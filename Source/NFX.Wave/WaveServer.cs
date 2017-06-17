@@ -685,12 +685,15 @@ namespace NFX.Wave
       /// </summary>
       protected virtual void BeforeListenerStart(HttpListener listener)
       {
-        m_Listener.TimeoutManager.DrainEntityBody       = TimeSpan.FromSeconds(m_DrainEntityBodyTimeoutSec);
-        m_Listener.TimeoutManager.EntityBody            = TimeSpan.FromSeconds(m_EntityBodyTimeoutSec);
-        m_Listener.TimeoutManager.HeaderWait            = TimeSpan.FromSeconds(m_HeaderWaitTimeoutSec);
-        m_Listener.TimeoutManager.IdleConnection        = TimeSpan.FromSeconds(m_IdleConnectionTimeoutSec);
-        m_Listener.TimeoutManager.RequestQueue          = TimeSpan.FromSeconds(m_RequestQueueTimeoutSec);
-        m_Listener.TimeoutManager.MinSendBytesPerSecond = m_MinSendBytesPerSecond;
+        if (!OS.Computer.IsMono)
+        {
+          m_Listener.TimeoutManager.DrainEntityBody = TimeSpan.FromSeconds(m_DrainEntityBodyTimeoutSec);
+          m_Listener.TimeoutManager.EntityBody = TimeSpan.FromSeconds(m_EntityBodyTimeoutSec);
+          m_Listener.TimeoutManager.HeaderWait = TimeSpan.FromSeconds(m_HeaderWaitTimeoutSec);
+          m_Listener.TimeoutManager.IdleConnection = TimeSpan.FromSeconds(m_IdleConnectionTimeoutSec);
+          m_Listener.TimeoutManager.RequestQueue = TimeSpan.FromSeconds(m_RequestQueueTimeoutSec);
+          m_Listener.TimeoutManager.MinSendBytesPerSecond = m_MinSendBytesPerSecond;
+        }
       }
 
       /// <summary>

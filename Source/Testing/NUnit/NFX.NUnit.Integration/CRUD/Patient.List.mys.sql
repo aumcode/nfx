@@ -7,7 +7,7 @@ ignore=marker
 @first_name=fname
 .last_name=This is description of last name
 
-select 
+select
  'X' as Marker,
  t1.`counter`,
  t1.`ssn`,
@@ -22,9 +22,9 @@ select
  t1.`Phone`,
  t1.`Amount`,
  t1.`Note`,
-  
- t1.`c_doctor`, 
- t2.`phone` as doctor_phone, 
+
+ t1.`c_doctor`,
+ t2.`phone` as doctor_phone,
  t2.`NPI`	as doctor_id
 from
  tbl_patient t1

@@ -34,26 +34,26 @@ namespace NFX.NUnit.DataAccess
     [TestFixture]
     public class SchemaEQU
     {
-       
+
         [TestCase]
         public void TypedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
-            
+
+
              tbl.Insert( new Person{
                                     ID = "POP1",
                                     FirstName = "Oleg",
                                     LastName = "Popov-1",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var ser = new SlimSerializer();
             using(var ms = new MemoryStream())
             {
                 ser.Serialize(ms, tbl);
-            
+
                 ms.Position = 0;
 
                 var tbl2 = ser.Deserialize(ms) as Table;
@@ -68,13 +68,13 @@ namespace NFX.NUnit.DataAccess
             }
         }
 
-       
+
         [TestCase]
         public void DynamicRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
-          
+
+
                 var row = new DynamicRow( tbl.Schema );
 
                 row["ID"] = "POP1";
@@ -82,15 +82,15 @@ namespace NFX.NUnit.DataAccess
                 row["LastName"] = "Popov-1";
                 row["DOB"] = new DateTime(1953, 12, 10);
                 row["YearsInSpace"] = 12;
-            
+
                 tbl.Insert( row );
-          
+
 
             var ser = new SlimSerializer();
             using(var ms = new MemoryStream())
             {
                 ser.Serialize(ms, tbl);
-          
+
                 ms.Position = 0;
 
                 var tbl2 = ser.Deserialize(ms) as Table;
@@ -99,12 +99,12 @@ namespace NFX.NUnit.DataAccess
                 Assert.IsFalse( object.ReferenceEquals(tbl ,tbl2) );
 
                 Assert.IsFalse( object.ReferenceEquals(tbl.Schema ,tbl2.Schema) );
-              
+
                 Assert.IsTrue( tbl.Schema.IsEquivalentTo(tbl2.Schema));
             }
         }
 
-     
+
 
 
 

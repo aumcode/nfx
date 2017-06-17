@@ -28,7 +28,7 @@ using NFX.Serialization.JSON;
 
 namespace NFX.NUnit.Config
 {
-    [TestFixture]   
+    [TestFixture]
     public class JSONConfigurationTest
     {
         [TestCase]
@@ -36,8 +36,8 @@ namespace NFX.NUnit.Config
         public void ReadOnlyErrorOnNodeCreate()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
-           
+           conf.Create();
+
            conf.SetReadOnly(true);
 
            conf.Root.AddChildNode("A", null);
@@ -47,7 +47,7 @@ namespace NFX.NUnit.Config
         public void NodeCreate()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
 
            Assert.AreEqual("A", conf.Root["A"].Name);
@@ -58,7 +58,7 @@ namespace NFX.NUnit.Config
         public void EmptySectionAndAttributeNodes()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null).AddChildNode("A.A", "haha!").AddAttributeNode("good", true);
 
            Assert.AreEqual("haha!", conf.Root["A"]["A.A"].Value);
@@ -79,58 +79,58 @@ namespace NFX.NUnit.Config
         public void ReadOnlyErrorOnNodeRename()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.SetReadOnly(true);
            conf.Root.Name = "changed-name";
         }
-        
+
         [TestCase]
         [ExpectedException(typeof(ConfigException))]
         public void ReadOnlyErrorOnNodeDelete()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.SetReadOnly(true);
            conf.Root["A"].Delete();
         }
-        
+
         [TestCase]
         public void NodeDelete()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.Root.AddChildNode("B", null).AddChildNode("B1");
            conf.Root["A"].Delete();
            Assert.AreEqual(false, conf.Root["A"].Exists);
            Assert.AreEqual(true, conf.Root["B"].Exists);
-           
+
            conf.Root.ResetModified();
            Assert.AreEqual(false, conf.Root["B"].Modified);
            conf.Root["B"]["B1"].Delete();
            Assert.AreEqual(true, conf.Root["B"].Modified);
         }
-        
+
         [TestCase]
         public void RootDelete()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
-           
+
            Assert.AreEqual(true, conf.Root.Exists);
            conf.Root.Delete();
            Assert.AreEqual(false, conf.Root.Exists);
         }
-        
+
 
         [TestCase]
         public void NodeRename()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", null);
            conf.Root["A"].Name = "B";
            Assert.AreEqual("B", conf.Root["B"].Name);
@@ -140,7 +140,7 @@ namespace NFX.NUnit.Config
         public void NavigationAndValueAccessors()
         {
            var conf = new NFX.Environment.JSONConfiguration();
-           conf.Create(); 
+           conf.Create();
            conf.Root.AddChildNode("A", 10).AddChildNode("A.A", 20);
            conf.Root.AddChildNode("B", 789);
            conf.Root.AddChildNode("URI", UriKind.RelativeOrAbsolute);
@@ -162,15 +162,15 @@ namespace NFX.NUnit.Config
            {
             root:
             { 'kind': 'Absolute',
-              a: 
+              a:
               {
                  b:{'cool': true, c: 75 }
               },
             'web.world': 'who knows?'
            }}";
-                                   
+
            var conf = NFX.Environment.JSONConfiguration.CreateFromJSON(json);
-           
+
            Assert.AreEqual(UriKind.Absolute, conf.Root.AttrByName("kind").ValueAsEnum<UriKind>(UriKind.Relative));
            Assert.AreEqual(true, conf.Root["a"]["b"].AttrByName("cool").ValueAsBool(false));
            Assert.AreEqual(75, conf.Root["a"]["b"].AttrByName("c").ValueAsInt());
@@ -200,7 +200,7 @@ namespace NFX.NUnit.Config
                   a: {'-section-value': 237}
 
            }}";
-                                   
+
            var conf = NFX.Environment.JSONConfiguration.CreateFromJSON(json);
 
            Console.WriteLine(conf.SaveToString(JSONWritingOptions.PrettyPrint));
@@ -217,13 +217,13 @@ namespace NFX.NUnit.Config
         {
           var json = @"{
            root: {
-           
+
             a: {
                b: {cool: true, snake: false, c: {'-section-value': 75}}
             }
 
            }}";
-                                   
+
            var conf = NFX.Environment.JSONConfiguration.CreateFromJSON(json);
 
            Assert.IsFalse(conf.Root.Modified);
@@ -300,10 +300,10 @@ namespace NFX.NUnit.Config
           Assert.AreEqual("Type1", root.Navigate("providers/provider1/$type").Value);
           Assert.AreEqual("Type2", root.Navigate("providers/provider2/$type").Value);
           Assert.IsFalse(root.Navigate("providers/provider3").Exists);
-          
+
           Assert.AreEqual(3, root["providers"]["provider2"].ChildCount);
           Assert.AreEqual("Koshka", root.Navigate("providers/provider2/$name").Value);
-          
+
           Assert.AreEqual("net", root.Navigate("providers/provider2/[0]/c/$da").Value);
           Assert.AreEqual(5623, root.Navigate("providers/provider2/[1]/$a").ValueAsInt());
           Assert.IsFalse(root.Navigate("providers/provider2/[1]/$b").ValueAsBool());

@@ -42,7 +42,7 @@ namespace NFX.NUnit.Config
    vBin=0b1010101001010101 //AA55
    vBool=true
    vStr=$'My
-   name 
+   name
    spanning many lines'
    vDate=12/10/2014
    vGuid1='{3A7C4641-B24E-453D-9D28-93D96071B575}'
@@ -57,7 +57,7 @@ namespace NFX.NUnit.Config
         {
             var root = conf.AsLaconicConfig(handling: ConvertErrorHandling.Throw);//throw needed so we can see error (if any) while processing config
                                                                                   // instead of just getting null back
-            
+
             Assert.AreEqual(123, root.AttrByName("vInt1").ValueAsInt());
             Assert.AreEqual(-123, root.AttrByName("vInt2").ValueAsInt());
 
@@ -67,7 +67,7 @@ namespace NFX.NUnit.Config
         public void Doubles()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(-123.8002341d, root.AttrByName("vDouble").ValueAsDouble());
         }
 
@@ -75,7 +75,7 @@ namespace NFX.NUnit.Config
         public void Decimals()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(123000456.1233M, root.AttrByName("vDecimal").ValueAsDecimal());
         }
 
@@ -83,7 +83,7 @@ namespace NFX.NUnit.Config
         public void HexIntegers()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(0xabab, root.AttrByName("vHex").ValueAsUShort());
             Assert.AreEqual(0xabab, root.AttrByName("vHex").ValueAsUInt());
             Assert.AreEqual(0xabab, root.AttrByName("vHex").ValueAsULong());
@@ -93,7 +93,7 @@ namespace NFX.NUnit.Config
         public void BinIntegers()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(0xaa55, root.AttrByName("vBin").ValueAsUShort());
             Assert.AreEqual(0xaa55, root.AttrByName("vBin").ValueAsUInt());
             Assert.AreEqual(0xaa55, root.AttrByName("vBin").ValueAsULong());
@@ -103,7 +103,7 @@ namespace NFX.NUnit.Config
         public void Bools()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(true, root.AttrByName("vBool").ValueAsBool());
         }
 
@@ -111,9 +111,9 @@ namespace NFX.NUnit.Config
         public void Strs()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(@"My
-   name 
+   name
    spanning many lines", root.AttrByName("vStr").ValueAsString());
         }
 
@@ -121,7 +121,7 @@ namespace NFX.NUnit.Config
         public void Dates()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(2014, root.AttrByName("vDate").ValueAsDateTime(DateTime.Now).Year);
             Assert.AreEqual(12, root.AttrByName("vDate").ValueAsDateTime(DateTime.Now).Month);
         }
@@ -130,7 +130,7 @@ namespace NFX.NUnit.Config
         public void Guids()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.AreEqual(new Guid("3A7C4641B24E453D9D2893D96071B575"), root.AttrByName("vGUID1").ValueAsGUID(Guid.Empty));
             Assert.AreEqual(new Guid("3A7C4641B24E453D9D2893D96071B575"), root.AttrByName("vGUID2").ValueAsGUID(Guid.Empty));
             Assert.AreEqual(new Guid("3A7C4641B24E453D9D2893D96071B575"), root.AttrByName("vGUID3").ValueAsGUID(Guid.Empty));
@@ -140,7 +140,7 @@ namespace NFX.NUnit.Config
         public void ByteArray()
         {
             var root = conf.AsLaconicConfig();
-            
+
             Assert.IsTrue(new byte[]{0xFA, 0xCA, 0xDA, 0xBA}.SequenceEqual(  root.AttrByName("vBuffer").ValueAsByteArray() ) );
         }
 

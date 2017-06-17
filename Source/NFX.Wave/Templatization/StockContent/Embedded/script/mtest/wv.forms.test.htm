@@ -180,15 +180,22 @@
             // Help: "SECURITY",
             // Question: "Who is this?<br><img src='http://4.bp.blogspot.com/_smy9-F4TJUU/SyqxO0hwvFI/AAAAAAAAAIg/ULSDlQLgi54/S220/italenin.png'/>"
             // Question: "What is this?<br><img style='width: 128px;' src='http://live.regnumchristi.org/wp-content/uploads/2012/10/red-moon.jpg'/>"
-             Question: "Your PIN?"
+             Question: "Your PIN?",
             // Question: "Punch-in every second letter of 'KOMBIMAN'?"
             //   Question: "Fife pluz for iz?"
             // Question: "What is the SEARS motto?<br><iframe width='128' height='72' src='http://www.youtube.com/embed/4SFZ-jU5chU' frameborder='0' allowfullscreen></iframe>"
+             Clear: "X"
            });
   </script>
 
 
   <style>
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Verdana;
       font-size: 12px;
@@ -345,79 +352,121 @@
 
 
     .wvPuzzle {
-      display: inline-block;
-      width: auto;
-    }
-
-    .wvPuzzleHelp {
-      display: block;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-      background: #ff7070;
-      color: white;
-      border: 1px solid #808080;
-      border-bottom: none;
-      padding: 6px;
-      font-size: 0.75em;
-    }
-
-    .wvPuzzleQuestion {
-      display: block;
-      border-top: none;
-      border-bottom: none;
-      background: #ff7070;
-      color: white;
-      border-left: 1px solid #808080;
-      border-right: 1px solid #808080;
-      padding: 6px;
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-
-    .wvPuzzleInputs {
-      display: block;
-      border-top: none;
-      border-bottom: none;
-      background: #d0d0ff;
-      border-left: 1px solid #808080;
-      border-right: 1px solid #808080;
-      padding: 4px;
-    }
-
-      .wvPuzzleInputs > input[type="text"]:disabled {
-        font-size: 2em;
-        font-weight: bold;
-        color: blue;
-        background: white;
-        width: 65%;
-        height: 40px;
-        padding: 0px;
-        padding-left: 8px;
-        padding-right: 8px;
-        letter-spacing: 6px;
-      }
-
-      .wvPuzzleInputs > button {
-        font-size: 1.2em;
-        font-weight: bold;
-        width: 20%;
-        height: 40px;
-        float: right;
-      }
-
-    .wvPuzzleImg {
-      display: block;
-      border-bottom-left-radius: 12px;
-      border-bottom-right-radius: 12px;
+      max-width: 360px;
       background: #f8f8f8;
-      border: 1px solid #808080;
-      padding: 4px;
+      border: 1.5px solid #bbb;
+      display: inline-block;
     }
 
-      .wvPuzzleImg > img {
-        margin-top: -20px;
-        margin-bottom: -10px;
+      .wvPuzzle .wvPuzzleHelp {
+        color: #909090;
+        font-size: 14px;
+        padding: 10px;
       }
+
+      .wvPuzzle .wvPuzzleQuestion {
+        color: #ff5070;
+        font-weight: bold;
+        padding: 10px;
+        margin-bottom: 3px;
+      }
+
+      .wvPuzzle .wvPuzzleControls {
+        margin: 10px 0 15px;
+        position: relative;
+        padding: 0 10px;
+      }
+
+        .wvPuzzle .wvPuzzleControls .wvPuzzleInputs {
+          background-color: #fff;
+          padding-right: 30px;
+        }
+
+          .wvPuzzle .wvPuzzleControls .wvPuzzleInputs .wvInput {
+            border: none;
+            color: #404040;
+            font-size: 24px;
+            max-width: 307px;
+            overflow: hidden;
+            padding: 0 10px;
+          }
+
+            .wvPuzzle .wvPuzzleControls .wvPuzzleInputs .wvInput span {
+              padding: 0 2px;
+              position: relative;
+              top: 2px;
+            }
+
+          .wvPuzzle .wvPuzzleControls .wvPuzzleInputs .wvPlaceholder {
+            font-size: 14px;
+            padding: 7px;
+          }
+
+          .wvPuzzle .wvPuzzleControls .wvPuzzleInputs .hidden {
+            display: none;
+          }
+
+        .wvPuzzle .wvPuzzleControls button {
+          background: #fff;
+          border: none;
+          cursor: pointer;
+          display: block;
+          height: 100%;
+          opacity: .8;
+          position: absolute;
+          right: 10px;
+          top: 0;
+          width: 30px;
+        }
+
+          .wvPuzzle .wvPuzzleControls button:focus {
+            border: none;
+            outline: none;
+          }
+
+          .wvPuzzle .wvPuzzleControls button:hover {
+            opacity: 1;
+          }
+
+          .wvPuzzle .wvPuzzleControls button:after {
+            content: ' ';
+            cursor: pointer;
+            display: block;
+            position: absolute;
+            right: calc(50% - 7.5px);
+            top: calc(50% - 7.5px);
+            background-position-x: -400px;
+            background-position-y: -70px;
+            float: left;
+            height: 15px;
+            width: 15px;
+            background-image: url(../img/sprite@1.5x.png);
+            background-repeat: no-repeat;
+            background-size: 800px;
+          }
+
+            .wvPuzzle .wvPuzzleControls button:after:hover {
+              background-position-x: -400px;
+            }
+
+    .wvPuzzle .wvPuzzleImg img {
+      cursor: pointer;
+      -moz-user-select: none;
+      /* These user-select properties are inheritable, used to prevent text selection */
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      /* From IE10 only */
+      user-select: none;
+      /* Not valid CSS yet, as of July 2012 */
+      -webkit-user-drag: none;
+      /* Prevents dragging of images/divs etc */
+      user-drag: none;
+      -webkit-animation: fadein 0.25s;
+      -moz-animation: fadein 0.25s;
+      -ms-animation: fadein 0.25s;
+      -o-animation: fadein 0.25s;
+      animation: fadein 0.25s;
+    }
   </style>
 
 </body>

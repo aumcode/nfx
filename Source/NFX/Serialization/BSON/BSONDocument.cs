@@ -227,6 +227,8 @@ namespace NFX.Serialization.BSON
         var i = IndexOfName(name);
         if (i<0) return null;
         var elm = this[i];
+        if (elm is BSONBinaryElement)
+          return ((BSONBinaryElement)elm).Value.Data;
         return elm.ObjectValue;
       }
 
@@ -521,10 +523,11 @@ namespace NFX.Serialization.BSON
                      else
                       bType = BSONElementType.String;
                     }
-                    else if (value is UInt64) bType = BSONElementType.Int64;
-                    else if (value is Int32) bType = BSONElementType.Int32;
-                    else if (value is Int64) bType = BSONElementType.Int64;
-                    else if (value is bool) bType = BSONElementType.Boolean;
+                    else if (value is UInt64)   bType = BSONElementType.Int64;
+                    else if (value is Int32)    bType = BSONElementType.Int32;
+                    else if (value is Int64)    bType = BSONElementType.Int64;
+                    else if (value is DateTime) bType = BSONElementType.DateTime;
+                    else if (value is bool)     bType = BSONElementType.Boolean;
                     else if (value is double || value is float) bType = BSONElementType.Double;
                     else if (value is byte[])
                     {

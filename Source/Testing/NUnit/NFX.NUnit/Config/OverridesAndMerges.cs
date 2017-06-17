@@ -31,7 +31,7 @@ namespace NFX.NUnit.Config
 
 static string xml1 = @"
  <root>
-    
+
     <section-a>
         <sub1>Sub Value 1</sub1>
         <sub2>Sub Value 2</sub2>
@@ -40,8 +40,8 @@ static string xml1 = @"
         <destination name='B' type='SMTPMail'> </destination>
     </section-a>
 
-    <section-b _override='attributes' age='32'>  
-    
+    <section-b _override='attributes' age='32'>
+
     </section-b>
 
     <section-c _override='fail'>
@@ -50,12 +50,12 @@ static string xml1 = @"
 
     <section-d _override='stop'>This can not be overridden and no exception will be thrown</section-d>
 
-    <section-e _override='replace' some-attr='123'>  
+    <section-e _override='replace' some-attr='123'>
        <a> </a>
        <b> </b>
     </section-e>
 
-    <section-f _override='sections' some-attr='423'>  
+    <section-f _override='sections' some-attr='423'>
        <a> </a>
        <b> </b>
     </section-f>
@@ -66,26 +66,26 @@ static string xml1 = @"
 
 static string xml2 = @"
  <root>
-    
+
     <section-a newattr='new val'>
         <sub2>Sub Value 2 ammended</sub2>
         <sub3>Sub Value 3</sub3>
         <destination name='B' type='Clock'> </destination>
     </section-a>
 
-    <section-b _override='attributes' age='89' pension='true'>  
-    
+    <section-b _override='attributes' age='89' pension='true'>
+
     </section-b>
 
     <section-d all='yes'>
        This will be ignored
     </section-d>
 
-    <section-e _override='replace' some-attr='992'>  
+    <section-e _override='replace' some-attr='992'>
        <demo>Demo!</demo>
     </section-e>
 
-    <section-f _override='sections' some-attr='324'>  
+    <section-f _override='sections' some-attr='324'>
        <_clear/>
        <bim good='yes'> </bim>
     </section-f>
@@ -200,17 +200,17 @@ static string xml4 = @"
 
 static string largexml1 = @"
  <r>
-    <a>  
+    <a>
        <a-a a1='1' a2='2' a3='3' a4='4' a5='5'>
        </a-a>
     </a>
 
-    <b>  
+    <b>
        <a-a>
        </a-a>
     </b>
 
-    <c _override='all'>  
+    <c _override='all'>
        <providers when='now'>
           <provider name='1' a1='1' a2='2' a3='3' a4='4' a5='5'>
 
@@ -219,12 +219,12 @@ static string largexml1 = @"
 
           </provider>
           <provider name='3' a1='1' a2='2' a3='3' a4='4' a5='5'>
-                  <M> 
-                    <K a1='1' a2='2' a3='3' a4='4' a5='5' 
+                  <M>
+                    <K a1='1' a2='2' a3='3' a4='4' a5='5'
                               b1='1' b2='2' b3='3' b4='4' b5='5'
                               c1='1' c2='2' c3='3' c4='4' c5='5'
                               >
-                     
+
                     </K>
                   </M>
           </provider>
@@ -237,23 +237,23 @@ static string largexml1 = @"
        </providers>
     </c>
 
-    <d>  
-       <a-a a1='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5' 
+    <d>
+       <a-a a1='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5'
                               b1='1' b2='2' b3='3' b4='4' b5='5'
                               c1='1' c2='2' c3='3' c4='4' c5='5'>
        </a-a>
     </d>
 
-    <e>  
-       <a-a a1='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5' 
+    <e>
+       <a-a a1='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5'
                               b1='1' b2='2' b3='3' b4='4' b5='5'
                               c1='1' c2='2' c3='3' c4='4' c5='5'>
        </a-a>
     </e>
 
 
-    <f>  
-       <a-a a1='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5' 
+    <f>
+       <a-a a1='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5'
                               b1='1' b2='2' b3='3' b4='4' b5='5'
                               c1='1' c2='2' c3='3' c4='4' c5='5'>
        </a-a>
@@ -263,18 +263,18 @@ static string largexml1 = @"
 ";
 
 static string largexml2 = @"
- <r>    
-    <a>  
+ <r>
+    <a>
        <a-a za1='1' za2='2' za3='3' za4='4' za5='5'>
        </a-a>
     </a>
 
-    <b>  
+    <b>
        <a-a>
        </a-a>
     </b>
 
-    <c>  
+    <c>
        <providers when='now'>
           <provider name='1' za1='1' za2='2' a3='3' a4='4' a5='5'>
 
@@ -283,12 +283,12 @@ static string largexml2 = @"
 
           </provider>
           <provider name='tri' a1='1' a2='2' a3='3' a4='4' a5='5'>
-                  <M a='jrtglkdjfglk jdflkjg djsg jd;flkjg ;dlsfjg ;ldsfjg ldkgjd;lfgl;k jwerojgoirjg wj;erigj ;ewrigj ;weirjg ;wiergiwe;rj; ow; gjw rgjjgiuefu'> 
-                    <K a1='1' a2='2' a3='3' a4='4' a5='5' 
+                  <M a='jrtglkdjfglk jdflkjg djsg jd;flkjg ;dlsfjg ;ldsfjg ldkgjd;lfgl;k jwerojgoirjg wj;erigj ;ewrigj ;weirjg ;wiergiwe;rj; ow; gjw rgjjgiuefu'>
+                    <K a1='1' a2='2' a3='3' a4='4' a5='5'
                               b1='1' b2='2' >
 
                               hahaha!
-                     
+
                     </K>
                   </M>
           </provider>
@@ -301,14 +301,14 @@ static string largexml2 = @"
        </providers>
     </c>
 
-    <d>  
-       <a-a a1='$(/c/providers/$when)' a2='23' a3='435343' a4='ertert4' a5='ert5' 
+    <d>
+       <a-a a1='$(/c/providers/$when)' a2='23' a3='435343' a4='ertert4' a5='ert5'
                               b1='ert1' b2='ewr2' b3='uiuyi3' b4='rettwe4' b5='ewrter5'
                               c1='1ert' c2='wer2' c3='ewrt3' c4='ert4' c5='erterter5'>
        </a-a>
     </d>
 
-    <g>  
+    <g>
        <mail name='$(/c/providers/$when)' a2='2' a3='3' a4='4' a5='5'>
        </mail>
 
@@ -321,7 +321,7 @@ static string largexml2 = @"
               <sun bright='oh yeah' animals='various'>
                 <gun pattern='alalal' flexible='true' retriever='233'>
                    Some text that may take multiple lines that the way
-                   we wanted to put this text in here 
+                   we wanted to put this text in here
                 </gun>
               </sun>
            </demo>
@@ -337,7 +337,7 @@ static string largexml2 = @"
               <sun bright='oh yeah' animals='various'>
                 <gun pattern='alalal' flexible='true' retriever='233'>
                    Some text that may take multiple lines that the way
-                   we wanted to put this text in here 
+                   we wanted to put this text in here
                 </gun>
               </sun>
            </demo>
@@ -345,22 +345,22 @@ static string largexml2 = @"
               <sun bright='oh yeah' animals='various'>
                 <gun pattern='alalal' flexible='true' retriever='233'>
                    Some text that may take multiple lines that the way
-                   we wanted to put this text in here 
+                   we wanted to put this text in here
                     <demoUnderGun this='will have garbage nodes'>
                       <sun bright='oh yeah' animals='various'>
                         <gun pattern='alalal' flexible='true' retriever='233'>
                            Some text that may take multiple lines that the way
-                           we wanted to put this text in here 
+                           we wanted to put this text in here
                         </gun>
 
                            <demoUnderSun this='will have garbage nodes'>
                               <sun bright='oh yeah' animals='various'>
                                 <gun pattern='alalal' flexible='true' retriever='233'>
                                    Some text that may take multiple lines that the way
-                                   we wanted to put this text in here 
+                                   we wanted to put this text in here
                                 </gun>
                               </sun>
-                           </demoUnderSun> 
+                           </demoUnderSun>
 
                       </sun>
                    </demoUnderGun>
@@ -372,7 +372,7 @@ static string largexml2 = @"
               <sun bright='oh yeah' animals='various'>
                 <gun pattern='alalal' flexible='true' retriever='233'>
                    Some text that may take multiple lines that the way
-                   we wanted to put this text in here 
+                   we wanted to put this text in here
                 </gun>
               </sun>
            </demoB>

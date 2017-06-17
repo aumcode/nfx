@@ -91,7 +91,7 @@ namespace NFX.NUnit.Logging
         using (Scope.OnExit(() => File.Delete(fname)))
         {
           var cfg = XMLConfiguration.CreateFromXML(xml);
-          cfg.EnvironmentVarResolver = new Vars { { "path", TEST_DIR } };
+          cfg.EnvironmentVarResolver = new Vars ( new VarsDictionary{ { "path", TEST_DIR } } );
           svc.Configure(cfg.Root);
 
           svc.Start();
@@ -158,7 +158,7 @@ namespace NFX.NUnit.Logging
                       }}".Args(TNAME, DATE);
 
         var cnf = LaconicConfiguration.CreateFromString(laStr);
-        cnf.EnvironmentVarResolver = new Vars() { { "path", TEST_DIR}};
+        cnf.EnvironmentVarResolver = new Vars( new VarsDictionary { { "path", TEST_DIR}} );
 
         var fname = Path.Combine(TEST_DIR, DATE + "-" + FNAME);
         IOMiscUtils.EnsureFileEventuallyDeleted(fname);

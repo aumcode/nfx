@@ -33,17 +33,17 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndFindKey_TypedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-                                   
-                                        
+
+
             Assert.AreEqual(1000, tbl.Count);
 
             var match1 = tbl.FindByKey("POP35");
@@ -62,19 +62,19 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndCloneThenFindKey_TypedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-                                   
-            
+
+
             tbl = new Table(tbl);//make copy
-                                        
+
             Assert.AreEqual(1000, tbl.Count);
 
             var match1 = tbl.FindByKey("POP35");
@@ -94,7 +94,7 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndFindKey_MixedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
             {
                  var row =  new DynamicRow(tbl.Schema);
@@ -104,7 +104,7 @@ namespace NFX.NUnit.DataAccess
                  row["LastName"] = "DynamicPopov-{0}".Args(i);
                  row["DOB"] = new DateTime(1953, 12, 10);
                  row["YearsInSpace"] = 12;
-                 
+
                  tbl.Insert( row );
 
                  tbl.Insert( new Person{
@@ -112,16 +112,16 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = "TypedPopov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            }                       
-                                        
+            }
+
             Assert.AreEqual(2000, tbl.Count);
 
             var match1 = tbl.FindByKey("DYN35");
             Assert.IsNotNull( match1 );
             Assert.IsTrue( match1 is DynamicRow );
-            Assert.AreEqual("DynamicPopov-35", match1["LastName"]); 
+            Assert.AreEqual("DynamicPopov-35", match1["LastName"]);
 
             var match2 = tbl.FindByKey("TYPED36") as Person;
             Assert.IsNotNull( match2 );
@@ -136,7 +136,7 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndFindKey_DynamicRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
             {
                  var row =  new DynamicRow(tbl.Schema);
@@ -146,15 +146,15 @@ namespace NFX.NUnit.DataAccess
                  row["LastName"] = "Popov-{0}".Args(i);
                  row["DOB"] = new DateTime(1953, 12, 10);
                  row["YearsInSpace"] = 12;
-                 
+
                  tbl.Insert( row );
-            }                       
-                                        
+            }
+
             Assert.AreEqual(1000, tbl.Count);
 
             var match1 = tbl.FindByKey("POP35");
             Assert.IsNotNull( match1 );
-            Assert.AreEqual("Popov-35", match1["LastName"]); 
+            Assert.AreEqual("Popov-35", match1["LastName"]);
 
             var match2 = tbl.FindByKey("POP36") as DynamicRow;
             Assert.IsNotNull( match2 );
@@ -169,20 +169,20 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndFindCompositeKey_TypedRows()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(WithCompositeKey)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new WithCompositeKey{
                                     ID = "ID{0}".Args(i),
                                     StartDate = new DateTime(1953, 12, 10),
-                                    Description = "Descr{0}".Args(i) 
+                                    Description = "Descr{0}".Args(i)
                                    });
-                                   
-                                        
+
+
             Assert.AreEqual(1000, tbl.Count);
 
             var match1 = tbl.FindByKey("ID35", new DateTime(1953, 12, 10));
             Assert.IsNotNull( match1 );
-            Assert.AreEqual("Descr35", match1["Description"]); 
+            Assert.AreEqual("Descr35", match1["Description"]);
 
             var match2 = tbl.FindByKey("ID35", new DateTime(1953, 07, 10));
             Assert.IsNull( match2 );
@@ -192,11 +192,11 @@ namespace NFX.NUnit.DataAccess
         [TestCase]
         public void BuildUsingAdHockSchema()
         {
-            var schema = new Schema("TEZT",  
+            var schema = new Schema("TEZT",
                            new Schema.FieldDef("ID", typeof(int), new List<FieldAttribute>{ new FieldAttribute(required: true, key: true)}),
                            new Schema.FieldDef("Description", typeof(string), new List<FieldAttribute>{ new FieldAttribute(required: true)})
             );
-            
+
             var tbl = new Table(schema);
 
             for(var i=0; i<1000; i++)
@@ -207,10 +207,10 @@ namespace NFX.NUnit.DataAccess
                  row["Description"] = "Item-{0}".Args(i);
 
                  tbl.Insert( row );
-            }                       
-                                        
+            }
+
             Assert.AreEqual(1000, tbl.Count);
-            
+
             var match = tbl.FindByKey(178);
             Assert.IsNotNull( match );
             Assert.AreEqual("Item-178", match["Description"]);
@@ -222,26 +222,26 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndUpdateExisting()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var update =  new Person{
                                     ID = "POP17",
                                     FirstName = "Yaroslav",
                                     LastName = "Suzkever",
                                     DOB = new DateTime(1952, 12, 10),
-                                    YearsInSpace = 14 
+                                    YearsInSpace = 14
                                    };
-            
-            var idx = tbl.Update(update);//<-------------!!!!!!                       
-           
+
+            var idx = tbl.Update(update);//<-------------!!!!!!
+
             Assert.IsTrue( idx>=0 );
 
             var match = tbl.FindByKey("POP17") as Person;
@@ -255,26 +255,26 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndUpdateNonExisting()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var update =  new Person{
                                     ID = "NONE17",
                                     FirstName = "Yaroslav",
                                     LastName = "Suzkever",
                                     DOB = new DateTime(1952, 12, 10),
-                                    YearsInSpace = 14 
+                                    YearsInSpace = 14
                                    };
-            
-            var idx = tbl.Update(update);//<-------------!!!!!!                       
-           
+
+            var idx = tbl.Update(update);//<-------------!!!!!!
+
             Assert.IsTrue( idx==-1 );
 
             var match = tbl.FindByKey("NONE17") as Person;
@@ -287,28 +287,28 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndUpsertExisting()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var update =  new Person{
                                     ID = "POP17",
                                     FirstName = "Yaroslav",
                                     LastName = "Suzkever",
                                     DOB = new DateTime(1952, 12, 10),
-                                    YearsInSpace = 14 
+                                    YearsInSpace = 14
                                    };
-            
-            var existed = tbl.Upsert(update);//<-------------!!!!!!  
-            
-            Assert.IsTrue( existed );                     
-           
+
+            var existed = tbl.Upsert(update);//<-------------!!!!!!
+
+            Assert.IsTrue( existed );
+
             var match = tbl.FindByKey("POP17") as Person;
             Assert.IsNotNull( match );
             Assert.AreEqual("Yaroslav", match.FirstName);
@@ -320,30 +320,30 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndUpsertNonExisting()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var update =  new Person{
                                     ID = "GOODMAN17",
                                     FirstName = "John",
                                     LastName = "Jeffer",
                                     DOB = new DateTime(1952, 12, 10),
-                                    YearsInSpace = 14 
+                                    YearsInSpace = 14
                                    };
-            
-            var existed = tbl.Upsert(update);//<-------------!!!!!!     
-            
+
+            var existed = tbl.Upsert(update);//<-------------!!!!!!
+
             Assert.IsFalse( existed );
 
-            Assert.AreEqual(1001, tbl.Count);                  
-           
+            Assert.AreEqual(1001, tbl.Count);
+
             var match = tbl.FindByKey("POP17") as Person;
             Assert.IsNotNull( match );
             Assert.AreEqual("Oleg", match.FirstName);
@@ -360,22 +360,22 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndDeleteExisting()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var delete =  new Person{
                                     ID = "POP17"
                                    };
-            
-            var idx = tbl.Delete( delete );//<-------------!!!!!!                       
-           
+
+            var idx = tbl.Delete( delete );//<-------------!!!!!!
+
             Assert.IsTrue( idx>=0 );
             Assert.AreEqual(999, tbl.Count);
 
@@ -387,22 +387,22 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndDeleteNonExisting()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
+
             var delete =  new Person{
                                     ID = "NONE17"
                                    };
-            
-            var idx = tbl.Delete( delete );//<-------------!!!!!!                       
-           
+
+            var idx = tbl.Delete( delete );//<-------------!!!!!!
+
             Assert.IsTrue( idx==-1 );
             Assert.AreEqual(1000, tbl.Count);
 
@@ -414,18 +414,18 @@ namespace NFX.NUnit.DataAccess
         public void PopulateAndDeleteExisting_UsingValues()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             for(var i=0; i<1000; i++)
              tbl.Insert( new Person{
                                     ID = "POP{0}".Args(i),
                                     FirstName = "Oleg",
                                     LastName = "Popov-{0}".Args(i),
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
-            var idx = tbl.Delete( "POP17" );//<-------------!!!!!!                       
-           
+
+            var idx = tbl.Delete( "POP17" );//<-------------!!!!!!
+
             Assert.IsTrue( idx>=0 );
             Assert.AreEqual(999, tbl.Count);
 
@@ -439,16 +439,16 @@ namespace NFX.NUnit.DataAccess
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
             tbl.LogChanges = true;
-            
+
             tbl.Insert( new Person{
                                     ID = "POP1",
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
-           
+
+
             Assert.AreEqual(1, tbl.ChangeCount);
 
             Assert.AreEqual(RowChangeType.Insert, tbl.GetChangeAt(0).Value.ChangeType);
@@ -458,20 +458,20 @@ namespace NFX.NUnit.DataAccess
         public void LogChanges_Update()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
-            
+
+
             tbl.Insert( new Person{
                                     ID = "POP1",
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
             tbl.LogChanges = true;
 
             tbl.Update( tbl[0] );
 
-           
+
             Assert.AreEqual(1, tbl.ChangeCount);
 
             Assert.AreEqual(RowChangeType.Update, tbl.GetChangeAt(0).Value.ChangeType);
@@ -481,7 +481,7 @@ namespace NFX.NUnit.DataAccess
         public void LogChanges_Upsert()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
+
             tbl.LogChanges = true;
 
             tbl.Upsert( new Person{
@@ -489,11 +489,11 @@ namespace NFX.NUnit.DataAccess
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
-            
 
-           
+
+
             Assert.AreEqual(1, tbl.ChangeCount);
 
             Assert.AreEqual(RowChangeType.Upsert, tbl.GetChangeAt(0).Value.ChangeType);
@@ -503,20 +503,20 @@ namespace NFX.NUnit.DataAccess
         public void LogChanges_Delete()
         {
             var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
-            
-            
+
+
             tbl.Insert( new Person{
                                     ID = "POP1",
                                     FirstName = "Oleg",
                                     LastName = "Popov",
                                     DOB = new DateTime(1953, 12, 10),
-                                    YearsInSpace = 12 
+                                    YearsInSpace = 12
                                    });
             tbl.LogChanges = true;
 
             tbl.Delete( tbl[0] );
 
-           
+
             Assert.AreEqual(1, tbl.ChangeCount);
             Assert.AreEqual(0, tbl.Count);
 

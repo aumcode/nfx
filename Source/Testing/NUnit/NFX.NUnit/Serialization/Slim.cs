@@ -84,10 +84,10 @@ namespace NFX.NUnit.Serialization
 
             var conf = "nfx{a=2 b=3 sumka=27 child1{c=$(~SLAVA)} child2=XXX{c=$(~CITY)} z=999}".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
-            conf.Configuration.EnvironmentVarResolver = new Vars
+            conf.Configuration.EnvironmentVarResolver = new Vars( new VarsDictionary
             {
                {"Slava", "KPSS"}, {"City","MOCKBA"}
-            };
+            });
 
             s.Serialize(ms, conf);
 
@@ -131,10 +131,10 @@ namespace NFX.NUnit.Serialization
 
             var conf = "nfx{a=2 b=3 sumka=27 child{c='So, it is $(~FLAG::as-bool)!'} }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
-            conf.Configuration.EnvironmentVarResolver = new Vars
+            conf.Configuration.EnvironmentVarResolver = new Vars( new VarsDictionary
             {
                {"FLAG", "1"}
-            };
+            });
 
             s.Serialize(ms, conf);
 
@@ -171,11 +171,11 @@ namespace NFX.NUnit.Serialization
 
             var conf = "nfx{child{c='So, it is $(~FLAG::as-bool)!' g='Dear $(~MEMBER), we have zhabified you into $(~MEMBER::zhabify)'} }".AsLaconicConfig(handling: ConvertErrorHandling.Throw);
 
-            conf.Configuration.EnvironmentVarResolver = new Vars
+            conf.Configuration.EnvironmentVarResolver = new Vars( new VarsDictionary
             {
                {"FLAG", "1"},
                {"MEMBER", "Xitro"}
-            };
+            });
 
             conf.Configuration.MacroRunner = new TeztZhabifyMacroRunner();
 

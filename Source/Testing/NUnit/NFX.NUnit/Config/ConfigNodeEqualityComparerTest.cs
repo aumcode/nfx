@@ -56,7 +56,7 @@ namespace NFX.NUnit.Config
       Assert.IsTrue(ConfigNodeEqualityComparer.Instance.Equals(root2, root2));
       Assert.IsTrue(ConfigNodeEqualityComparer.Instance.Equals(root1, root2));
       Assert.IsTrue(ConfigNodeEqualityComparer.Instance.Equals(root2, root1));
-     
+
       var root3 = NFX.Environment.LaconicConfiguration.CreateFromString("root='PeoPle' {}").Root;
       Assert.IsTrue(ConfigNodeEqualityComparer.Instance.Equals(root3, root3));
       Assert.IsFalse(ConfigNodeEqualityComparer.Instance.Equals(root1, root3));
@@ -117,27 +117,27 @@ namespace NFX.NUnit.Config
     [Test]
     public void AttributesCountAndOrder()
     {
-      string conf1 = 
+      string conf1 =
         @"root
           {
             type = 'person'
             has_drive_license = 0
             details {}
           }";
-      string conf2 = 
+      string conf2 =
         @"root
           {
             type = 'person'
             details {}
             has_drive_license = 0
           }";
-      string conf3 = 
+      string conf3 =
         @"root
           {
             type = 'person'
             details {}
           }";
-      string conf4 = 
+      string conf4 =
         @"root
           {
             has_drive_license = 0
@@ -168,27 +168,27 @@ namespace NFX.NUnit.Config
     [Test]
     public void SectionsCountAndOrder()
     {
-      string conf1 = 
+      string conf1 =
         @"root
           {
             type = 'person'
             details {}
             contacts {}
           }";
-      string conf2 = 
+      string conf2 =
         @"root
           {
             details {}
             type = 'person'
             contacts {}
           }";
-      string conf3 = 
+      string conf3 =
         @"root
           {
             details {}
             type = 'person'
           }";
-      string conf4 = 
+      string conf4 =
         @"root
           {
             contacts {}
@@ -219,11 +219,11 @@ namespace NFX.NUnit.Config
     [Test]
     public void Overall()
     {
-      string conf1 = 
+      string conf1 =
         @"root
         {
           type = person
-          details 
+          details
           {
             name = 'John Smith'
             age = 22
@@ -235,10 +235,10 @@ namespace NFX.NUnit.Config
           }
           has-drive-license = 1
         }";
-      string conf2 = 
+      string conf2 =
         @"Root
         {
-          Details 
+          Details
           {
             name = 'John Smith'
             AGE = 22
@@ -262,11 +262,11 @@ namespace NFX.NUnit.Config
     [Test]
     public void HashCode()
     {
-      string conf1 = 
+      string conf1 =
         @"root
         {
           type = person
-          details 
+          details
           {
             name = 'John Smith'
             age = 22
@@ -278,10 +278,10 @@ namespace NFX.NUnit.Config
           }
           has-drive-license = 1
         }";
-      string conf2 = 
+      string conf2 =
         @"Root
         {
-          Details 
+          Details
           {
             name = 'John Smith'
             AGE = '22'
@@ -300,7 +300,7 @@ namespace NFX.NUnit.Config
         var hash2 = ConfigNodeEqualityComparer.Instance.GetHashCode(root2);
         Assert.AreEqual(hash1, hash2);
 
-        var hashOfNull = ConfigNodeEqualityComparer.Instance.GetHashCode(null); 
+        var hashOfNull = ConfigNodeEqualityComparer.Instance.GetHashCode(null);
         Assert.AreEqual(hashOfNull, hashOfNull);
 
         root1 = NFX.Environment.LaconicConfiguration.CreateFromString("root { }").Root;

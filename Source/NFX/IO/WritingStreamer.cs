@@ -53,8 +53,10 @@ namespace NFX.IO
               public abstract void Write(bool? value);
 
 
-
-          public abstract void Write(byte value);
+          public void Write(byte value)
+          {
+            m_Stream.WriteByte(value);
+          }
 
 
               public abstract void Write(byte? value);

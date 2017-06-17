@@ -48,6 +48,10 @@ namespace NFX.Web.Pay.Braintree
 
     public Uri URI_ClientToken(string merchantID) { return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/client_token"); }
     public Uri URI_Transactions(string merchantID) { return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions"); }
+    public Uri URI_Find(string merchantID, string id)
+    {
+      return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions/{0}".Args(id));
+    }
     public Uri URI_SubmitForSettlement(string merchantID, string id)
     {
       return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions/{0}/submit_for_settlement".Args(id));
@@ -55,6 +59,10 @@ namespace NFX.Web.Pay.Braintree
     public Uri URI_Void(string merchantID, string id)
     {
       return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions/{0}/void".Args(id));
+    }
+    public Uri URI_Refund(string merchantID, string id)
+    {
+      return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/transactions/{0}/refund".Args(id));
     }
     public Uri URI_Customer(string merchantID, string customerID) { return new Uri(m_ApiUri, URI_MERCHANTS.Args(merchantID) + "/customers/" + customerID); }
     #endregion
@@ -345,10 +353,20 @@ namespace NFX.Web.Pay.Braintree
 
       try
       {
+        var useVoid = false;
+
         var transaction = new XElement("transaction");
         if (amount.HasValue) transaction.Add(new XElement("amount", amount.Value));
-
-        var response = getResponse(session, URI_SubmitForSettlement(session.MerchantID, charge.Token.AsString()), new XDocument(transaction), HTTPRequestMethod.PUT);
+        else
+        {
+          var resp = getResponse(session, URI_Find(session.MerchantID, charge.Token.AsString()), method: HTTPRequestMethod.GET);
+          var tran = resp.Root;
+          var status = tran.Element("status").Value;
+          useVoid = status.EqualsOrdIgnoreCase("submitted_for_settlement");
+        }
+        var response = useVoid ?
+          getResponse(session, URI_Void(session.MerchantID, charge.Token.AsString()), new XDocument(transaction), HTTPRequestMethod.PUT) :
+          getResponse(session, URI_Refund(session.MerchantID, charge.Token.AsString()), new XDocument(transaction), HTTPRequestMethod.POST);
 
         transaction = response.Root;
         var transactionID = transaction.Element("id").Value;

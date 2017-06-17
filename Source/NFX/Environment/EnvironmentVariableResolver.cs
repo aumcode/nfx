@@ -19,76 +19,112 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Collections;
 
 namespace NFX.Environment
 {
 
+  /// <summary>
+  /// Represents an entity that can resolve variables
+  /// </summary>
+  public interface IEnvironmentVariableResolver
+  {
     /// <summary>
-    /// Represents an entity that can resolve variables
+    /// Turns named variable into its value or null
     /// </summary>
-    public interface IEnvironmentVariableResolver
-    {
-        /// <summary>
-        /// Turns named variable into its value or null
-        /// </summary>
-        string ResolveEnvironmentVariable(string name);
-    }
+    bool ResolveEnvironmentVariable(string name, out string value);
+  }
 
 
-    /// <summary>
-    /// Resolves variables using Windows environment variables.
-    /// NOTE: When serialized a new instance is created which will not equal by reference to static.Instance property
-    /// </summary>
-    [Serializable]//but there is nothing to serialize
-    public sealed class WindowsEnvironmentVariableResolver : IEnvironmentVariableResolver
-    {
-        private static WindowsEnvironmentVariableResolver s_Instance = new WindowsEnvironmentVariableResolver();
-
-        private WindowsEnvironmentVariableResolver()
-        {
-
-        }
-
-        /// <summary>
-        /// Returns a singleton class instance
-        /// </summary>
-        public static WindowsEnvironmentVariableResolver Instance
-        {
-          get { return s_Instance; }
-        }
-
-        public string ResolveEnvironmentVariable(string name)
-        {
-            return System.Environment.GetEnvironmentVariable(name);
-        }
-    }
+  /// <summary>
+  /// Resolves variables using Windows environment variables.
+  /// NOTE: When serialized a new instance is created which will not equal by reference to static.Instance property
+  /// </summary>
+  [Serializable]//but there is nothing to serialize
+  public sealed class OSEnvironmentVariableResolver : IEnvironmentVariableResolver
+  {
+    private static OSEnvironmentVariableResolver s_Instance = new OSEnvironmentVariableResolver();
 
     /// <summary>
-    /// Allows for simple ad-hoc environment var passing to configuration
+    /// Returns a singleton class instance
     /// </summary>
-    [Serializable]
-    public sealed class Vars : Dictionary<string, string>, IEnvironmentVariableResolver
+    public static OSEnvironmentVariableResolver Instance { get { return s_Instance; } }
+
+    private OSEnvironmentVariableResolver() { }
+
+    public bool ResolveEnvironmentVariable(string name, out string value)
     {
-
-        public Vars() : base(StringComparer.InvariantCultureIgnoreCase)
-        {
-
-        }
-
-        private Vars(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-
-        }
+      value = System.Environment.GetEnvironmentVariable(name);
+      return true;
+    }
+  }
 
 
-        public string ResolveEnvironmentVariable(string name)
-        {
-            string val;
-            if (this.TryGetValue(name, out val)) return val;
+  public sealed class VarsDictionary : Dictionary<string, string>
+  {
+    public VarsDictionary() : base(StringComparer.InvariantCultureIgnoreCase) {}
+    public VarsDictionary(IDictionary<string, string> other) : base(other, StringComparer.InvariantCultureIgnoreCase) { }
+    private VarsDictionary(SerializationInfo info, StreamingContext context) : base(info, context) {}
+  }
 
-            return string.Empty;
-        }
+  /// <summary>
+  /// Allows for simple ad-hoc environment var passing to configuration
+  /// </summary>
+  [Serializable]
+  public sealed class Vars : IEnumerable<KeyValuePair<string, string>>, IEnvironmentVariableResolver
+  {
+    public Vars(IDictionary<string, string> initial = null)
+    {
+      m_Data = initial == null ? new VarsDictionary() : new VarsDictionary(initial);
     }
 
+    [NonSerialized]
+    private object m_Sync = new object();
+    private volatile VarsDictionary m_Data;
 
+    public bool ResolveEnvironmentVariable(string name, out string value)
+    {
+      if (m_Data.TryGetValue(name, out value)) return true;
+      return false;
+    }
+
+    public string this[string name]
+    {
+      get
+      {
+        string result;
+        if (m_Data.TryGetValue(name, out result)) return result;
+        return null;
+      }
+      set
+      {
+        lock (m_Sync)
+        {
+          var data = new VarsDictionary(m_Data);
+
+          string existing;
+          if (data.TryGetValue(name, out existing)) data[name] = value;
+          else data.Add(name, value);
+
+          m_Data = data;
+        }
+      }
+    }
+
+    public bool Remove(string key)
+    {
+      lock (m_Sync)
+      {
+        var data = new VarsDictionary(m_Data);
+        var result = data.Remove(key);
+        m_Data = data;
+        return result;
+      }
+    }
+
+    public void Clear() { m_Data = new VarsDictionary(); }
+
+    public IEnumerator<KeyValuePair<string, string>> GetEnumerator() { return m_Data.GetEnumerator(); }
+    IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
+  }
 }

@@ -104,9 +104,12 @@ namespace NFX.OS
                                     {
                                        var uaddr = (UnicastIPAddressInformation)addr;
                                        m_UnicastIPv4Mask = uaddr.IPv4Mask.GetAddressBytes();
-                                       m_UnicastPreferredLifetimeSec = uaddr.AddressPreferredLifetime;
-                                       m_UnicastValidLifetimeSec = uaddr.AddressValidLifetime;
-                                       m_UnicastDHCPLeaseLifetimeSec = uaddr.DhcpLeaseLifetime;
+                                       if (!OS.Computer.IsMono)
+                                       {
+                                         m_UnicastPreferredLifetimeSec = uaddr.AddressPreferredLifetime;
+                                         m_UnicastValidLifetimeSec = uaddr.AddressValidLifetime;
+                                         m_UnicastDHCPLeaseLifetimeSec = uaddr.DhcpLeaseLifetime;
+                                       }
                                     }
 
                                   }

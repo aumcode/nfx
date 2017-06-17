@@ -34,7 +34,7 @@ namespace NFX.NUnit.DataAccess
         public void WithoutPRAGMA_1()
         {
             var src = "abc";
-            
+
             var qs = new QuerySource("1", src);
 
             Assert.IsFalse( qs.HasPragma );
@@ -46,7 +46,7 @@ namespace NFX.NUnit.DataAccess
         [TestCase]
         public void WithoutPRAGMA_2()
         {
-            var src = 
+            var src =
 @"a123
 b
 c
@@ -57,7 +57,7 @@ g
 h
 j
 k";
-            
+
             var qs = new QuerySource("1", src);
 
             Assert.IsFalse( qs.HasPragma );
@@ -65,12 +65,12 @@ k";
             Assert.AreEqual("a123", qs.OriginalSource.ReadLine());
             Assert.AreEqual("a123", qs.StatementSource.ReadLine());
         }
-        
+
 
         [TestCase]
         public void PRAGMA_1_Modifiable()
         {
-            var src = 
+            var src =
 @"#pragma
 modify=tbl_patient
 key=counter,ssn
@@ -81,21 +81,21 @@ load=counter
 .last_name=This is description of last name
 invisible=marker,counter,c_doctor
 
-select 
+select
  1 as marker,
- t1.counter,                    
- t1.ssn,                   
+ t1.counter,
+ t1.ssn,
  t1.lname as last_name,
  t1.fname as first_name,
- t1.c_doctor, 
- t2.phone as doctor_phone, 
- t2.NPI	as doctor_id       
+ t1.c_doctor,
+ t2.phone as doctor_phone,
+ t2.NPI	as doctor_id
 from
  tbl_patient t1
   left outer join tbl_doctor t2 on t1.c_doctor = t2.counter
 where
  t1.lname like ?LN";
-            
+
             var qs = new QuerySource("1", src);
 
             Assert.IsTrue( qs.HasPragma );
@@ -119,15 +119,15 @@ where
 
 
             Assert.AreEqual(
-@"select 
+@"select
  1 as marker,
- t1.counter,                    
- t1.ssn,                   
+ t1.counter,
+ t1.ssn,
  t1.lname as last_name,
  t1.fname as first_name,
- t1.c_doctor, 
- t2.phone as doctor_phone, 
- t2.NPI	as doctor_id       
+ t1.c_doctor,
+ t2.phone as doctor_phone,
+ t2.NPI	as doctor_id
 from
  tbl_patient t1
   left outer join tbl_doctor t2 on t1.c_doctor = t2.counter
@@ -140,7 +140,7 @@ where
         [TestCase]
         public void PRAGMA_2_nonModifiable()
         {
-            var src = 
+            var src =
 @"#pragma
 key=counter,ssn
 ignore=marker
@@ -149,21 +149,21 @@ load=counter
 @first_name=fname
 .last_name=This is description of last name
 
-select 
+select
  1 as marker,
- t1.counter,                    
- t1.ssn,                   
+ t1.counter,
+ t1.ssn,
  t1.lname as last_name,
  t1.fname as first_name,
- t1.c_doctor, 
- t2.phone as doctor_phone, 
- t2.NPI	as doctor_id       
+ t1.c_doctor,
+ t2.phone as doctor_phone,
+ t2.NPI	as doctor_id
 from
  tbl_patient t1
   left outer join tbl_doctor t2 on t1.c_doctor = t2.counter
 where
  t1.lname like ?LN";
-            
+
             var qs = new QuerySource("1", src);
 
             Assert.IsTrue( qs.HasPragma );
@@ -180,15 +180,15 @@ where
             Assert.AreEqual(StoreFlag.LoadAndStore, qs.ColumnDefs["ssn"].StoreFlag);
 
             Assert.AreEqual(
-@"select 
+@"select
  1 as marker,
- t1.counter,                    
- t1.ssn,                   
+ t1.counter,
+ t1.ssn,
  t1.lname as last_name,
  t1.fname as first_name,
- t1.c_doctor, 
- t2.phone as doctor_phone, 
- t2.NPI	as doctor_id       
+ t1.c_doctor,
+ t2.phone as doctor_phone,
+ t2.NPI	as doctor_id
 from
  tbl_patient t1
   left outer join tbl_doctor t2 on t1.c_doctor = t2.counter
