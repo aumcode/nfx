@@ -1,5 +1,7 @@
 # NFX Object Pile
 
+## Overview
+
 **Object Pile** is a technique of utilization of large amounts of RAM - (tens to hundreds of gigabytes) in-process in server applications via **regular CLR object** allocations, making **Big Memory** applications possible on a 100% managed runtime.
 
 **Pile solves the notorious GC stalls problem** which existed since the first days of managed memory model. Unfortunately, the GC blocking can not be eradicated completely - it is the price we have to pay for the higher-level memory model. In recent years there have been significant improvements in GC mechanisms [see this MSDN blog post](https://blogs.msdn.microsoft.com/dotnet/2012/07/20/the-net-framework-4-5-includes-new-garbage-collector-enhancements-for-client-and-server-apps/). The GC became less intrusive, and more informative, so  we can now know about the upcoming  blocking GC phase and try to divert traffic to a nearby server. This has helped many use-cases. 
@@ -18,6 +20,30 @@ Big Memory Pile solves the GC problems by using the transparent serialization of
  
 The key benefit is the **practicality** of this **approach which obviates the construction of custom DTOs and other hack methods just to releave the pressure on the GC**. The real life cases have shown the phenomenal overall performance.
 
+## Performance
+
+## Examples
+[IPile](/IPile.cs) provides an abstraction of memory managers. NFX Provides two implementations out of the box:
+* DefaultPile - stores data in byte[]
+* MMFPile - stores data in Memory Mapped Files
+Both implemntations are 100% managed code C# only, no C++ involved.
+
+Raw memory allocator working with byte[] bypassing any serialization; this code yeilds multi-million ops/sec while inserting byte[64]:
+
+```cs
+  var buffer = new byte[1234];
+  var ptr = pile.Put(buffer);
+  ...
+  var got = pile.Get(ptr) as byte[];
+  Assert.IsNotNull(got);
+  Assert.AreEqual(1234, got.Length);
+
+```
+we can do the same with strings, as strings use UTF8 direct encoding into memory buffer. The performance is similar.
+
+
+
+## Resources 
 The topic has been covered at length here:
 
 [InfoQ -Big Memory .NET Part 1 – The Challenges in Handling 1 Billion Resident Business Objects](https://www.infoq.com/articles/Big-Memory-Part-1)
