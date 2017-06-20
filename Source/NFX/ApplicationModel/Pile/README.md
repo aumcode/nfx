@@ -23,12 +23,40 @@ The key benefit is the **practicality** of this **approach which obviates the co
 ## Performance
 
 ## Examples
-[IPile](/IPile.cs) provides an abstraction of memory managers. NFX Provides two implementations out of the box:
-* DefaultPile - stores data in byte[]
-* MMFPile - stores data in Memory Mapped Files
+[IPile](IPile.cs) provides an abstraction of memory managers. NFX Provides two implementations out of the box:
+* [DefaultPile](DefaultPile.cs) - stores data in byte[]
+* [MMFPile](MMFPile.cs) - stores data in Memory Mapped Files
 Both implemntations are 100% managed code C# only, no C++ involved.
 
-Raw memory allocator working with byte[] bypassing any serialization; this code yeilds multi-million ops/sec while inserting byte[64]:
+** 1 - Create IPile-implementing Instance**
+Depending on your objectives you can allocate by hand, or use dependency injection:
+
+```cs
+  private IPileImplemntation m_Pile;
+  .....
+  //make by hand
+  m_Pile = new DefaultPile();
+  //or
+  m_Pile = new MMFPile();
+  //or inject from config
+  m_Pile = FactoryUtils.MakeAndConfigure(configNode, typeof(DefaultPile));//if type is not specified in config
+                                                                          //use DefaultPile as default type
+  .....
+  m_Pile.Start();//Start the service
+  
+  .... use pile ....
+  
+  //finalize:
+  m_Pile.WaitForCompleteStop();
+  m_Pile.Dispose();
+  //or just 1 line instead of the 2
+  DisposableObject.DisposeAndNull(ref m_Pile);
+```
+The MMFPile requires setting the `DataDirectoryRoot` to an existing folder, otherwise the MMPile would not start.
+
+** 2 - Use Raw Memory Allocator **
+
+Raw memory allocator works with byte[] bypassing any serialization; this code yeilds multi-million ops/sec while inserting byte[64]:
 
 ```cs
   var buffer = new byte[1234];
@@ -40,6 +68,19 @@ Raw memory allocator working with byte[] bypassing any serialization; this code 
 
 ```
 we can do the same with strings, as strings use UTF8 direct encoding into memory buffer. The performance is similar.
+
+** 3 - Working with CLR objects **
+
+The **major business benefit of the Pile** is that it allows you to work with pretty much **any .NET types without special treatment**. You do not need to create and maintain extra DTO copies, instead - work with your business domain.
+
+Working with regular .NET objects is no different than the example above, byte[] and strings are special types that bypass serializer altogether, whereas any other types go via SlimSerializer which is used in the special Batch mode for performance. See the (IPile Interface)[IPile.cs].
+
+There are a few cases that Pile does not support by design:
+* Classes with unmanaged handles/resources (unless they are serializable via ISerializable/[OnSer/Deser] mechanisms)
+* Delegates/function pointers
+
+Keep in mind: if you serialize a huge object graph into a Pile - it will take it as long as it fits in a segmnet (256 Mb by default), however this is not a good and intended design of using Pile. Store smaller business- oriented objects instead. If you need to store huge graphs use [ICache](ICache.cs) instead (see below).
+
 
 
 
