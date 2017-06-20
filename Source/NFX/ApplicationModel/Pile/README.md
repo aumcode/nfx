@@ -28,7 +28,7 @@ The key benefit is the **practicality** of this **approach which obviates the co
 * [MMFPile](MMFPile.cs) - stores data in Memory Mapped Files
 Both implemntations are 100% managed code C# only, no C++ involved.
 
-** 1 - Create IPile-implementing Instance**
+**1 - Create IPile-implementing Instance**
 Depending on your objectives you can allocate by hand, or use dependency injection:
 
 ```cs
@@ -54,7 +54,7 @@ Depending on your objectives you can allocate by hand, or use dependency injecti
 ```
 The MMFPile requires setting the `DataDirectoryRoot` to an existing folder, otherwise the MMPile would not start.
 
-** 2 - Use Raw Memory Allocator **
+**2 - Use Raw Memory Allocator **
 
 Raw memory allocator works with byte[] bypassing any serialization; this code yeilds multi-million ops/sec while inserting byte[64]:
 
