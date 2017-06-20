@@ -29,6 +29,7 @@ The key benefit is the **practicality** of this **approach which obviates the co
 Both implemntations are 100% managed code C# only, no C++ involved.
 
 **1 - Create IPile-implementing Instance**
+
 Depending on your objectives you can allocate by hand, or use dependency injection:
 
 ```cs
@@ -54,7 +55,7 @@ Depending on your objectives you can allocate by hand, or use dependency injecti
 ```
 The MMFPile requires setting the `DataDirectoryRoot` to an existing folder, otherwise the MMPile would not start.
 
-**2 - Use Raw Memory Allocator **
+**2 - Use Raw Memory Allocator**
 
 Raw memory allocator works with byte[] bypassing any serialization; this code yeilds multi-million ops/sec while inserting byte[64]:
 
@@ -69,7 +70,7 @@ Raw memory allocator works with byte[] bypassing any serialization; this code ye
 ```
 we can do the same with strings, as strings use UTF8 direct encoding into memory buffer. The performance is similar.
 
-** 3 - Working with CLR objects **
+**3 - Working with CLR objects**
 
 The **major business benefit of the Pile** is that it allows you to work with pretty much **any .NET types without special treatment**. You do not need to create and maintain extra DTO copies, instead - work with your business domain.
 
