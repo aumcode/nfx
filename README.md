@@ -19,7 +19,7 @@ The majority of the achievements are possible because of the following key featu
 
 * Unification of design - all components are written in the same way
 * Sophisticated serialization mechanism - moves objects between distributed processes/nodes (aka "teleportation")
-* Object Pile - a [**100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of RAM**](./tree/master/Source/NFX/ApplicationModel/Pile) without GC stalls
+* Object Pile - a [**100%-managed "Big Memory" approach for utilization of hundreds of gigabytes of RAM**](./Source/NFX/ApplicationModel/Pile) without GC stalls
 
 promoting:
 
@@ -35,10 +35,10 @@ good for:
 * General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)
 * Distributed Macro/micro/nano services, REST or RPC
 * Actor-model systems with message passing and supervisors
-* [**In-memory processing**, for **hundreds of millions of objects** in-RAM with full GC < 20ms](./tree/master/Source/NFX/ApplicationModel/Pile)
+* [**In-memory processing**, for **hundreds of millions of objects** in-RAM with full GC < 20ms](./Source/NFX/ApplicationModel/Pile)
 * **Supercomputer/Cluster/Farm** applications (i.e. bulk rendering cluster, social graphs etc.)
 * **High-performance business** apps (i.e. serving 50,000+ BUSINESS WEB requests a second (with logic) on a general server 
-  looking up data in a [300,000,000 business object cache in-RAM](./tree/master/Source/NFX/ApplicationModel/Pile))
+  looking up data in a [300,000,000 business object cache in-RAM](./Source/NFX/ApplicationModel/Pile))
 * non-trivial CLR cases like: structs with read-only fields, arrays of structs of structs, custom streamers like Dictionary<> with comparers etc. In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances
 
 
@@ -59,7 +59,7 @@ NEW 20170617,
 
 **Big Memory Object Pile + Cache**
 
-[NFX/ApplicationModel/Pile](./tree/master/Source/NFX/ApplicationModel/Pile)
+[NFX/ApplicationModel/Pile](./Source/NFX/ApplicationModel/Pile)
 
 **Various Demo Projects**:
 
@@ -77,7 +77,7 @@ NFX Provides:
   - Logger: async file, debug, db destinations with graphs, SLA rules, filtering and routing
   - Security: declr and/or imperative permission model, strong password manager, virtual credentials 
   
-* [**Big Memory Pile** ](./tree/master/Source/NFX/ApplicationModel/Pile)
+* [**Big Memory Pile** ](./Source/NFX/ApplicationModel/Pile)
   - Pile memory manager: keeps hundreds of millions of CLR objects in memory without GC pauses
   - Distributed Pile (objects stored on cluster nodes)
   - Pile Cache: materialize 2,000,000 CLR objects/sec in-memory on a 4 core machine
