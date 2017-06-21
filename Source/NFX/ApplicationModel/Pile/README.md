@@ -20,11 +20,25 @@ Big Memory Pile solves the GC problems by using the transparent serialization of
  
 The key benefit is the **practicality** of this **approach which obviates the need to construct custom DTOs and other hack methods just to relieve the pressure on the GC**. The real life cases have shown the overall performance of the solution to be much higher than using extrenal stores.
 
+## How it Works
+Pile provides a layered design, at its core there is a [memory allocator](PileImpl/DefaultPileBase.cs) that manages the sub-allocation within large ["segments"](PileImpl/DefaultPileBase.Segment.cs) which are backed by either [byte[]](PileImpl/LocalMemory.cs) or [MemoryMappedFiles](PileImpl/MMFMemory.cs). 
+
+The main point of Pile is to exchange a CLR reference (which GC "sees") for a [PilePointer](/PilePointer.cs) value type ( a `struct` of 3 ints which GC does not "see"). After you put an object into Pile, you need to keep a `PilePointer` reference (somewhere, see Cache below) which is invisible to GC and can be used later to resurrect the original object back into "real" CLR heap.
+
+The `PilePointer` instances can be kept in regular CLR heap, in classes like `List<>` or `Dictionary<>` as they do not create any GC scan pressure. They can also be kept in other objects stored directly in Pile, thus it is possible to create **complex data structures (i.e. a PrefixTree)** that contains hundreds of millions of entries **completely in Pile**. 
+
+When you put an object into a Pile (or cache), it treats `byte[]` ans `string` primitives as **directly writable into the memory** buffer, - this is called a "raw" mode - it works **much faster than arbitrary objects** as it bypasses serialization completely *(see benchmarks below)*. Other objects get serialized using [Slim serializer](../../Serialization/Slim/SlimSerializer.cs) which is very efficient at turning true CLR object graphs (even with cycles and polymorphism) into `byte[]`.
+
+NFX features [ICache](ICache.cs) store which is based on [IPile](IPile.cs) memory manager. This allows for storage of very many objects in named tables - out of GC's reach. Tables are akin to thread-safe named dictionary instances. 
+
+NFX solution provides a full-featured in-process caching server implementation of [ICache](ICache.cs) interface - [LocalCache](LocalCache.cs). As described above, the benefit of local cache is in the fact of in-process data availability - no socket connections/context switching needs to take place, consequently the performance is higher than that of an out-of-process store.
+
+
 ## Performance
 Machine: Intel Core i7-3930K 3.2. Ghz, 6 HT Cores, 64 GB DDR3 87% free, Win 7 64bit, VS 2017, .NET 4.5, mid-grade SSD 1 TB 50% free
 
 --------
-Benchmarking insert **200,000,000** instances of **string[32]** each, by **12 threads**:
+Benchmarking Pile - insert **200,000,000** instances of **string[32]** each, by **12 threads**:
 
 |    | Default Pile  |   MMF Pile   |
 |----|-----------|--------------|
@@ -37,7 +51,7 @@ Benchmarking insert **200,000,000** instances of **string[32]** each, by **12 th
 
 --------
 
-Benchmarking insert **200,000,000** instances of **Person** (class with [7 fields](https://github.com/aumcode/nfx/blob/master/Source/Testing/Manual/WinFormsTest/PileForm.cs#L77-L84)), by **12 threads**:
+Benchmarking Pile - insert **200,000,000** instances of **Person** (class with [7 fields](https://github.com/aumcode/nfx/blob/master/Source/Testing/Manual/WinFormsTest/PileForm.cs#L77-L84)), by **12 threads**:
 
 |    | Default Pile  |   MMF Pile   |
 |----|-----------|--------------|
@@ -108,7 +122,10 @@ There are a few cases that Pile does not support by design:
 * Classes with unmanaged handles/resources (unless they are serializable via ISerializable/[OnSer/Deser] mechanisms)
 * Delegates/function pointers
 
-Keep in mind: if you serialize a huge object graph into a Pile - it will take it as long as it fits in a segmnet (256 Mb by default), however this is not a good and intended design of using Pile. Store smaller business- oriented objects instead. If you need to store huge graphs use [ICache](ICache.cs) instead (see below).
+Keep in mind: if you serialize a huge object graph into a Pile - it will take it as long as it fits in a segment (256 Mb by default), however this is not a good and intended design of using Pile. Store smaller business- oriented objects instead. If you need to store huge graphs use [ICache](ICache.cs) (see below).
+
+**4 - Big Caching on Pile**
+
 
 
 
