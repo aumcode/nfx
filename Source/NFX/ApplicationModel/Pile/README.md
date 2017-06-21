@@ -18,9 +18,37 @@ There is a number of systems, however, where GC remains problematic despite all 
  
 Big Memory Pile solves the GC problems by using the transparent serialization of CLR object graphs into large byte arrays, effectively “hiding” the objects from GC’s reach. Not all object types need to be fully serialized  - strings and byte[] get written into Pile as buffers bypassing all serialization mechanisms yielding over 6 M inserts/second for a 64 char string on a 6 core box.
  
-The key benefit is the **practicality** of this **approach which obviates the construction of custom DTOs and other hack methods just to releave the pressure on the GC**. The real life cases have shown the phenomenal overall performance.
+The key benefit is the **practicality** of this **approach which obviates the need to construct custom DTOs and other hack methods just to relieve the pressure on the GC**. The real life cases have shown the overall performance of the solution to be much higher than using extrenal stores.
 
 ## Performance
+Machine: Intel Core i7-3930K 3.2. Ghz, 6 HT Cores, 64 GB DDR3 87% free, Win 7 64bit, VS 2017, .NET 4.5, mid-grade SSD 1 TB 50% free
+
+--------
+Benchmarking insert **200,000,000** instances of **string[32]** each, by **12 threads**:
+
+|    | Default Pile  |   MMF Pile   |
+|----|-----------|--------------|
+| Duration   | 24 sec |  41 sec |
+| Throughput | 8.3M ops/sec | 4.9M ops/sec|
+| RAM        | 8.5 GB  |  8.5 GB|
+| Full GC    | < 8 ms  | < 10ms |
+| Flush all data on Stop() | - | 10 sec|
+| Load all data on Start()| - | 48 sec @ 177 mbyte/sec|
+
+--------
+
+Benchmarking insert **200,000,000** instances of **Person** (class with [7 fields](https://github.com/aumcode/nfx/blob/master/Source/Testing/Manual/WinFormsTest/PileForm.cs#L77-L84)), by **12 threads**:
+
+|    | Default Pile  |   MMF Pile   |
+|----|-----------|--------------|
+| Duration   | 85 sec |  101 sec |
+| Throughput | 2.4M ops/sec | 1.9M ops/sec|
+| RAM        | 14.5 GB  |  14.5 GB|
+| Full GC    | < 10 ms  | < 10ms |
+| Flush all data on Stop() | - | 30 sec|
+| Load all data on Start() | - | 50 sec @ 290 mbyte/sec|
+
+
 
 ## Examples
 [IPile](IPile.cs) provides an abstraction of memory managers. NFX Provides two implementations out of the box:
@@ -30,7 +58,7 @@ Both implemntations are 100% managed code C# only, no C++ involved.
 
 **1 - Create IPile-implementing Instance**
 
-Depending on your objectives you can allocate by hand, or use dependency injection:
+Depending on your objectives you can allocate Pile by hand, or use dependency injection:
 
 ```cs
   private IPileImplemntation m_Pile;
@@ -40,8 +68,8 @@ Depending on your objectives you can allocate by hand, or use dependency injecti
   //or
   m_Pile = new MMFPile();
   //or inject from config
-  m_Pile = FactoryUtils.MakeAndConfigure(configNode, typeof(DefaultPile));//if type is not specified in config
-                                                                          //use DefaultPile as default type
+  //if type is not specified in config use DefaultPile as default type
+  m_Pile = FactoryUtils.MakeAndConfigure(configNode, typeof(DefaultPile));
   .....
   m_Pile.Start();//Start the service
   
