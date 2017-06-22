@@ -116,18 +116,183 @@ we can do the same with strings, as strings use UTF8 direct encoding into memory
 
 The **major business benefit of the Pile** is that it allows you to work with pretty much **any .NET types without special treatment**. You do not need to create and maintain extra DTO copies, instead - work with your business domain.
 
-Working with regular .NET objects is no different than the example above, byte[] and strings are special types that bypass serializer altogether, whereas any other types go via SlimSerializer which is used in the special Batch mode for performance. See the (IPile Interface)[IPile.cs].
+Working with regular .NET objects is no different than the example above, byte[] and strings are special types that bypass serializer altogether, whereas any other types go via SlimSerializer which is used in the special Batch mode for performance. See the [IPile Interface](IPile.cs).
 
 There are a few cases that Pile does not support by design:
 * Classes with unmanaged handles/resources (unless they are serializable via ISerializable/[OnSer/Deser] mechanisms)
 * Delegates/function pointers
 
+```cs
+  var person = new Person{ LastName="Shoikhed", FirstName="Dodik", Age=54 };
+  var ptr = pile.Put(person);
+  ...
+  var got = pile.Get(ptr) as Person;
+  Console.WriteLine( got.LastName );//Shoikhed
+```
+
+An example of a linked list with in-place mutation (changing data at existing pointer):
+
+```cs
+  public class ListNode
+  {
+    public PilePointer Previous;
+    public PilePointer Next;
+    public PilePointer Value;
+  }
+  ...
+  private IPile m_Pile;//big memory pile 
+  private PilePointer m_First;//list head
+  private PilePointer m_Last;//list tail
+  ...
+  //Append a person instance to a person linked list stored in a Pile
+  //returns last node
+  public PilePointer Append(Person person)
+  {
+    var pValue = m_Pile.Put(person);
+
+    var newLast = new ListNode{ Previous = m_Last, 
+                                Next = PilePointer.Invalid, 
+                                Value = pValue};
+    
+    var existingLast = m_Pile.Get(m_Last);
+    existingLast.Next = node;
+    m_Pile.Put(m_Last, existingLast);//in-place edit at the existing ptr m_Last
+    m_Last = m_Pile.Put(newLast);//add new node to the tail
+
+    return m_Last;
+  }                                
+```
+
 Keep in mind: if you serialize a huge object graph into a Pile - it will take it as long as it fits in a segment (256 Mb by default), however this is not a good and intended design of using Pile. Store smaller business- oriented objects instead. If you need to store huge graphs use [ICache](ICache.cs) (see below).
 
-**4 - Big Caching on Pile**
+**4 - Caching**
+
+Making cache instance:
+```cs
+  var cache = new LocalCache();
+  cache.Pile = new DefaultPile(cache);//Pile owned by cache
+  cache.Configure(conf);
+  cache.Start();
+     ...
+     //use
+     ...
+  //this will dispose Pile because it is owned by cache
+  DisposableObject.DisposeandNull(ref cache);
+```
+Put all tables in the `Durable` CollisionMode. In this mode no data is going to get lost. Cache tables will work just like dictionary. In the `Speculative` mode the tables skip rehashing for speed - hence some data may get lost as governed by item `priority` on `Put()`:
+
+```cs
+  //Specify TableOptions for ALL tables
+  cache.DefaultTableOptions = new TableOptions("*") 
+  {
+    CollisionMode = CollisionMode.Durable
+  };
+```
+
+Create tables and put some data, note the **use of comparers**:
+
+```cs
+   var tA = cache.GetOrCreateTable<string>("A", StringComparer.Ordinal);
+   var tB = cache.GetOrCreateTable<string>("B", StringComparer.OrdinalIgnoreCase);
+
+   Assert.AreEqual(PutResult.Inserted, tA.Put("key1", "avalue1"));
+   Assert.AreEqual(PutResult.Inserted, tA.Put("Key1", "avalue2"));
+   Assert.AreEqual(PutResult.Inserted, tB.Put("key1", "bvalue1"));
+   Assert.AreEqual(PutResult.Replaced, tB.Put("Key1", "bvalue2")); 
+```
+
+Max age, priority and absolute expiration:
+```cs
+  var tA = cache.GetOrCreateTable<int>("A");
+  var data = new Person{...};
+  var theEnd = App.TimeSource.UTCNow.AddHours(73);
+  ta.Put(123, myData, maxAgeSec: 78000, priority: 2, absoluteExpirationUTC: theEnd);
+  .....
+
+  //set existing object age filter
+  var newPerson = tA.Get(123, ageSec: 32) as Person;
+  if (newPerson!=null)...
+  ....
+  ta.Rejuvenate(123);//true - reset object age to zero
+  ....
+  tA.Remove(123);//true
+```
+
+Enumerate all entries:
+```cs
+ var tA = cache.GetOrCreateTable<int>("A");
+ var all = tA.AsEnumerable(withValues: true);
+
+ foreach(var entry in all)
+ {
+    ...
+    entry.Key
+    entry.AgeSec
+    entry.Priority
+    entry.MaxAgeSec
+    entry.ExpirationUTC
+
+    // Returns value only if enumerator is in materializing mode, 
+    //obtained by a call to AsEnumerable(withValues: true)
+    entry.Value
+ }
+```
 
 
+Imposing limits:
+```cs
+  var tA = cache.GetOrCreateTable<int>("A");
+  tA.Options.MaximumCapacity = 1800;
+  tA.Options.ShrinkFactor = 0.5d;
+```
 
+Atomic GetOrPut():
+```cs
+  var tA = cache.GetOrCreateTable<int>("A");
+
+  tA.Put(1, "value 1");
+  tA.Put(122, "value 122");
+
+  PutResult? pResult;
+  var v = tA.GetOrPut(2, (t, k, _) => "value "+k.ToString(), null, out pResult);
+  Assert.AreEqual( "value 2", v);
+  Assert.IsTrue( pResult.HasValue );
+  Assert.AreEqual( PutResult.Inserted, pResult.Value);
+```
+
+
+Configure tables individually:
+```cs
+store
+{
+  default-table-options
+  {
+    initial-capacity=1000000
+    detailed-instrumentation=true
+  }
+
+  table
+  {
+    name='A'
+    minimum-capacity=800000
+    maximum-capacity=987654321
+    initial-capacity=780000
+    growth-factor=2.3
+    shrink-factor=0.55
+    load-factor-lwm=0.1
+    load-factor-hwm=0.9
+    default-max-age-sec=145
+    detailed-instrumentation=true
+  }
+
+  table
+  {
+    name='B'
+    maximum-capacity=256000
+    detailed-instrumentation=false
+  }
+}
+```
 
 
 ## Resources 
