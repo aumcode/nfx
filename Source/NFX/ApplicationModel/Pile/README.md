@@ -23,7 +23,7 @@ The key benefit is the **practicality** of this **approach which obviates the ne
 ## How it Works
 Pile provides a layered design, at its core there is a [memory allocator](PileImpl/DefaultPileBase.cs) that manages the sub-allocation within large ["segments"](PileImpl/DefaultPileBase.Segment.cs) which are backed by either [byte[]](PileImpl/LocalMemory.cs) or [MemoryMappedFiles](PileImpl/MMFMemory.cs). 
 
-The main point of Pile is to exchange a CLR reference (which GC "sees") for a [PilePointer](/PilePointer.cs) value type ( a `struct` of 3 ints which GC does not "see"). After you put an object into Pile, you need to keep a `PilePointer` reference (somewhere, see Cache below) which is invisible to GC and can be used later to resurrect the original object back into "real" CLR heap.
+The main point of Pile is to exchange a CLR reference (which GC "sees") for a [PilePointer](PilePointer.cs) value type ( a `struct` of 3 ints which GC does not "see"). After you put an object into Pile, you need to keep a `PilePointer` reference (somewhere, see Cache below) which is invisible to GC and can be used later to resurrect the original object back into "real" CLR heap.
 
 The `PilePointer` instances can be kept in regular CLR heap, in classes like `List<>` or `Dictionary<>` as they do not create any GC scan pressure. They can also be kept in other objects stored directly in Pile, thus it is possible to create **complex data structures (i.e. a PrefixTree)** that contains hundreds of millions of entries **completely in Pile**. 
 
