@@ -53,9 +53,20 @@ NEW 20170617,
  
 **NUGET**:
 
- https://www.nuget.org/packages/NFX/
+[NFX Packages](https://www.nuget.org/profiles/itadapter)
  
- `pm> install-package NFX`
+cmd | Description
+ -------|------
+ `pm> install-package NFX` | NFX Core Package (App, Pile, Glue, Log, Instr etc.)
+ `pm> install-package NFX.Web`| NFX Web (Amazon S3, Google Drive, SVN, Stripe, Braintree, PPal, FB, Twtr etc.) 
+ `pm> install-package NFX.Wave`| NFX Wave Server + MVC 
+ `pm> install-package NFX.MsSQL`| NFX Microsoft SQL Server Provider 
+ `pm> install-package NFX.MySQL`| NFX MySQL RDBMS Provider (CRUD etc.)
+ `pm> install-package NFX.MongoDB`| NFX MongoDB Proivder (CRUD etc.) + Native Client 
+ `pm> install-package NFX.WinForms`| NFX WinForms (for legacy)
+ `pm> install-package NFX.Azure`| NFX Azure IaaS Provider WIP/pre-release
+ `pm> install-package NFX.Erlang`| NFX Erlang Language + OTP Node
+
 
 **Big Memory Object Pile + Cache**
 
