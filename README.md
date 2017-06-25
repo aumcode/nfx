@@ -87,7 +87,7 @@ cmd | Description
 
  [https://github.com/aumcode/nfx-demos](https://github.com/aumcode/nfx-demos)
  
- [ https://github.com/aumcode/howto()]https://github.com/aumcode/howto)
+ [ https://github.com/aumcode/howto()](https://github.com/aumcode/howto)
  
  
 ## NFX Provides
