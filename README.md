@@ -7,9 +7,18 @@ License: **Apache 2.0**
 
 Runs/Builds:  **.NET 4.5+**, **Mono 3.x+** as of 2017/06; .NET **Core 2** planned Aug 2017
 
+
+
 [<img src="https://ci.appveyor.com/api/projects/status/github/aumcode/nfx?svg=true" alt="Project Badge" width="200">](https://ci.appveyor.com/project/itadapter/nfx/history)
 
 [Documentation http://nfxlib.com](http://nfxlib.com)
+
+## Framework/Platform Roadmap:
+
+ **.NET Core** - as of 06/2017 we are working on a 100% native support of .NET Core 2.x+. We are NOT going to support Core <2.x as it lacks proper serialization mechanisms. We expect to fully support .NET Core in Nov 2017. 
+ **.NET Framework** - we will keep the support of classic .NET Framework 4.5+.
+
+## About NFX
 
 NFX is a modern .NET full stack framework designed for building **cloud** and **on-premises** apps.
 It is written in C# and runs on a CLR machine. 
@@ -42,16 +51,16 @@ good for:
 * non-trivial CLR cases like: structs with read-only fields, arrays of structs of structs, custom streamers like Dictionary<> with comparers etc. In the past 7 years, teleportation mechanism has moved trillions of various CLR object instances
 
 
-**GUIDES**:
+## Guides/Documentation
 NEW 20170617,
- all Guides and Docs/Samples/Tutorials are on NFXLIB:
+ all Guides and Docs/Samples/Tutorials are on the NFXLIB site
 
  [NFXLIB - Documentation/Guides/Tutorials](http://nfxlib.com)
  
  
 
  
-**NUGET**:
+## NUGET
 
 [NFX Packages](https://www.nuget.org/profiles/itadapter)
  
@@ -68,18 +77,20 @@ cmd | Description
  `pm> install-package NFX.Erlang`| NFX Erlang Language + OTP Node
 
 
-**Big Memory Object Pile + Cache**
+## Resources
+
+### Big Memory Object Pile + Cache
 
 [NFX/ApplicationModel/Pile](./Source/NFX/ApplicationModel/Pile)
 
-**Various Demo Projects**:
+### Various Demo Projects
 
- https://github.com/aumcode/nfx-demos
+ [https://github.com/aumcode/nfx-demos](https://github.com/aumcode/nfx-demos)
  
- https://github.com/aumcode/howto
+ [ https://github.com/aumcode/howto()]https://github.com/aumcode/howto)
  
  
-NFX Provides:
+## NFX Provides
 
 * Unified App Container
   - Unified app models: console, web, service, all have: user, session, security, volatile state
