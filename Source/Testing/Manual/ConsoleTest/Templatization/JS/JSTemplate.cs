@@ -43,7 +43,7 @@ namespace ConsoleTest.Templatization.JS
     {
       var tplSource = typeof(JSTemplate).GetText("_source.js");
 
-      var tpl =  new FileTemplateStringContentSource(@"C:\Users\opana\Desktop\nfx\Source\Testing\Manual\ConsoleTest\Templatization\JS\_source.js");
+      var tpl =  new FileTemplateStringContentSource(@"..\..\Source\Testing\Manual\ConsoleTest\Templatization\JS\_source.js");
       var config = CONFIG.AsLaconicConfig();
       var type = typeof(TextJSTemplateCompiler);
       var args = new object[] {tpl};//new TemplateStringContentSource(tplSource)};
