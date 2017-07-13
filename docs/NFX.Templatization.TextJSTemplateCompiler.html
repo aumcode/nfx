@@ -233,7 +233,7 @@ compiles config to inline function</p>
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -260,7 +260,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -302,7 +302,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -344,7 +344,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -385,7 +385,46 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
+  {
+    tag-name="inner text"
+    property-name="property value"
+    evaluted-property-name="@prop@ evaluated property"
+    on-event="function() { click(); }"
+  }
+  ***/
+}</code></pre>
+
+              
+              
+              <h4 id="NFX_Templatization_TextJSTemplateCompiler_DOM_GENERATOR_SKIP_PRAGMA" data-uid="NFX.Templatization.TextJSTemplateCompiler.DOM_GENERATOR_SKIP_PRAGMA">DOM_GENERATOR_SKIP_PRAGMA</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public const string DOM_GENERATOR_SKIP_PRAGMA = &quot; #skip#&quot;</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="NFX_Templatization_TextJSTemplateCompiler_DOM_GENERATOR_SKIP_PRAGMA_examples">Examples</h5>
+              
+argument[0] - root container 'id' or 'node'
+argument[1] - context for variable evaluation
+<pre><code>function() {
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -428,7 +467,7 @@ public string DomGenConfig { get; set; }</code></pre>
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -469,7 +508,7 @@ public DOMGenerator DOMGenerator { get; set; }</code></pre>
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -511,7 +550,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -553,7 +592,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -582,7 +621,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -626,7 +665,7 @@ argument[1] - context for variable evaluation
 argument[0] - root container 'id' or 'node'
 argument[1] - context for variable evaluation
 <pre><code>function() {
-  /***
+  /*** #preprocessor_directive#
   {
     tag-name="inner text"
     property-name="property value"
@@ -637,12 +676,6 @@ argument[1] - context for variable evaluation
 }</code></pre>
 
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
               </div>
@@ -831,6 +864,12 @@ argument[1] - context for variable evaluation
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

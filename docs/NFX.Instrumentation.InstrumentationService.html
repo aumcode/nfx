@@ -536,6 +536,33 @@ public override bool InstrumentationEnabled { get; set; }</code></pre>
                   <div><a class="xref" href="NFX.Instrumentation.IInstrumentable.html#NFX_Instrumentation_IInstrumentable_InstrumentationEnabled">IInstrumentable.InstrumentationEnabled</a></div>
               
               
+              <a id="NFX_Instrumentation_InstrumentationService_LogLevel_" data-uid="NFX.Instrumentation.InstrumentationService.LogLevel*"></a>
+              <h4 id="NFX_Instrumentation_InstrumentationService_LogLevel" data-uid="NFX.Instrumentation.InstrumentationService.LogLevel">LogLevel</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config(Default = MessageType.Warning)]
+[ExternalParameter]
+public MessageType LogLevel { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_Instrumentation_InstrumentationService_MaxRecordCount_" data-uid="NFX.Instrumentation.InstrumentationService.MaxRecordCount*"></a>
               <h4 id="NFX_Instrumentation_InstrumentationService_MaxRecordCount" data-uid="NFX.Instrumentation.InstrumentationService.MaxRecordCount">MaxRecordCount</h4>
               <div class="markdown level1 summary"><p>Gets/Sets the maximum record count that this instance can store</p>
@@ -985,6 +1012,73 @@ UIs for instrumentation, i.e. datum type tree. Returned data is NOT ORDERED</p>
                   <div><a class="xref" href="NFX.Instrumentation.IInstrumentation.html#NFX_Instrumentation_IInstrumentation_GetDatumTypeSources_System_Type_NFX_Instrumentation_Datum__">IInstrumentation.GetDatumTypeSources(Type, out Datum)</a></div>
               
               
+              <a id="NFX_Instrumentation_InstrumentationService_Log_" data-uid="NFX.Instrumentation.InstrumentationService.Log*"></a>
+              <h4 id="NFX_Instrumentation_InstrumentationService_Log_NFX_Log_MessageType_System_String_System_String_System_Exception_System_Nullable_System_Guid__System_String_" data-uid="NFX.Instrumentation.InstrumentationService.Log(NFX.Log.MessageType,System.String,System.String,System.Exception,System.Nullable{System.Guid},System.String)">Log(MessageType, String, String, Exception, Nullable&lt;Guid&gt;, String)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Guid Log(MessageType type, string from, string message, Exception error = null, Guid? relatedMessageID = null, string parameters = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Log.MessageType.html">MessageType</a></td>
+                    <td><span class="parametername">type</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">from</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">message</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Exception</span></td>
+                    <td><span class="parametername">error</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Guid</span>&gt;</td>
+                    <td><span class="parametername">relatedMessageID</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.String</span></td>
+                    <td><span class="parametername">parameters</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Guid</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="NFX_Instrumentation_InstrumentationService_Record_" data-uid="NFX.Instrumentation.InstrumentationService.Record*"></a>
               <h4 id="NFX_Instrumentation_InstrumentationService_Record_NFX_Instrumentation_Datum_" data-uid="NFX.Instrumentation.InstrumentationService.Record(NFX.Instrumentation.Datum)">Record(Datum)</h4>
               <div class="markdown level1 summary"><p>Records instrumentation datum</p>
@@ -1014,12 +1108,6 @@ UIs for instrumentation, i.e. datum type tree. Returned data is NOT ORDERED</p>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="NFX.Instrumentation.IInstrumentation.html#NFX_Instrumentation_IInstrumentation_Record_NFX_Instrumentation_Datum_">IInstrumentation.Record(Datum)</a></div>
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
@@ -1175,6 +1263,12 @@ UIs for instrumentation, i.e. datum type tree. Returned data is NOT ORDERED</p>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

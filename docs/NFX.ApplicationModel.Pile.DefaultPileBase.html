@@ -227,7 +227,7 @@
               <h6><strong>Assembly</strong>:NFX.dll</h6>
               <h5 id="NFX_ApplicationModel_Pile_DefaultPileBase_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract class DefaultPileBase : ServiceWithInstrumentationBase&lt;object&gt;, ILocalizedTimeProvider, IPileImplementation, IPile, IPileStatus, IApplicationComponent, IDisposable, IService, INamed, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
+                <pre><code class="lang-csharp hljs">public abstract class DefaultPileBase : ServiceWithInstrumentationBase&lt;object&gt;, ILocalizedTimeProvider, IPileImplementation, IPile, IPileStatus, IEnumerable&lt;PileEntry&gt;, IEnumerable, IApplicationComponent, IDisposable, IService, INamed, IConfigurable, IInstrumentable, IExternallyParameterized</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -722,6 +722,37 @@ public int FreeListSize { get; set; }</code></pre>
                   </tr>
                 </tbody>
               </table>
+              
+              
+              <a id="NFX_ApplicationModel_Pile_DefaultPileBase_Identity_" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.Identity*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_DefaultPileBase_Identity" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.Identity">Identity</h4>
+              <div class="markdown level1 summary"><p>When set to value greater than zero, provides a process-unique identity of the pile instance.
+The property must be set to unique value in order to start the pile, or set to less or equal to zero to keep the instance private.
+Used by Piled via PileInstances retrived by Identity (if greater than zero)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[Config]
+public int Identity { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="NFX.ApplicationModel.Pile.IPileStatus.html#NFX_ApplicationModel_Pile_IPileStatus_Identity">IPileStatus.Identity</a></div>
               
               
               <a id="NFX_ApplicationModel_Pile_DefaultPileBase_InstrumentationEnabled_" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.InstrumentationEnabled*"></a>
@@ -1508,6 +1539,33 @@ throwInvalid is set to false</p>
                   <div><a class="xref" href="NFX.ApplicationModel.Pile.IPile.html#NFX_ApplicationModel_Pile_IPile_Get_NFX_ApplicationModel_Pile_PilePointer_">IPile.Get(PilePointer)</a></div>
               
               
+              <a id="NFX_ApplicationModel_Pile_DefaultPileBase_GetEnumerator_" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.GetEnumerator*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_DefaultPileBase_GetEnumerator" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.GetEnumerator">GetEnumerator()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerator&lt;PileEntry&gt; GetEnumerator()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;<a class="xref" href="NFX.ApplicationModel.Pile.PileEntry.html">PileEntry</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;.GetEnumerator()</span></div>
+              
+              
               <a id="NFX_ApplicationModel_Pile_DefaultPileBase_GetRawBuffer_" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.GetRawBuffer*"></a>
               <h4 id="NFX_ApplicationModel_Pile_DefaultPileBase_GetRawBuffer_NFX_ApplicationModel_Pile_PilePointer_System_Byte__" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.GetRawBuffer(NFX.ApplicationModel.Pile.PilePointer,System.Byte@)">GetRawBuffer(PilePointer, out Byte)</h4>
               <div class="markdown level1 summary"><p>Returns a raw byte[] occupied by the object payload, only payload is returned along with serializer flag
@@ -1780,12 +1838,65 @@ Optional lifeSpanSec is ignored by this implementation</p>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="NFX.ApplicationModel.Pile.IPile.html#NFX_ApplicationModel_Pile_IPile_SizeOf_NFX_ApplicationModel_Pile_PilePointer_">IPile.SizeOf(PilePointer)</a></div>
+              <h3 id="eii">Explicit Interface Implementations
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_Pile_DefaultPileBase_System_Collections_IEnumerable_GetEnumerator_" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.System#Collections#IEnumerable#GetEnumerator*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_DefaultPileBase_System_Collections_IEnumerable_GetEnumerator" data-uid="NFX.ApplicationModel.Pile.DefaultPileBase.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Collections.IEnumerator</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><span class="xref">System.Collections.IEnumerable.GetEnumerator()</span></div>
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
               </div>
               <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0_System_Int32__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T, Int32&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__System_Int32_">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstOrAnyOrDefault__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__">CollectionUtils.FirstOrAnyOrDefault&lt;TResult&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, Boolean&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_Distinct__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.Distinct&lt;TResult, TKey&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TKey&gt;)</a>
               </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
@@ -1935,6 +2046,9 @@ Optional lifeSpanSec is ignored by this implementation</p>
                   <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
               </div>
               <div>
+                  <a class="xref" href="NFX.Collections.LookAheadExtensions.html#NFX_Collections_LookAheadExtensions_AsLookAheadEnumerable__1_System_Collections_Generic_IEnumerable___0__">LookAheadExtensions.AsLookAheadEnumerable&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
               </div>
               <div>
@@ -1942,6 +2056,12 @@ Optional lifeSpanSec is ignored by this implementation</p>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

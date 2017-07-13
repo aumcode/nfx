@@ -320,14 +320,15 @@ Call Permission.AuthorizeAndGuardAction(MemberInfo, ISession) to guard classes a
               
               
               <a id="NFX_Security_ISecurityManager_GetUserLogArchiveDimensions_" data-uid="NFX.Security.ISecurityManager.GetUserLogArchiveDimensions*"></a>
-              <h4 id="NFX_Security_ISecurityManager_GetUserLogArchiveDimensions_NFX_Security_User_" data-uid="NFX.Security.ISecurityManager.GetUserLogArchiveDimensions(NFX.Security.User)">GetUserLogArchiveDimensions(User)</h4>
-              <div class="markdown level1 summary"><p>Extracts values for archive dimensions to store the log message for the specified user.
+              <h4 id="NFX_Security_ISecurityManager_GetUserLogArchiveDimensions_NFX_Security_IIdentityDescriptor_" data-uid="NFX.Security.ISecurityManager.GetUserLogArchiveDimensions(NFX.Security.IIdentityDescriptor)">GetUserLogArchiveDimensions(IIdentityDescriptor)</h4>
+              <div class="markdown level1 summary"><p>Extracts values for archive dimensions to store the log message for the specified user descriptor.
+Depending on the system descriptor represents an entity that describes user (e.g. User, UserInfo, etc.).
 The method only fills the fields specific to user identity</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">IConfigSectionNode GetUserLogArchiveDimensions(User user)</code></pre>
+                <pre><code class="lang-csharp hljs">IConfigSectionNode GetUserLogArchiveDimensions(IIdentityDescriptor identity)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -340,8 +341,8 @@ The method only fills the fields specific to user identity</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Security.User.html">User</a></td>
-                    <td><span class="parametername">user</span></td>
+                    <td><a class="xref" href="NFX.Security.IIdentityDescriptor.html">IIdentityDescriptor</a></td>
+                    <td><span class="parametername">identity</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -364,13 +365,13 @@ The method only fills the fields specific to user identity</p>
               
               
               <a id="NFX_Security_ISecurityManager_LogSecurityMessage_" data-uid="NFX.Security.ISecurityManager.LogSecurityMessage*"></a>
-              <h4 id="NFX_Security_ISecurityManager_LogSecurityMessage_NFX_Log_Message_NFX_Security_User_" data-uid="NFX.Security.ISecurityManager.LogSecurityMessage(NFX.Log.Message,NFX.Security.User)">LogSecurityMessage(Message, User)</h4>
+              <h4 id="NFX_Security_ISecurityManager_LogSecurityMessage_NFX_Security_SecurityLogAction_NFX_Log_Message_NFX_Security_IIdentityDescriptor_" data-uid="NFX.Security.ISecurityManager.LogSecurityMessage(NFX.Security.SecurityLogAction,NFX.Log.Message,NFX.Security.IIdentityDescriptor)">LogSecurityMessage(SecurityLogAction, Message, IIdentityDescriptor)</h4>
               <div class="markdown level1 summary"><p>Logs security-related message</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">void LogSecurityMessage(Message msg, User user = null)</code></pre>
+                <pre><code class="lang-csharp hljs">void LogSecurityMessage(SecurityLogAction action, Message msg, IIdentityDescriptor identity = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -383,26 +384,26 @@ The method only fills the fields specific to user identity</p>
                 </thead>
                 <tbody>
                   <tr>
+                    <td><a class="xref" href="NFX.Security.SecurityLogAction.html">SecurityLogAction</a></td>
+                    <td><span class="parametername">action</span></td>
+                    <td><p>Action that was performed</p>
+</td>
+                  </tr>
+                  <tr>
                     <td><a class="xref" href="NFX.Log.Message.html">Message</a></td>
                     <td><span class="parametername">msg</span></td>
                     <td><p>A message to log</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="NFX.Security.User.html">User</a></td>
-                    <td><span class="parametername">user</span></td>
+                    <td><a class="xref" href="NFX.Security.IIdentityDescriptor.html">IIdentityDescriptor</a></td>
+                    <td><span class="parametername">identity</span></td>
                     <td><p>If msg.ArchiveDim is not set, sets to  GetUserLogArchiveDimensions(user | currentCallContext)</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
@@ -558,6 +559,12 @@ The method only fills the fields specific to user identity</p>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

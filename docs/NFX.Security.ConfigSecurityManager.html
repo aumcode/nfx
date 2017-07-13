@@ -893,12 +893,12 @@ public SecurityLogMask LogMask { get; set; }</code></pre>
               
               
               <a id="NFX_Security_ConfigSecurityManager_GetUserLogArchiveDimensions_" data-uid="NFX.Security.ConfigSecurityManager.GetUserLogArchiveDimensions*"></a>
-              <h4 id="NFX_Security_ConfigSecurityManager_GetUserLogArchiveDimensions_NFX_Security_User_" data-uid="NFX.Security.ConfigSecurityManager.GetUserLogArchiveDimensions(NFX.Security.User)">GetUserLogArchiveDimensions(User)</h4>
+              <h4 id="NFX_Security_ConfigSecurityManager_GetUserLogArchiveDimensions_NFX_Security_IIdentityDescriptor_" data-uid="NFX.Security.ConfigSecurityManager.GetUserLogArchiveDimensions(NFX.Security.IIdentityDescriptor)">GetUserLogArchiveDimensions(IIdentityDescriptor)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public IConfigSectionNode GetUserLogArchiveDimensions(User user)</code></pre>
+                <pre><code class="lang-csharp hljs">public IConfigSectionNode GetUserLogArchiveDimensions(IIdentityDescriptor identity)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -911,8 +911,8 @@ public SecurityLogMask LogMask { get; set; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="NFX.Security.User.html">User</a></td>
-                    <td><span class="parametername">user</span></td>
+                    <td><a class="xref" href="NFX.Security.IIdentityDescriptor.html">IIdentityDescriptor</a></td>
+                    <td><span class="parametername">identity</span></td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -933,16 +933,16 @@ public SecurityLogMask LogMask { get; set; }</code></pre>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_GetUserLogArchiveDimensions_NFX_Security_User_">ISecurityManager.GetUserLogArchiveDimensions(User)</a></div>
+                  <div><a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_GetUserLogArchiveDimensions_NFX_Security_IIdentityDescriptor_">ISecurityManager.GetUserLogArchiveDimensions(IIdentityDescriptor)</a></div>
               
               
               <a id="NFX_Security_ConfigSecurityManager_LogSecurityMessage_" data-uid="NFX.Security.ConfigSecurityManager.LogSecurityMessage*"></a>
-              <h4 id="NFX_Security_ConfigSecurityManager_LogSecurityMessage_NFX_Log_Message_NFX_Security_User_" data-uid="NFX.Security.ConfigSecurityManager.LogSecurityMessage(NFX.Log.Message,NFX.Security.User)">LogSecurityMessage(Message, User)</h4>
+              <h4 id="NFX_Security_ConfigSecurityManager_LogSecurityMessage_NFX_Security_SecurityLogAction_NFX_Log_Message_NFX_Security_IIdentityDescriptor_" data-uid="NFX.Security.ConfigSecurityManager.LogSecurityMessage(NFX.Security.SecurityLogAction,NFX.Log.Message,NFX.Security.IIdentityDescriptor)">LogSecurityMessage(SecurityLogAction, Message, IIdentityDescriptor)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void LogSecurityMessage(Message msg, User user = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public void LogSecurityMessage(SecurityLogAction action, Message msg, IIdentityDescriptor identity = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -955,26 +955,25 @@ public SecurityLogMask LogMask { get; set; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
+                    <td><a class="xref" href="NFX.Security.SecurityLogAction.html">SecurityLogAction</a></td>
+                    <td><span class="parametername">action</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
                     <td><a class="xref" href="NFX.Log.Message.html">Message</a></td>
                     <td><span class="parametername">msg</span></td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="NFX.Security.User.html">User</a></td>
-                    <td><span class="parametername">user</span></td>
+                    <td><a class="xref" href="NFX.Security.IIdentityDescriptor.html">IIdentityDescriptor</a></td>
+                    <td><span class="parametername">identity</span></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_LogSecurityMessage_NFX_Log_Message_NFX_Security_User_">ISecurityManager.LogSecurityMessage(Message, User)</a></div>
+                  <div><a class="xref" href="NFX.Security.ISecurityManager.html#NFX_Security_ISecurityManager_LogSecurityMessage_NFX_Security_SecurityLogAction_NFX_Log_Message_NFX_Security_IIdentityDescriptor_">ISecurityManager.LogSecurityMessage(SecurityLogAction, Message, IIdentityDescriptor)</a></div>
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
@@ -1130,6 +1129,12 @@ public SecurityLogMask LogMask { get; set; }</code></pre>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

@@ -95,6 +95,8 @@
                   <h4><a class="xref" href="NFX.Security.DefaultPasswordManager.html">DefaultPasswordManager</a></h4>
                   <section><p>Provides default implementation for password managment functionality based on injectable algorithms and default password strength calculation</p>
 </section>
+                  <h4><a class="xref" href="NFX.Security.EnumUtils.html">EnumUtils</a></h4>
+                  <section></section>
                   <h4><a class="xref" href="NFX.Security.GDIDCredentials.html">GDIDCredentials</a></h4>
                   <section><p>Represents credentials based on Global Distributed ID</p>
 </section>
@@ -158,8 +160,15 @@ External parties should never be supplied with this struct as it is backend-inte
 </section>
                   <h4><a class="xref" href="NFX.Security.MD5PasswordHashingOptions.html">MD5PasswordHashingOptions</a></h4>
                   <section></section>
+                  <h4><a class="xref" href="NFX.Security.UserIdentityDescriptor.html">UserIdentityDescriptor</a></h4>
+                  <section><p>Represents information about user identity</p>
+</section>
                 <h3 id="interfaces">Interfaces
               </h3>
+                  <h4><a class="xref" href="NFX.Security.IIdentityDescriptor.html">IIdentityDescriptor</a></h4>
+                  <section><p>Marker interface denoting entities that represents information about users
+depending on the particular security system implementation</p>
+</section>
                   <h4><a class="xref" href="NFX.Security.IPasswordHashingOptions.html">IPasswordHashingOptions</a></h4>
                   <section></section>
                   <h4><a class="xref" href="NFX.Security.IPasswordManager.html">IPasswordManager</a></h4>
@@ -182,6 +191,9 @@ and provides password strength verification</p>
 </section>
                 <h3 id="enums">Enums
               </h3>
+                  <h4><a class="xref" href="NFX.Security.IdentityType.html">IdentityType</a></h4>
+                  <section><p>Denotes types of identities: Users, Groups etc.</p>
+</section>
                   <h4><a class="xref" href="NFX.Security.PasswordFamily.html">PasswordFamily</a></h4>
                   <section><p>Denoutes kinds of passwords i.e.: text that user types on login, short PIN,
 geometrical curve that users need to trace with their finger, select areas of picture</p>
@@ -192,8 +204,11 @@ geometrical curve that users need to trace with their finger, select areas of pi
                   <h4><a class="xref" href="NFX.Security.PasswordStrengthLevel.html">PasswordStrengthLevel</a></h4>
                   <section><p>Defines password stregth levels: Minimum, Normal, Maximum etc.</p>
 </section>
+                  <h4><a class="xref" href="NFX.Security.SecurityLogAction.html">SecurityLogAction</a></h4>
+                  <section><p>Denotes security actions</p>
+</section>
                   <h4><a class="xref" href="NFX.Security.SecurityLogMask.html">SecurityLogMask</a></h4>
-                  <section><p>Defines what events should be logged by the system</p>
+                  <section><p>Defines what actions should be logged by the system</p>
 </section>
                   <h4><a class="xref" href="NFX.Security.UserStatus.html">UserStatus</a></h4>
                   <section><p>User status enumeration -  super-permission levels</p>

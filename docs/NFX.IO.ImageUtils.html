@@ -141,22 +141,28 @@
                   <tr>
                     <td><span class="xref">System.Drawing.Bitmap</span></td>
                     <td><span class="parametername">srcBmp</span></td>
-                    <td></td>
+                    <td><p>Source image</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">dwnFactor1</span></td>
-                    <td></td>
+                    <td><p>Main downgrade factor
+(source image color quality reduced down to 256/<span class="paramref">dwnFactor1</span> color per each of RGB channel (2<em>2</em>2=8 base colors used as default))</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">dwnFactor2</span></td>
-                    <td></td>
+                    <td><p>Secondary downgrade factor for inner-area main color selection</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Single</span></td>
                     <td><span class="parametername">interiorPct</span></td>
-                    <td></td>
+                    <td><p>Value within (0,1) range that indicates portion of image interior,
+i.e. 0.9 means that 10% part of the image will be used for boundary detection</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -171,7 +177,8 @@
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Drawing.Color</span>[]</td>
-                    <td></td>
+                    <td><p>Three main colors and background volor</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -185,7 +192,7 @@ Does the same as <a class="xref" href="NFX.IO.ImageUtils.html#NFX_IO_ImageUtils_
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static Color[] ExtractMainColors2Iter(Bitmap srcBmp, int dwnFactor1 = 128, int dwnFactor2 = 24, float borderPct = 0.9F, float imgDistEps = 0.2F)</code></pre>
+                <pre><code class="lang-csharp hljs">public static Color[] ExtractMainColors2Iter(Bitmap srcBmp, int dwnFactor1 = 128, int dwnFactor2 = 24, float interiorPct = 0.9F, float imgDistEps = 0.2F)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -200,27 +207,34 @@ Does the same as <a class="xref" href="NFX.IO.ImageUtils.html#NFX_IO_ImageUtils_
                   <tr>
                     <td><span class="xref">System.Drawing.Bitmap</span></td>
                     <td><span class="parametername">srcBmp</span></td>
-                    <td></td>
+                    <td><p>Source image</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">dwnFactor1</span></td>
-                    <td></td>
+                    <td><p>Main downgrade factor
+(source image color quality reduced down to 256/<span class="paramref">dwnFactor1</span> color per each of RGB channel (2<em>2</em>2=8 base colors used as default))</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Int32</span></td>
                     <td><span class="parametername">dwnFactor2</span></td>
-                    <td></td>
+                    <td><p>Secondary downgrade factor for inner-area main color selection</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Single</span></td>
-                    <td><span class="parametername">borderPct</span></td>
-                    <td></td>
+                    <td><span class="parametername">interiorPct</span></td>
+                    <td><p>Value within (0,1) range that indicates portion of image interior,
+i.e. 0.9 means that 10% part of the image will be used for boundary detection</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">System.Single</span></td>
                     <td><span class="parametername">imgDistEps</span></td>
-                    <td></td>
+                    <td><p>Color similarity factor. If less that specified value, then the second extraction attempt will be performed</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -235,6 +249,54 @@ Does the same as <a class="xref" href="NFX.IO.ImageUtils.html#NFX_IO_ImageUtils_
                 <tbody>
                   <tr>
                     <td><span class="xref">System.Drawing.Color</span>[]</td>
+                    <td><p>Three main colors and background volor</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_IO_ImageUtils_ModifyBitsPerBixel_" data-uid="NFX.IO.ImageUtils.ModifyBitsPerBixel*"></a>
+              <h4 id="NFX_IO_ImageUtils_ModifyBitsPerBixel_System_Drawing_Image_System_Drawing_Imaging_PixelFormat_" data-uid="NFX.IO.ImageUtils.ModifyBitsPerBixel(System.Drawing.Image,System.Drawing.Imaging.PixelFormat)">ModifyBitsPerBixel(Image, PixelFormat)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Bitmap ModifyBitsPerBixel(Image img, PixelFormat format)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Image</span></td>
+                    <td><span class="parametername">img</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Imaging.PixelFormat</span></td>
+                    <td><span class="parametername">format</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Drawing.Bitmap</span></td>
                     <td></td>
                   </tr>
                 </tbody>

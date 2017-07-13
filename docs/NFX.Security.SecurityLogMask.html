@@ -70,7 +70,7 @@
               
               <h1 id="NFX_Security_SecurityLogMask" data-uid="NFX.Security.SecurityLogMask">Enum SecurityLogMask
               </h1>
-              <div class="markdown level0 summary"><p>Defines what events should be logged by the system</p>
+              <div class="markdown level0 summary"><p>Defines what actions should be logged by the system</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <h6><strong>Namespace</strong>:NFX.Security</h6>
@@ -95,19 +95,11 @@ public enum SecurityLogMask</code></pre>
                     <td></td>
                   </tr>
                   <tr>
-                    <td id="NFX_Security_SecurityLogMask_AuthenticationsError">AuthenticationsError</td>
+                    <td id="NFX_Security_SecurityLogMask_Authentication">Authentication</td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td id="NFX_Security_SecurityLogMask_AuthenticationsOK">AuthenticationsOK</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td id="NFX_Security_SecurityLogMask_AuthorizationsError">AuthorizationsError</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td id="NFX_Security_SecurityLogMask_AuthorizationsOK">AuthorizationsOK</td>
+                    <td id="NFX_Security_SecurityLogMask_Authorization">Authorization</td>
                     <td></td>
                   </tr>
                   <tr>
@@ -115,7 +107,7 @@ public enum SecurityLogMask</code></pre>
                     <td></td>
                   </tr>
                   <tr>
-                    <td id="NFX_Security_SecurityLogMask_GateErrors">GateErrors</td>
+                    <td id="NFX_Security_SecurityLogMask_Gate">Gate</td>
                     <td></td>
                   </tr>
                   <tr>
@@ -134,15 +126,25 @@ public enum SecurityLogMask</code></pre>
                     <td id="NFX_Security_SecurityLogMask_Off">Off</td>
                     <td></td>
                   </tr>
+                  <tr>
+                    <td id="NFX_Security_SecurityLogMask_UserCreate">UserCreate</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td id="NFX_Security_SecurityLogMask_UserDestroy">UserDestroy</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td id="NFX_Security_SecurityLogMask_UserResume">UserResume</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td id="NFX_Security_SecurityLogMask_UserSuspend">UserSuspend</td>
+                    <td></td>
+                  </tr>
                 </tbody>
               </thead></thead></table>
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject()</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(String, ConvertErrorHandling)</a>
               </div>
@@ -295,6 +297,12 @@ public enum SecurityLogMask</code></pre>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject()</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

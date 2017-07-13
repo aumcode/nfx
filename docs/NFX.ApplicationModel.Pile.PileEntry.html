@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class WindowsEnvironmentVariableResolver
+    <title>Struct PileEntry
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class WindowsEnvironmentVariableResolver
+    <meta name="title" content="Struct PileEntry
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
@@ -68,24 +68,22 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="NFX_Environment_WindowsEnvironmentVariableResolver" data-uid="NFX.Environment.WindowsEnvironmentVariableResolver">Class WindowsEnvironmentVariableResolver
+              <h1 id="NFX_ApplicationModel_Pile_PileEntry" data-uid="NFX.ApplicationModel.Pile.PileEntry">Struct PileEntry
               </h1>
-              <div class="markdown level0 summary"><p>Resolves variables using Windows environment variables.
-NOTE: When serialized a new instance is created which will not equal by reference to static.Instance property</p>
+              <div class="markdown level0 summary"><p>Represents an entry stored in a pile - a pointer+size vector.
+Used for pile enumeration</p>
 </div>
               <div class="markdown level0 conceptual"></div>
-              <div class="inheritance">
-                <h5>Inheritance</h5>
-                  <div class="level0"><span class="xref">System.Object</span></div>
-                  <div class="level1"><span class="xref">WindowsEnvironmentVariableResolver</span></div>
-              </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
                 <div>
-                  <span class="xref">System.Object.ToString()</span>
+                  <span class="xref">System.ValueType.Equals(System.Object)</span>
                 </div>
                 <div>
-                  <span class="xref">System.Object.Equals(System.Object)</span>
+                  <span class="xref">System.ValueType.GetHashCode()</span>
+                </div>
+                <div>
+                  <span class="xref">System.ValueType.ToString()</span>
                 </div>
                 <div>
                   <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
@@ -94,61 +92,26 @@ NOTE: When serialized a new instance is created which will not equal by referenc
                   <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
                 </div>
                 <div>
-                  <span class="xref">System.Object.GetHashCode()</span>
-                </div>
-                <div>
                   <span class="xref">System.Object.GetType()</span>
                 </div>
-                <div>
-                  <span class="xref">System.Object.MemberwiseClone()</span>
-                </div>
               </div>
-              <h6><strong>Namespace</strong>:NFX.Environment</h6>
+              <h6><strong>Namespace</strong>:NFX.ApplicationModel.Pile</h6>
               <h6><strong>Assembly</strong>:NFX.dll</h6>
-              <h5 id="NFX_Environment_WindowsEnvironmentVariableResolver_syntax">Syntax</h5>
+              <h5 id="NFX_ApplicationModel_Pile_PileEntry_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class WindowsEnvironmentVariableResolver : IEnvironmentVariableResolver</code></pre>
+                <pre><code class="lang-csharp hljs">public struct PileEntry</code></pre>
               </div>
-              <h3 id="properties">Properties
+              <h3 id="constructors">Constructors
               </h3>
               
               
-              <a id="NFX_Environment_WindowsEnvironmentVariableResolver_Instance_" data-uid="NFX.Environment.WindowsEnvironmentVariableResolver.Instance*"></a>
-              <h4 id="NFX_Environment_WindowsEnvironmentVariableResolver_Instance" data-uid="NFX.Environment.WindowsEnvironmentVariableResolver.Instance">Instance</h4>
-              <div class="markdown level1 summary"><p>Returns a singleton class instance</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static WindowsEnvironmentVariableResolver Instance { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="NFX.Environment.WindowsEnvironmentVariableResolver.html">WindowsEnvironmentVariableResolver</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 id="methods">Methods
-              </h3>
-              
-              
-              <a id="NFX_Environment_WindowsEnvironmentVariableResolver_ResolveEnvironmentVariable_" data-uid="NFX.Environment.WindowsEnvironmentVariableResolver.ResolveEnvironmentVariable*"></a>
-              <h4 id="NFX_Environment_WindowsEnvironmentVariableResolver_ResolveEnvironmentVariable_System_String_" data-uid="NFX.Environment.WindowsEnvironmentVariableResolver.ResolveEnvironmentVariable(System.String)">ResolveEnvironmentVariable(String)</h4>
+              <a id="NFX_ApplicationModel_Pile_PileEntry__ctor_" data-uid="NFX.ApplicationModel.Pile.PileEntry.#ctor*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_PileEntry__ctor_NFX_ApplicationModel_Pile_PilePointer_NFX_ApplicationModel_Pile_PileEntry_DataType_System_Int32_" data-uid="NFX.ApplicationModel.Pile.PileEntry.#ctor(NFX.ApplicationModel.Pile.PilePointer,NFX.ApplicationModel.Pile.PileEntry.DataType,System.Int32)">PileEntry(PilePointer, PileEntry.DataType, Int32)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public string ResolveEnvironmentVariable(string name)</code></pre>
+                <pre><code class="lang-csharp hljs">public PileEntry(PilePointer ptr, PileEntry.DataType tp, int size)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -161,13 +124,35 @@ public sealed class WindowsEnvironmentVariableResolver : IEnvironmentVariableRes
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.String</span></td>
-                    <td><span class="parametername">name</span></td>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
+                    <td><span class="parametername">ptr</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PileEntry.DataType.html">PileEntry.DataType</a></td>
+                    <td><span class="parametername">tp</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td><span class="parametername">size</span></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
-              <h5 class="returns">Returns</h5>
+              <h3 id="fields">Fields
+              </h3>
+              
+              
+              <h4 id="NFX_ApplicationModel_Pile_PileEntry_Pointer" data-uid="NFX.ApplicationModel.Pile.PileEntry.Pointer">Pointer</h4>
+              <div class="markdown level1 summary"><p>Points to data</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public readonly PilePointer Pointer</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
               <table class="table table-bordered table-striped table-condensed">
                 <thead>
                   <tr>
@@ -177,20 +162,114 @@ public sealed class WindowsEnvironmentVariableResolver : IEnvironmentVariableRes
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">System.String</span></td>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="NFX.Environment.IEnvironmentVariableResolver.html#NFX_Environment_IEnvironmentVariableResolver_ResolveEnvironmentVariable_System_String_">IEnvironmentVariableResolver.ResolveEnvironmentVariable(String)</a></div>
+              
+              
+              <h4 id="NFX_ApplicationModel_Pile_PileEntry_Size" data-uid="NFX.ApplicationModel.Pile.PileEntry.Size">Size</h4>
+              <div class="markdown level1 summary"><p>The byte size of allocation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public readonly int Size</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Int32</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <h4 id="NFX_ApplicationModel_Pile_PileEntry_Type" data-uid="NFX.ApplicationModel.Pile.PileEntry.Type">Type</h4>
+              <div class="markdown level1 summary"><p>Denotes data type, i.e.: Object/String/Buffer/Link</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public readonly PileEntry.DataType Type</code></pre>
+              </div>
+              <h5 class="fieldValue">Field Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PileEntry.DataType.html">PileEntry.DataType</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="NFX_ApplicationModel_Pile_PileEntry_Invalid_" data-uid="NFX.ApplicationModel.Pile.PileEntry.Invalid*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_PileEntry_Invalid" data-uid="NFX.ApplicationModel.Pile.PileEntry.Invalid">Invalid</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static PileEntry Invalid { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.ApplicationModel.Pile.PileEntry.html">PileEntry</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="NFX_ApplicationModel_Pile_PileEntry_Valid_" data-uid="NFX.ApplicationModel.Pile.PileEntry.Valid*"></a>
+              <h4 id="NFX_ApplicationModel_Pile_PileEntry_Valid" data-uid="NFX.ApplicationModel.Pile.PileEntry.Valid">Valid</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Valid { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">System.Boolean</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
@@ -336,9 +415,6 @@ public sealed class WindowsEnvironmentVariableResolver : IEnvironmentVariableRes
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsUri_System_Object_System_Uri_NFX_ConvertErrorHandling_">ObjectValueConversion.AsUri(Object, Uri, ConvertErrorHandling)</a>
               </div>
               <div>
-                  <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
-              </div>
-              <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
               </div>
               <div>
@@ -346,6 +422,12 @@ public sealed class WindowsEnvironmentVariableResolver : IEnvironmentVariableRes
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

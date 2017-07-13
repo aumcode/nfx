@@ -93,6 +93,18 @@
                   <a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html#NFX_Instrumentation_InstrumentationProvider_ExternalSetParameter_System_String_System_Object_System_String___">InstrumentationProvider.ExternalSetParameter(String, Object, String[])</a>
                 </div>
                 <div>
+                  <a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html#NFX_Instrumentation_InstrumentationProvider_BeforeBatch">InstrumentationProvider.BeforeBatch()</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html#NFX_Instrumentation_InstrumentationProvider_AfterBatch_System_Object_">InstrumentationProvider.AfterBatch(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html#NFX_Instrumentation_InstrumentationProvider_BeforeType_System_Type_System_Object_">InstrumentationProvider.BeforeType(Type, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html#NFX_Instrumentation_InstrumentationProvider_AfterType_System_Type_System_Object_System_Object_">InstrumentationProvider.AfterType(Type, Object, Object)</a>
+                </div>
+                <div>
                   <a class="xref" href="NFX.Instrumentation.InstrumentationProvider.html#NFX_Instrumentation_InstrumentationProvider_DoConfigure_NFX_Environment_IConfigSectionNode_">InstrumentationProvider.DoConfigure(IConfigSectionNode)</a>
                 </div>
                 <div>
@@ -248,13 +260,30 @@
               
               
               <a id="NFX_Instrumentation_Telemetry_TelemetryInstrumentationProvider__ctor_" data-uid="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider.#ctor*"></a>
-              <h4 id="NFX_Instrumentation_Telemetry_TelemetryInstrumentationProvider__ctor" data-uid="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider.#ctor">TelemetryInstrumentationProvider()</h4>
+              <h4 id="NFX_Instrumentation_Telemetry_TelemetryInstrumentationProvider__ctor_NFX_Instrumentation_InstrumentationService_" data-uid="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider.#ctor(NFX.Instrumentation.InstrumentationService)">TelemetryInstrumentationProvider(InstrumentationService)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public TelemetryInstrumentationProvider()</code></pre>
+                <pre><code class="lang-csharp hljs">public TelemetryInstrumentationProvider(InstrumentationService director)</code></pre>
               </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="NFX.Instrumentation.InstrumentationService.html">InstrumentationService</a></td>
+                    <td><span class="parametername">director</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               <h3 id="properties">Properties
               </h3>
               
@@ -355,12 +384,12 @@ public bool UseLog { get; set; }</code></pre>
               
               
               <a id="NFX_Instrumentation_Telemetry_TelemetryInstrumentationProvider_Write_" data-uid="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider.Write*"></a>
-              <h4 id="NFX_Instrumentation_Telemetry_TelemetryInstrumentationProvider_Write_NFX_Instrumentation_Datum_" data-uid="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider.Write(NFX.Instrumentation.Datum)">Write(Datum)</h4>
+              <h4 id="NFX_Instrumentation_Telemetry_TelemetryInstrumentationProvider_Write_NFX_Instrumentation_Datum_System_Object_System_Object_" data-uid="NFX.Instrumentation.Telemetry.TelemetryInstrumentationProvider.Write(NFX.Instrumentation.Datum,System.Object,System.Object)">Write(Datum, Object, Object)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public override void Write(Datum aggregatedDatum)</code></pre>
+                <pre><code class="lang-csharp hljs">protected override void Write(Datum aggregatedDatum, object batchContext, object typeContext)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -377,17 +406,21 @@ public bool UseLog { get; set; }</code></pre>
                     <td><span class="parametername">aggregatedDatum</span></td>
                     <td></td>
                   </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">batchContext</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">System.Object</span></td>
+                    <td><span class="parametername">typeContext</span></td>
+                    <td></td>
+                  </tr>
                 </tbody>
               </table>
               <h5 class="overrides">Overrides</h5>
-              <div><a class="xref" href="NFX.Instrumentation.LogInstrumentationProvider.html#NFX_Instrumentation_LogInstrumentationProvider_Write_NFX_Instrumentation_Datum_">LogInstrumentationProvider.Write(Datum)</a></div>
+              <div><a class="xref" href="NFX.Instrumentation.LogInstrumentationProvider.html#NFX_Instrumentation_LogInstrumentationProvider_Write_NFX_Instrumentation_Datum_System_Object_System_Object_">LogInstrumentationProvider.Write(Datum, Object, Object)</a></div>
               <h3 id="extensionmethods">Extension Methods</h3>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
-              </div>
-              <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
-              </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
               </div>
@@ -543,6 +576,12 @@ public bool UseLog { get; set; }</code></pre>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>

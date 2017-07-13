@@ -99,6 +99,11 @@ The mapped-to objects may reside in local or distributed pile as configured</p>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileException.html">PileException</a></h4>
                   <section><p>Thrown by pile memory manager</p>
 </section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileInstances.html">PileInstances</a></h4>
+                  <section><p>Provides a central multiton interface for mapping PileID -&gt; pile instance.
+This class is thread-safe.
+This class is used by system code and should not be used by business developers</p>
+</section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileOutOfSpaceException.html">PileOutOfSpaceException</a></h4>
                   <section><p>Thrown by pile memory manager when there is not anough room in the pile to perform the requested operation</p>
 </section>
@@ -131,6 +136,17 @@ The ISO code is case-insensitive</p>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.GDIDWithStrHash.html">GDIDWithStrHash</a></h4>
                   <section><p>Represents a GDID with 8 byte string hash. The hash is case sensitive.
 The point of this structure is to avoid creation of references for Pile cache so keys alone do not stall the GC.</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.Piled-1.html">Piled&lt;T&gt;</a></h4>
+                  <section><p>Represents a PilePointer scoped by PileID. PileID uniquelly identifies the pile on the pointed-to machine.
+Piled is used for deferred load/deserialization from pile. This is a useful optimization technique for tree serialization,
+on deserialization Piled is returned, without having to deserialize the whole sub-graph of objects.
+Upon the first access to Pile.Value the Get from pile takes place transparently.
+When writing to pile, the Piled instance is written as a separate Pile entity with a distinct pointer</p>
+</section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileEntry.html">PileEntry</a></h4>
+                  <section><p>Represents an entry stored in a pile - a pointer+size vector.
+Used for pile enumeration</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.PilePointer.html">PilePointer</a></h4>
                   <section><p>Represents a pointer to the pile object (object stored in a pile).
@@ -165,13 +181,16 @@ The cache may be local or distributed</p>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.IPile.html">IPile</a></h4>
                   <section><p>Represents a pile of objects - a custom memory heap that can store native CLR objects in a tightly-serialized form.
 Piles can be either local (allocate local RAM on the server), or distributed (allocate RAM on many servers).
-This class is designed primarily for applications that need to store/cache very many (100s of millions on local, billions on distributed) of objects in RAM
-(and/or possibly on disk) without causing the local CLR&#39;s GC scans of huge object graphs.
-Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at the cost of higher CPU usage.
-The implementor must be thread-safe for all operations unless stated otherwise on a member level.
-The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like Interlocked-family, Lock, MemoryBarriers and the like
-that regular RAM supports. Should a need arise to interlock within the pile - a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
-a Get does not impose a lock on ALL concurrent writes throught the pile (a write does not block all gets either).</p>
+This class is designed primarily for applications that need to store/cache very many
+(100s of millions on local, billions on distributed) of objects in RAM (and/or possibly on disk) without causing
+the local CLR&#39;s GC scans of huge object graphs.
+Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at
+the cost of higher CPU usage. The implementor must be thread-safe for all operations unless stated otherwise on a member level.
+The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like
+Interlocked-family, Lock, MemoryBarriers and the like that regular RAM supports. Should a need arise to interlock within the pile -
+a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
+a Get does not impose a lock on ALL concurrent writes throught the pile (a write does not block all gets either).
+The enumeration of the pile is thread-safe, however it does not guarantee the snapshot stability as parallel mutations may happen while enumeration takes place.</p>
 </section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.IPileImplementation.html">IPileImplementation</a></h4>
                   <section></section>
@@ -192,6 +211,8 @@ a Get does not impose a lock on ALL concurrent writes throught the pile (a write
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.ObjectPersistence.html">ObjectPersistence</a></h4>
                   <section><p>Denotes modes of object persistence</p>
 </section>
+                  <h4><a class="xref" href="NFX.ApplicationModel.Pile.PileEntry.DataType.html">PileEntry.DataType</a></h4>
+                  <section></section>
                   <h4><a class="xref" href="NFX.ApplicationModel.Pile.PutResult.html">PutResult</a></h4>
                   <section><p>Denotes statuses of cache table Put</p>
 </section>

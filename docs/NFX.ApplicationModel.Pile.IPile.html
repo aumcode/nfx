@@ -72,17 +72,23 @@
               </h1>
               <div class="markdown level0 summary"><p>Represents a pile of objects - a custom memory heap that can store native CLR objects in a tightly-serialized form.
 Piles can be either local (allocate local RAM on the server), or distributed (allocate RAM on many servers).
-This class is designed primarily for applications that need to store/cache very many (100s of millions on local, billions on distributed) of objects in RAM
-(and/or possibly on disk) without causing the local CLR&#39;s GC scans of huge object graphs.
-Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at the cost of higher CPU usage.
-The implementor must be thread-safe for all operations unless stated otherwise on a member level.
-The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like Interlocked-family, Lock, MemoryBarriers and the like
-that regular RAM supports. Should a need arise to interlock within the pile - a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
-a Get does not impose a lock on ALL concurrent writes throught the pile (a write does not block all gets either).</p>
+This class is designed primarily for applications that need to store/cache very many
+(100s of millions on local, billions on distributed) of objects in RAM (and/or possibly on disk) without causing
+the local CLR&#39;s GC scans of huge object graphs.
+Implementors of this interface are custom memory managers that favor the GC performance in apps with many objects at
+the cost of higher CPU usage. The implementor must be thread-safe for all operations unless stated otherwise on a member level.
+The memory represented by this class as a whole is not synchronizable, that is - it does not support functions like
+Interlocked-family, Lock, MemoryBarriers and the like that regular RAM supports. Should a need arise to interlock within the pile -
+a custom CLR-based lock must be used to syncronize access to pile as a whole, for example:
+a Get does not impose a lock on ALL concurrent writes throught the pile (a write does not block all gets either).
+The enumeration of the pile is thread-safe, however it does not guarantee the snapshot stability as parallel mutations may happen while enumeration takes place.</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="NFX.ApplicationModel.Pile.IPileStatus.html#NFX_ApplicationModel_Pile_IPileStatus_Identity">IPileStatus.Identity</a>
+                </div>
                 <div>
                   <a class="xref" href="NFX.ApplicationModel.Pile.IPileStatus.html#NFX_ApplicationModel_Pile_IPileStatus_Locality">IPileStatus.Locality</a>
                 </div>
@@ -117,6 +123,9 @@ a Get does not impose a lock on ALL concurrent writes throught the pile (a write
                   <a class="xref" href="NFX.ApplicationModel.Pile.IPileStatus.html#NFX_ApplicationModel_Pile_IPileStatus_NodeCount">IPileStatus.NodeCount</a>
                 </div>
                 <div>
+                  <span class="xref">System.Collections.Generic.IEnumerable&lt;NFX.ApplicationModel.Pile.PileEntry&gt;.GetEnumerator()</span>
+                </div>
+                <div>
                   <a class="xref" href="NFX.ApplicationModel.IApplicationComponent.html#NFX_ApplicationModel_IApplicationComponent_ComponentSID">IApplicationComponent.ComponentSID</a>
                 </div>
                 <div>
@@ -133,7 +142,7 @@ a Get does not impose a lock on ALL concurrent writes throught the pile (a write
               <h6><strong>Assembly</strong>:NFX.dll</h6>
               <h5 id="NFX_ApplicationModel_Pile_IPile_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public interface IPile : IPileStatus, IApplicationComponent, IDisposable</code></pre>
+                <pre><code class="lang-csharp hljs">public interface IPile : IPileStatus, IEnumerable&lt;PileEntry&gt;, IEnumerable, IApplicationComponent, IDisposable</code></pre>
               </div>
               <h3 id="methods">Methods
               </h3>
@@ -539,10 +548,34 @@ The serialized object size is returned, not the CLR object size.</p>
               </table>
               <h3 id="extensionmethods">Extension Methods</h3>
               <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
               </div>
               <div>
-                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0_System_Int32__">CollectionUtils.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T, Int32&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_SkipLast__1_System_Collections_Generic_IEnumerable___0__System_Int32_">CollectionUtils.SkipLast&lt;T&gt;(IEnumerable&lt;T&gt;, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMin__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMin&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstMax__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1____1__">CollectionUtils.FirstMax&lt;TResult, TComparand&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TComparand&gt;, out TComparand)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_FirstOrAnyOrDefault__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Boolean__">CollectionUtils.FirstOrAnyOrDefault&lt;TResult&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, Boolean&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.CollectionUtils.html#NFX_CollectionUtils_Distinct__2_System_Collections_Generic_IEnumerable___0__System_Func___0___1__">CollectionUtils.Distinct&lt;TResult, TKey&gt;(IEnumerable&lt;TResult&gt;, Func&lt;TResult, TKey&gt;)</a>
               </div>
               <div>
                   <a class="xref" href="NFX.ObjectValueConversion.html#NFX_ObjectValueConversion_AsString_System_Object_System_String_NFX_ConvertErrorHandling_">ObjectValueConversion.AsString(Object, String, ConvertErrorHandling)</a>
@@ -692,6 +725,9 @@ The serialized object size is returned, not the CLR object size.</p>
                   <a class="xref" href="NFX.MiscUtils.html#NFX_MiscUtils_NonNull__1___0_System_Func_System_Exception__System_String_">MiscUtils.NonNull&lt;T&gt;(T, Func&lt;Exception&gt;, String)</a>
               </div>
               <div>
+                  <a class="xref" href="NFX.Collections.LookAheadExtensions.html#NFX_Collections_LookAheadExtensions_AsLookAheadEnumerable__1_System_Collections_Generic_IEnumerable___0__">LookAheadExtensions.AsLookAheadEnumerable&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+              </div>
+              <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_NFX_Serialization_JSON_JSONWritingOptions_">JSONExtensions.ToJSON(Object, JSONWritingOptions)</a>
               </div>
               <div>
@@ -699,6 +735,12 @@ The serialized object size is returned, not the CLR object size.</p>
               </div>
               <div>
                   <a class="xref" href="NFX.Serialization.JSON.JSONExtensions.html#NFX_Serialization_JSON_JSONExtensions_ToJSON_System_Object_System_IO_Stream_NFX_Serialization_JSON_JSONWritingOptions_System_Text_Encoding_">JSONExtensions.ToJSON(Object, Stream, JSONWritingOptions, Encoding)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_">ErlObject.ToErlObject(Object)</a>
+              </div>
+              <div>
+                  <a class="xref" href="NFX.Erlang.ErlObject.html#NFX_Erlang_ErlObject_ToErlObject_System_Object_NFX_Erlang_ErlTypeOrder_System_Boolean_">ErlObject.ToErlObject(Object, ErlTypeOrder, Boolean)</a>
               </div>
                         </article>
           </div>
