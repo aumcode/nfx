@@ -638,6 +638,12 @@ WAVE.RecordModel.GUI = (function () {
               genIdKey = "@#$MD_EDITOR_GEN_ID$#@",
               ids = WAVE.get(fldView, genIdKey, null);
 
+          function editorChangeHandler(e) {
+            var target = e.target,
+              val = target.value;
+            field.setGUIValue(val);
+          }
+
           if (ids === null) {
             ids = genIDSeed(fldView);
             fldView[genIdKey] = ids;
@@ -701,12 +707,6 @@ WAVE.RecordModel.GUI = (function () {
               if (args === tabMDEPreview)
                 sender.tabContent(tabMDEPreview, WAVE.markup(WAVE.id(idMDEText).value));
             });
-
-            function editorChangeHandler(e) {
-              var target = e.target,
-                  val = target.value;
-              field.setGUIValue(val);
-            }
           }
         }
 
