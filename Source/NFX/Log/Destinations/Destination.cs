@@ -236,7 +236,7 @@ namespace NFX.Log.Destinations
         public LevelsList Levels
         {
           get { return m_Levels; }
-          set { m_Levels = m_Levels ?? new LevelsList(); }
+          set { m_Levels = value ?? new LevelsList(); }
         }
 
         /// <summary>

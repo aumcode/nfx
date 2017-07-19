@@ -44,11 +44,17 @@ namespace NFX.Web.Shipping.Shippo
 
       var privateToken = node.AttrByName("private-token").ValueAsString();
       if (privateToken.IsNullOrWhiteSpace())
+      {
         User = User.Fake;
+        return;
+      }
 
       var publicToken = node.AttrByName("public-token").ValueAsString();
       if (publicToken.IsNullOrWhiteSpace())
+      {
         User = User.Fake;
+        return;
+      }
 
       var cred = new ShippoCredentials(privateToken, publicToken);
       var token = new AuthenticationToken(ShippoSystem.SHIPPO_REALM, null);

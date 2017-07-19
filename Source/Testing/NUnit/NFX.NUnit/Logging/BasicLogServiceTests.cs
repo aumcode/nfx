@@ -373,7 +373,7 @@ namespace NFX.NUnit.Logging
               "20130102-030405.000000|   {0}||Debug|{1}||0|".Args(Thread.CurrentThread.ManagedThreadId, i),
               s);
             return 0;
-          });
+          }).ToArray();
         }
       }
 
@@ -429,7 +429,7 @@ namespace NFX.NUnit.Logging
               "{0:yyyyMMdd}-030405.000000|   {1}||Debug|{2}||0|".Args(now, Thread.CurrentThread.ManagedThreadId, (int)mt),
               s);
             return 0;
-          });
+          }).ToArray();
         }
 
         Aver.IsTrue(

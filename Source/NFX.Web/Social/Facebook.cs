@@ -230,7 +230,7 @@ namespace NFX.Web.Social
           var genderStr = responseObj[USER_GENDER_PARAMNAME];
           if (genderStr == USER_GENDER_MALE)
             userInfo.Gender = Gender.MALE;
-          else if (genderStr == USER_GENDER_MALE)
+          else if (genderStr == USER_GENDER_FEMALE)
             userInfo.Gender = Gender.FEMALE;
 
           var birthDateStr = responseObj[USER_BIRTHDAY_PARAMNAME];

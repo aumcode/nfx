@@ -201,7 +201,7 @@ namespace NFX.Parsing
 
     private static bool charCaseTransition(char prev, char curr)
     {
-      return  char.IsLower(prev) & char.IsUpper(curr);
+      return  char.IsLower(prev) && char.IsUpper(curr);
     }
 
     private static bool charDigitTransition(char prev, char curr)

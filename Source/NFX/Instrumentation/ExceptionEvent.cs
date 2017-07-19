@@ -110,6 +110,6 @@ namespace NFX.Instrumentation
       m_ExceptionType = sb.ToString();
     }
 
-    public override string ToString() { return base.ToString() + " " + m_ExceptionType ?? string.Empty; }
+    public override string ToString() { return base.ToString() + " " + (m_ExceptionType ?? string.Empty); }
   }
 }

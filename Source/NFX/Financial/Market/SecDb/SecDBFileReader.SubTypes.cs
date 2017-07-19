@@ -498,7 +498,7 @@ namespace NFX.Financial.Market.SecDb
              if (IsActive)
              {
                  var price = SecDBPrimitives.ReadSLEB128(stream);
-                 if (ps!=null)
+                 if (ps==null)
                     PriceStep = price;
                   else
                     PriceStep = ps.PriceStep + price;

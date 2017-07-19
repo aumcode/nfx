@@ -257,8 +257,8 @@ namespace NFX.ApplicationModel.Pile
                                                                     typeof(LocalCacheTable<TKey>).DisplayNameWithExpandedGenericArgs() ));
              if (keyComparer!=null && result.KeyComparer!=keyComparer)
                throw new PileCacheException(StringConsts.PILE_CACHE_TBL_KEYCOMPARER_MISMATCH_ERROR.Args(tableName,
-                                                                    result.KeyComparer!=null ? result.KeyComparer.GetType().FullName : StringConsts.NULL_STRING,
-                                                                    keyComparer!=null ? keyComparer.GetType().FullName : StringConsts.NULL_STRING ));
+                                                                    result.KeyComparer.GetType().FullName,
+                                                                    keyComparer.GetType().FullName));
              createdNew = false;
              return result;
            }
@@ -275,8 +275,8 @@ namespace NFX.ApplicationModel.Pile
                                                                     typeof(LocalCacheTable<TKey>).DisplayNameWithExpandedGenericArgs() ));
                if (keyComparer!=null && result.KeyComparer!=keyComparer)
                  throw new PileCacheException(StringConsts.PILE_CACHE_TBL_KEYCOMPARER_MISMATCH_ERROR.Args(tableName,
-                                                                    result.KeyComparer!=null ? result.KeyComparer.GetType().FullName : StringConsts.NULL_STRING,
-                                                                    keyComparer!=null ? keyComparer.GetType().FullName : StringConsts.NULL_STRING ));
+                                                                    result.KeyComparer.GetType().FullName,
+                                                                    keyComparer.GetType().FullName));
                createdNew = false;
                return result;
              }

@@ -507,7 +507,7 @@ namespace NFX.Financial.Market.SecDb
 
             i = skipSamples;
             stream.Seek(skipSamples * CandleData.BYTE_SIZE, SeekOrigin.Current);
-            ts.AddSeconds(skipSamples * header.ResolutionSec);
+            ts = ts.AddSeconds(skipSamples * header.ResolutionSec);
           }
 
           for(; i<header.CandleCount; i++)

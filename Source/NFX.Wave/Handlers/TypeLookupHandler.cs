@@ -122,8 +122,8 @@ namespace NFX.Wave.Handlers
             /// </summary>
             public string NotFoundRedirectURL
             {
-              get { return NotFoundRedirectURL ?? string.Empty;}
-              set { NotFoundRedirectURL = value;}
+              get { return m_NotFoundRedirectURL ?? string.Empty;}
+              set { m_NotFoundRedirectURL = value;}
             }
 
 

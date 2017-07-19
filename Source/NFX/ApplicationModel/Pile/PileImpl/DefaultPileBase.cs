@@ -500,7 +500,7 @@ namespace NFX.ApplicationModel.Pile
 
 
       [ThreadStatic]
-      private int ts_PutStartSegIdx;
+      private static int ts_PutStartSegIdx;
 
       /// <summary>
       /// Puts a CLR object into the pile and returns a newly-allocated pointer.

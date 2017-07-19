@@ -113,7 +113,7 @@ namespace NFX.Glue
       internal TaskCompletionSource<CallSlot> m_TaskCompletionSource;
 
       private DateTime m_StartTime;
-      private CallStatus m_CallStatus;
+      private volatile CallStatus m_CallStatus;
       private string m_DispatchErrorMessage;
       private volatile ResponseMsg m_ResponseMsg;
       private int m_ResponseInspected;
@@ -473,7 +473,7 @@ namespace NFX.Glue
                         private const int GRANULARITY_MS = 500;
 
                         private static LinkedList<CallSlot>[] s_Calls = new LinkedList<CallSlot>[BUCKETS];
-                        private static Thread s_Thread;
+                        private static volatile Thread s_Thread;
 
                         static TimeoutReactor()
                         {

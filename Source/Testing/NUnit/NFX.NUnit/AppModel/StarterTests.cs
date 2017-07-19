@@ -32,7 +32,7 @@ namespace NFX.NUnit.AppModel
     [TestFixture]
     public class StarterTests
     {
-       
+
         public static string RESULT;
 
 
@@ -47,16 +47,16 @@ namespace NFX.NUnit.AppModel
     }
 
  }
- ";        
+ ";
             RESULT = "";
             var conf = LaconicConfiguration.CreateFromString(confSource);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
-            
+
             }
-            
+
             Assert.AreEqual("Alex Before;Boris Before;Alex After;Boris After;", RESULT);
-               
+
         }
 
         [TestCase]
@@ -70,16 +70,16 @@ namespace NFX.NUnit.AppModel
     }
 
  }
- ";        
+ ";
             RESULT = null;//NULL REFERENCE should happen
             var conf = LaconicConfiguration.CreateFromString(confSource);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
-            
+
             }
-            
+
             Assert.IsNull( RESULT); //no exception
-               
+
         }
 
         [TestCase]
@@ -96,14 +96,14 @@ namespace NFX.NUnit.AppModel
     }
 
  }
- ";        
+ ";
             RESULT = null;//NULL REFERENCE should happen
             var conf = LaconicConfiguration.CreateFromString(confSource);
             using( var app = new ServiceBaseApplication(null, conf.Root))
             {
-            
+
             }
-               
+
         }
 
 
@@ -129,7 +129,7 @@ namespace NFX.NUnit.AppModel
                 public void ApplicationStartAfterInit(IApplication application)
                 {
                    StarterTests.RESULT.Trim();//causes null reference
-                   StarterTests.RESULT += "{0} After;".Args(Name); 
+                   StarterTests.RESULT += "{0} After;".Args(Name);
                 }
 
                 public void Configure(IConfigSectionNode node)
@@ -143,7 +143,7 @@ namespace NFX.NUnit.AppModel
                     get;
                     set;
                 }
-            } 
+            }
 
 
 }

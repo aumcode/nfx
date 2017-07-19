@@ -111,9 +111,9 @@ namespace NFX.OS
             {
               // Need to check for Mac-specific root folders, because Mac may get reported as UNIX
               if (System.IO.Directory.Exists("/Applications")
-                  & System.IO.Directory.Exists("/System")
-                  & System.IO.Directory.Exists("/Users")
-                  & System.IO.Directory.Exists("/Volumes"))
+                  && System.IO.Directory.Exists("/System")
+                  && System.IO.Directory.Exists("/Users")
+                  && System.IO.Directory.Exists("/Volumes"))
               {
                 s_OSFamily = OSFamily.Mac;
                 break;

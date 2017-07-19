@@ -259,7 +259,7 @@ namespace NFX.Wave.Handlers
                                         StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
                                                           controller.GetType().DisplayNameWithExpandedGenericArgs(),
-                                                          strictParamBinding ? "strict" : "relaxed",
+                                                          "strict",
                                                           action,
                                                           mp.Name,
                                                           mp.ParameterType.DisplayNameWithExpandedGenericArgs(), "byte[]" ));

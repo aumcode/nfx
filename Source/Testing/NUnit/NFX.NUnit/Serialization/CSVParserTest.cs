@@ -121,7 +121,7 @@ ddd".ParseCSVRow(), "aaa", "bbb", "ccc"));
       var csv =
 @"aaa,aaa,aaa,
 aaa aaa,aaa,,
-  aaa  ,  aaa,aaa  ,  
+  aaa  ,  aaa,aaa  ,
   aaa aaa,aaa aaa  ,,
 ""aaa"",""aaa"",""aaa"",""""
 ""aaa,aaa"",""aaa,"","",aaa""
@@ -142,7 +142,7 @@ aaa"",""
         var count = 0;
         foreach (var value in row)
         {
-          Assert.True(value.Contains("aaa") || value.IsNullOrWhiteSpace());
+          Assert.True(value.IsNullOrWhiteSpace() || value.Contains("aaa"));
           count++;
         }
         Console.WriteLine(count);
@@ -152,7 +152,7 @@ aaa"",""
         var count = 0;
         foreach (var value in row)
         {
-          Assert.True(value.Contains("aaa") || value.IsNullOrWhiteSpace());
+          Assert.True(value.IsNullOrWhiteSpace() || value.Contains("aaa"));
           count++;
         }
         Console.WriteLine(count);
@@ -162,7 +162,7 @@ aaa"",""
         var count = 0;
         foreach (var value in row)
         {
-          Assert.True(value.Contains("aaa") || value.IsNullOrWhiteSpace());
+          Assert.True(value.IsNullOrWhiteSpace() || value.Contains("aaa"));
           count++;
         }
         Console.WriteLine(count);

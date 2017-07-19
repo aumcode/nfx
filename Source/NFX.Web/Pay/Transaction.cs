@@ -181,7 +181,6 @@ namespace NFX.Web.Pay
     private Transaction(object id, TransactionType type, string processorName, object processorToken)
     {
       if (id == null) throw new PaymentException(StringConsts.ARGUMENT_ERROR + "TX.ctor(id == null)");
-      if (processorName.IsNullOrWhiteSpace()) throw new PaymentException(StringConsts.ARGUMENT_ERROR + "TX.ctor(processorName == null)");
       if (processorName.IsNullOrWhiteSpace()) throw new PaymentException(StringConsts.ARGUMENT_ERROR + "TX.ctor(processorToken == null)");
 
       m_ID = id;

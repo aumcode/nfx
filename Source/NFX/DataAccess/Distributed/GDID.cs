@@ -250,6 +250,7 @@ namespace NFX.DataAccess.Distributed
         public static bool TryParse(string str, out GDID gdid)
         {
           gdid = GDID.Zero;
+          if (str==null) return false;
 
           var ic = str.IndexOf(':');
           if (ic>-1) //regular Era:Auth:Counter format
@@ -286,7 +287,7 @@ namespace NFX.DataAccess.Distributed
           }
 
           //HEX format
-          str.Trim();
+          str = str.Trim();
           var ix = str.IndexOf("0x", StringComparison.OrdinalIgnoreCase);
           if (ix == 0) ix += 2;//skip 0x
           else ix = 0;
