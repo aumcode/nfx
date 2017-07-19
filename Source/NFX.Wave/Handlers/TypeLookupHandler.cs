@@ -72,7 +72,7 @@ namespace NFX.Wave.Handlers
          private string m_DefaultTypeName;
          private string m_CloakTypeName;
          private string m_NotFoundRedirectURL;
-         private TypeLookup m_Lookup = new TypeLookup();
+         private volatile TypeLookup m_Lookup = new TypeLookup();
          private TypeLocations m_TypeLocations = new TypeLocations();
 
        #endregion

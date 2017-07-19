@@ -20,8 +20,25 @@
  * Originated: 2006.01
  * Revision: NFX 0.3  2009.10.12
  */
+using System;
+
 namespace NFX.Security
 {
+  /// <summary>
+  /// Denotes types of identities: Users, Groups etc.
+  /// </summary>
+  public enum IdentityType
+  {
+    Other= 0,
+    /// <summary>Identity of particular system User</summary>
+    User,
+    /// <summary>Identity of group of users</summary>
+    Group,
+    /// <summary>Identity of system component such as Process</summary>
+    Process,
+    /// <summary>Identity of business entity such as vendor, bank etc.</summary>
+    Business
+  }
 
   /// <summary>
   /// User status enumeration -  super-permission levels
@@ -52,5 +69,72 @@ namespace NFX.Security
     /// </summary>
     System = 1000000,
     Sys = System,
+  }
+
+
+  /// <summary>
+  /// Defines what actions should be logged by the system
+  /// </summary>
+  [Flags]
+  public enum SecurityLogMask
+  {
+    Off = 0,
+
+    Custom               = 1 << 0,
+    Authentication       = 1 << 1,
+
+    Authorization        = 1 << 2,
+
+    Gate                 = 1 << 3,
+    Login                = 1 << 4,
+    Logout               = 1 << 5,
+    LoginChange          = 1 << 6,
+
+    UserCreate           = 1 << 7,
+    UserDestroy          = 1 << 8,
+    UserSuspend          = 1 << 9,
+    UserResume           = 1 << 10,
+
+    All = -1
+  }
+
+  /// <summary>
+  /// Denotes security actions
+  /// </summary>
+  public enum SecurityLogAction
+  {
+    Custom = 0,
+    Authentication,
+    Authorization,
+    Gate,
+    Login,
+    Logout,
+    LoginChange,
+    UserCreate,
+    UserDestroy,
+    UserSuspend,
+    UserResume
+  }
+
+  public static class EnumUtils
+  {
+    public static SecurityLogMask ToMask(this SecurityLogAction action)
+    {
+      switch (action)
+      {
+        case SecurityLogAction.Custom:         return SecurityLogMask.Custom;
+        case SecurityLogAction.Authentication: return SecurityLogMask.Authentication;
+        case SecurityLogAction.Authorization:  return SecurityLogMask.Authorization;
+        case SecurityLogAction.Gate:           return SecurityLogMask.Gate;
+        case SecurityLogAction.Login:          return SecurityLogMask.Login;
+        case SecurityLogAction.Logout:         return SecurityLogMask.Logout;
+        case SecurityLogAction.LoginChange:    return SecurityLogMask.LoginChange;
+        case SecurityLogAction.UserCreate:     return SecurityLogMask.UserCreate;
+        case SecurityLogAction.UserDestroy:    return SecurityLogMask.UserDestroy;
+        case SecurityLogAction.UserSuspend:    return SecurityLogMask.UserSuspend;
+        case SecurityLogAction.UserResume:     return SecurityLogMask.UserResume;
+        default: return SecurityLogMask.Off;
+      }
+    }
   }
 }

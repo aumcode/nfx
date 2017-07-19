@@ -24,20 +24,37 @@ namespace NFX.IO
 {
   public static class ImageUtils
   {
+    [ThreadStatic]
+    private static Dictionary<Color, int> ts_FirstHist;
+    [ThreadStatic]
+    private static Dictionary<Color, int> ts_SecondHist;
+    [ThreadStatic]
+    private static Dictionary<Color, int> ts_ThirdHist;
+    [ThreadStatic]
+    private static Dictionary<Color, int> ts_BckHist;
+
     /// <summary>
     /// Extracts three main colors and background color from source image.
     /// Does the same as <see cref="ExtractMainColors"/> method but performs the second extraction attempt if the first attempt returns almost the same colors
     /// </summary>
+    /// <param name="srcBmp">Source image</param>
+    /// <param name="dwnFactor1">Main downgrade factor
+    /// (source image color quality reduced down to 256/<paramref name="dwnFactor1"/> color per each of RGB channel (2*2*2=8 base colors used as default))</param>
+    /// <param name="dwnFactor2">Secondary downgrade factor for inner-area main color selection</param>
+    /// <param name="interiorPct">Value within (0,1) range that indicates portion of image interior,
+    /// i.e. 0.9 means that 10% part of the image will be used for boundary detection</param>
+    /// <param name="imgDistEps">Color similarity factor. If less that specified value, then the second extraction attempt will be performed</param>
+    /// <returns>Three main colors and background volor</returns>
     public static Color[] ExtractMainColors2Iter(Bitmap srcBmp,
                                                  int dwnFactor1=128, int dwnFactor2=24,
-                                                 float borderPct=0.9F,
+                                                 float interiorPct=0.9F,
                                                  float imgDistEps=0.2F)
     {
-      var topColors = ExtractMainColors(srcBmp, dwnFactor1, dwnFactor2, borderPct);
+      var topColors = ExtractMainColors(srcBmp, dwnFactor1, dwnFactor2, interiorPct);
       var d12 = imagesAbsDist(topColors[0], topColors[1]);
       var d23 = imagesAbsDist(topColors[1], topColors[2]);
       if (d12<imgDistEps && d23<imgDistEps)
-        topColors = ExtractMainColors(srcBmp, dwnFactor1/2, dwnFactor2, borderPct);
+        topColors = ExtractMainColors(srcBmp, dwnFactor1/2, dwnFactor2, interiorPct);
 
       return topColors;
     }
@@ -52,6 +69,13 @@ namespace NFX.IO
     ///
     /// Background area search is limited to [1-<paramref name="interiorPct"/>, <paramref name="interiorPct"/>] portion of image interior
     /// </summary>
+    /// <param name="srcBmp">Source image</param>
+    /// <param name="dwnFactor1">Main downgrade factor
+    /// (source image color quality reduced down to 256/<paramref name="dwnFactor1"/> color per each of RGB channel (2*2*2=8 base colors used as default))</param>
+    /// <param name="dwnFactor2">Secondary downgrade factor for inner-area main color selection</param>
+    /// <param name="interiorPct">Value within (0,1) range that indicates portion of image interior,
+    /// i.e. 0.9 means that 10% part of the image will be used for boundary detection</param>
+    /// <returns>Three main colors and background volor</returns>
     public static unsafe Color[] ExtractMainColors(Bitmap srcBmp,
                                                    int dwnFactor1=128, int dwnFactor2=24,
                                                    float interiorPct=0.9F)
@@ -63,92 +87,102 @@ namespace NFX.IO
 
       using (var dwnBmp = new Bitmap(width, height))
       {
-        // extract downgraded (very few colors) color histogramm
-        var srcData = srcBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, srcBmp.PixelFormat);
-        int srcBytesPerPixel  = Bitmap.GetPixelFormatSize(srcBmp.PixelFormat) / 8;
-        int srcHeightInPixels = srcData.Height;
-        int srcWidthInBytes   = srcData.Width * srcBytesPerPixel;
-        byte* srcFirstPixel   = (byte*)srcData.Scan0;
+        BitmapData srcData = null;
+        BitmapData dwnData = null;
 
-        var dwnData = dwnBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, dwnBmp.PixelFormat);
-        int dwnBytesPerPixel  = Bitmap.GetPixelFormatSize(dwnBmp.PixelFormat) / 8;
-        int dwnHeightInPixels = dwnData.Height;
-        int dwnWidthInBytes   = dwnData.Width * dwnBytesPerPixel;
-        byte* dwnFirstPixel   = (byte*)dwnData.Scan0;
-
-        for (int y=0; y<height; y++)
+        try
         {
-          byte* srcLine = srcFirstPixel + (y*srcData.Stride);
-          byte* dwnLine = dwnFirstPixel + (y*dwnData.Stride);
-          for (int x=0; x<srcWidthInBytes; x += srcBytesPerPixel)
+          // extract downgraded (very few colors) color histogramm
+          srcData = srcBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, srcBmp.PixelFormat);
+          int srcBytesPerPixel  = Bitmap.GetPixelFormatSize(srcBmp.PixelFormat) / 8;
+          int srcHeightInPixels = srcData.Height;
+          int srcWidthInBytes   = srcData.Width * srcBytesPerPixel;
+          byte* srcFirstPixel   = (byte*)srcData.Scan0;
+
+          dwnData = dwnBmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, dwnBmp.PixelFormat);
+          int dwnBytesPerPixel  = Bitmap.GetPixelFormatSize(dwnBmp.PixelFormat) / 8;
+          int dwnHeightInPixels = dwnData.Height;
+          int dwnWidthInBytes   = dwnData.Width * dwnBytesPerPixel;
+          byte* dwnFirstPixel   = (byte*)dwnData.Scan0;
+
+          for (int y=0; y<height; y++)
           {
-            var b = dwnFactor1*(srcLine[x]/dwnFactor1);
-            var g = dwnFactor1*(srcLine[x+1]/dwnFactor1);
-            var r = dwnFactor1*(srcLine[x+2]/dwnFactor1);
-            var color = Color.FromArgb(r, g, b);
-
-            // histogramm for main color
-            if (!mainHist.ContainsKey(color)) mainHist[color] = 1;
-            else mainHist[color] += 1;
-
-            // histogramm for background color
-            if (Math.Abs(2*x-srcWidthInBytes)>=interiorPct*srcWidthInBytes || Math.Abs(2*y-height)>=interiorPct*height)
+            byte* srcLine = srcFirstPixel + (y*srcData.Stride);
+            byte* dwnLine = dwnFirstPixel + (y*dwnData.Stride);
+            for (int x=0; x<srcWidthInBytes; x += srcBytesPerPixel)
             {
-              if (!backHist.ContainsKey(color)) backHist[color] = 1;
-              else backHist[color] += 1;
+              var b = dwnFactor1*(srcLine[x]/dwnFactor1);
+              var g = dwnFactor1*(srcLine[x+1]/dwnFactor1);
+              var r = dwnFactor1*(srcLine[x+2]/dwnFactor1);
+              var color = Color.FromArgb(r, g, b);
+
+              // histogramm for main color
+              if (!mainHist.ContainsKey(color)) mainHist[color] = 1;
+              else mainHist[color] += 1;
+
+              // histogramm for background color
+              if (Math.Abs(2*x-srcWidthInBytes)>=interiorPct*srcWidthInBytes || Math.Abs(2*y-height)>=interiorPct*height)
+              {
+                if (!backHist.ContainsKey(color)) backHist[color] = 1;
+                else backHist[color] += 1;
+              }
+
+              dwnLine[x]   = (byte)b;
+              dwnLine[x+1] = (byte)g;
+              dwnLine[x+2] = (byte)r;
             }
-
-            dwnLine[x]   = (byte)b;
-            dwnLine[x+1] = (byte)g;
-            dwnLine[x+2] = (byte)r;
           }
-        }
 
-        // take background area color and the first three colors (i.e. main image areas) except background
-        var backArea = backHist.OrderByDescending(h => h.Value).First().Key;
-        var areas = mainHist.Where(h => h.Key != backArea).OrderByDescending(h => h.Value).Take(3).ToList();
-        var firstArea  = (areas.Count > 0) ? areas[0].Key : backArea;
-        var secondArea = (areas.Count > 1) ? areas[1].Key : firstArea;
-        var thirdArea  = (areas.Count > 2) ? areas[2].Key : secondArea;
+          // take background area color and the first three colors (i.e. main image areas) except background
+          var backArea = backHist.OrderByDescending(h => h.Value).First().Key;
+          var areas = mainHist.Where(h => h.Key != backArea).OrderByDescending(h => h.Value).Take(3).ToList();
+          var firstArea  = (areas.Count > 0) ? areas[0].Key : backArea;
+          var secondArea = (areas.Count > 1) ? areas[1].Key : firstArea;
+          var thirdArea  = (areas.Count > 2) ? areas[2].Key : secondArea;
 
-        // get histogramm for background area each of three main areas
-        var firstHist  = new Dictionary<Color, int>();
-        var secondHist = new Dictionary<Color, int>();
-        var thirdHist  = new Dictionary<Color, int>();
-        var bckHist    = new Dictionary<Color, int>();
-        for (int y=0; y<height; y++)
-        {
-          byte* srcLine = srcFirstPixel + (y*srcData.Stride);
-          byte* dwnLine = dwnFirstPixel + (y*dwnData.Stride);
-          for (int x=0; x<srcWidthInBytes; x += srcBytesPerPixel)
+          // get histogramm for background area each of three main areas
+          if (ts_FirstHist==null)  ts_FirstHist=new Dictionary<Color, int>();  else ts_FirstHist.Clear();
+          if (ts_SecondHist==null) ts_SecondHist=new Dictionary<Color, int>(); else ts_SecondHist.Clear();
+          if (ts_ThirdHist==null)  ts_ThirdHist=new Dictionary<Color, int>();  else ts_ThirdHist.Clear();
+          if (ts_BckHist==null)    ts_BckHist=new Dictionary<Color, int>();    else ts_BckHist.Clear();
+
+          for (int y=0; y<height; y++)
           {
-            var b = dwnLine[x];
-            var g = dwnLine[x+1];
-            var r = dwnLine[x+2];
-            var color = Color.FromArgb(r, g, b);
-            Dictionary<Color, int> h;
-            if      (color==firstArea)  h = firstHist;
-            else if (color==secondArea) h = secondHist;
-            else if (color==thirdArea)  h = thirdHist;
-            else if (color==backArea)   h = bckHist;
-            else continue;
+            byte* srcLine = srcFirstPixel + (y*srcData.Stride);
+            byte* dwnLine = dwnFirstPixel + (y*dwnData.Stride);
+            for (int x=0; x<srcWidthInBytes; x += srcBytesPerPixel)
+            {
+              var b = dwnLine[x];
+              var g = dwnLine[x+1];
+              var r = dwnLine[x+2];
+              var color = Color.FromArgb(r, g, b);
+              Dictionary<Color, int> h;
+              if      (color==firstArea)  h = ts_FirstHist;
+              else if (color==secondArea) h = ts_SecondHist;
+              else if (color==thirdArea)  h = ts_ThirdHist;
+              else if (color==backArea)   h = ts_BckHist;
+              else continue;
 
-            b = (byte)(dwnFactor2*(srcLine[x]/dwnFactor2));
-            g = (byte)(dwnFactor2*(srcLine[x+1]/dwnFactor2));
-            r = (byte)(dwnFactor2*(srcLine[x+2]/dwnFactor2));
-            color = Color.FromArgb(r, g, b);
-            if (!h.ContainsKey(color)) h[color] = 1;
-            else h[color] += 1;
+              b = (byte)(dwnFactor2*(srcLine[x]/dwnFactor2));
+              g = (byte)(dwnFactor2*(srcLine[x+1]/dwnFactor2));
+              r = (byte)(dwnFactor2*(srcLine[x+2]/dwnFactor2));
+              color = Color.FromArgb(r, g, b);
+              if (!h.ContainsKey(color)) h[color] = 1;
+              else h[color] += 1;
+            }
           }
         }
-
-        srcBmp.UnlockBits(srcData);
-        dwnBmp.UnlockBits(dwnData);
+        finally
+        {
+          if (srcData != null) srcBmp.UnlockBits(srcData);
+          if (dwnBmp != null)  dwnBmp.UnlockBits(dwnData);
+        }
 
         // extract color for each histogram
-        if (secondHist.Count==0) secondHist = firstHist;
-        if (thirdHist.Count==0)  thirdHist  = secondHist;
-        if (bckHist.Count==0)    bckHist    = thirdHist;
+        var firstHist  = ts_FirstHist;
+        var secondHist = (ts_SecondHist.Count>0) ? ts_SecondHist : firstHist;
+        var thirdHist  = (ts_ThirdHist.Count>0) ? ts_ThirdHist : secondHist;
+        var bckHist    = (ts_BckHist.Count>0) ? ts_BckHist : thirdHist;
         var topColors = new[]
         {
           colorFromHist(firstHist),
@@ -217,6 +251,15 @@ namespace NFX.IO
       }
 
       return result;
+    }
+
+    public static Bitmap ModifyBitsPerBixel(Image img, PixelFormat format)
+    {
+      var bmp = new Bitmap(img.Width, img.Height, format);
+      using (var gr = Graphics.FromImage(bmp))
+        gr.DrawImage(img, new Rectangle(0, 0, img.Width, img.Height));
+
+      return bmp;
     }
 
     #region .pvt

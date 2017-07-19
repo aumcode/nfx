@@ -24,86 +24,62 @@ using NFX.Environment;
 
 namespace NFX.Instrumentation
 {
+  /// <summary>
+  /// Defines a base provider for InstrumentationService
+  /// </summary>
+  public abstract class InstrumentationProvider : Service<InstrumentationService>, IExternallyParameterized
+  {
+    #region .ctor
+    protected InstrumentationProvider(InstrumentationService director) : base(director) {}
+    #endregion
+
+    #region Public
     /// <summary>
-    /// Defines a base provider for InstrumentationService
+    /// Gets external parameter value returning true if parameter was found
     /// </summary>
-    public abstract class InstrumentationProvider : Service<InstrumentationService>, IExternallyParameterized
+    public virtual bool ExternalGetParameter(string name, out object value, params string[] groups) { return ExternalParameterAttribute.GetParameter(this, name, out value, groups); }
+
+    /// <summary>
+    /// Sets external parameter value returning true if parameter was found and set
+    /// </summary>
+    public virtual bool ExternalSetParameter(string name, object value, params string[] groups) { return ExternalParameterAttribute.SetParameter(this, name, value, groups); }
+    #endregion
+
+    #region Protected
+    protected internal virtual object BeforeBatch() { return null; }
+    protected internal virtual void AfterBatch(object batchContext) { }
+
+    protected internal virtual object BeforeType(Type type, object batchContext) { return null; }
+    protected internal virtual void AfterType(Type type, object batchContext, object typeContext) { }
+
+    protected internal abstract void Write(Datum aggregatedDatum, object batchContext, object typeContext);
+
+    protected override void DoConfigure(IConfigSectionNode node) { base.DoConfigure(node); }
+
+    protected void WriteLog(MessageType type, string message, string parameters = null, string from = null)
     {
-       #region .ctor
-
-        protected InstrumentationProvider(InstrumentationService director) : base(director)
+      App.Log.Write(
+        new Log.Message
         {
-
-        }
-       #endregion
-
-       #region Private Fields
-
-       #endregion
-
-
-        #region Public
-
-            public abstract void Write(Datum aggregatedDatum);
-
-
-          /// <summary>
-          /// Gets external parameter value returning true if parameter was found
-          /// </summary>
-          public virtual bool ExternalGetParameter(string name, out object value, params string[] groups)
-          {
-              return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-          }
-
-          /// <summary>
-          /// Sets external parameter value returning true if parameter was found and set
-          /// </summary>
-          public virtual bool ExternalSetParameter(string name, object value, params string[] groups)
-          {
-            return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-          }
-
-        #endregion
-
-        #region Protected
-            protected override void DoConfigure(IConfigSectionNode node)
-            {
-              base.DoConfigure(node);
-            }
-
-            protected void WriteLog(MessageType type, string message, string parameters = null, string from = null)
-            {
-              App.Log.Write(
-                                        new Log.Message
-                                        {
-                                          Text = message ?? string.Empty,
-                                          Type = type,
-                                          Topic = CoreConsts.INSTRUMENTATIONSVC_PROVIDER_TOPIC,
-                                          From = from,
-                                          Parameters = parameters ?? string.Empty
-                                        });
-            }
-
-
-        #endregion
-
-        #region Properties
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParameters{ get { return ExternalParameterAttribute.GetParameters(this); } }
-
-            /// <summary>
-            /// Returns named parameters that can be used to control this component
-            /// </summary>
-            public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-            {
-              return ExternalParameterAttribute.GetParameters(this, groups);
-            }
-
-        #endregion
-
-
+          Text = message ?? string.Empty,
+          Type = type,
+          Topic = CoreConsts.INSTRUMENTATIONSVC_PROVIDER_TOPIC,
+          From = from,
+          Parameters = parameters ?? string.Empty
+        });
     }
+    #endregion
+
+    #region Properties
+    /// <summary>
+    /// Returns named parameters that can be used to control this component
+    /// </summary>
+    public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParameters { get { return ExternalParameterAttribute.GetParameters(this); } }
+
+    /// <summary>
+    /// Returns named parameters that can be used to control this component
+    /// </summary>
+    public virtual IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups) { return ExternalParameterAttribute.GetParameters(this, groups); }
+    #endregion
+  }
 }

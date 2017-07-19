@@ -31,6 +31,7 @@
         <div class="fView" data-wv-fname="Various" data-wv-ctl="radio"></div>
         <div class="fView" data-wv-fname="Consent"></div>
         <div class="fView" data-wv-fname="Notes"></div>
+        <div class="fView" data-wv-fname="MNotes" data-wv-ctl="markdown"></div>
 
         Record-level errors:
          <div class="fView" data-wv-fname="#"></div>
@@ -97,7 +98,7 @@
          REC =  new WAVE.RecordModel.Record(
                                             {ID: 'R1',
                                              fields: [
-                                              {def: {Name: 'FirstName', Type: 'string', Required: true, DefaultValue: 'Bob', Placeholder: 'Your First Name', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Sunil'},
+                                              {def: {Name: 'FirstName', Type: 'string', Required: true, Size:12, DefaultValue: 'Bob', Placeholder: 'Your First Name', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Sunil'},
                                               {def: {Name: 'MiddleName', Type: 'string', Required: false, Placeholder: 'Your Middle Name', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Borman'},
                                               {def: {Name: 'LastName', Type: 'string', Required: true, DefaultValue: 'Dole', Case: WAVE.RecordModel.CASE_CAPS}, val: 'Buchan'},
                                               {def: {Name: 'NLSName', Type: 'string', Required: true, ControlType: 'nls'}, val: null},
@@ -106,7 +107,8 @@
                                               {def: {Name: 'Phone', Type: 'string', Kind: WAVE.RecordModel.KIND_TEL}, val: "(216) 292-1030"},
                                               {def: {Name: 'Registered', Type: 'bool'}, val: true},
                                               {def: {Name: 'Consent', Type: 'bool', Required: true}},
-                                              {def: {Name: 'Notes', Type: 'string', Size: 52, Required: true}, val: "Privet!"},
+                                              {def: {Name: 'Notes', Type: 'string', Size: 80, Required: true}, val: "Privet!"},
+                                              {def: {Name: 'MNotes', Type: 'string', Required: true}, val: "!Heading1"},
 
                                               {def: {Name: 'MusicType', Type: 'string', Case: WAVE.RecordModel.CASE_UPPER,
                                                      LookupDict: {HRK: "Hard Rock", CRK: "Classic Rock", RAP: "Rap", CMU: "Classical music"}}},
@@ -339,16 +341,16 @@
       border: 1px solid #e0e0e0;
     }
 
-      input[type=text]:focus, input[type=date]:focus, input[type=datetime]:focus, input[type=tel]:focus, select:focus {
-        background-color: #ffffc0;
-        border: 1px solid #808080;
-      }
+    input[type=text]:focus, input[type=date]:focus, input[type=datetime]:focus, input[type=tel]:focus, select:focus {
+      background-color: #ffffc0;
+      border: 1px solid #808080;
+    }
 
-      input[type=text]:disabled, input[type=date]:disabled, input[type=datetime]:disabled, input[type=tel]:disabled, select:disabled {
-        background-color: #e0e0e0;
-        color: #b0b0b0;
-        border: 1px solid #808080;
-      }
+    input[type=text]:disabled, input[type=date]:disabled, input[type=datetime]:disabled, input[type=tel]:disabled, select:disabled {
+      background-color: #e0e0e0;
+      color: #b0b0b0;
+      border: 1px solid #808080;
+    }
 
 
     .wvPuzzle {
@@ -358,11 +360,11 @@
       display: inline-block;
     }
 
-      .wvPuzzle .wvPuzzleHelp {
-        color: #909090;
-        font-size: 14px;
-        padding: 10px;
-      }
+    .wvPuzzle .wvPuzzleHelp {
+      color: #909090;
+      font-size: 14px;
+      padding: 10px;
+    }
 
       .wvPuzzle .wvPuzzleQuestion {
         color: #ff5070;
@@ -467,7 +469,57 @@
       -o-animation: fadein 0.25s;
       animation: fadein 0.25s;
     }
-  </style>
 
+    .wvTabsUl {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 4px;
+      max-width: 600px;
+    }
+
+    .wvTabsUl li {
+      border: 1px solid black;
+      padding: 4px;
+      cursor: pointer;
+      margin-right: 4px;
+      background-color: #f0f0f0;
+      display: inline;
+    }
+
+    .wvTabsActive {
+      border-bottom-color: #f0f0f0 !important;
+      cursor: default !important;
+    }
+
+    .wvTabsContentContainer {
+      width: 600px;
+      height: 300px;
+      border: 1px solid black;
+      padding: 5px;
+      background-color: #f0f0f0;
+    }
+
+    .wvTabsContentDiv {
+      background-color: white;
+      max-height: 100%;
+      height: 100%;
+      padding: 5px;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    .wvTabsContentDivHidden {
+      display: none;
+    }
+
+    .wvTabsContentDivShown {
+      display: block;
+    }
+
+    .wv-markup-b { font-weight: bold; }
+    .wv-markup-i { font-style: italic; }
+    .wv-markup-em { font-weight: bold; text-shadow: 0px 0px 10px #ffff00; }
+  </style>
 </body>
 </html>

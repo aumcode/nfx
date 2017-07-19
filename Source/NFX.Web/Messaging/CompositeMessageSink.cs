@@ -124,7 +124,9 @@ namespace NFX.Web.Messaging
       foreach (var sink in m_Sinks)
         try
         {
-          sent = sent || sink.SendMsg(msg);
+          var wasSentNow = sink.SendMsg(msg);
+
+          sent |= wasSentNow;
         }
         catch (Exception error)
         {

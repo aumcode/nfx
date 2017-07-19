@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace WinFormsTest
 {
@@ -97,14 +98,22 @@ namespace WinFormsTest
 
     private void processImage(string path, IDataObject data)
     {
+      const int CNT = 1000;
       try
       {
-        var start = DateTime.Now;
+        var sw = Stopwatch.StartNew();
 
         using (var bitmap = loadImage(path, data))
         {
           var normBitmap = (Bitmap)NFX.IO.ImageUtils.NormalizeCenteredImage(bitmap, 32, 32);
+
           var topColors = NFX.IO.ImageUtils.ExtractMainColors2Iter(normBitmap, 128, 24, 0.9F);
+          var start = sw.ElapsedMilliseconds;
+          for(var i=0; i<CNT; i++)
+           NFX.IO.ImageUtils.ExtractMainColors2Iter(normBitmap, 128, 24, 0.9F);
+          var end = sw.ElapsedMilliseconds;
+
+
           m_ImgNormalized.Image = normBitmap;
 
           var tcolor = topColors[0];
@@ -115,10 +124,9 @@ namespace WinFormsTest
           m_Color3.BackColor = Color.FromArgb(tcolor.R, tcolor.G, tcolor.B);
           tcolor = topColors[3];
           m_Color4.BackColor = Color.FromArgb(tcolor.R, tcolor.G, tcolor.B);
-        }
 
-        var end = DateTime.Now;
-        m_TxtElapsed.Text = string.Format("Elapsed: {0} ms", Math.Round((end-start).TotalMilliseconds, 4));
+          m_TxtElapsed.Text = string.Format("1 call: {0:n3} microseconds", (1000f * (end - start)) / (float)CNT);
+        }
       }
       catch (Exception ex)
       {

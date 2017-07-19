@@ -71,7 +71,7 @@ namespace NFX.ApplicationModel
             [NonSerialized]
             private object m_ItemsLock = new object();
 
-            private ConcurrentDictionary<object, object> m_Items;
+            private volatile ConcurrentDictionary<object, object> m_Items;
 
         #endregion
 

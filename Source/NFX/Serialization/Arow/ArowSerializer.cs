@@ -32,7 +32,7 @@ namespace NFX.Serialization.Arow
     public const string AROW_TARGET = "AROW-SERIALIZER";
 
     private static object s_Lock = new object();
-    private static Dictionary<Type, ITypeSerializationCore> s_Serializers = new Dictionary<Type, ITypeSerializationCore>();
+    private static volatile Dictionary<Type, ITypeSerializationCore> s_Serializers = new Dictionary<Type, ITypeSerializationCore>();
 
 
     public static void RegisterTypeSerializationCores(Assembly asm)

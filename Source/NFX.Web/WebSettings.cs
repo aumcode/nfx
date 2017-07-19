@@ -72,6 +72,9 @@ namespace NFX.Web
               {
                 s_Instance.ConfigChanged(null);
                 NFX.App.Instance.RegisterConfigSettings(s_Instance);
+
+                System.Threading.Thread.MemoryBarrier();
+
                 s_RegisteredAppId = NFX.App.InstanceID;
               }
           }

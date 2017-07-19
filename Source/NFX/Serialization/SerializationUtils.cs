@@ -21,6 +21,8 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Linq.Expressions;
+using System.Threading;
+
 using NFX.Serialization.JSON;
 
 namespace NFX.Serialization
@@ -45,7 +47,7 @@ namespace NFX.Serialization
 
 
              //20150201 Added caching
-             private static Dictionary<Type, Func<object>> s_CreateFuncCache = new Dictionary<Type, Func<object>>();
+             private static volatile Dictionary<Type, Func<object>> s_CreateFuncCache = new Dictionary<Type, Func<object>>();
 
         /// <summary>
         /// Create new object instance for type, calling default ctor
@@ -77,9 +79,9 @@ namespace NFX.Serialization
              else
                f = () => FormatterServices.GetUninitializedObject(type);
 
-             var cache = new Dictionary<Type, Func<object>>(s_CreateFuncCache);
+             var cache = new Dictionary<Type, Func<object>>( s_CreateFuncCache );
              cache[type] = f;
-             s_CreateFuncCache = cache;//atomic
+             s_CreateFuncCache = cache;
            }
 
            return f();
@@ -87,7 +89,7 @@ namespace NFX.Serialization
 
 
                 //20150124 Added caching
-                private static Dictionary<Type, FieldInfo[]> s_FieldCache = new Dictionary<Type, FieldInfo[]>();
+                private static volatile Dictionary<Type, FieldInfo[]> s_FieldCache = new Dictionary<Type, FieldInfo[]>();
                 private static FieldInfo[] getGetSerializableFields(Type type)
                 {
                     //20140926 DKh +DeclaredOnly
@@ -274,14 +276,6 @@ namespace NFX.Serialization
             }
             idxs[di]=top;
         }
-
-
-
-
-
-
-
-
 
     }
 }

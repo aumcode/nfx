@@ -390,7 +390,7 @@ namespace NFX.Wave.Instrumentation
   /// How many geo lookups have been requested
   /// </summary>
   [Serializable]
-  [BSONSerializable("4CCCE6C8-6E87-4410-B78E-5CA017F36BAE")]
+  [BSONSerializable("85B8D099-46B7-4B6F-BC87-BA3DC2B9E2DA")]
   public class GeoLookup : WaveLongGauge
   {
     internal GeoLookup(string src, long value) : base(src, value) { }

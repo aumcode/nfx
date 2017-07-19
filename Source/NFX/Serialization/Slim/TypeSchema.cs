@@ -602,7 +602,7 @@ namespace NFX.Serialization.Slim
        private SlimFormat m_Format;
 
        private object m_DictLock = new object();
-       private Dictionary<Type, TypeDescriptor> m_Dict = new Dictionary<Type,TypeDescriptor>();
+       private volatile Dictionary<Type, TypeDescriptor> m_Dict = new Dictionary<Type,TypeDescriptor>();
 
 
                        private TypeDescriptor getTypeDescriptorCachedOrMake(Type tp)

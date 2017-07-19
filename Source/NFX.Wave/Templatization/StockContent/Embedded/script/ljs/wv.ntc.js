@@ -135,6 +135,7 @@ WAVE.RecordModel = (function(){
         CTL_TP_ERROR_REC:   "error-rec",
         CTL_TP_ERROR_SUMMARY:  "error-summary",
         CTL_TP_CHAIN_SELECTOR: "chain-selector",
+        CTL_TP_MARKDOWN: "markdown",
 
         KIND_TEXT:  'text',
         KIND_SCREENNAME:  'screenname',

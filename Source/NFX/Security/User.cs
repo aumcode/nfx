@@ -29,10 +29,52 @@ using System.Runtime.Serialization;
 namespace NFX.Security
 {
       /// <summary>
+      /// Marker interface denoting entities that represents information about users
+      /// depending on the particular security system implementation
+      /// </summary>
+      public interface IIdentityDescriptor
+      {
+        /// <summary>
+        /// Represents identity of the descriptor such as User.ID, User.GDID etc.
+        /// Specifics depend on the system
+        /// </summary>
+        object IdentityDescriptorID { get; }
+
+        /// <summary>
+        /// Provides descriptor name such as User.Name, User.ScreenName etc.
+        /// </summary>
+        string IdentityDescriptorName { get; }
+
+        /// <summary>
+        /// Denotes types of identities: Users, Groups etc.
+        /// </summary>
+        IdentityType IdentityDescriptorType { get; }
+      }
+
+      /// <summary>
+      /// Represents information about user identity
+      /// </summary>
+      public struct UserIdentityDescriptor : IIdentityDescriptor
+      {
+        public UserIdentityDescriptor(object id, string name)
+        {
+          m_IdentityDescriptorID   = id;
+          m_IdentityDescriptorName = name;
+        }
+
+        private object m_IdentityDescriptorID;
+        private string m_IdentityDescriptorName;
+
+        public object IdentityDescriptorID { get { return m_IdentityDescriptorID; } }
+        public string IdentityDescriptorName { get { return m_IdentityDescriptorName; } }
+        public IdentityType IdentityDescriptorType { get { return IdentityType.User; } }
+      }
+
+      /// <summary>
       /// Provides base user functionality. Particular security manager implementations may return users derived from this class
       /// </summary>
       [Serializable]
-      public class User : IIdentity, IPrincipal, IDeserializationCallback
+      public class User : IIdentityDescriptor, IIdentity, IPrincipal, IDeserializationCallback
       {
         #region Static
           private static readonly User s_FakeUserInstance = new User(BlankCredentials.Instance,
@@ -231,8 +273,18 @@ namespace NFX.Security
 
     #endregion
 
+    #region IIdentityDescriptor
+
+        public virtual string IdentityDescriptorName { get { return this.Name; } }
+
+        public virtual object IdentityDescriptorID { get { return AuthToken; } }
+
+        public virtual IdentityType IdentityDescriptorType { get { return IdentityType.User; } }
+
+    #endregion
+
     #region IDeserializationCallback
-        public void OnDeserialization(object sender)
+    public void OnDeserialization(object sender)
         {
             //Re-authorizes user re-fetches Rights (Rights are not serializable)
             App.SecurityManager.Authenticate(this);

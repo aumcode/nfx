@@ -39,9 +39,31 @@ namespace NFX.DataAccess.MongoDB
         public const string SCRIPT_FILE_SUFFIX = ".mon.json";
     #endregion
 
+    #region STATIC
+        public static void CheckCRUDResult(Connector.CRUDResult result, string schema, string operation)
+        {
+          if (result.WriteErrors == null ||
+              result.WriteErrors.Length == 0) return;
+
+          var dump = NFX.Serialization.JSON.JSONWriter.Write(result.WriteErrors, Serialization.JSON.JSONWritingOptions.PrettyPrint);
+
+          string kv = null;
+          KeyViolationKind kvKind = KeyViolationKind.Unspecified;
+
+          if (result.WriteErrors[0].Code == 11000)
+          {
+            kv = result.WriteErrors[0].Message;
+            kvKind = kv.IndexOf("_id") > 0 ? KeyViolationKind.Primary : KeyViolationKind.Secondary;
+          }
+
+
+          throw new MongoDBDataAccessException(StringConsts.OP_CRUD_ERROR.Args(operation, schema, dump), kvKind, kv);
+        }
+    #endregion
+
     #region .ctor/.dctor
 
-      public MongoDBDataStore() : base()
+    public MongoDBDataStore() : base()
       {
         m_QueryResolver = new QueryResolver(this);
         m_Converter = new RowConverter();
@@ -335,7 +357,7 @@ namespace NFX.DataAccess.MongoDB
 
           var result = collection.Insert(doc);
 
-          checkCRUDResult(result, row.Schema.Name, "insert");
+          CheckCRUDResult(result, row.Schema.Name, "insert");
 
           return result.TotalDocumentsAffected;
         }
@@ -350,7 +372,7 @@ namespace NFX.DataAccess.MongoDB
 
           var result = collection.Save(doc);
 
-          checkCRUDResult(result, row.Schema.Name, "upsert");
+          CheckCRUDResult(result, row.Schema.Name, "upsert");
 
           return result.TotalDocumentsAffected;
         }
@@ -380,7 +402,7 @@ namespace NFX.DataAccess.MongoDB
 
           var result = collection.Update( upd );
 
-          checkCRUDResult(result, row.Schema.Name, "update");
+          CheckCRUDResult(result, row.Schema.Name, "update");
 
           return result.TotalDocumentsAffected;
         }
@@ -398,7 +420,7 @@ namespace NFX.DataAccess.MongoDB
 
           var result = collection.Delete( new Connector.DeleteEntry( qry, Connector.DeleteLimit.OnlyFirstMatch) );
 
-          checkCRUDResult(result, row.Schema.Name, "delete");
+          CheckCRUDResult(result, row.Schema.Name, "delete");
 
           return result.TotalDocumentsAffected;
         }
@@ -418,27 +440,6 @@ namespace NFX.DataAccess.MongoDB
 
         return result;
       }
-
-      private void checkCRUDResult(Connector.CRUDResult result, string schema, string operation)
-      {
-        if (result.WriteErrors==null ||
-            result.WriteErrors.Length==0) return;
-
-        var dump = NFX.Serialization.JSON.JSONWriter.Write(result.WriteErrors, Serialization.JSON.JSONWritingOptions.PrettyPrint);
-
-        string kv = null;
-        KeyViolationKind kvKind = KeyViolationKind.Unspecified;
-
-        if (result.WriteErrors[0].Code==11000)
-        {
-          kv = result.WriteErrors[0].Message;
-          kvKind =  kv.IndexOf("_id")>0 ? KeyViolationKind.Primary : KeyViolationKind.Secondary;
-        }
-
-
-        throw new MongoDBDataAccessException(StringConsts.OP_CRUD_ERROR.Args(operation, schema, dump), kvKind, kv);
-      }
-
 
     #endregion
 

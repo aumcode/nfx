@@ -104,7 +104,7 @@ namespace NFX.Glue.Instrumentation
   }
 
   [Serializable]
-  [BSONSerializable("D9604EFA-DBB6-4C6E-B0D4-E9B24D4B386D")]
+  [BSONSerializable("CD8C6236-BC02-4B83-8925-D5C6AE4318AD")]
   public class ServerBytesReceived : ServerGauge, INetInstrument
   {
     protected ServerBytesReceived(string src, long value) : base(src, value) { }
@@ -428,7 +428,7 @@ namespace NFX.Glue.Instrumentation
   }
 
   [Serializable]
-  [BSONSerializable("91F9555D-32AF-4F96-B279-1AC2DD2AC6C6")]
+  [BSONSerializable("DFFB5E98-B80E-40AE-9AA9-6EB5AD143638")]
   public class ClientTotalBytesSent : ClientGauge, INetInstrument
   {
     protected ClientTotalBytesSent(string src, long value) : base(src, value) { }

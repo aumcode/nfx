@@ -97,40 +97,19 @@ namespace NFX.Security
 
 
        /// <summary>
-       /// Extracts values for archive dimensions to store the log message for the specified user.
+       /// Extracts values for archive dimensions to store the log message for the specified user descriptor.
+       /// Depending on the system descriptor represents an entity that describes user (e.g. User, UserInfo, etc.).
        /// The method only fills the fields specific to user identity
        /// </summary>
-       IConfigSectionNode GetUserLogArchiveDimensions(User user);
+       IConfigSectionNode GetUserLogArchiveDimensions(IIdentityDescriptor identity);
 
        /// <summary>
        /// Logs security-related message
        /// </summary>
+       /// <param name="action">Action that was performed</param>
        /// <param name="msg">A message to log</param>
-       /// <param name="user">If msg.ArchiveDim is not set, sets to  GetUserLogArchiveDimensions(user | currentCallContext)</param>
-       void LogSecurityMessage(Message msg, User user = null);
-    }
-
-    /// <summary>
-    /// Defines what events should be logged by the system
-    /// </summary>
-    [Flags]
-    public enum SecurityLogMask
-    {
-      Off = 0,
-
-      Custom               = 1 << 0,
-      AuthenticationsOK    = 1 << 1,
-      AuthenticationsError = 1 << 2,
-
-      AuthorizationsOK     = 1 << 3,
-      AuthorizationsError  = 1 << 4,
-
-      GateErrors           = 1 << 5,
-      Login                = 1 << 6,
-      Logout               = 1 << 7,
-      LoginChange          = 1 << 8,
-
-      All = -1
+       /// <param name="identity">If msg.ArchiveDim is not set, sets to  GetUserLogArchiveDimensions(user | currentCallContext)</param>
+       void LogSecurityMessage(SecurityLogAction action, Message msg, IIdentityDescriptor identity = null);
     }
 
 

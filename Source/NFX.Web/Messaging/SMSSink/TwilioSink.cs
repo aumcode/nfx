@@ -82,13 +82,14 @@ namespace NFX.Web.Messaging
       var from = Uri.EscapeDataString(From);
       var body = Uri.EscapeDataString(msg.Body);
       var auth = HDR_AUTHORIZATION_TOKEN.Args(AuthorizationKey);
-      var sent = false;
+      var wasSent = false;
       foreach (var addressee in addressees)
       {
         var to = Uri.EscapeDataString(addressee.ChannelAddress);
         try
         {
-          sent = sent || doCall(from, to, body, auth);
+          var wasSentNow = doCall(from, to, body, auth);
+          wasSent |= wasSentNow;
         }
         catch (Exception error)
         {
@@ -96,7 +97,7 @@ namespace NFX.Web.Messaging
           Log(MessageType.Error, "{0}.DoSendMsg(msg): {1}".Args(this.GetType().FullName, et), et);
         }
       }
-      return sent;
+      return wasSent;
     }
 
 

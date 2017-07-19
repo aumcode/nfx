@@ -54,13 +54,11 @@ namespace NFX.Wave
     {
       get
       {
-         lock(s_Lock)
-         {
-           if (s_Instance==null)
-             throw new WaveException(StringConsts.PORTAL_HUB_INSTANCE_IS_NOT_AVAILABLE_ERROR);
+         var result = s_Instance;
+         if (result==null)
+           throw new WaveException(StringConsts.PORTAL_HUB_INSTANCE_IS_NOT_AVAILABLE_ERROR);
 
-           return s_Instance;
-         }
+         return result;
       }
     }
 

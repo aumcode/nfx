@@ -74,7 +74,7 @@ namespace NFX.DataAccess.Erlang
     private Registry<Schema> m_CRUDSchemas = new Registry<Schema>();
 
 
-    internal volatile bool _NeedReconnect;
+    internal volatile bool m_NeedReconnect;
 
 
     public ErlDataStore Store{ get{ return m_Store;} }

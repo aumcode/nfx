@@ -187,7 +187,7 @@ namespace NFX.Web.Messaging
     {
       get
       {
-        throw new NotImplementedException();
+        return MsgChannels.EMail;
       }
     }
     #endregion

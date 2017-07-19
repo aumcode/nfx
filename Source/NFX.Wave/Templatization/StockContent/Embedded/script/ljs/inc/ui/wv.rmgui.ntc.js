@@ -71,6 +71,7 @@ WAVE.RecordModel.GUI = (function () {
                 type=?ctx.tp
                 name=?ctx.name
                 disabled=?ctx.disabled
+                maxlength=?ctx.maxlength
                 readonly=?ctx.readonly
                 value=?ctx.value
                 placeholder=?ctx.placeholder
@@ -104,7 +105,7 @@ WAVE.RecordModel.GUI = (function () {
             tp: itp,
             name: field.name(),
             disabled: field.isEnabled() ? "" : "disabled",
-            maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
+            maxlength: field.size() <= 0 ? "" : field.size(),
             readonly: field.readonly() ? "readonly" : "",
             value: field.isNull()? "" : field.displayValue(),
             placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
@@ -162,7 +163,7 @@ WAVE.RecordModel.GUI = (function () {
             id: idInput,
             name: field.name(),
             disabled: field.isEnabled() ? "" : "disabled",
-            maxlength: field.size() <= 0 ? "" : "maxlength="+field.size(),
+            maxlength: field.size() <= 0 ? "" : field.size(),
             readonly: field.readonly() ? "readonly" : "",
             value: field.isNull()? "" : field.displayValue(),
             placeholder: WAVE.strEmpty(field.placeholder()) ? "" : field.placeholder(),
@@ -619,6 +620,96 @@ WAVE.RecordModel.GUI = (function () {
           fldView.PUZZLE = pk;
         }
 
+        function renderMDEText(root, ctx) {
+          /***
+          textarea {
+            id=?ctx.id
+            name=?ctx.name
+
+            on-change=ctx.handler
+            style='width:100%;height:100%;max-width:100%;max-height:100%;'
+          }
+          ***/
+        }
+
+        function buildMarkdownEditor(fldView) {
+          var field = fldView.field(),
+              divRoot = fldView.DIV(),
+              genIdKey = "@#$MD_EDITOR_GEN_ID$#@",
+              ids = WAVE.get(fldView, genIdKey, null);
+
+          if (ids === null) {
+            ids = genIDSeed(fldView);
+            fldView[genIdKey] = ids;
+          }
+
+          var ve = field.validationError();
+          if (fldView.__ve && !ve) {
+            var divErrorParent = fldView.__ve.parentNode;
+            if (divErrorParent) divErrorParent.removeChild(fldView.__ve);
+            fldView.__ve = null;
+          };
+
+          if (!fldView.__tabs || (ve && !fldView.__ve)) {
+            var idMDEText = "mde_text" + ids,
+                idMDETextContainer = "divMDETextContainer" + ids,
+                idMDEPreview = "mde_preview" + ids,
+                tabMDEText = "tMDEText" + ids,
+                tabMDEPreview = "tMDEPreview" + ids;
+
+            WAVE.removeChildren(divRoot);
+
+            var labelCls = (field.required() ? published.CLS_REQ : "") +" "+ (field.isGUIModified() ? published.CLS_MOD : "");
+            var label = "*** label=?field.about() {for=?idMDEText class=?labelCls }***";
+            divRoot.appendChild(label);
+
+            if (ve !== null) {
+                var error = "*** div=?ve { class='?published.CLS_ERROR' } ***";
+                divRoot.appendChild(error);
+                fldView.__ve = error;
+            }
+
+            var tabsContainer = WAVE.ce("div");
+            divRoot.appendChild(tabsContainer);
+
+            var tabs = new WAVE.GUI.Tabs({
+              DIV: tabsContainer,
+              tabs: [
+                {
+                  name: tabMDEText,
+                  title: 'Text',
+                  content: "*** div {div {id=?idMDETextContainer style='height:100%;'}} ***".innerHTML,
+                },
+                {
+                  name: tabMDEPreview,
+                  title: 'Preview',
+                  content: "*** div{ div{id=?idMDEPreview }} ***".innerHTML,
+                  isHtml: true
+                }
+              ]
+            });
+
+            fldView.__tabs = tabs;
+
+            var text = renderMDEText(idMDETextContainer,
+                                    {id: idMDEText,
+                                     name: field.name(),
+                                     handler: editorChangeHandler});
+            text.innerText = field.value();
+
+            tabs.eventBind(WAVE.GUI.EVT_TABS_TAB_CHANGED, function (sender, args) {
+              if (args === tabMDEPreview)
+                sender.tabContent(tabMDEPreview, WAVE.markup(WAVE.id(idMDEText).value));
+            });
+
+            function editorChangeHandler(e) {
+              var target = e.target,
+                  val = target.value;
+              field.setGUIValue(val);
+            }
+          }
+        }
+
         function renderErrorRec(root, ctx) {
           /***
             div=?ctx.error {
@@ -654,8 +745,6 @@ WAVE.RecordModel.GUI = (function () {
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHAIN_SELECTOR)) { ensureField(fldView, ct); buildChainSelector(fldView); }
           else
-          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_CHECK))    { ensureField(fldView, ct); buildCheck(fldView);}
-          else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_RADIO))    { ensureField(fldView, ct); buildRadioGroup(fldView);}
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_NLS))      { ensureField(fldView, ct); buildPSEditor(fldView);}
@@ -668,6 +757,8 @@ WAVE.RecordModel.GUI = (function () {
                WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_TEXTAREA) ||
                WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_SCRIPT)
              )                                                    { ensureField(fldView, ct); buildTextArea(fldView);}
+          else
+          if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_MARKDOWN)) { ensureField(fldView, ct); buildMarkdownEditor(fldView);}
           else
           if (WAVE.strSame(ct, WAVE.RecordModel.CTL_TP_HIDDEN))   { ensureField(fldView, ct); buildHidden(fldView);}
           else

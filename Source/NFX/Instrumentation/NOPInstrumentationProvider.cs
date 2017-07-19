@@ -23,24 +23,15 @@ using NFX.Log;
 
 namespace NFX.Instrumentation
 {
-    /// <summary>
-    /// Represents a provider that does nothing
-    /// </summary>
-    public class NOPInstrumentationProvider : InstrumentationProvider
-    {
-       #region .ctor
+  /// <summary>
+  /// Represents a provider that does nothing
+  /// </summary>
+  public class NOPInstrumentationProvider : InstrumentationProvider
+  {
+    #region .ctor
+    public NOPInstrumentationProvider(InstrumentationService director) : base(director) {}
+    #endregion
 
-        public NOPInstrumentationProvider() : base(null)
-        {
-
-        }
-       #endregion
-
-
-
-        public override void Write(Datum aggregatedDatum)
-        {
-        }
-
-    }
+    protected internal override void Write(Datum aggregatedDatum, object batchContext, object typeContext) {}
+  }
 }

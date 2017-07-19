@@ -197,6 +197,7 @@
     <Compile Include="GuidTypeResolver.cs" />
     <Compile Include="IEndableInstance.cs" />
     <Compile Include="Instrumentation\BaseGauges.cs" />
+    <Compile Include="Instrumentation\CompositeInstrumentationProvider.cs" />
     <Compile Include="IO\ImageUtils.cs" />
     <Compile Include="Log\IArchiveLoggable.cs" />
     <Compile Include="Instrumentation\SelfInstruments.cs" />

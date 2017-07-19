@@ -28,7 +28,7 @@ namespace NFX.NUnit.Integration.Glue
     const string CONFIG_STR = @"
 nfx
 {
-	disk-root=$'c:\nfx\'
+	disk-root=$(~NFX_TEST_ROOT)\
 	log-root=$(\$disk-root)
 	log-csv='NFX.Log.Destinations.CSVFileDestination, NFX'
 	debug-default-action='Log,Throw'

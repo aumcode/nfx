@@ -36,28 +36,29 @@ namespace NFX.Web.Messaging
   /// <summary>
   /// Base for ALL implementations that work under MailerService
   /// </summary>
-  public abstract class MessageSink : Service<MessageService>, IMessageSink, IConfigurable
+  public abstract class MessageSink : ServiceWithInstrumentationBase<MessageService>, IMessageSink, IConfigurable
   {
     private const string LOG_TOPIC = "Messaging.MessageSink";
 
     protected MessageSink(MessageService director) : base(director)
     {
-      m_ErrorHandlingMode = SendMessageErrorHandling.Throw;
-    }
 
-    private SendMessageErrorHandling m_ErrorHandlingMode;
+    }
 
     #region Properties
 
+    [Config]
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_MESSAGING, CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION)]
+    public override bool InstrumentationEnabled{ get; set;}
+
     public abstract MsgChannels SupportedChannels { get; }
 
-    public virtual IEnumerable<string> SupportedChannelNames { get { return new string[] { Name }; } }
+    public virtual IEnumerable<string> SupportedChannelNames { get { yield return Name; } }
 
-    public SendMessageErrorHandling ErrorHandlingMode
-    {
-      get { return m_ErrorHandlingMode; }
-      set { m_ErrorHandlingMode = value; }
-    }
+
+    [Config]
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_MESSAGING)]
+    public SendMessageErrorHandling ErrorHandlingMode{ get ; set; }
 
     #endregion
 
@@ -73,7 +74,8 @@ namespace NFX.Web.Messaging
 
       var sent = DoSendMsg(msg);
       if (!sent && ErrorHandlingMode == SendMessageErrorHandling.Throw)
-        throw new WebException(StringConsts.SENDING_MESSAGE_IS_NOT_SUCCEDED);
+        throw new WebException(StringConsts.SENDING_MESSAGE_HAS_NOT_SUCCEEDED.Args(Name));
+
       return sent;
     }
 

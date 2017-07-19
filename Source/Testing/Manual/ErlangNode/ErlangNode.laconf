@@ -5,16 +5,16 @@
 
 nfx
 {
-    log-root=$"c:\nfx\"
+    log-root=$(~NFX_TEST_ROOT)\
     app-name="test-erl"
     log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
     log-debug="NFX.Log.Destinations.DebugDestination, NFX"
     debug-default-action="LogAndThrow"
-	   
+
     starters {
         starter{ name="Erlang" type="NFX.Erlang.ErlApp" }
     }
-  
+
     erlang
     {
         short-name=true
@@ -27,25 +27,25 @@ nfx
             tcp-no-delay=true
             tcp-rcv-buf-size=4096
             tcp-snd-buf-size=4096
-        }	
+        }
 
         node="r@localhost" {
             tcp-no-delay=false
             tcp-rcv-buf-size=100000
             tcp-snd-buf-size=100000
         }
-    }   
+    }
 
     log
-    { 
+    {
         name="Logger"
 
         destination
-        {  
+        {
             type="$(/$log-debug)"
             name="$(/$app-name)-debug"
             levels="-TraceZ | Warning-"
-            path=$(/$log-root) 
+            path=$(/$log-root)
             file-name="{0:yyyyMMdd}-$($name).csv.log"
         }
     }

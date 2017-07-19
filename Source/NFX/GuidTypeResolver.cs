@@ -58,7 +58,7 @@ namespace NFX
       return result;
     }
 
-    private static Dictionary<Type, GuidTypeAttribute> s_Cache = new Dictionary<Type, GuidTypeAttribute>();
+    private static volatile Dictionary<Type, GuidTypeAttribute> s_Cache = new Dictionary<Type, GuidTypeAttribute>();
     private static A getGuidTypeAttributeCore<A>(Type type) where A : GuidTypeAttribute
     {
       GuidTypeAttribute result;

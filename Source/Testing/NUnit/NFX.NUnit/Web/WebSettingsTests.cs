@@ -33,7 +33,7 @@ namespace NFX.NUnit.Web
     [Test]
     public void SocialInstantiation()
     {
-      var conf = @"nfx { web-settings { social {  
+      var conf = @"nfx { web-settings { social {
         provider {type='NFX.Web.Social.GooglePlus, NFX.Web' client-code='111111111111' client-secret='a1111111111-a11111111111' web-service-call-timeout-ms='20000' keep-alive='false' pipelined='false'}
         provider {type='NFX.Web.Social.Facebook, NFX.Web' client-code='1111111111111111' client-secret='a1111111111111111111111111111111' app-accesstoken='a|111111111111111111111111111111111111111111'}
         provider {type='NFX.Web.Social.Twitter, NFX.Web' client-code='a111111111111111111111' client-secret='a11111111111111111111111111111111111111111'}
@@ -57,7 +57,7 @@ namespace NFX.NUnit.Web
     [Test]
     public void SocialProviderProperties()
     {
-      var conf = @"nfx { web-settings { social {  
+      var conf = @"nfx { web-settings { social {
         provider {type='NFX.Web.Social.GooglePlus, NFX.Web' client-code='111111111111' client-secret='a1111111111-a11111111111' web-service-call-timeout-ms='20000' keep-alive='false' pipelined='false'}
         provider {type='NFX.Web.Social.Facebook, NFX.Web' client-code='1111111111111111' client-secret='a1111111111111111111111111111111' app-accesstoken='a|111111111111111111111111111111111111111111'}
 } } }".AsLaconicConfig();
@@ -84,12 +84,12 @@ namespace NFX.NUnit.Web
     public void ServicePointManagerTest()
     {
       var conf = @"
-      nfx 
-      { 
-        web-settings 
-        { 
-          service-point-manager 
-          { 
+      nfx
+      {
+        web-settings
+        {
+          service-point-manager
+          {
 
             check-certificate-revocation-list=true //false
             default-connection-limit=4 //2
@@ -99,12 +99,12 @@ namespace NFX.NUnit.Web
             max-service-point-idle-time=90000 //100000
             max-service-points=10 //0
             security-protocol=Tls12 //Ssl3, Tls
-            use-nagle-algorithm=true 
+            use-nagle-algorithm=true
 
-            service-point 
-            { 
-              uri='https://footest.com' 
-  
+            service-point
+            {
+              uri='https://footest.com'
+
               connection-lease-timeout=2300 // -1
               ConnectionLimit=7 //4
               expect-100-continue=false //True
@@ -113,9 +113,9 @@ namespace NFX.NUnit.Web
               use-nagle-algorithm=false //True
             }
 
-            service-point 
-            { 
-              uri='https://footest_a.com' 
+            service-point
+            {
+              uri='https://footest_a.com'
             }
 
             policy
@@ -126,8 +126,8 @@ namespace NFX.NUnit.Web
                 case { uri='https://footest_a.com'}
               }
             }
-          } 
-        } 
+          }
+        }
       }".AsLaconicConfig();
 
       using (new NFX.ApplicationModel.ServiceBaseApplication(new string[] {}, conf))

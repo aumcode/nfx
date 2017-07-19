@@ -62,20 +62,10 @@ namespace NFX.ServiceModel
 
                 protected override void Destructor()
                 {
-                    if (m_Disposing) return;
+                   SignalStop();
+                   WaitForCompleteStop();
 
-                    m_Disposing = true;
-                    try
-                    {
-                        SignalStop();
-                        WaitForCompleteStop();
-
-                        base.Destructor();
-                    }
-                    finally
-                    {
-                      m_Disposing = false;
-                    }
+                   base.Destructor();
                 }
 
 
@@ -83,11 +73,10 @@ namespace NFX.ServiceModel
 
         #region Private Fields
 
-            private volatile bool m_Disposing;
-
             private object m_StatusLock = new object();
-
             private volatile ControlStatus m_Status;
+
+            private volatile bool m_PendingWaitingStop;
 
             [Config]
             private string m_Name;
@@ -122,7 +111,11 @@ namespace NFX.ServiceModel
             /// </summary>
             public bool Running
             {
-                get { return m_Status == ControlStatus.Active || m_Status == ControlStatus.Starting; }
+                get
+                {
+                  var status = m_Status;
+                  return status == ControlStatus.Active || status == ControlStatus.Starting;
+                }
             }
 
             /// <summary>
@@ -235,7 +228,8 @@ namespace NFX.ServiceModel
             }
 
             /// <summary>
-            /// Blocks execution of current thread until this service has completely stopped
+            /// Blocks execution of current thread until this service has completely stopped.
+            /// This call must be performed by only 1 thread otherwise exception is thrown
             /// </summary>
             public void WaitForCompleteStop()
             {
@@ -245,7 +239,17 @@ namespace NFX.ServiceModel
 
                     if (m_Status != ControlStatus.Stopping) SignalStop();
 
-                    DoWaitForCompleteStop();
+                    if (m_PendingWaitingStop) throw new NFXException(StringConsts.SERVICE_INVALID_STATE + "{0}.{1}".Args(Name,"WaitForCompleteStop() already blocked"));
+
+                    m_PendingWaitingStop = true;
+                    try
+                    {
+                      DoWaitForCompleteStop();
+                    }
+                    finally
+                    {
+                      m_PendingWaitingStop = false;
+                    }
 
                     m_Status = ControlStatus.Inactive;
                 }

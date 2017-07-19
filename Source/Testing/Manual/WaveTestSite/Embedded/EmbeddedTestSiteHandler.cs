@@ -34,12 +34,12 @@ namespace WaveTestSite.Embedded
   {
     public EmbeddedTestSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
                           : base(dispatcher, name, order, match){}
-     
+
 
     public EmbeddedTestSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode)
                           : base(dispatcher, confNode) {}
-    
-    
+
+
     public override string RootResourcePath
     {
       get { return "WaveTestSite.Embedded"; }
@@ -59,11 +59,11 @@ namespace WaveTestSite.Embedded
     public string Name{ get { return "Count"; } }
 
     public void Perform(WorkContext context)
-    {              
+    {
       var from = context.Request.QueryString["from"].AsInt(1);
       var to   = context.Request.QueryString["to"].AsInt(10);
 
-      if (to-from>1000) to = from + 1000;//limit so no infinite loop possible 
+      if (to-from>1000) to = from + 1000;//limit so no infinite loop possible
 
       context.Response.ContentType = ContentType.TEXT;
       for(var i=from;i<=to;i++)

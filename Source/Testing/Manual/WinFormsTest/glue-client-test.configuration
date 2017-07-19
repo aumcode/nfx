@@ -1,6 +1,6 @@
 ﻿<!-- Comment-->
 <nfx
-       log-root="c:\nfx\"
+       log-root="$(~NFX_TEST_ROOT)\"
        log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
        log-debug="NFX.Log.Destinations.DebugDestination, NFX"
        debug-default-action="LogAndThrow"

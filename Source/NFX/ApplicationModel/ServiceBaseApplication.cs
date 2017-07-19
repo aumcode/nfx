@@ -71,12 +71,14 @@ namespace NFX.ApplicationModel
 
             try
             {
-                  m_CommandArgs = (cmdLineArgs ?? new MemoryConfiguration()).Root;
-                  m_ConfigRoot  = rootConfig ?? GetConfiguration().Root;
+                m_CommandArgs = (cmdLineArgs ?? new MemoryConfiguration()).Root;
+                m_ConfigRoot  = rootConfig ?? GetConfiguration().Root;
 
-                  InitApplication();
+                InitApplication();
 
-                  s_Instance = this;
+                //Assign s_Instance ONLY AFTER everything gets initialized properly
+                Thread.MemoryBarrier();//this is for clarity to signify the impossibility of re-ordering, s_Instance is volatile anyway;
+                s_Instance = this;
             }
             catch
             {
@@ -93,6 +95,9 @@ namespace NFX.ApplicationModel
          {
             base.Destructor();
             CleanupApplication();
+
+            //Anull s_Instance ONLY AFTER everything gets torn properly
+            Thread.MemoryBarrier();////this is for clarity to signify the impossibility of re-ordering, s_Instance is volatile anyway;
             s_Instance = null;
          }
       }
@@ -102,7 +107,7 @@ namespace NFX.ApplicationModel
 
     #region Fields
 
-      protected static ServiceBaseApplication s_Instance;
+      protected static volatile ServiceBaseApplication s_Instance;
 
       protected ConfigSectionNode m_CommandArgs;
 
@@ -112,16 +117,17 @@ namespace NFX.ApplicationModel
     #region Properties
 
       /// <summary>
-      /// References a singleton instance of BaseApplication
+      /// References a singleton instance of ServiceBaseApplication
       /// </summary>
       public static ServiceBaseApplication Instance
       {
         get
         {
-          if (s_Instance==null)
+          var result = s_Instance;
+          if (result==null)
             throw new NFXException(StringConsts.SVCAPP_INSTANCE_NULL_ERROR);
 
-          return s_Instance;
+          return result;
         }
       }
 

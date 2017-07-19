@@ -142,7 +142,7 @@ namespace NFX.Web.Messaging
         msg.MessageAddress.All.Where(a => SupportedChannelNames.Any(n => n.EqualsOrdIgnoreCase(a.ChannelName)));
 
       var from = new MailAddress(fa, fn);
-      var sent = false;
+      var wasSent = false;
       foreach (var addressee in addressees)
       {
         var to = new MailAddress(addressee.ChannelAddress, addressee.Name);
@@ -188,7 +188,7 @@ namespace NFX.Web.Messaging
           try
           {
             m_Smtp.Send(email);
-            sent = true;
+            wasSent = true;
           }
           catch (Exception error)
           {
@@ -198,7 +198,7 @@ namespace NFX.Web.Messaging
         }
       }
 
-      return sent;
+      return wasSent;
     }
 
     #endregion

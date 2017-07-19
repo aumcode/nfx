@@ -103,7 +103,6 @@ published.Details = function (init) {
     var target = e.target;
     var container = ((fMode === "modal") && (fDialog !== null)) ? fDialog.baseDIV() : fContentControl;
     if ((fDialog !== null && e.target === fDialog.baseDIV()) || !WAVE.isParentOf(container, target)) {
-      e.preventDefault();
       __hide();
     }
   }

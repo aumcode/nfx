@@ -180,8 +180,7 @@ namespace NFX.Glue
             {
               get
               {
-               var list = m_Transports;
-               return list;
+                return m_Transports;
               }
             }
 

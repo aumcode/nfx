@@ -62,12 +62,12 @@ namespace NFX.Security
     public Log.MessageType LogLevel { get; set;}
 
 
-    public Environment.IConfigSectionNode GetUserLogArchiveDimensions(User user)
+    public Environment.IConfigSectionNode GetUserLogArchiveDimensions(IIdentityDescriptor identity)
     {
       return null;
     }
 
-    public void LogSecurityMessage(Log.Message msg, User user = null)
+    public void LogSecurityMessage(SecurityLogAction action, Log.Message msg, IIdentityDescriptor identity = null)
     {
 
     }

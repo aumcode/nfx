@@ -115,7 +115,7 @@ namespace NFX.DataAccess.CRUD.Subscriptions
       private Registry<Subscription> m_Subscriptions = new Registry<Subscription>();
 
       private LinkedList<CRUDSubscriptionEvent> m_Buffer = new LinkedList<CRUDSubscriptionEvent>();
-      private volatile int m_BufferCapacity;
+      private int m_BufferCapacity;
     #endregion
 
     #region Events/Props

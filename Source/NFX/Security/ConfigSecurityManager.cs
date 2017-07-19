@@ -95,26 +95,28 @@ namespace NFX.Security
 
     #region Public
 
-      public IConfigSectionNode GetUserLogArchiveDimensions(User user)
+      public IConfigSectionNode GetUserLogArchiveDimensions(IIdentityDescriptor identity)
       {
-        if (user==null) return null;
-        if (user.Status==UserStatus.Invalid) return null;
+        if (identity==null) return null;
+
         var cfg = new MemoryConfiguration();
         cfg.Create("ad");
-        cfg.Root.AddAttributeNode("un", user.Name);
+        cfg.Root.AddAttributeNode("un", identity.IdentityDescriptorName);
+
         return cfg.Root;
       }
 
-      public void LogSecurityMessage(Log.Message msg, User user = null)
+      public void LogSecurityMessage(SecurityLogAction action, Log.Message msg, IIdentityDescriptor identity = null)
       {
-        if ((LogMask & SecurityLogMask.Custom) == 0) return;
+        if ((LogMask & action.ToMask()) == 0) return;
         if (msg==null) return;
+        if (LogLevel > msg.Type) return;
         if (msg.ArchiveDimensions.IsNullOrWhiteSpace())
         {
-          if (user==null)
-            user = ExecutionContext.Session.User;
+          if (identity==null)
+            identity = ExecutionContext.Session.User;
 
-          msg.ArchiveDimensions = GetUserLogArchiveDimensions(user).ToLaconicString();
+          msg.ArchiveDimensions = GetUserLogArchiveDimensions(identity).ToLaconicString();
         }
 
         logSecurityMessage(msg);
@@ -249,6 +251,7 @@ namespace NFX.Security
 
       private void logSecurityMessage(Log.Message msg)
       {
+        msg.Channel = CoreConsts.LOG_CHANNEL_SECURITY;
         msg.From = "{0}.{1}".Args(GetType().Name, msg.From);
         App.Log.Write(msg);
       }

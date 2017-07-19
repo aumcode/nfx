@@ -97,6 +97,7 @@ namespace NFX
 
       public const string LOCALIZATION_TOPIC = "Localization";
 
+      public const string LOG_CHANNEL_SECURITY = "security";
 
       public const string ISO_LANG_ENGLISH = "eng";
       public const string ISO_LANG_RUSSIAN = "rus";

@@ -47,7 +47,7 @@ namespace NFX.Web.GeoLookup
     #region Static
 
       private static object s_InstanceLock = new object();
-      private static GeoLookupService s_Instance;
+      private static volatile GeoLookupService s_Instance;
 
 
       /// <summary>
@@ -62,17 +62,19 @@ namespace NFX.Web.GeoLookup
           {
             if (s_Instance==null)
             {
-              s_Instance = new GeoLookupService();
+              var result = new GeoLookupService();
               try
               {
-               s_Instance.Configure(null);
+                result.Configure(null);
               }
               catch
               {
-                s_Instance = null;
                 throw;
               }
-              Task.Factory.StartNew(()=>start(), TaskCreationOptions.LongRunning);
+
+              Task.Factory.StartNew(() => start(), TaskCreationOptions.LongRunning);
+
+              s_Instance = result;
             }
             return s_Instance;
           }

@@ -174,7 +174,7 @@ namespace NFX.ApplicationModel.Pile.Instrumentation
   /// How many times put replaced existing object in cache
   /// </summary>
   [Serializable]
-  [BSONSerializable("85B3755A-3C0D-4079-8E8C-01B10A3F0613")]
+  [BSONSerializable("E73361E0-DCD3-4557-A44B-E89F5EB9733A")]
   public class CachePutReplace : CacheLongGauge
   {
     internal CachePutReplace(string src, long value) : base(src, value) { }

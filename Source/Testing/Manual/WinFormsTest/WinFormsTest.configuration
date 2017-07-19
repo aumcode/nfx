@@ -1,6 +1,6 @@
 ﻿<!-- Comment-->
 <nfx
-       log-root="c:\nfx\"
+       log-root="$(~NFX_TEST_ROOT)\"
        log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
        log-debug="NFX.Log.Destinations.DebugDestination, NFX"
        log-mongo="NFX.Log.Destinations.MongoDBDestination, NFX.MongoDB"
@@ -195,7 +195,7 @@
         <provider name="Disk Object Store Provider"
                   type="NFX.ApplicationModel.Volatile.FileObjectStoreProvider"
                   load-limit="0"
-                  root-path="c:\nfx\"
+                  root-path="$(~NFX_TEST_ROOT)\"
 
             />
 

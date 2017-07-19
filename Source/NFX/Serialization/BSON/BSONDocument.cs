@@ -42,7 +42,7 @@ namespace NFX.Serialization.BSON
 
     public TemplateArg(BSONElement element)
     {
-      if (element==null && element.IsArrayElement)
+      if (element==null || element.IsArrayElement)
         throw new BSONException(StringConsts.ARGUMENT_ERROR+"TemplateArg.ctor(element==null|IsArrayElement)");
 
       Name = element.Name;

@@ -208,6 +208,7 @@ namespace NFX.Wave
       private NameValuePair[] m_AbsentHeaders;
       private bool? m_IsLocal;
       private bool? m_IsSocialNetBot;
+      private bool? m_IsSearchCrawler;
       private int?  m_ApiMinVer;
       private int?  m_ApiMaxVer;
       private IEnumerable<Permission> m_Permissions;
@@ -368,6 +369,13 @@ namespace NFX.Wave
       }
 
       [Config]
+      public bool? IsSearchCrawler
+      {
+        get { return m_IsSearchCrawler; }
+        set { m_IsSearchCrawler = value;}
+      }
+
+      [Config]
       public int? ApiMinVer
       {
         get { return m_ApiMinVer; }
@@ -413,6 +421,7 @@ namespace NFX.Wave
             !Check_Cookies(work) ||
             !Check_AbsentCookies(work) ||
             !Check_IsSocialNetBot(work) ||
+            !Check_IsSearchCrawler(work) ||
             !Check_Headers(work) ||
             !Check_AbsentHeaders(work) ||
             !Check_ApiVersions(work)
@@ -513,8 +522,15 @@ namespace NFX.Wave
       protected virtual bool Check_IsSocialNetBot(WorkContext work)
       {
         if (!m_IsSocialNetBot.HasValue) return true;
-        var isBot = Web.Social.SocialNetwork.IsAnySocialNetBotUserAgent(work.Request.UserAgent);
+        var isBot = Web.Crawlers.IsAnySocialNetBotUserAgent(work.Request.UserAgent);
         return m_IsSocialNetBot == isBot;
+      }
+
+      protected virtual bool Check_IsSearchCrawler(WorkContext work)
+      {
+        if (!m_IsSearchCrawler.HasValue) return true;
+        var isBot = Web.Crawlers.IsAnySearchCrawler(work.Request.UserAgent);
+        return m_IsSearchCrawler == isBot;
       }
 
       protected virtual bool Check_VariablesAndGetValues(WorkContext work, ref JSONDataMap result)

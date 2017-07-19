@@ -45,8 +45,6 @@ namespace NFX.ApplicationModel
 
      protected NOPApplication()
      {
-        ApplicationModel.ExecutionContext.__SetApplicationLevelContext(this, null, null, NOPSession.Instance);
-
         m_Configuration = new MemoryConfiguration();
         m_Configuration.Create();
 

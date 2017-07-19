@@ -175,6 +175,7 @@ namespace NFX.Environment
                         throw new ConfigException(StringConsts.CONFIGURATION_SCRIPT_TARGET_CONFIGURATION_MUST_BE_EMPTY_ERROR);
 
                     target.Root.Name = source.Root.Name;
+                    target.Root.Value = source.Root.Value;
                     CloneAttributes(source.Root, target.Root);
                     DoNode(sw, source.Root, target.Root);
                }

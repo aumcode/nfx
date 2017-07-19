@@ -232,7 +232,7 @@ namespace NFX
               var atr = prop.GetCustomAttributes(typeof(ExternalParameterAttribute), false).FirstOrDefault() as ExternalParameterAttribute;
               if (atr==null) continue;
 
-              if (groups!=null & groups.Length>0)
+              if (groups!=null && groups.Length>0)
               {
                 if (atr.Groups==null) continue;
                 if (!atr.Groups.Intersect(groups).Any()) continue;

@@ -58,16 +58,12 @@ namespace NFX.Instrumentation
             /// <summary>
             /// Creates a instrumentation service instance
             /// </summary>
-            public InstrumentationService() : base(null)
-            {
-            }
+            public InstrumentationService() : base(null) {}
 
             /// <summary>
             /// Creates a instrumentation service instance
             /// </summary>
-            public InstrumentationService(object director) : base(director)
-            {
-            }
+            public InstrumentationService(object director) : base(director) {}
 
 
         #endregion
@@ -238,6 +234,10 @@ namespace NFX.Instrumentation
               }
             }
 
+            [Config(Default = MessageType.Warning)]
+            [ExternalParameter]
+            public MessageType LogLevel { get; set; }
+
         #endregion
 
 
@@ -389,20 +389,13 @@ namespace NFX.Instrumentation
 
 
         #region Protected
-
-
             protected override void DoConfigure(NFX.Environment.IConfigSectionNode node)
             {
               try
               {
                 base.DoConfigure(node);
 
-                m_Provider = FactoryUtils.MakeAndConfigure(node[CONFIG_PROVIDER_SECTION]) as InstrumentationProvider;
-
-                if (m_Provider == null)
-                  throw new NFXException("Provider is null");
-
-                m_Provider.__setComponentDirector(this);
+                m_Provider = FactoryUtils.MakeAndConfigure(node[CONFIG_PROVIDER_SECTION], typeof(NOPInstrumentationProvider), new[] { this }) as InstrumentationProvider;
               }
               catch (Exception error)
               {
@@ -410,11 +403,9 @@ namespace NFX.Instrumentation
               }
             }
 
-
-
             protected override void DoStart()
             {
-              log(MessageType.Info, "Entering DoStart()", null);
+              Log(MessageType.Info, "Entering DoStart()", null);
 
               try
               {
@@ -453,16 +444,16 @@ namespace NFX.Instrumentation
 
                 m_ResultBuffer = null;
 
-                log(MessageType.CatastrophicError, "DoStart() exception: " + error.Message, null);
+                Log(MessageType.CatastrophicError, "DoStart() exception: " + error.Message, null);
                 throw error;
               }
 
-             log(MessageType.Info, "Exiting DoStart()", null);
+             Log(MessageType.Info, "Exiting DoStart()", null);
           }
 
             protected override void DoSignalStop()
             {
-              log(MessageType.Info, "Entering DoSignalStop()", null);
+              Log(MessageType.Info, "Entering DoSignalStop()", null);
 
               try
               {
@@ -474,16 +465,16 @@ namespace NFX.Instrumentation
               }
               catch (Exception error)
               {
-                log(MessageType.CatastrophicError, "DoSignalStop() exception: " + error.Message, null);
+                Log(MessageType.CatastrophicError, "DoSignalStop() exception: " + error.Message, null);
                 throw error;
               }
 
-              log(MessageType.Info, "Exiting DoSignalStop()", null);
+              Log(MessageType.Info, "Exiting DoSignalStop()", null);
             }
 
             protected override void DoWaitForCompleteStop()
             {
-              log(MessageType.Info, "Entering DoWaitForCompleteStop()", null);
+              Log(MessageType.Info, "Entering DoWaitForCompleteStop()", null);
 
               try
               {
@@ -499,11 +490,11 @@ namespace NFX.Instrumentation
               }
               catch (Exception error)
               {
-                log(MessageType.CatastrophicError, "DoWaitForCompleteStop() exception: " + error.Message, null);
+                Log(MessageType.CatastrophicError, "DoWaitForCompleteStop() exception: " + error.Message, null);
                 throw error;
               }
 
-              log(MessageType.Info, "Exiting DoWaitForCompleteStop()", null);
+              Log(MessageType.Info, "Exiting DoWaitForCompleteStop()", null);
             }
 
 
@@ -522,22 +513,30 @@ namespace NFX.Instrumentation
                           throw new NFXException(StringConsts.SERVICE_INVALID_STATE + msg);
                 }
 
-
-                private void log(MessageType type, string message, string parameters)
+                public Guid Log(MessageType type,
+                                string from,
+                                string message,
+                                Exception error = null,
+                                Guid? relatedMessageID = null,
+                                string parameters = null)
                 {
-                  App.Log.Write(
-                          new Log.Message
-                          {
-                            Text = message ?? string.Empty,
-                            Type = type,
-                            From = this.Name,
-                            Topic = CoreConsts.INSTRUMENTATIONSVC_TOPIC,
-                            Parameters = parameters ?? string.Empty
-                          }
-                        );
+                  if (type < LogLevel) return Guid.Empty;
+
+                  var logMessage = new Message
+                  {
+                    Topic = "term",
+                    Text = message ?? string.Empty,
+                    Type = type,
+                    From = "{0}.{1}".Args(this.GetType().Name, from),
+                    Exception = error,
+                    Parameters = parameters
+                  };
+                  if (relatedMessageID.HasValue) logMessage.RelatedTo = relatedMessageID.Value;
+
+                  App.Log.Write(logMessage);
+
+                  return logMessage.Guid;
                 }
-
-
 
                 private void threadSpin()
                 {
@@ -560,10 +559,10 @@ namespace NFX.Instrumentation
                      }
                      catch(Exception e)
                      {
-                         log(MessageType.Emergency, " threadSpin() leaked exception", e.Message);
+                         Log(MessageType.Emergency, " threadSpin() leaked exception", e.Message);
                      }
 
-                     log(MessageType.Info, "Exiting threadSpin()", null);
+                     Log(MessageType.Info, "Exiting threadSpin()", null);
                 }
 
                 //adds data that described this very instance
@@ -612,56 +611,81 @@ namespace NFX.Instrumentation
 
                 private void write()
                 {
-                  foreach(var tvp in m_TypeBucketed)
+                  try
                   {
-                    if (!App.Available) break;
-                    foreach(var svp in tvp.Value)
+                    var ctxBatch = m_Provider.BeforeBatch();
+                    foreach (var tvp in m_TypeBucketed)
                     {
-                      if (!App.Available) break;
-
-                      var bag = svp.Value;
-                      Datum datum = null;
-                      if (bag.TryPeek(out datum))
+                      if (!Running) break;
+                      try
                       {
-                        Datum aggregated = null;
-
-                        try
+                        var ctxType = m_Provider.BeforeType(tvp.Key, ctxBatch);
+                        foreach (var svp in tvp.Value)
                         {
-                           var lst = new List<Datum>();
-                           Datum elm;
-                           while(bag.TryTake(out elm))
-                           {
-                             lst.Add(elm);
-                             Interlocked.Decrement(ref m_RecordCount);
-                           }
+                          if (!Running) break;
 
-                           aggregated = datum.Aggregate(lst);
-                        }
-                        catch(Exception error)
-                        {
-                          var et = error.ToMessageWithType();
-                          log(MessageType.Error, string.Format("{0}.Aggregate(IEnumerable<Datum>) leaked {1}",
-                                                                datum.GetType().FullName,
-                                                                et), et);
-                        }
+                          var bag = svp.Value;
+                          Datum datum = null;
+                          if (bag.TryPeek(out datum))
+                          {
+                            Datum aggregated = null;
 
-                        try
-                        {
-                          if (aggregated!=null)
-                            m_Provider.Write(aggregated);
-                        }
-                        catch(Exception error)
-                        {
-                          var et = error.ToMessageWithType();
-                          log(MessageType.CatastrophicError, string.Format("{0}.Write(datum) leaked {1}",
-                                                                m_Provider.GetType().FullName,
-                                                                et), et);
-                        }
+                            try
+                            {
+                              var lst = new List<Datum>();
+                              Datum elm;
+                              while (bag.TryTake(out elm))
+                              {
+                                lst.Add(elm);
+                                Interlocked.Decrement(ref m_RecordCount);
+                              }
 
-                        if (aggregated!=null) bufferResult(aggregated);
+                              aggregated = datum.Aggregate(lst);
+                            }
+                            catch (Exception error)
+                            {
+                              var et = error.ToMessageWithType();
+                              Log(MessageType.Error, string.Format("{0}.Aggregate(IEnumerable<Datum>) leaked {1}",
+                                                                    datum.GetType().FullName,
+                                                                    et), et);
+                            }
 
-                      }//if
+                            try
+                            {
+                              if (aggregated != null)
+                                m_Provider.Write(aggregated, ctxBatch, ctxType);
+                            }
+                            catch (Exception error)
+                            {
+                              var et = error.ToMessageWithType();
+                              Log(MessageType.CatastrophicError, string.Format("{0}.Write(datum) leaked {1}",
+                                                                    m_Provider.GetType().FullName,
+                                                                    et), et);
+                            }
+
+                            if (aggregated != null) bufferResult(aggregated);
+
+                          }//if
+                        }
+                        m_Provider.AfterType(tvp.Key, ctxBatch, ctxType);
+
+                      }
+                      catch (Exception error)
+                      {
+                        var et = error.ToMessageWithType();
+                        Log(MessageType.CatastrophicError, string.Format("{0}.BeforeType() leaked {1}",
+                                                              m_Provider.GetType().FullName,
+                                                              et), et);
+                      }
                     }
+                    m_Provider.AfterBatch(ctxBatch);
+                  }
+                  catch(Exception error)
+                  {
+                    var et = error.ToMessageWithType();
+                    Log(MessageType.CatastrophicError, string.Format("{0}.BeforeBatch() leaked {1}",
+                                                          m_Provider.GetType().FullName,
+                                                          et), et);
                   }
                 }
 

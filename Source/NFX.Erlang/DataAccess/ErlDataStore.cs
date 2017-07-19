@@ -462,7 +462,7 @@ namespace NFX.DataAccess.Erlang
       {
         var correlate = Guid.NewGuid();
 
-        var log = !m_Map._NeedReconnect;
+        var log = !m_Map.m_NeedReconnect;
 
         if (log)
           App.Log.Write(new Log.Message(null, file, line)
@@ -474,7 +474,7 @@ namespace NFX.DataAccess.Erlang
             RelatedTo = correlate
           });
 
-        m_Map._NeedReconnect = true;
+        m_Map.m_NeedReconnect = true;
 
         try
         {
@@ -545,12 +545,12 @@ namespace NFX.DataAccess.Erlang
 
           var result = m_Map;
 
-          if (result!=null && !result._NeedReconnect) return result;
+          if (result!=null && !result.m_NeedReconnect) return result;
 
           lock(m_MapSync)
           {
             result = m_Map;
-            if (result!=null && !result._NeedReconnect) return result;
+            if (result!=null && !result.m_NeedReconnect) return result;
 
             var bonjour = executeRPC(NFX_CRUD_MOD,
                                      NFX_BONJOUR_FUN,
@@ -590,7 +590,7 @@ namespace NFX.DataAccess.Erlang
                if (!m_Map.OriginalXMLContent.EqualsOrdSenseCase(xmlContent))
                  throw new ErlServerSchemaChangedException();
 
-              m_Map._NeedReconnect = false;
+              m_Map.m_NeedReconnect = false;
             }
             else
               throw new ErlDataAccessException(StringConsts.ERL_DS_INVALID_RESP_PROTOCOL_ERROR+"Bonjour(!ok)");

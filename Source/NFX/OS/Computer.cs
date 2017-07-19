@@ -152,8 +152,8 @@ namespace NFX.OS
       }
     }
 
-    private static bool m_IsMono = Type.GetType("Mono.Runtime") != null;
-    public static bool IsMono { get { return m_IsMono; } }
+    private static bool s_IsMono = Type.GetType("Mono.Runtime") != null;
+    public static bool IsMono { get { return s_IsMono; } }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     private class MEMORYSTATUSEX

@@ -83,7 +83,7 @@ namespace NFX
       /// </summary>
       public bool DisposeStarted
       {
-        get { return m_DisposeStarted != 0; }
+        get { return Thread.VolatileRead(ref m_DisposeStarted) != 0; }
       }
 
       /// <summary>
@@ -110,7 +110,7 @@ namespace NFX
     /// </summary>
     public void EnsureObjectNotDisposed()
     {
-      if (m_DisposeStarted != 0 || m_Disposed)
+      if (DisposeStarted || m_Disposed)
         throw new DisposedObjectException(StringConsts.OBJECT_DISPOSED_ERROR+" {0}".Args(this.GetType().FullName));
     }
 

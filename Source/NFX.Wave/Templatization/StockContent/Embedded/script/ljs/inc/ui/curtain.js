@@ -24,10 +24,6 @@
 published.curtainOff = function(){
   if (fCurtains.length===0) return;
   var div = fCurtains[fCurtains.length-1];
-  if (typeof(div.__DIALOG)!==tUNDEFINED){
-    div.__DIALOG.cancel();
-    return;
-  }
 
   document.body.removeChild(div);
   WAVE.arrayDelete(fCurtains, div);

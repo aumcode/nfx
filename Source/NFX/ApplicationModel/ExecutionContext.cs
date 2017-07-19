@@ -39,10 +39,10 @@ namespace NFX.ApplicationModel
         [ThreadStatic]
         private static ISession ts_Session;
 
-        private static IApplication s_Application;
-        private static object s_Request;
-        private static object s_Response;
-        private static ISession s_Session;
+        private static volatile IApplication s_Application;
+        private static volatile object s_Request;
+        private static volatile object s_Response;
+        private static volatile ISession s_Session;
 
 
         /// <summary>

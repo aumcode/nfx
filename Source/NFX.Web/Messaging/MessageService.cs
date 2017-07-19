@@ -37,7 +37,7 @@ namespace NFX.Web.Messaging
   /// <summary>
   /// Provides implementation for IMessenger service
   /// </summary>
-  public sealed class MessageService : Service, IMessengerImplementation, IInstrumentable
+  public sealed class MessageService : ServiceWithInstrumentationBase<object>, IMessengerImplementation
   {
     #region CONSTS
 
@@ -53,7 +53,7 @@ namespace NFX.Web.Messaging
 
     #region .ctor and static/lifecycle
     private static object s_Lock = new object();
-    private static IMessengerImplementation s_Instance;
+    private static volatile IMessengerImplementation s_Instance;
 
     /// <summary>
     /// Returns a singleton instance of the default mailer
@@ -112,6 +112,13 @@ namespace NFX.Web.Messaging
     #endregion
 
     #region Properties
+
+    /// <summary>
+    /// Turns instrumentation on/off
+    /// </summary>
+    [Config(Default = false)]
+    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION, CoreConsts.EXT_PARAM_GROUP_MESSAGING)]
+    public override bool InstrumentationEnabled { get; set; }
 
     [Config(Default = DEFAULT_LOG_LEVEL)]
     [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_MESSAGING)]
@@ -265,44 +272,7 @@ namespace NFX.Web.Messaging
 
     #endregion
 
-    #region IInstrumentation
 
-    /// <summary>
-    /// Turns instrumentation on/off
-    /// </summary>
-    [Config(Default = false)]
-    [ExternalParameter(CoreConsts.EXT_PARAM_GROUP_INSTRUMENTATION, CoreConsts.EXT_PARAM_GROUP_WEB)]
-    public bool InstrumentationEnabled { get; set; }
-
-    /// <summary>
-    /// Returns named parameters that can be used to control this component
-    /// </summary>
-    public IEnumerable<KeyValuePair<string, Type>> ExternalParameters { get { return ExternalParameterAttribute.GetParameters(this); } }
-
-    /// <summary>
-    /// Returns named parameters that can be used to control this component
-    /// </summary>
-    public IEnumerable<KeyValuePair<string, Type>> ExternalParametersForGroups(params string[] groups)
-    {
-      return ExternalParameterAttribute.GetParameters(this, groups);
-    }
-
-    /// <summary>
-    /// Gets external parameter value returning true if parameter was found
-    /// </summary>
-    public bool ExternalGetParameter(string name, out object value, params string[] groups)
-    {
-      return ExternalParameterAttribute.GetParameter(this, name, out value, groups);
-    }
-
-    /// <summary>
-    /// Sets external parameter value returning true if parameter was found and set
-    /// </summary>
-    public bool ExternalSetParameter(string name, object value, params string[] groups)
-    {
-      return ExternalParameterAttribute.SetParameter(this, name, value, groups);
-    }
-    #endregion
 
     #region .pvt. impl.
     private Guid log(MessageType type,
@@ -420,17 +390,10 @@ namespace NFX.Web.Messaging
 
     private void dumpStats()
     {
-      Instrumentation.MessagingSinkCount.Record(Name, m_stat_MessagesCount);
-      m_stat_MessagesCount = 0;
-
-      Instrumentation.MessagingSinkErrorCount.Record(Name, m_stat_MessagesErrorCount);
-      m_stat_MessagesErrorCount = 0;
-
-      Instrumentation.MessagingFallbackCount.Record(Name, m_stat_FallbacksCount);
-      m_stat_FallbacksCount = 0;
-
-      Instrumentation.MessagingFallbackErrorCount.Record(Name, m_stat_FallbackErrorCount);
-      m_stat_FallbackErrorCount = 0;
+      Instrumentation.MessagingSinkCount         .Record(Name, Interlocked.Exchange(ref m_stat_MessagesCount, 0));
+      Instrumentation.MessagingSinkErrorCount    .Record(Name, Interlocked.Exchange(ref m_stat_MessagesErrorCount, 0));
+      Instrumentation.MessagingFallbackCount     .Record(Name, Interlocked.Exchange(ref m_stat_FallbacksCount, 0));
+      Instrumentation.MessagingFallbackErrorCount.Record(Name, Interlocked.Exchange(ref m_stat_FallbackErrorCount, 0));
     }
 
     private void statSendError()

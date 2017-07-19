@@ -328,7 +328,7 @@ namespace NFX.Wave
         set
         {
           m_DrainEntityBodyTimeoutSec = value;
-          if (m_Listener != null && m_Listener.IsListening)
+          if (m_Listener != null && m_Listener.IsListening && !OS.Computer.IsMono)
             m_Listener.TimeoutManager.DrainEntityBody = TimeSpan.FromSeconds(m_DrainEntityBodyTimeoutSec);
         }
       }
@@ -340,7 +340,7 @@ namespace NFX.Wave
         set
         {
           m_EntityBodyTimeoutSec = value;
-          if (m_Listener != null && m_Listener.IsListening)
+          if (m_Listener != null && m_Listener.IsListening && !OS.Computer.IsMono)
             m_Listener.TimeoutManager.EntityBody = TimeSpan.FromSeconds(m_EntityBodyTimeoutSec);
         }
       }
@@ -352,7 +352,7 @@ namespace NFX.Wave
         set
         {
           m_HeaderWaitTimeoutSec = value;
-          if (m_Listener != null && m_Listener.IsListening)
+          if (m_Listener != null && m_Listener.IsListening && !OS.Computer.IsMono)
             m_Listener.TimeoutManager.HeaderWait = TimeSpan.FromSeconds(m_HeaderWaitTimeoutSec);
         }
       }
@@ -364,7 +364,7 @@ namespace NFX.Wave
         set
         {
           m_IdleConnectionTimeoutSec = value;
-          if (m_Listener != null && m_Listener.IsListening)
+          if (m_Listener != null && m_Listener.IsListening && !OS.Computer.IsMono)
             m_Listener.TimeoutManager.IdleConnection = TimeSpan.FromSeconds(m_IdleConnectionTimeoutSec);
         }
       }
@@ -376,7 +376,7 @@ namespace NFX.Wave
         set
         {
           m_RequestQueueTimeoutSec = value;
-          if (m_Listener != null && m_Listener.IsListening)
+          if (m_Listener != null && m_Listener.IsListening && !OS.Computer.IsMono)
             m_Listener.TimeoutManager.RequestQueue = TimeSpan.FromSeconds(m_RequestQueueTimeoutSec);
         }
       }
@@ -388,7 +388,7 @@ namespace NFX.Wave
         set
         {
           m_MinSendBytesPerSecond = value;
-          if (m_Listener != null && m_Listener.IsListening)
+          if (m_Listener != null && m_Listener.IsListening && !OS.Computer.IsMono)
             m_Listener.TimeoutManager.MinSendBytesPerSecond = m_MinSendBytesPerSecond;
         }
       }

@@ -338,7 +338,7 @@ namespace NFX.DataAccess.CRUD
                 {
                     var attr = this[null];
 
-                    if (attr.NonUI)
+                    if (attr != null && attr.NonUI)
                     {
                       wri.Write("{}");
                       return;//nothing to write for NONUI
