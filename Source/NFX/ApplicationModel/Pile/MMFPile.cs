@@ -54,6 +54,7 @@ namespace NFX.ApplicationModel.Pile
 
 
     private string m_DataDirectoryRoot;
+    private NFX.Time.Event m_ManagerEvent;
 
 
     #region Properties
@@ -102,13 +103,14 @@ namespace NFX.ApplicationModel.Pile
 
     #region Protected
 
-
       protected override void DoStart()
       {
         if (!Directory.Exists(DataDirectoryRoot))
           throw new PileException(StringConsts.PILE_MMF_NO_DATA_DIRECTORY_ROOT_ERROR.Args(DataDirectoryRoot));
 
         Directory.CreateDirectory(DataDirectory);
+
+        readCurrentTypeRegistry();
 
         base.DoStart();
 
@@ -131,6 +133,19 @@ namespace NFX.ApplicationModel.Pile
         //1 thread since this is a io bound operation
         var segments = __getSegmentsAtStart();
         Task.Factory.StartNew( () => crawlSegmentsAtStart(segments), TaskCreationOptions.LongRunning);
+
+        m_ManagerEvent = new NFX.Time.Event(App.EventTimer,
+                                            interval: new TimeSpan(0, 0, 20),
+                                            enabled: true,
+                                            body: _ => AcceptManagerVisit(this, DateTime.UtcNow),
+                                            bodyAsyncModel: Time.EventBodyAsyncModel.AsyncTask){};
+      }
+
+      protected override void DoWaitForCompleteStop()
+      {
+        DisposeAndNull(ref m_ManagerEvent);
+        writeCurrentTypeRegistry();
+        base.DoWaitForCompleteStop();
       }
 
       /// <summary>
@@ -142,6 +157,29 @@ namespace NFX.ApplicationModel.Pile
         var result = new DefaultPileBase._segment(this, memory, true);
         return result;
       }
+
+      protected override void DoAcceptManagerVisit(object manager, DateTime managerNow)
+      {
+        base.DoAcceptManagerVisit(manager, managerNow);
+
+        try
+        {
+          writeCurrentTypeRegistry();
+        }
+        catch(Exception error)
+        {
+          App.Log.Write(new Log.Message
+            {
+              Type = Log.MessageType.Error,
+              Source = 2000,
+              Topic = CoreConsts.APPLICATION_TOPIC,
+              From = "MMFPile.DoAcceptManagerVisit()",
+              Text = "MMFPile Exception leaked from writeCurrentTypeRegistry(): {0}".Args(error.ToMessageWithType()),
+              Exception = error
+            });
+        }
+      }
+
     #endregion
 
     #region .pvt
@@ -202,6 +240,33 @@ namespace NFX.ApplicationModel.Pile
           {
             releaseWriteLock(segment);
           }
+        }
+      }
+
+      const string TREG_FILE = "pile-typereg";
+
+      private void readCurrentTypeRegistry()
+      {
+        var fn = Path.Combine(DataDirectory, TREG_FILE);
+        if (!File.Exists(fn)) return;
+
+        using(var fs = new FileStream(fn, FileMode.Open, FileAccess.Read))
+        {
+          var ser = new SlimSerializer();
+          var tr = ser.Deserialize(fs) as TypeRegistry;
+
+          m_CurrentTypeRegistry = tr;
+        }
+      }
+
+      private void writeCurrentTypeRegistry()
+      {
+        var fn = Path.Combine(DataDirectory, TREG_FILE);
+
+        using(var fs = new FileStream(fn, FileMode.Create, FileAccess.Write))
+        {
+          var ser = new SlimSerializer();
+          ser.Serialize(fs, m_CurrentTypeRegistry);
         }
       }
 

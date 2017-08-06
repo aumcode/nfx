@@ -41,7 +41,10 @@ namespace NFX
         public const string OBJECT_DISPOSED_ERROR =
             "Object was already disposed";
 
-         public const string OPERATION_NOT_SUPPORTED_ERROR =
+        public const string INTERNAL_SYSTEM_ERROR =
+            "Internal system error: ";
+
+        public const string OPERATION_NOT_SUPPORTED_ERROR =
             "Operation not supported: ";
 
         public const string LOGSVC_NODESTINATIONS_ERROR =
@@ -1152,9 +1155,11 @@ namespace NFX
     public const string BSON_DESERIALIZER_DFB_ERROR = "BSONSerializer DeserializeFromBSON() leaked: {0}";
     public const string BSON_SERIALIZER_STB_ERROR =   "BSONSerializer SerializeToBSON() leaked: {0}";
 
-    public const string GDID_BUFFER_ERROR =
+    public const string BSON_GDID_BUFFER_ERROR =
         "Error converting GDID data buffer: {0}";
 
+    public const string BSON_GUID_BUFFER_ERROR =
+        "Error converting GUID data buffer: {0}";
 
     public const string SECDB_FILE_HEADER_ERROR = "Eror while parsing the SecDB file header: ";
 

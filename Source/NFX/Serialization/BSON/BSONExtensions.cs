@@ -47,9 +47,9 @@ namespace NFX.Serialization.BSON
             else if (value is TimeSpan)     return document.Set(new BSONInt64Element(name, ((TimeSpan)value).Ticks));
             else if (value is BSONDocument) return document.Set(new BSONDocumentElement(name, (BSONDocument)value));
             else if (value is byte[])       return document.Set(new BSONBinaryElement(name, new BSONBinary(BSONBinaryType.GenericBinary, (byte[])value)));
-            throw new NotImplementedException();
+            throw new BSONException("BSONDocument.Add(not supported object type '{0}')".Args(value.GetType().Name));
           }
-        default: throw new NotImplementedException();
+        default: throw new BSONException("BSONDocument.Add(not supported object type '{0}')".Args(value.GetType().Name));
       }
     }
 

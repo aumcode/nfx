@@ -32,7 +32,7 @@ namespace NFX.Serialization.Slim
     /// Provides a registry of types, types that do not need to be described in a serialization stream
     /// </summary>
     [Serializable]
-    public class TypeRegistry : IEnumerable<Type>, ISerializable
+    public sealed class TypeRegistry : IEnumerable<Type>, ISerializable
     {
        #region COSNSTS
            /// <summary>

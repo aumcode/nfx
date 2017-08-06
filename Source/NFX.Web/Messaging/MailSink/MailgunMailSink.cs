@@ -137,8 +137,8 @@ namespace NFX.Web.Messaging
           addParameter(request.BodyParameters, MAIL_PARAM_SUBJECT, msg.Subject);
         if (msg.Body.IsNotNullOrWhiteSpace())
           addParameter(request.BodyParameters, MAIL_PARAM_TEXT, msg.Body);
-        if (msg.HTMLBody.IsNotNullOrWhiteSpace())
-          addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.HTMLBody);
+        if (msg.RichBody.IsNotNullOrWhiteSpace())
+          addParameter(request.BodyParameters, MAIL_PARAM_HTML, msg.RichBody);
 
         if (msg.Attachments != null)
         {

@@ -155,7 +155,7 @@ namespace NFX.Web.Messaging
 
           if (msg.BCC.IsNotNullOrWhiteSpace()) email.Bcc.Add(msg.BCC);
 
-          if (msg.HTMLBody.IsNullOrWhiteSpace())
+          if (msg.RichBody.IsNullOrWhiteSpace())
           {
             email.Body = msg.Body;
           }
@@ -164,12 +164,12 @@ namespace NFX.Web.Messaging
             if (msg.Body.IsNullOrWhiteSpace())
             {
               email.IsBodyHtml = true;
-              email.Body = msg.HTMLBody;
+              email.Body = msg.RichBody;
             }
             else
             {
               email.Body = msg.Body;
-              var alternateHTML = AlternateView.CreateAlternateViewFromString(msg.HTMLBody, new System.Net.Mime.ContentType(ContentType.HTML));
+              var alternateHTML = AlternateView.CreateAlternateViewFromString(msg.RichBody, new System.Net.Mime.ContentType(ContentType.HTML));
               email.AlternateViews.Add(alternateHTML);
             }
           }

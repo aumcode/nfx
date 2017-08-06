@@ -104,21 +104,32 @@ namespace NFX.Web.Messaging
     }
 
 
-    [Field(backendName: "tn", isArow: true)]  public string TOName{get;set;}
-    [Field(backendName: "cc", isArow: true)]  public string CC{get;set;}
-    [Field(backendName: "bcc", isArow: true)] public string BCC{get;set;}
+    [Field(backendName: "tn", isArow: true)]  public string TOName{ get; set; }
+    [Field(backendName: "cc", isArow: true)]  public string CC    { get; set; }
+    [Field(backendName: "bcc", isArow: true)] public string BCC   { get; set; }
 
-    [Field(backendName: "sb", isArow: true)] public string Subject{get;set;}
+    [Field(backendName: "sb", isArow: true)] public string Subject{ get; set; }
+
+
+    /// <summary>
+    /// Short text body
+    /// </summary>
+    [Field(backendName: "short", isArow: true)] public string ShortBody{ get; set; }
 
     /// <summary>
     /// Plain/text body
     /// </summary>
-    [Field(backendName: "txt", isArow: true)] public string Body{get;set;}
+    [Field(backendName: "plain", isArow: true)] public string Body{ get; set; }
 
     /// <summary>
-    /// HTML-formatted body
+    /// Rich-formatted body per content type
     /// </summary>
-    [Field(backendName: "html", isArow: true)] public string HTMLBody{get; set;}
+    [Field(backendName: "rich", isArow: true)] public string RichBody{ get; set; }
+
+    /// <summary>
+    /// Rich body content type
+    /// </summary>
+    [Field(backendName: "rctp", isArow: true)] public string RichBodyContentType{ get; set; }
 
     /// <summary>
     /// Collection of Attachments

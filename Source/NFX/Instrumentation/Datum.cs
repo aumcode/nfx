@@ -64,7 +64,7 @@ namespace NFX.Instrumentation
     #endregion
 
     #region Fields
-    protected string m_Source;
+    private string m_Source;
     protected int m_Count;
     protected DateTime m_UTCTime;
     protected DateTime m_UTCEndTime;
@@ -110,7 +110,7 @@ namespace NFX.Instrumentation
     /// <summary>
     /// Returns datum source. Data are rolled-up by type of recorded datum instances and source
     /// </summary>
-    public string Source
+    public virtual string Source
     {
       get { return m_Source ?? UNSPECIFIED_SOURCE; }
     }
@@ -261,7 +261,7 @@ namespace NFX.Instrumentation
         doc.Add(BSON_FLD_END_TIME, m_UTCEndTime);
 
       if ((serializer.Flags & BSONSerializationFlags.UIOnly) == 0)
-        doc.Add(BSON_FLD_SOURCE, m_Source);
+        doc.Add(BSON_FLD_SOURCE, Source);
     }
 
     public virtual void DeserializeFromBSON(BSONSerializer serializer, BSONDocument doc, ref object context)
@@ -302,7 +302,7 @@ namespace NFX.Instrumentation
 
       if (options != null && options.Purpose >= JSONSerializationPurpose.Marshalling)
       {
-        data["src"] = this.m_Source;
+        data["src"] = this.Source;
         data["aggr"] = this.IsAggregated;
         data["tp"] = this.GetType().FullName;
         data["descr"] = this.Description;

@@ -45,7 +45,7 @@ namespace WinFormsTest
             TOAddress = tbTOAddress.Text,
             Subject = tbSubject.Text,
             Body = tbBody.Text,
-            HTMLBody = tbHTML.Text
+            RichBody = tbHTML.Text
           };
 
           MessageService.Instance.SendMsg(message);

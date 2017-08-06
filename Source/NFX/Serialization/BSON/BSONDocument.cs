@@ -557,11 +557,13 @@ namespace NFX.Serialization.BSON
                     {
                         return RowConverter.Decimal_CLRtoBSON(name, (decimal)value);
                     }
-
                     else if (value is NFX.Financial.Amount)
                     {
                         return RowConverter.Amount_CLRtoBSON(name, (NFX.Financial.Amount)value);
                     }
+                    else if (value.GetType().IsEnum)
+                      bType = BSONElementType.String;
+
                     else throw new BSONException("Template JSON value type '{0}' not supported in BSON binding".Args(value.GetType()));
                 }
 

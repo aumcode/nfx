@@ -67,7 +67,7 @@ namespace NFX.Serialization.BSON
           { typeof(GDID),     (n, v) => GDID_CLRtoBSON(n, (GDID)v) },
           { typeof(DateTime), (n, v) => n != null ? new BSONDateTimeElement(n, (DateTime)v) : new BSONDateTimeElement((DateTime)v) },
           { typeof(TimeSpan), (n, v) => n != null ? new BSONInt64Element(n, ((TimeSpan)v).Ticks) : new BSONInt64Element(((TimeSpan)v).Ticks) },
-          { typeof(Guid),     (n, v) => n != null ? new BSONStringElement(n, ((Guid)v).ToString("N")) : new BSONStringElement(((Guid)v).ToString("N")) },
+          { typeof(Guid),     (n, v) => GUID_CLRtoBSON(n, (Guid)v) },
           { typeof(byte[]),   (n, v) => ByteBuffer_CLRtoBSON(n, (byte[])v ) },
 
           //nullable not needed here since they are not boxed(only actual value is boxed if it is not null)
@@ -92,7 +92,7 @@ namespace NFX.Serialization.BSON
           { typeof(GDID),     (v) => GDID_BSONtoCLR((BSONBinaryElement)v) },
           { typeof(DateTime), (v) => ((BSONDateTimeElement)v).Value },
           { typeof(TimeSpan), (v) => TimeSpan.FromTicks( ((BSONInt64Element)v).Value) },
-          { typeof(Guid),     (v) => ((BSONStringElement)v).Value.AsGUID(Guid.Empty, ConvertErrorHandling.Throw) },
+          { typeof(Guid),     (v) => GUID_BSONtoCLR((BSONBinaryElement)v) },
           { typeof(byte[]),   (v) => ((BSONBinaryElement)v).Value.Data },
           ////nullable are not needed, as BsonNull is handled already
         };
@@ -627,6 +627,17 @@ namespace NFX.Serialization.BSON
           return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement( bin);
         }
 
+        public static BSONElement GUID_CLRtoBSON(string name, Guid guid)
+        {
+          if (guid == Guid.Empty) return new BSONNullElement(name);
+          //As tested on Feb 27, 2015
+          //BinData works faster than string 8% and stores 40%-60% less data in index and data segment
+          //Also, SEQUENTIAL keys (big endian) yield 30% smaller indexes (vs non-sequential)
+          //ObjectId() is very similar if not identical to BinData(UserDefined)
+          var bin = new BSONBinary(BSONBinaryType.UUID, guid.ToByteArray());
+          return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement( bin);
+        }
+
         /// <summary>
         /// Encodes byte buffer purposed for id, using proper binary subtype
         /// </summary>
@@ -696,7 +707,23 @@ namespace NFX.Serialization.BSON
           }
           catch(Exception e)
           {
-            throw new BSONException(StringConsts.GDID_BUFFER_ERROR.Args(e.ToMessageWithType()), e);
+            throw new BSONException(StringConsts.BSON_GDID_BUFFER_ERROR.Args(e.ToMessageWithType()), e);
+          }
+        }
+
+        public static Guid GUID_BSONtoCLR(BSONBinaryElement el)
+        {
+          try
+          {
+            var val = el.Value;
+            if (val.Type != BSONBinaryType.UUID && val.Type != BSONBinaryType.UUIDOld)
+              throw new BSONException("type != BSONBinaryType.UUID");
+            var buf = val.Data;
+            return new Guid(buf);
+          }
+          catch(Exception e)
+          {
+            throw new BSONException(StringConsts.BSON_GUID_BUFFER_ERROR.Args(e.ToMessageWithType()), e);
           }
         }
 

@@ -83,6 +83,11 @@ namespace NFX.Web.Messaging
     /// </summary>
     public MessageService() : base(null) { }
 
+    /// <summary>
+    /// Constructs the directed service instance
+    /// </summary>
+    public MessageService(object director) : base(director) { }
+
     protected override void Destructor()
     {
       base.Destructor();

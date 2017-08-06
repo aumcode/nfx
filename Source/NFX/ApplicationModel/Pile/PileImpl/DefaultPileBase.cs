@@ -121,7 +121,12 @@ namespace NFX.ApplicationModel.Pile
 
       private void ctor()
       {
-         m_CurrentTypeRegistry = new TypeRegistry(
+        resetCurrentTypeRegistry();
+      }
+
+      private void resetCurrentTypeRegistry()
+      {
+        m_CurrentTypeRegistry = new TypeRegistry(
             TypeRegistry.BoxedCommonTypes,
             TypeRegistry.BoxedCommonNullableTypes,
             TypeRegistry.CommonCollectionTypes
@@ -148,8 +153,8 @@ namespace NFX.ApplicationModel.Pile
       private int[] m_FreeChunkSizes = DEFAULT_FREE_CHUNK_SIZES;
 
 
-      private object m_CurrentTypeRegistryLock = new object();
-      private volatile TypeRegistry m_CurrentTypeRegistry;
+      protected object m_CurrentTypeRegistryLock = new object();
+      protected volatile TypeRegistry m_CurrentTypeRegistry;
 
       private long m_stat_PutCount;
       private long m_stat_DeleteCount;
@@ -1130,6 +1135,7 @@ namespace NFX.ApplicationModel.Pile
         if (m_Identity>0)
           PileInstances._____Unregister(this);
 
+        resetCurrentTypeRegistry();
         m_Segments = null;
       }
 
@@ -1332,14 +1338,20 @@ namespace NFX.ApplicationModel.Pile
                ts_ReadSerializer = serializer;
             }
 
+            var failures = 0;
             while(Running)
               try
               {
+                stream.Position = 0;
                 return serializer.Deserialize(stream);
               }
               catch(SlimDeserializationException e)
               {
+                failures++;
                 if (!(e.InnerException is SlimInvalidTypeHandleException)) throw;
+
+                //safeguard which should never happen
+                if (failures>5) throw new PileException(StringConsts.INTERNAL_SYSTEM_ERROR+" DefaultPileBase.deser(while{catch}): "+e.ToMessageWithType(), e);
 
                 serializer = new SlimSerializer(m_CurrentTypeRegistry, SlimFormat.Instance);
                 serializer.Owner = this;
