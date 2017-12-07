@@ -80,8 +80,9 @@ namespace NFX.Erlang
       ExtendedPidsPorts   = 256, // pshaffer
       BitBinaries         = 1024,
       NewFloats           = 2048,
+      UTF8Atom            = 65536,
       Flags               = ExtendedReferences | ExtendedPidsPorts
-                          | BitBinaries | NewFloats | DistMonitor,  // pshaffer
+                          | BitBinaries | NewFloats | DistMonitor | UTF8Atom,  // pshaffer
     }
 
     internal const NodeType NTYPE  = NodeType.Ntype_R6;   // pshaffer
