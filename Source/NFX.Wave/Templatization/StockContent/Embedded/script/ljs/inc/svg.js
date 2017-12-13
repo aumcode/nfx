@@ -4,6 +4,10 @@
   var SVG_NS = "http://www.w3.org/2000/svg";
   var SVG_XLINK_NS = "http://www.w3.org/1999/xlink";
 
+  svg.createRoot = function () {
+    return document.createElementNS(SVG_NS, "svg");
+  };
+
   svg.createCircle = function (cx, cy, r, cfg) {
     cfg = cfg || {};
     cfg.cx = cx;

@@ -381,12 +381,13 @@ namespace NFX.DataAccess.MongoDB
         {
           var doc = convertRowToBSONDocumentWith_ID(row, "update", filter);
           var _id = doc[Connector.Protocol._ID];
+          
+          doc.Delete(Connector.Protocol._ID);
+          if (doc.Count == 0) return 0; // nothing to update
 
           //20160212 spol
           if (filter != null)
           {
-            doc.Delete(Connector.Protocol._ID);
-            if (doc.Count == 0) return 0; // nothing to update
             var wrapDoc = new BSONDocument();
             wrapDoc.Set(new BSONDocumentElement(Connector.Protocol.SET, doc));
             doc = wrapDoc;

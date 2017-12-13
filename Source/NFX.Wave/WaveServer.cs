@@ -99,7 +99,7 @@ namespace NFX.Wave
 
     #region Static
 
-      public static Registry<WaveServer> s_Servers = new Registry<WaveServer>();
+      private static Registry<WaveServer> s_Servers = new Registry<WaveServer>();
 
       /// <summary>
       /// Returns the global registry of all server instances that are active in this process

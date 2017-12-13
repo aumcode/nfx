@@ -72,7 +72,7 @@ namespace NFX.Instrumentation
 
       foreach (var dnode in node.Children.Where(n => n.Name.EqualsIgnoreCase(InstrumentationService.CONFIG_PROVIDER_SECTION)))
       {
-        var dest = FactoryUtils.MakeAndConfigure(dnode) as InstrumentationProvider;
+        var dest = FactoryUtils.MakeAndConfigure(dnode, args: new[] { ComponentDirector }) as InstrumentationProvider;
         this.RegisterProvider(dest);
       }
     }

@@ -87,6 +87,8 @@ published.addEventHandler = function(object, event, handler, useCapture) {
     object["on"+event] = handler;
 };
 
+published.aeh = published.addEventHandler;
+
 published.removeEventHandler = function(object, event, handler, useCapture) {
   if (typeof(object) === tUNDEFINED || object === null) return;
 
@@ -98,17 +100,40 @@ published.removeEventHandler = function(object, event, handler, useCapture) {
     object["on"+event] = null;
 };
 
+published.reh = published.removeEventHandler;
+
 published.id = function(id){
   return document.getElementById(id);
 };
 
 published.ce = function(tag){
+  if (tag === "svg") return WAVE.SVG.createRoot();
   return document.createElement(tag);
+};
+
+published.sa = function(el, name, value){
+  return el.setAttribute(name, value);
+};
+
+published.ra = function(el, name){
+  return el.removeAttribute(name);
+};
+
+published.ac = function(el, child){
+  return el.appendChild(child);
+};
+
+published.txt = function(el, text){
+  return el.innerText = text;
 };
 
 published.ctn = function (text) {
   return document.createTextNode(text);
 };
+
+published.body = function() {
+  return document.getElementsByTagName("body")[0];
+}
 
 published.getRadioGroupValue = function(groupName){
   var group = document.getElementsByName(groupName);

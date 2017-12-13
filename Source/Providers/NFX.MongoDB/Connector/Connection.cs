@@ -141,6 +141,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           EnsureObjectNotDisposed();
 
           if (fetchBy<=0) fetchBy = Cursor.DEFAULT_FETCH_BY;
+          if (fetchBy==1) fetchBy = 2; //if fetchBy == 1, then mongoDB closes cursor after query, so we cannot do GET_MOR
 
           if (selector==null) selector = query.ProjectionSelector;
 

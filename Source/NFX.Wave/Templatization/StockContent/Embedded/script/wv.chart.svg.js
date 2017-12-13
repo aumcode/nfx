@@ -58,13 +58,13 @@ WAVE.Chart.SVG = (function () {
 
   published.DataType = { NUMBER: 0, DATE: 1 };
 
-  published.ChartType = { POINT: 0x01, LINE: 0x02, SPLINE: 0x04, LINE_SQUARE: 0x08, SPLINE_SQUARE: 0x10, BAR: 0x20 };
+  published.ChartType = { POINT: 0x01, LINE: 0x02, SPLINE: 0x04, LINE_SQUARE: 0x08, SPLINE_SQUARE: 0x10, BAR: 0x20, STEP: 0x40, STEP_SQUARE: 0x80 };
   published.SquareFillType = { TOP: 0x01, BOTTOM: 0x02 };
   published.PointType = { NONE: 0, CIRCLE: 1, RECT: 2, TRI: 3};
   published.RectSide = { LEFT: 0, TOP: 1, RIGHT: 2, BOTTOM: 3 };
   published.RectCorner = { LEFTTOP: 0, RIGHTTOP: 1, LEFTBOTTOM: 2, RIGHTBOTTOM: 3 };
 
-  published.AxisMarkType = { AUTO: 0, EXACT_BY_POINTS: 1, CUSTOM: 2 };
+  published.AxisMarkType = { AUTO: 0, EXACT_BY_POINTS: 1, CUSTOM: 2, BY_STEP: 3 };
 
   var MINUTE_SECONDS = 60;
   var HOUR_SECONDS = 60 * 60;
@@ -83,35 +83,43 @@ WAVE.Chart.SVG = (function () {
 
   function mathLog10(x) { return Math.log(x) / Math.LN10; }
 
+
+  // store and calculate data for transformation between data set values (d) and screen coordinates (v)
   published.dvInfo = function (_d0, _d1, _v0, _v1, _isLinear) {
 
+    // attrinute that data is datetime
     var fIsDate = _d0 instanceof Date;
     this.isDate = function() { return fIsDate; };
 
+    // start point of data
     var fd0 = _d0;
     this.d0 = function (val) {
       if (typeof (val) !== tUNDEFINED) fd0 = val;
       return fd0;
     };
 
+    // end point of data
     var fd1 = _d1;
     this.d1 = function (val) {
       if (typeof (val) !== tUNDEFINED) fd1 = val;
       return fd1;
     };
 
+    // start point of screen coordinates
     var fv0 = _v0;
     this.v0 = function (val) {
       if (typeof (val) !== tUNDEFINED) fv0 = val;
       return fv0;
     };
 
+    // end point of screen coordinates
     var fv1 = _v1;
     this.v1 = function (val) {
       if (typeof (val) !== tUNDEFINED) fv1 = val;
       return fv1;
     };
 
+    // attribute that scale is linear or logarithmic
     var fIsLinear = _isLinear;
     this.isLinear = function (val) {
       if (typeof (val) !== tUNDEFINED) fIsLinear = val;
@@ -119,7 +127,9 @@ WAVE.Chart.SVG = (function () {
     };
 
 
-    if (_isLinear) {
+    // transformation data set values (d) to/from screen coordinates (v)
+    // with ratio: (d1-d0)/(v1-v0)=(d-d0)/(v-v0)
+    if (_isLinear) { // linear scale
 
       var dPerV;
 
@@ -138,7 +148,7 @@ WAVE.Chart.SVG = (function () {
           return (_d0 + (v - _v0) * dPerV);
         };
       }
-    } else {
+    } else { //logarithmic scale
 
       var lgd0;
       var lgd1;
@@ -165,10 +175,13 @@ WAVE.Chart.SVG = (function () {
     }
   };
 
+  // overrides toString()
   published.dvInfo.prototype.toString = function () {
     return "(d0=" + this.d0() + ",d1=" + this.d1() + ") (v0=" + this.v0() + ",v1=" + this.v1() + ")" + " isLinear=" + this.isLinear();
   };
 
+
+  // base class for axes
   published.Axis = function (chart, cfg) {
     var self = this;
 
@@ -176,17 +189,20 @@ WAVE.Chart.SVG = (function () {
 
     cfg = cfg || {};
 
+    // reference to parent chart
     this.chart = function () { return chart; };
 
+    // defines axis data type (number or datetime)
     var fDataType = cfg.dataType || published.DataType.NUMBER;
     this.dataType = function (val) {
-      if (typeof (val) !== tUNDEFINED && val !== fDataType) {
+      if (typeof(val) !== tUNDEFINED && val !== fDataType) {
         fDataType = val;
         self.fireChanged();
       }
       return fDataType;
     };
 
+    // sets/returns min value for axis
     var fMin = cfg.min || null;
     this.min = function(val) {
       if (typeof(val) !== tUNDEFINED && val !== fMin) {
@@ -196,6 +212,7 @@ WAVE.Chart.SVG = (function () {
       return fMin;
     };
 
+    // sets/returns max value for axis
     var fMax = cfg.max || null;
     this.max = function(val) {
       if (typeof(val) !== tUNDEFINED && val !== fMax) {
@@ -205,6 +222,7 @@ WAVE.Chart.SVG = (function () {
       return fMax;
     };
 
+    // sets/returns shift left along the axis
     var fMinMargin = cfg.minMargin || 0;
     this.minMargin = function(val) {
       if (typeof(val) !== tUNDEFINED && $.isNumeric(val) && val !== fMinMargin) {
@@ -214,6 +232,7 @@ WAVE.Chart.SVG = (function () {
       return fMinMargin;
     };
 
+    // sets/returns shift right along the axis
     var fMaxMargin = cfg.maxMargin || 0;
     this.maxMargin = function(val) {
       if (typeof(val) !== tUNDEFINED && $.isNumeric(val) && val !== fMaxMargin) {
@@ -223,6 +242,7 @@ WAVE.Chart.SVG = (function () {
       return fMaxMargin;
     };
 
+    // attribute that axis represents linear or logarithmic scale
     var fIsLinear = cfg.isLinear !== false;
     this.isLinear = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fIsLinear) {
@@ -232,6 +252,7 @@ WAVE.Chart.SVG = (function () {
       return fIsLinear;
     };
 
+    // 
     var fMarkType = cfg.markType || published.AxisMarkType.AUTO;
     this.markType = function(val) {
       if (typeof (val) !== tUNDEFINED && val !== fMarkType) {
@@ -241,6 +262,7 @@ WAVE.Chart.SVG = (function () {
       return fMarkType;
     };
 
+    // sets/returns tick length for axis
     var fTickLength = 5;
     this.tickLength = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fTickLength) {
@@ -250,6 +272,7 @@ WAVE.Chart.SVG = (function () {
       return fTickLength;
     };
 
+    // sets/returns margin between tick and tick text
     var fTickTextMargin = cfg.tickTextMargin || 3;
     this.tickTextMargin = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fTickTextMargin) {
@@ -259,25 +282,46 @@ WAVE.Chart.SVG = (function () {
       return fTickTextMargin;
     };
 
+    // reference to instance of DVInfo (real data + screen coordinates)
     var fDVInfo;
     this.dvInfo = function (val) {
       if (typeof (val) !== tUNDEFINED) fDVInfo = val;
       return fDVInfo;
     };
 
+    // sets/returns array of ticks (d-tick and corresponding v-tick) along the axis
     var fTicks;
     this.ticks = function (val) {
       if (typeof (val) !== tUNDEFINED) fTicks = val;
       return fTicks;
     };
 
+    // makes sense only in case of integer values
+    // if is enabled then only integer tick will be rendered on the chart
+    var fOnlyIntegerTicks = cfg.onlyIntegerTicks || false;
+    this.onlyIntegerTicks = function (val) {
+      if (typeof (val) !== tUNDEFINED) fOnlyIntegerTicks = val;
+      return fOnlyIntegerTicks;
+    };
+
+    // interacts with AxisMarkType.BY_STEP
+    var fTicksStep = cfg.ticksStep || 1;
+    this.ticksStep = function (val) {
+      if (typeof (val) !== tUNDEFINED) fTicksStep = val;
+      return fTicksStep;
+    };
+
+    // signals that object is changed
     this.fireChanged = function() { self.eventInvoke(EVT_CHANGED); };
   };
 
+  // converts datetime to its size in seconds
   published.Axis.prototype.toSeconds = function(dt) { return dt.valueOf() / 1000; };
 
+  // converts number of seconds to corresponding datetime
   published.Axis.prototype.fromSeconds = function (totalSeconds) { return new Date(totalSeconds * 1000); };
 
+  // gets ticks array for datetime-data axis
   published.Axis.prototype.getVTimeTicks = function (v0, v1, dt0, dt1, labelLength, labelMargin) {
     var d0 = this.toSeconds(dt0), d1 = this.toSeconds(dt1);
     var dd = d1 - d0, dv = v1 - v0;
@@ -289,7 +333,8 @@ WAVE.Chart.SVG = (function () {
     var dStartTick = Math.floor(d0 / dTickLength) * dTickLength;
     var vTick = (dStartTick - d0) / dPerV;
     var vTicks = [];
-    var firstV = labelMargin + labelLength / 2; var lastV = dv - (labelMargin + labelLength / 2);
+    var firstV = labelMargin + labelLength / 2;
+    var lastV = dv - (labelMargin + labelLength / 2);
     while (vTick <= v1) {
       if (vTick >= firstV && vTick <= lastV) {
         vTicks.push({ vTick: v0 + vTick, dTick: this.fromSeconds(d0 + vTick * dPerV) });
@@ -300,6 +345,7 @@ WAVE.Chart.SVG = (function () {
     return vTicks;
   };
 
+  // calculates interval between nearby ticks for datetime-data linear scale
   published.Axis.prototype.calcTimeTickLength = function (dv, dd, vLblLength, vLblMargin) {
     var dPerV = dd / dv;
     var vTicksMaxQty = Math.floor(dv / (vLblLength + 2 * vLblMargin));
@@ -309,18 +355,20 @@ WAVE.Chart.SVG = (function () {
     return { vTickLength: vTickLength, dThreshhold: dThreshhold };
   };
 
+  // gets ticks array for number-data logarithmic scale
   published.Axis.prototype.getVLog10Ticks = function (v0, v1, d0, d1, labelLength, labelMargin) {
     var dd = d1 - d0, dv = v1 - v0;
 
     var maxPow = Math.ceil(Math.log(dd) / Math.LN10);
-    var maxD = Math.pow(10, maxPow);
+    //var maxD = Math.pow(10, maxPow);
 
     var vTickLength = dv / maxPow;
 
     var vTicks = [];
 
-    var firstV = labelMargin + labelLength / 2; var lastV = dv - (labelMargin + labelLength / 2);
-    for (var pow = 0, vTick = v0, dTick = 1; pow <= maxPow; pow++, vTick += vTickLength, dTick *= 10) {
+    var firstV = labelMargin + labelLength / 2;
+    var lastV = dv - (labelMargin + labelLength / 2);
+    for (var pow = 0, vTick = v0, dTick = 1; pow <= maxPow; pow++, vTick += vTickLength, dTick *= 10) { //???
       if (vTick >= firstV && vTick <= lastV)
         vTicks.push({ vTick: v0 + vTick, dTick: d0 + dTick });
     }
@@ -328,6 +376,7 @@ WAVE.Chart.SVG = (function () {
     return vTicks;
   };
 
+  // get ticks array for number-data linear scale
   published.Axis.prototype.getVTicks = function (v0, v1, d0, d1, labelLength, labelMargin) {
     var vTicks = [];
 
@@ -349,10 +398,12 @@ WAVE.Chart.SVG = (function () {
 
     return vTicks;
   };
-
+  
+  // calculates interval between nearby ticks for number-data linear scale
   published.Axis.prototype.calcTicksLength = function (dv, dd, vLblLength, vLblMargin) {
     var dPerV = dd / dv;
     var threshholds = WAVE.arrayWalkable([1, 2, 3, 5, 10]);
+
     var vTicksMaxQty = Math.floor(dv / (vLblLength + vLblMargin)) - 1;
     var dTickMaxLength = dd / vTicksMaxQty;
     var d10Pow = Math.floor(Math.log(dTickMaxLength) / Math.LN10);
@@ -360,10 +411,15 @@ WAVE.Chart.SVG = (function () {
     var dNormMinTickLength = dTickMaxLength / d10K;
     var dThreshhold = threshholds.wFirst(function (th) { return dNormMinTickLength < th; });
     var dTickLength = dThreshhold * d10K;
+
+    if (this.onlyIntegerTicks() && dTickLength < 1)
+      dTickLength = 1;
     var vTickLength = dTickLength / dPerV;
+
     return { vTickLength: vTickLength, dTickLength: dTickLength };
   };
 
+  // generates text representation of tick label along the axis
   published.Axis.prototype.labelValToStr = function (val) {
     var res;
     if (this.dataType() === published.DataType.NUMBER) {
@@ -374,6 +430,7 @@ WAVE.Chart.SVG = (function () {
     return res;
   };
 
+  // returns rectangle which bounds label
   published.Axis.prototype.calcLabelRc = function (svgEl, min, max) {
     var str;
 
@@ -392,13 +449,16 @@ WAVE.Chart.SVG = (function () {
     return boundingRc;
   };
 
+  // defines area (zone) of X axis including tick labels
   published.XZone = function (chart) {
     var self = this;
 
     WAVE.extend(self, WAVE.EventManager);
 
+    // reference to parent chart
     this.chart = function () { return chart; };
 
+    // specifies whether to display the zone
     var fEnabled = true;
     this.enabled = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fEnabled) {
@@ -411,11 +471,12 @@ WAVE.Chart.SVG = (function () {
     function fireChanged() { self.eventInvoke(EVT_CHANGED); }
   };
 
+  // calculates height of X-axis area
   published.XZone.prototype.getHeight = function (svgEl) {
     var seriesItr = this.chart().seriesListWalkable();
-    var axises = seriesItr.wGroup(function (s) { return s.xAxis(); }, function (s) { return s.dataSet(); });
-    var axisesNHeights = WAVE.arrayWalkable(axises.wSelect(function (e) { return { axis: e.k, height: e.k.getHeight(svgEl, e.v) }; }).wToArray());
-    var zoneHeights = axisesNHeights.wGroup(function (e) { return e.axis.isBottom(); }, function (e) { return e.height; });
+    var axes = seriesItr.wGroup(function (s) { return s.xAxis(); }, function (s) { return s.dataSet(); });
+    var axesNHeights = WAVE.arrayWalkable(axes.wSelect(function (e) { return { axis: e.k, height: e.k.getHeight(svgEl, e.v) }; }).wToArray());
+    var zoneHeights = axesNHeights.wGroup(function (e) { return e.axis.isBottom(); }, function (e) { return e.height; });
     var zoneHeight = zoneHeights.wGroupAggregate(function (k, r, e) { return (r || 0) + e; });
 
     var r = { top: 0, bottom: 0 };
@@ -431,6 +492,7 @@ WAVE.Chart.SVG = (function () {
     return r;
   };
 
+  // draw container (rectangle) for X-axis and then X-axis itself
   published.XZone.prototype.draw = function (svgEl, areas) {
     for (var i in areas) {
       var area = areas[i];
@@ -438,12 +500,12 @@ WAVE.Chart.SVG = (function () {
       svgEl.appendChild(bkgrRc);
     }
 
-    var axises = this.chart().seriesListWalkable().wGroup(function (s) { return s.xAxis(); }, function (s) { return s.dataSet(); });
-    var axisesWalker = axises.getWalker();
+    var axes = this.chart().seriesListWalkable().wGroup(function (s) { return s.xAxis(); }, function (s) { return s.dataSet(); });
+    var axesWalker = axes.getWalker();
     var yTop = areas.top.bottom(), yBottom = areas.bottom.top();
 
-    while (axisesWalker.moveNext()) {
-      var axis = axisesWalker.current();
+    while (axesWalker.moveNext()) {
+      var axis = axesWalker.current();
 
       var axisHeight = axis.k.getHeight(svgEl, axis.v);
       var axisRect;
@@ -458,6 +520,7 @@ WAVE.Chart.SVG = (function () {
     }
   };
 
+  // represents X-axis, inherits from Axis
   published.XAxis = function (chart, cfg) {
     published.Axis.call(this, chart, cfg);
 
@@ -465,6 +528,7 @@ WAVE.Chart.SVG = (function () {
 
     cfg = cfg || {};
 
+    // sets/returns margin between tick labels and the bottom edge of X-axis zone
     var fVerticalMargin = cfg.verticalMargin || 3;
     this.verticalMargin = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fVerticalMargin) {
@@ -474,6 +538,7 @@ WAVE.Chart.SVG = (function () {
       return fVerticalMargin;
     };
 
+    // specifies where X-axis is located (at the top or bottom relative to series zone)
     var fIsBottom = cfg.isBottom !== false;
     this.isBottom = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fIsBottom) {
@@ -487,10 +552,13 @@ WAVE.Chart.SVG = (function () {
   published.XAxis.prototype = Object.create(published.Axis.prototype);
   published.XAxis.prototype.constructor = published.XAxis;
 
+  // shortcut to dvInfo.d2v
   published.XAxis.prototype.d2v = function (d) { return this.dvInfo().d2v(d); };
 
+  // shortcut to dvInfo.v2d
   published.XAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(v); };
 
+  // draw X-axis as child of svgEl
   published.XAxis.prototype.draw = function (svgEl, area, dataSets) {
     var minMax = this.getMinMax(dataSets);
     this.dvInfo(new published.dvInfo(minMax.min, minMax.max, area.left(), area.right(), this.isLinear()));
@@ -503,6 +571,7 @@ WAVE.Chart.SVG = (function () {
     this.markAxis(svgEl, area, dataSets);
   };
 
+  // gets height of the X-axis (including tick length and text margin)
   published.XAxis.prototype.getHeight = function (svgEl, dataSets) {
     this.minMax = this.getMinMax(dataSets);
 
@@ -518,6 +587,7 @@ WAVE.Chart.SVG = (function () {
     return this.tickLength() + this.verticalMargin() + this.tickTextMargin() + h;
   };
 
+  // calculates min and max of X-axis values (considering margins) 
   published.XAxis.prototype.getMinMax = function (dataSets) {
     var min = this.min() || dataSets.wSelect(function (ds) { return ds.getMinX(); }).wWhere(function(m) {return m !== null;}).wMin();
     if (min === null) min = (this.dataType() === published.DataType.DATE) ? new Date() : 0;
@@ -537,28 +607,37 @@ WAVE.Chart.SVG = (function () {
     return this.minMax;
   };
 
+  // put marks (ticks with labels) on the X-axis
   published.XAxis.prototype.markAxis = function (svgEl, area, dataSets) {
-    var _ticks;
-    var minMaxs = this.getMinMax(dataSets);
+    var _ticks = [];
+    var minMax = this.getMinMax(dataSets);
     if ((!this.minMax.min && this.minMax.min !== 0) || (!this.minMax.max && this.minMax.max !== 0)) return;
 
-    var lblRc = this.calcLabelRc(svgEl, minMaxs.min, minMaxs.max);
-
+    var lblRc = this.calcLabelRc(svgEl, minMax.min, minMax.max);
     var labelLength = lblRc.width;
     var labelHeight = lblRc.height;
     var labelMargin = 5;
 
     if (this.markType() === published.AxisMarkType.AUTO) {
       if (this.dataType() === published.DataType.DATE)
-        _ticks = this.getVTimeTicks(area.left(), area.right(), minMaxs.min, minMaxs.max, labelLength, labelMargin);
+        _ticks = this.getVTimeTicks(area.left(), area.right(), minMax.min, minMax.max, labelLength, labelMargin);
       else
-        _ticks = this.getVTicks(area.left(), area.right(), minMaxs.min, minMaxs.max, labelLength, labelMargin);
-    } else if (this.markType() === published.AxisMarkType.EXACT_BY_POINTS) {
-      var primaryDs = dataSets[0];
-      _ticks = [];
-      for (var i in primaryDs) {
-        var p = primaryDs[i];
-        _ticks.push({ vTick: this.d2v(p.x), dTick: p.x });
+        _ticks = this.getVTicks(area.left(), area.right(), minMax.min, minMax.max, labelLength, labelMargin);
+    }
+    else if (this.markType() === published.AxisMarkType.EXACT_BY_POINTS) {
+      var self = this;
+      var primaryDs = dataSets.wFirst();
+      primaryDs.forEach(function(dp) {
+          _ticks.push({ vTick: self.dvInfo().d2v(dp.x), dTick: dp.x });
+      });
+    }
+    else if (this.markType() === published.AxisMarkType.BY_STEP) {
+      var max = minMax.max;
+      var step = this.ticksStep();
+      var d = minMax.min + step;
+      while (d <= max) {
+        _ticks.push({ vTick: this.dvInfo().d2v(d), dTick: d });
+        d += step; 
       }
     }
 
@@ -586,13 +665,16 @@ WAVE.Chart.SVG = (function () {
     }
   };
 
+  // defines zone of Y axis, rectangle that contains axis and marks on it
   published.YZone = function (chart) {
     var self = this;
 
     WAVE.extend(self, WAVE.EventManager);
 
+    // reference to parent chart
     this.chart = function () { return chart; };
 
+    // specifies whether to display the zone
     var fEnabled = true;
     this.enabled = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fEnabled) {
@@ -602,12 +684,13 @@ WAVE.Chart.SVG = (function () {
       return fEnabled;
     };
 
+    // calculates width of Y-axis area
     this.getWidth = function (svgEl) {
       var seriesItr = self.chart().seriesListWalkable();
 
-      var axises = seriesItr.wGroup(function (s) { return s.yAxis(); }, function (s) { return s.dataSet(); });
-      var axisesNWidths = WAVE.arrayWalkable(axises.wSelect(function (e) { return { axis: e.k, width: e.k.getWidth(svgEl, e.v) }; }).wToArray());
-      var zoneWidths = axisesNWidths.wGroup(function (e) { return e.axis.isLeft(); }, function (e) { return e.width; });
+      var axes = seriesItr.wGroup(function (s) { return s.yAxis(); }, function (s) { return s.dataSet(); });
+      var axesNWidths = WAVE.arrayWalkable(axes.wSelect(function (e) { return { axis: e.k, width: e.k.getWidth(svgEl, e.v) }; }).wToArray());
+      var zoneWidths = axesNWidths.wGroup(function (e) { return e.axis.isLeft(); }, function (e) { return e.width; });
 
       var zoneWidth = zoneWidths.wGroupAggregate(function (k, r, e) { return (r || 0) + e; });
 
@@ -633,12 +716,12 @@ WAVE.Chart.SVG = (function () {
         svgEl.appendChild(bkgrRc);
       }
 
-      var axises = self.chart().seriesListWalkable().wGroup(function (s) { return s.yAxis(); }, function (s) { return s.dataSet(); });
-      var axisesWalker = axises.getWalker();
+      var axes = self.chart().seriesListWalkable().wGroup(function (s) { return s.yAxis(); }, function (s) { return s.dataSet(); });
+      var axesWalker = axes.getWalker();
       var xLeft = areas.left.right(), xRight = areas.right.left();
 
-      while(axisesWalker.moveNext()) {
-        var axis = axisesWalker.current();
+      while(axesWalker.moveNext()) {
+        var axis = axesWalker.current();
         var axisWidth = axis.k.getWidth(svgEl, axis.v);
         var axisRect;
         if (axis.k.isLeft() === true) {
@@ -701,18 +784,17 @@ WAVE.Chart.SVG = (function () {
   published.YAxis.prototype.v2d = function (v) { return this.dvInfo().v2d(this.dvInfo().v0() + this.dvInfo().v1() - v); };
 
   published.YAxis.prototype.markAxis = function (svgEl, area, dataSets) {
-    var _ticks;
-
+    var _ticks = [];
+    var minMax;
+    
     if (this.markType() === published.AxisMarkType.AUTO)
     {
-      var minMax = this.getMinMax(dataSets);
+      minMax = this.getMinMax(dataSets);
 
       var lblRc = this.calcLabelRc(svgEl, minMax.min, minMax.max);
       var labelLength = lblRc.height;
       var labelMargin = labelLength * 0.2;
-      var labelWidth = lblRc.width;
-      //console.log(lblRc, minMax.min, minMax.max);
-
+      
       if (this.dataType() === published.DataType.DATE) {
         _ticks = this.getVTimeTicks(area.top(), area.bottom(), minMax.min, minMax.max, labelLength, labelMargin);
       } else {
@@ -721,12 +803,36 @@ WAVE.Chart.SVG = (function () {
         else
           _ticks = this.getVLog10Ticks(area.top(), area.bottom(), minMax.min, minMax.max, labelLength, labelMargin);
       }
-    } else if (this.markType() === published.AxisMarkType.EXACT_BY_POINTS) {
-      var primaryDs = dataSets[0];
-      for (var i in primaryDs) {
-        var p = primaryDs[i];
-        _ticks.push({ vTick: this.d2v(p.y), dTick: p.y });
+    }
+    else if (this.markType() === published.AxisMarkType.EXACT_BY_POINTS) {
+      var ys = [];
+      var self = this;
+      var primaryDs = dataSets.wFirst();
+      primaryDs.forEach(function(dp) {
+        var y = dp.y;
+        if (!arrayContains(ys, y)) {
+          _ticks.push({ vTick: self.dvInfo().d2v(dp.y), dTick: y });
+          ys.push(y);
+        }
+      });
+    }
+    else if (this.markType() === published.AxisMarkType.BY_STEP) {
+      minMax = this.getMinMax(dataSets);
+      var max = minMax.max;
+      var step = this.ticksStep();
+      var d = minMax.min + step;
+      while (d <= max) {
+        _ticks.push({ vTick: this.dvInfo().d2v(d), dTick: d });
+        d += step; 
       }
+    }
+
+    function arrayContains(a, e) {
+      if (!a || a.length === 0) return false;
+      for(var i in a) {
+        if (Math.abs(a[i] - e) <= 0.0000001) return true;
+      }
+      return false;
     }
 
     this.ticks(_ticks);
@@ -837,6 +943,7 @@ WAVE.Chart.SVG = (function () {
       return fLegendMargin;
     };
 
+    // margin around series name
     var fSeriesMargin = cfg.seriesMargin || 3;
     this.seriesMargin = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fSeriesMargin) {
@@ -846,6 +953,7 @@ WAVE.Chart.SVG = (function () {
       return fSeriesMargin;
     };
 
+    // length of serie color line
     var fPrefixLength = cfg.prefixLength || 10;
     this.prefixLength = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fPrefixLength) {
@@ -855,6 +963,7 @@ WAVE.Chart.SVG = (function () {
       return fPrefixLength;
     };
 
+    // serie color and serie name padding
     var fRowSpace = cfg.rowSpace || 3;
     this.rowSpace = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fRowSpace) {
@@ -1219,10 +1328,10 @@ WAVE.Chart.SVG = (function () {
 
       var seriesItr = self.chart().seriesListWalkable();
 
-      var xAxises = seriesItr.wSelect( function (s) { return s.xAxis(); }).wDistinct();
-      var yAxises = seriesItr.wSelect( function (s) { return s.yAxis(); }).wDistinct();
+      var xAxes = seriesItr.wSelect( function (s) { return s.xAxis(); }).wDistinct();
+      var yAxes = seriesItr.wSelect( function (s) { return s.yAxis(); }).wDistinct();
 
-      xAxises.wEach(function(xAxis) {
+      xAxes.wEach(function(xAxis) {
         var ticks = xAxis.ticks();
         for (var j in ticks) {
           var tick = ticks[j];
@@ -1231,7 +1340,7 @@ WAVE.Chart.SVG = (function () {
         }
       });
 
-      yAxises.wEach(function(yAxis) {
+      yAxes.wEach(function(yAxis) {
         var ticks = yAxis.ticks();
         for (var i in ticks) {
           var tick = ticks[i];
@@ -1256,9 +1365,9 @@ WAVE.Chart.SVG = (function () {
 
             if (series1.barBase() === published.RectSide.BOTTOM) {
 
-              var minSeries = seriesList.v.wMin(function(a, b) { return a.dataSet().getMinX() < a.dataSet().getMinX(); });
+              var minSeries = seriesList.v.wMin(function(a, b) { return a.dataSet().getMinX() < b.dataSet().getMinX(); });
               if (typeof(minSeries) === tUNDEFINED) return;
-              var maxSeries = seriesList.v.wMax(function(a, b) { return a.dataSet().getMaxX() > a.dataSet().getMaxX(); });
+              var maxSeries = seriesList.v.wMax(function(a, b) { return a.dataSet().getMaxX() > b.dataSet().getMaxX(); });
               if (typeof(maxSeries) === tUNDEFINED) return;
 
               var minXD = minSeries.dataSet().getMinX();
@@ -1278,7 +1387,6 @@ WAVE.Chart.SVG = (function () {
 
               for(var iGroup=0; iGroup<groupQty; iGroup++) {
 
-                var firstGroup = true;
                 var startGroupXV = minXV + newFullGroupWidth * iGroup;
 
                 var seriesBaseVX = startGroupXV;
@@ -1435,7 +1543,7 @@ WAVE.Chart.SVG = (function () {
       return fBarBase || self.chart().sZone().barBase();
     };
 
-    var fDataSet = new published.DataSet();
+    var fDataSet = new published.DataSet(cfg.data);
     fDataSet.eventBind(EVT_CHANGED, function() { self.eventInvoke(EVT_CHANGED); });
     this.dataSet = function () { return fDataSet; };
 
@@ -1536,7 +1644,7 @@ WAVE.Chart.SVG = (function () {
 
   Series.prototype.getDY = function(dx) {
     var p = this.dataSet().getPointByX(dx);
-    if (p !== null) return p.y;
+    if (p) return p.y;
 
     var neighbours = this.dataSet().getNearestNeighbours(dx);
 
@@ -1573,36 +1681,87 @@ WAVE.Chart.SVG = (function () {
 
   Series.prototype.drawAllButTitle = function (svgEl, parentEl, area, drawTitle) {
 
+    function computeSplineControlPoints(knots) {
+      var p1 = [];
+      var p2 = [];
+      var n = knots.length - 1;
+      
+      /*rhs vector*/
+      var a = [];
+      var b = [];
+      var c = [];
+      var r = [];
+      
+      /*left most segment*/
+      a[0] = 0;
+      b[0] = 2;
+      c[0] = 1;
+      r[0] = knots[0] + 2 * knots[1];
+      
+      var i;
+      /*internal segments*/
+      for (i = 1; i < n - 1; i++)
+      {
+        a[i] = 1;
+        b[i] = 4;
+        c[i] = 1;
+        r[i] = 4 * knots[i] + 2 * knots[i+1];
+      }
+          
+      /*right segment*/
+      a[n-1] = 2;
+      b[n-1] = 7;
+      c[n-1] = 0;
+      r[n-1] = 8 * knots[n-1] + knots[n];
+      
+      /*solves Ax=b with the Thomas algorithm (from Wikipedia)*/
+      for (i = 1; i < n; i++)
+      {
+        var m = a[i] / b[i-1];
+        b[i] = b[i] - m * c[i - 1];
+        r[i] = r[i] - m * r[i-1];
+      }
+    
+      p1[n-1] = r[n-1] / b[n-1];
+      for (i = n - 2; i >= 0; --i)
+        p1[i] = (r[i] - c[i] * p1[i+1]) / b[i];
+        
+      /*we have p1, now compute p2*/
+      for (i = 0; i < n-1; i++)
+        p2[i] =2 * knots[i+1] - p1[i+1];
+      
+      p2[n-1] = 0.5 * (knots[n] + p1[n-1]);
+      
+      return {p1: p1, p2: p2};
+    }
+
     var self = this;
 
     var path;
     var firstX;
     var pathEl;
+    var prevVx, prevVy;
 
     if ((this.chartType() & published.ChartType.LINE) || (this.chartType() & published.ChartType.LINE_SQUARE)) {
-
       path = "";
-
       firstX = null;
-
-      var prevVx, prevVy;
       self.foreachPoint(function (vx, vy, dx, dy, title, series) {
         var cmd;
         if (firstX === null) {
-          firstX = vx; cmd = "M";
+          firstX = vx; cmd = "M ";
         } else {
-          cmd = "L";
+          cmd = "L ";
           self.chart().sZone().addVLine({x1: prevVx, y1: prevVy, x2: vx, y2: vy});
         }
-        path += cmd + vx + ',' + vy + ' ';
+        path += cmd + vx + " " + vy + " ";
         prevVx = vx; prevVy = vy;
       });
 
       if (path !== "" && (this.chartType() & published.ChartType.LINE_SQUARE)) {
         if(this.squareFillType() === published.SquareFillType.BOTTOM)
-          path += "V" + area.bottom() + " H" + firstX + " Z";
+          path += " V" + area.bottom() + " H" + firstX + " Z";
         else
-          path += "V" + area.top() + " H" + firstX + " Z";
+          path += " V" + area.top() + " H" + firstX + " Z";
       }
 
       pathEl = WAVE.SVG.createPath({ d: path, class: ((this.chartType() & published.ChartType.LINE_SQUARE)) ?
@@ -1611,62 +1770,37 @@ WAVE.Chart.SVG = (function () {
     }
 
     if (this.chartType() & published.ChartType.SPLINE || this.chartType() & published.ChartType.SPLINE_SQUARE) {
-      path = "";
-      var expectedPoint = "M", expectedQty = 0, buf = [];
-
-      firstX = null;
-
+      var x = [];
+      var y = [];
       self.foreachPoint(function(vx, vy, dx, dy, title, series) {
-        if (firstX === null) { firstX = vx; }
-
-
-         var p1, p2, pTo;
-
-        if (expectedPoint === "M") {
-          path = "M" + vx + ',' + vy + ' ';
-          expectedPoint = "C";
-        } else if (expectedPoint === "C") {
-
-          buf.unshift({x: vx, y: vy});
-          expectedQty++;
-          if (expectedQty === 3) {
-            p1 = buf.pop();
-            p2 = buf.pop();
-            pTo = buf.pop();
-            path += 'C' + p1.x + ',' + p1.y + ' ' + p2.x + ',' + p2.y + ' ' + pTo.x + ',' + pTo.y + ' ';
-            expectedQty = 0;
-            expectedPoint = "S";
-          }
-        } else if (expectedPoint === "S") {
-          buf.unshift({x: vx, y: vy});
-          expectedQty++;
-          if (expectedQty === 2) {
-            p2 = buf.pop();
-            pTo = buf.pop();
-            path += 'S' + p2.x + ',' + p2.y + ' ' + pTo.x + ',' + pTo.y + ' ';
-            expectedQty = 0;
-          }
-        }
+        self.drawPoint(svgEl, parentEl, area, vx, vy, dx, dy, title, series);
+        x.push(vx);
+        y.push(vy);
       });
+      
+      var k = self.dataSet().length();
+      if (k <= 1) return;
 
-      var p;
-      if (expectedPoint === "C") {
-        if (expectedQty === 1) {
-          p = buf.pop();
-          path += 'L' + p.x + ',' + p.y;
-        } else if (expectedQty === 2) {
-          var p1 = buf.pop(), pTo = buf.pop();
-          path += 'Q' + p1.x + ',' + p1.y + ' ' + pTo.x + ',' + pTo.y;
-        }
-      } else if (expectedPoint === "S") {
-        if (expectedQty === 1) {
-          p = buf.pop();
-          path += "T" + p.x + ',' + p.y;
-        }
+      firstX = x[0];
+      
+      path = "M " + x[0] + " " + y[0];
+      if (k == 2) {
+        path += " L " + x[1] + " " + y[1];
+      }
+      else {
+        var px = computeSplineControlPoints(x);
+        var py = computeSplineControlPoints(y);
+        for(var i=0; i<(k-1); i++)
+          path += " C " + px.p1[i] + " " + py.p1[i] + ", " +
+                          px.p2[i] + " " + py.p2[i] + ", " +
+                          x[i+1] + " " + y[i+1];
       }
 
       if (path !== "" && (this.chartType() & published.ChartType.SPLINE_SQUARE)) {
-        path += "V" + area.bottom() + " H" + firstX + " Z";
+        if (this.squareFillType() === published.SquareFillType.BOTTOM)
+          path += " V" + area.bottom() + " H" + firstX + " Z";
+        else
+          path += " V" + area.top() + " H" + firstX + " Z";
       }
 
       pathEl = WAVE.SVG.createPath({ d: path, class: ((this.chartType() & published.ChartType.SPLINE_SQUARE)) ?
@@ -1679,6 +1813,33 @@ WAVE.Chart.SVG = (function () {
       self.foreachPoint(function (vx, vy, dx, dy, title, series) {
         self.drawPoint(svgEl, parentEl, area, vx, vy, dx, dy, title, series);
       });
+    }
+
+    if (((this.chartType() & published.ChartType.STEP) || (this.chartType() & published.ChartType.STEP_SQUARE))) {
+      path = "";
+      firstX = null;
+      self.foreachPoint(function (vx, vy, dx, dy, title, series) {
+        if (firstX === null) {
+          firstX = vx;
+          path += "M" + vx + " " + vy;
+        } else {
+          path += " H" + vx + " V" + vy;
+        }
+        prevVx = vx; prevVy = vy;
+      });
+
+      if (path !== "" && (this.chartType() & published.ChartType.STEP_SQUARE)) {
+        if (this.squareFillType() === published.SquareFillType.BOTTOM)
+          path += " V" + area.bottom() + " H" + firstX + " Z";
+        else
+          path += " V" + area.top() + " H" + firstX + " Z";
+      }
+
+      pathEl = WAVE.SVG.createPath({
+        d: path, class: (this.chartType() & published.ChartType.STEP_SQUARE) ?
+          this.lineSquareClass() : this.lineClass()
+      });
+      parentEl.appendChild(pathEl);
     }
   };
 
@@ -1857,7 +2018,7 @@ WAVE.Chart.SVG = (function () {
     return "Series " + this.title();
   };
 
-  published.DataSet = function () {
+  published.DataSet = function (data) {
     var self = this;
 
     WAVE.extend(self, WAVE.EventManager);
@@ -1881,6 +2042,13 @@ WAVE.Chart.SVG = (function () {
       fPoints.push({x: x, y: y, title: title});
       self.eventInvoke(EVT_CHANGED);
     };
+
+    if (data) {
+      for(var i in data) {
+        var point = data[i];
+        this.addPoint(point.x, point.y, point.title);
+      }
+    }
 
     this.forEach = function(action) {
       fPointWalkable.wEach(action);
@@ -1970,10 +2138,12 @@ WAVE.Chart.SVG = (function () {
 
   var chartIdSeed = 0;
 
-  published.Chart = function (svgEl) {
+  published.Chart = function (svgEl, cfg) {
     var self = this;
 
     WAVE.extend(self, WAVE.EventManager);
+
+    cfg = cfg || {};
 
     var fID = ++chartIdSeed;
     this.id = function() { return fID; };
@@ -2002,15 +2172,15 @@ WAVE.Chart.SVG = (function () {
     fYZone.eventBind(EVT_CHANGED, onChanged);
     this.yZone = function () { return fYZone; };
 
-    var fSZone = new published.SZone(this);
+    var fSZone = new published.SZone(this, cfg.sZone);
     fSZone.eventBind(EVT_CHANGED, onChanged);
     this.sZone = function () { return fSZone; };
 
-    var fLZone = new published.LZone(this);
+    var fLZone = new published.LZone(this, cfg.lZone);
     fLZone.eventBind(EVT_CHANGED, onChanged);
     this.lZone = function () { return fLZone; };
 
-    var fXAxis = new published.XAxis(self);
+    var fXAxis = new published.XAxis(self, cfg.xAxis);
     fXAxis.eventBind(EVT_CHANGED, onChanged);
     this.xAxis = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fXAxis) {
@@ -2020,7 +2190,7 @@ WAVE.Chart.SVG = (function () {
       return fXAxis;
     };
 
-    var fYAxis = new published.YAxis(self);
+    var fYAxis = new published.YAxis(self, cfg.yAxis);
     fYAxis.eventBind(EVT_CHANGED, onChanged);
     this.yAxis = function (val) {
       if (typeof (val) !== tUNDEFINED && val !== fYAxis) {
@@ -2043,6 +2213,17 @@ WAVE.Chart.SVG = (function () {
     this.beginUpdate();
 
     var fSeriesList = [];
+
+    var series = cfg.series;
+    if (series) {
+      for(var i in series) {
+        var s = new Series(self, series[i]);
+        s.eventBind(EVT_CHANGED, onChanged);
+        fSeriesList.push(s);
+      }
+      onChanged();
+    }
+
     var fSeriesListWalkable = WAVE.arrayWalkable(fSeriesList);
 
     this.seriesListWalkable = function() { return fSeriesListWalkable; };
@@ -2072,7 +2253,7 @@ WAVE.Chart.SVG = (function () {
       if (fSeriesList.length === 0) return;
       for(var i in fSeriesList)
         fSeriesList[i].eventUnbind(EVT_CHANGED, onChanged);
-      fSeriesList.splice(0, fSeriesList.length);
+      fSeriesList = [];
       onChanged();
     };
 
@@ -2113,8 +2294,6 @@ WAVE.Chart.SVG = (function () {
             getTxt: function (e) { // {clientPoint: , divHint: }
               var xAxis = self.xAxis();
               var yAxis = self.yAxis();
-              var sZone = self.sZone();
-              var lastArea = sZone.lastArea();
 
               if (sZoneClientRc.contains(e.clientPoint)) {
                 var sZoneVX = e.clientPoint.x() - clientRc.left;
@@ -2133,7 +2312,6 @@ WAVE.Chart.SVG = (function () {
             getMasterInfo: function (e) { // {clientPoint: }
               var xAxis = self.xAxis();
               var yAxis = self.yAxis();
-              var sZone = self.sZone();
 
               var sZoneVX = e.clientPoint.x() - clientRc.left;
               var sZoneVY = e.clientPoint.y() - clientRc.top;
@@ -2184,6 +2362,7 @@ WAVE.Chart.SVG = (function () {
       drawIfChanged();
     }
 
+    // remove all child nodes of svg except "defs""
     function removeChildNodes(el) {
       for(var i=0; i<el.childNodes.length;) {
        var child = el.childNodes[i];

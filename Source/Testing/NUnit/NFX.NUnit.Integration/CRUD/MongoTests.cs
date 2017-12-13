@@ -73,6 +73,40 @@ namespace NFX.NUnit.Integration.CRUD
 
       //==========================================================================================
 
+      [TestCase(0, 1)]
+      [TestCase(277, 3)]
+      [TestCase(378, 11)]
+      [TestCase(999, 23)]
+      [TestCase(0, 56)]
+      [TestCase(450, 72)]
+      [TestCase(2, 100)]
+      public void TestFindFetchBy(int skip, int fetchBy)
+      {
+        const int COUNT = 1000;
+        for(var i=0; i < COUNT; i++)
+        {
+          var row = new MyPerzon
+          {
+              GDID = new GDID(1, 1, (ulong)i),
+              Name = "Jeka Koshmar",
+              Age = i
+          };
+
+          store.Insert(row);
+        }
+
+        using (var db = NFX.DataAccess.MongoDB.Connector.MongoClient.Instance[CONNECT_NODE][DB_NAME])
+        {
+          var collection = db["MyPerzon"];
+          var query = new NFX.DataAccess.MongoDB.Connector.Query();
+
+          var cur = collection.Find(query, skip, fetchBy);
+          using(cur)
+          {
+            Assert.AreEqual(cur.Count(), COUNT - skip);
+          }
+        }
+      }
 
       [Test]
       public void Insert()

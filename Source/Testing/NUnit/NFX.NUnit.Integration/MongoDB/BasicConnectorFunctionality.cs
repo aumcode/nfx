@@ -507,6 +507,46 @@ namespace NFX.NUnit.Integration.MongoDB
     }
 
     [Test]
+    public void Find_Comparison_DateTime()
+    {
+      using (var client = new MongoClient("My client"))
+      {
+        var db = client.DefaultLocalServer["db1"];
+        db["t1"].Drop();
+        var collection = db["t1"];
+
+        foreach (var day in Enumerable.Range(1, 26))
+        {
+          Assert.AreEqual(1, collection.Insert(
+                  new BSONDocument().Set(new BSONStringElement("name", "Ivan"+day.ToString()))
+                                    .Set(new BSONDateTimeElement("dt", new DateTime(2017, 3, day, 0, 0, 0, DateTimeKind.Utc))))
+                                       .TotalDocumentsAffected);
+        }
+
+        var query =  new Query(
+        @"{
+            'dt': {'$lte': '$$DT'}
+          }",
+          false,
+          new TemplateArg("DT", BSONElementType.DateTime, new DateTime(2017, 3, 2, 0, 0, 0, DateTimeKind.Utc))
+        );
+        var lt1 = collection.Find(query);
+        lt1.MoveNext();
+
+        Assert.IsNotNull(lt1.Current);
+        Assert.AreEqual("Ivan1", lt1.Current["name"].ObjectValue);
+        Assert.AreEqual(new DateTime(2017, 3, 1, 0, 0, 0, DateTimeKind.Utc), lt1.Current["dt"].ObjectValue);
+
+        lt1.MoveNext();
+        Assert.AreEqual("Ivan2", lt1.Current["name"].ObjectValue);
+        Assert.AreEqual(new DateTime(2017, 3, 2, 0, 0, 0, DateTimeKind.Utc), lt1.Current["dt"].ObjectValue);
+
+        lt1.MoveNext();
+        Assert.AreEqual(true, lt1.EOF);
+      }
+    }
+
+    [Test]
     public void Find_Comparison_Int32()
     {
       using (var client = new MongoClient("My client"))

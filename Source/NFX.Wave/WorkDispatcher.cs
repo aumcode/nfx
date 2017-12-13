@@ -175,7 +175,7 @@ namespace NFX.Wave
              handler = GetWorkHandler(work);
 
              if (handler==null)
-              throw new WaveException(StringConsts.NO_HANDLER_FOR_WORK_ERROR.Args(work.About));
+              throw HTTPStatusException.NotFound_404(StringConsts.NO_HANDLER_FOR_WORK_ERROR.Args(work.About));
 
              handler.FilterAndHandleWork(work);
              return;

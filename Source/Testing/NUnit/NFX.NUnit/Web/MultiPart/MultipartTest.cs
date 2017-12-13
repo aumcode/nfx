@@ -417,7 +417,7 @@ value
     }
 
     [Test]
-    public void RepeatName()
+    public void DuplicatedNames()
     {
       var test = Encoding.UTF8.GetBytes(
 @"-----------------------------7de23d3b1d07fe
@@ -440,6 +440,36 @@ value 2
       {
         Assert.IsTrue(e.Message.Contains("is already registered."));
       }
+    }
+
+    [Test]
+    public void DuplicatedNamesFiles()
+    {
+      var test = Encoding.UTF8.GetBytes(
+@"-----------------------------7de23d3b1d07fe
+Content-Disposition: form-data; name=""files""; filename=""fileOne.txt""
+Content-Type: text/plain
+
+this is fileOne.txt
+-----------------------------7de23d3b1d07fe
+Content-Disposition: form-data; name=""files""; filename=""fileTwo.txt""
+Content-Type: text/plain
+
+this is fileTwo.txt
+-----------------------------7de23d3b1d07fe--
+");
+      string boundary = null;
+      var mp = Multipart.ReadFromBytes(test, ref boundary);
+      Aver.AreEqual(mp.Parts.Count, 2);
+      var files0 =  mp.Parts["files"];
+      Aver.IsTrue(files0.PartName.EqualsOrdIgnoreCase("files"));
+      Aver.IsTrue(files0.Content.AsString().EqualsOrdIgnoreCase("this is fileOne.txt"));
+      var files1 =  mp.Parts["files1"];
+      Aver.IsTrue(files1.PartName.EqualsOrdIgnoreCase("files"));
+      Aver.IsTrue(files1.Content.AsString().EqualsOrdIgnoreCase("this is fileTwo.txt"));
+
+      var mp1 = new Multipart(mp.Parts);
+      Aver.AreEqual(mp1.Parts.Count, 2);
     }
 
     [Test]

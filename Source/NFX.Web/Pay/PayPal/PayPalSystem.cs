@@ -37,7 +37,7 @@ namespace NFX.Web.Pay.PayPal
   /// 1. ServicePoint's Expect100Continue to 'false' (100-continue header can reduce performace and is not supported by some web accellerator),
   /// 2. HttpRequest timeout and any other ServicePoint's settings if needeed.
   /// </summary>
-  public partial class PayPalSystem : PaySystem
+  public partial class PayPalSystem : PaySystemWithStaticFees
   {
     #region CONSTS
     public const string PAYPAL_REALM = "paypal";

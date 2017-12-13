@@ -33,6 +33,11 @@ namespace NFX.Web
        public const string CSS = "text/css";
        public const string JS = "application/x-javascript";
 
+       /// <summary>
+       /// Server-Sent Event Stream
+       /// </summary>
+       public const string SSE = "text/event-stream";
+
 
        public const string XML_TEXT = "text/xml";
        public const string XML_APP = "application/xml";
@@ -60,6 +65,7 @@ namespace NFX.Web
        public const string FORM_URL_ENCODED = "application/x-www-form-urlencoded";
 
        public const string FORM_MULTIPART_ENCODED = "multipart/form-data";
+       public const string FORM_MULTIPART_ENCODED_BOUNDARY = "multipart/form-data; boundary={0}";
 
 
        public static string ExtensionToContentType(string ext, string dflt = ContentType.HTML)

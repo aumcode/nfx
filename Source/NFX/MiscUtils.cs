@@ -601,6 +601,27 @@ namespace NFX
     }
 
     /// <summary>
+    /// Returns a MD5 hash of a UTF8 string represented as hex string
+    /// </summary>
+    public static string ToMD5String(this byte[] input)
+    {
+      if (input==null)
+       return "00000000000000000000000000000000";
+
+      using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
+      {
+         var hash = md5.ComputeHash(input);
+
+         var result = new StringBuilder();
+
+         for(var i=0;i<hash.Length;i++)
+          result.Append(hash[i].ToString("x2"));
+
+         return result.ToString();
+      }
+    }
+
+    /// <summary>
     /// Returns a MD5 hash of a UTF8 string represented as byte[]
     /// </summary>
     public static byte[] ToMD5(this string input)

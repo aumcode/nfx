@@ -60,6 +60,7 @@
     <Compile Include="CMS\CMSBank.cs" />
     <Compile Include="CMS\Intfs.cs" />
     <Compile Include="CMS\NOPCMSBank.cs" />
+    <Compile Include="WorkMatch.Composite.cs" />
     <Compile Include="Matches.cs" />
     <Compile Include="Filters\BeforeAfterFilterBase.cs" />
     <Compile Include="Filters\EffectiveCallerIPEndPointFilter.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="SysConsts.cs" />
     <Compile Include="Templatization\ResponseRenderingTarget.cs" />
     <Compile Include="Handlers\StockContentSiteHandler.cs" />
+    <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\swipe.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\chain.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\curtain.js" />
     <Content Include="Templatization\StockContent\Embedded\script\ljs\inc\ui\details.js" />

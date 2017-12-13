@@ -744,7 +744,7 @@ namespace NFX
                 else if (val is byte[])
                 {
                     var arr = (byte[])val;
-                    return new Guid(arr);
+                    return arr.GuidFromNetworkByteOrder();
                 }
                 else
                     return (Guid)val;

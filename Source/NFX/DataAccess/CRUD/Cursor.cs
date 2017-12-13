@@ -100,4 +100,18 @@ namespace NFX.DataAccess.CRUD
       return this.GetEnumerator();
     }
   }
+
+  /// <summary>
+  /// Represents a cursor that basically does nothing else but
+  /// passes through control to source IEnumerable(Row)
+  /// </summary>
+  public sealed class PassthroughCursor : Cursor
+  {
+    public PassthroughCursor(IEnumerable<Row> source) : base(source)
+    {
+    }
+  }
+
+
+
 }

@@ -74,7 +74,7 @@ namespace NFX.Wave.Handlers
           if (mi==null)
             throw new HTTPStatusException(WebConsts.STATUS_404,
                                           WebConsts.STATUS_404_DESCRIPTION,
-                                          StringConsts.MVCCONTROLLER_ACTION_UNMATCHED_HANDLER_ERROR.Args(target.GetType().FullName, action));
+                                          StringConsts.MVC_CONTROLLER_ACTION_UNMATCHED_HANDLER_ERROR.Args(target.GetType().FullName, action));
 
           Security.Permission.AuthorizeAndGuardAction(mi, work.Session, () => work.NeedsSession());
 
@@ -134,6 +134,18 @@ namespace NFX.Wave.Handlers
       }
 
       /// <summary>
+      /// Handles the error by re-throwing MVCException with wrapped inner exception.
+      /// This method must NOT include any stack trace as text because it indicates system problems.
+      /// Use Debug log destination (which prints inner stack traces) if more details are needed
+      /// </summary>
+      protected override void DoError(WorkContext work, Exception error)
+      {
+        if (error is MVCException) throw error;
+
+        throw new MVCException(StringConsts.MVC_HANDLER_WORK_PROCESSING_ERROR.Args(error.ToMessageWithType()), error);
+      }
+
+      /// <summary>
       /// Gets name of MVC action from work and controller. Controller may override name of variable
       /// </summary>
       protected virtual string GetActionName(Controller controller, WorkContext work)
@@ -165,7 +177,7 @@ namespace NFX.Wave.Handlers
         {
           throw new HTTPStatusException(WebConsts.STATUS_404,
                                         WebConsts.STATUS_404_DESCRIPTION,
-                                        StringConsts.MVCCONTROLLER_ACTION_UNKNOWN_ERROR.Args(tp.DisplayNameWithExpandedGenericArgs(), action));
+                                        StringConsts.MVC_CONTROLLER_ACTION_UNKNOWN_ERROR.Args(tp.DisplayNameWithExpandedGenericArgs(), action));
         }
 
         foreach(var ai in gInfo.Actions)
@@ -256,7 +268,7 @@ namespace NFX.Wave.Handlers
             if (strictParamBinding)
              throw new HTTPStatusException(Web.WebConsts.STATUS_400,
                                         Web.WebConsts.STATUS_400_DESCRIPTION,
-                                        StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
+                                        StringConsts.MVC_CONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
                                                           controller.GetType().DisplayNameWithExpandedGenericArgs(),
                                                           "strict",
@@ -276,7 +288,7 @@ namespace NFX.Wave.Handlers
             if (strVal.Length>MAX_LEN) strVal = strVal.Substring(0, MAX_LEN)+"...";
             throw new HTTPStatusException(WebConsts.STATUS_400,
                                          WebConsts.STATUS_400_DESCRIPTION,
-                                        StringConsts.MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR
+                                        StringConsts.MVC_CONTROLLER_ACTION_PARAM_BINDER_ERROR
                                                     .Args(
                                                           controller.GetType().DisplayNameWithExpandedGenericArgs(),
                                                           strictParamBinding ? "strict" : "relaxed",

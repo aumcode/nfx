@@ -119,14 +119,15 @@ published.Details = function (init) {
       var html;
 
       if (fMode === "modal") {
-        html = "<span id='@titleId@' class='@titleClass@' tabindex='0'></span>";
-        fDiv.innerHTML = WAVE.strHTMLTemplate(html, {
-          titleId: titleId,
-          titleClass: published.CLS_DETAILS_TITLE
-        });
-        fTitleControl = WAVE.id(titleId);
-        setTitle(fTitle);
-
+        if (!fTitleControl) {
+          html = "<span id='@titleId@' class='@titleClass@' tabindex='0'></span>";
+          fDiv.innerHTML = WAVE.strHTMLTemplate(html, {
+            titleId: titleId,
+            titleClass: published.CLS_DETAILS_TITLE
+          });
+          fTitleControl = WAVE.id(titleId);
+          setTitle(fTitle);
+        }
       } else {
 
         html = "<span id='@titleId@' class='@titleClass@' tabindex='0'></span><div id='@contId@' class='@contClass@'></div>";

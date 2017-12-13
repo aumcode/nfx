@@ -383,7 +383,7 @@ namespace NFX.Wave
         {
           if (!m_RequestedJSON.HasValue)
             //m_RequestedJSON = Request.AcceptTypes.Any(at => ContentType.JSON.EqualsOrdIgnoreCase(at));
-            m_RequestedJSON = Request.AcceptTypes.Any(at => at != null && at.IndexOf(ContentType.JSON, StringComparison.OrdinalIgnoreCase) != -1);
+            m_RequestedJSON = Request.AcceptTypes != null && Request.AcceptTypes.Any(at => at != null && at.IndexOf(ContentType.JSON, StringComparison.OrdinalIgnoreCase) != -1);
 
           return m_RequestedJSON.Value;
         }

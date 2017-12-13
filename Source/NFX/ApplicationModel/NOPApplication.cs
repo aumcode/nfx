@@ -73,6 +73,8 @@ namespace NFX.ApplicationModel
 
         public bool IsUnitTest{ get{ return false;}}
 
+        public string EnvironmentName { get { return string.Empty; } }
+
         public Guid InstanceID
         {
             get { return m_InstanceID; }

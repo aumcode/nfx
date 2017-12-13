@@ -123,6 +123,7 @@
     <Compile Include="ApplicationModel\Volatile\ObjectStoreEntry.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreProvider.cs" />
     <Compile Include="ApplicationModel\Volatile\ObjectStoreService.cs" />
+    <Compile Include="Collections\CappedSet.cs" />
     <Compile Include="Collections\LookAheadEnumerable.cs" />
     <Compile Include="Collections\NamedInterlocked.cs" />
     <Compile Include="Collections\StringMap.cs" />
@@ -607,6 +608,7 @@
     <Compile Include="ServiceModel\WorkItem.cs" />
     <Compile Include="ServiceModel\WorkItemAggregatorService.cs" />
     <Compile Include="ServiceModel\WorkQueue.cs" />
+    <Compile Include="Standards\BISAC.cs" />
     <Compile Include="Standards\Countries_ISO3166_1.cs" />
     <Compile Include="Standards\Distance.cs" />
     <Compile Include="Standards\Weight.cs" />

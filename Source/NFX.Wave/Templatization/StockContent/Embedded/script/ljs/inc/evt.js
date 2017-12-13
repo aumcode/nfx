@@ -129,6 +129,6 @@ published.EventManager = {
 
   //Returns a list of sink object that receive event notifications from this manager
   eventSinks: function(){
-  return ensureSinkList(this);
+    return ensureSinkList(this);
   }
 };

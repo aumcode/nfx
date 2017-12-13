@@ -736,6 +736,21 @@ namespace NFX.DataAccess.CRUD
                 return result;
             }
 
+            /// <summary>
+            /// Returns FieldDef by BackendName for TargetName
+            /// </summary>
+            public FieldDef GetFieldDefByBackendName(string targetName, string backendName, Func<FieldDef, FieldAttribute, bool> func = null)
+            {
+              return this.FirstOrDefault(fd =>
+              {
+                var match = fd.GetBackendNameForTarget(targetName).EqualsOrdIgnoreCase(backendName);
+                if (!match) return false;
+                var attr = fd[targetName];
+                if (attr == null || func == null) return true;
+                return func(fd, attr);
+              });
+            }
+
 
             /// <summary>
             /// Returns FieldDefs in their order within rows that are declared as key fields for particular target

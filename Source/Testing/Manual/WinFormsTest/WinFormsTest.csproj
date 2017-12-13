@@ -134,6 +134,12 @@
     <Compile Include="GlueForm.Designer.cs">
       <DependentUpon>GlueForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlueStressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GlueStressForm.Designer.cs">
+      <DependentUpon>GlueStressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Glue\JokeHelper.cs" />
     <Compile Include="Glue\JokeCalculatorClientForm.cs">
       <SubType>Form</SubType>
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GlueForm.resx">
       <DependentUpon>GlueForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlueStressForm.resx">
+      <DependentUpon>GlueStressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Glue\JokeCalculatorClientForm.resx">
       <DependentUpon>JokeCalculatorClientForm.cs</DependentUpon>

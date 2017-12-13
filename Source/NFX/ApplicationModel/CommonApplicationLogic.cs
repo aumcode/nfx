@@ -51,6 +51,7 @@ namespace NFX.ApplicationModel
 
       public const string CONFIG_APP_NAME_ATTR = "application-name";
       public const string CONFIG_UNIT_TEST_ATTR = "unit-test";
+      public const string CONFIG_ENVIRONMENT_NAME_ATTR = "environment-name";
 
       public const string CONFIG_MEMORY_MANAGEMENT_SECTION = "memory-management";
 
@@ -141,6 +142,12 @@ namespace NFX.ApplicationModel
         {
           get{ return m_ConfigRoot.AttrByName(CONFIG_UNIT_TEST_ATTR).ValueAsBool(); }
         }
+
+        public string EnvironmentName
+        {
+          get{ return m_ConfigRoot.AttrByName(CONFIG_ENVIRONMENT_NAME_ATTR).Value; }
+        }
+
 
 
         /// <summary>
@@ -620,13 +627,11 @@ namespace NFX.ApplicationModel
       }
 
 
-
-
       /// <summary>
       /// Tries to find a configuration file name looping through various supported estensions
       /// </summary>
       /// <returns>File name that exists or empty string</returns>
-      protected string GetDefaultConfigFileName()
+      public static string GetDefaultEntryPointConfigFileName()
       {
           var exeName = System.Reflection.Assembly.GetEntryAssembly().Location;
           var exeNameWoExt = Path.Combine(Path.GetDirectoryName(exeName), Path.GetFileNameWithoutExtension(exeName));

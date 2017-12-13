@@ -865,5 +865,66 @@ f
           Aver.AreEqual("Z", IOMiscUtils.UnpackISO3CodeFromInt(p), StringComparison.Ordinal);
         }
 
+        [Test]
+        public void GuidToNetworkByteOrder()
+        {
+          var guid = Guid.Parse("AECBF3B2-C90E-4F2D-B51C-4EBABECF4338");
+          var std = guid.ToByteArray();
+
+          Aver.AreEqual(0xB2, std[0]); // aver MSFT improper LE byte order
+          Aver.AreEqual(0xAE, std[3]); // aver MSFT improper LE byte order
+
+          var nfx = guid.ToNetworkByteOrder();
+
+          Aver.AreEqual(0xAE, nfx[0]);
+          Aver.AreEqual(0xCB, nfx[1]);
+          Aver.AreEqual(0xF3, nfx[2]);
+          Aver.AreEqual(0xB2, nfx[3]);
+
+          Aver.AreEqual(0xC9, nfx[4]);
+          Aver.AreEqual(0x0E, nfx[5]);
+
+          Aver.AreEqual(0x4F, nfx[6]);
+          Aver.AreEqual(0x2D, nfx[7]);
+
+          Aver.AreEqual(0xB5, nfx[8]);
+          Aver.AreEqual(0x1C, nfx[9]);
+
+          Aver.AreEqual(0x4E, nfx[10]);
+          Aver.AreEqual(0xBA, nfx[11]);
+          Aver.AreEqual(0xBE, nfx[12]);
+          Aver.AreEqual(0xCF, nfx[13]);
+          Aver.AreEqual(0x43, nfx[14]);
+          Aver.AreEqual(0x38, nfx[15]);
+        }
+
+        [Test]
+        public void GuidFromNetworkByteOrder()
+        {
+          var data = new byte[] { 0xAE, 0xCB, 0xF3, 0xB2,
+                                  0xC9, 0x0E,
+                                  0x4F, 0x2D,
+                                  0xB5, 0x1C,
+                                  0x4E, 0xBA, 0xBE, 0xCF, 0x43, 0x38, };
+
+          var guid = data.GuidFromNetworkByteOrder();
+
+          Aver.AreEqual(Guid.Parse("AECBF3B2-C90E-4F2D-B51C-4EBABECF4338"), guid);
+        }
+
+        [Test]
+        public void GuidFromNetworkByteOrder_WithOffset()
+        {
+          var data = new byte[] { 0x00, 0x00, 0x00,
+                                  0xAE, 0xCB, 0xF3, 0xB2,
+                                  0xC9, 0x0E,
+                                  0x4F, 0x2D,
+                                  0xB5, 0x1C,
+                                  0x4E, 0xBA, 0xBE, 0xCF, 0x43, 0x38, };
+
+          var guid = data.GuidFromNetworkByteOrder(3);
+
+          Aver.AreEqual(Guid.Parse("AECBF3B2-C90E-4F2D-B51C-4EBABECF4338"), guid);
+        }
     }
 }

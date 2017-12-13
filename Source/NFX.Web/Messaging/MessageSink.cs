@@ -83,7 +83,7 @@ namespace NFX.Web.Messaging
 
       protected virtual bool Filter(Message msg)
       {
-        return msg.MessageAddress.MatchNamedChannel(this.SupportedChannelNames);
+        return msg.AddressToBuilder.MatchNamedChannel(this.SupportedChannelNames);
       }
 
       /// <summary>

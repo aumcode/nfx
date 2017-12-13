@@ -98,7 +98,8 @@ namespace NFX.DataAccess.MongoDB.Connector
     public int FetchBy
     {
       get{ return m_FetchBy;}
-      set{ m_FetchBy = value<=0?DEFAULT_FETCH_BY : value;}
+      //if fetchBy == 1, then mongoDB closes cursor after query, so we cannot do GET_MORE
+      set { m_FetchBy = value<=0?DEFAULT_FETCH_BY : value==1 ? 2 : value; }
     }
 
 
@@ -149,7 +150,7 @@ namespace NFX.DataAccess.MongoDB.Connector
           {
             var reqId = m_Collection.Database.NextRequestID;
             m_Buffered = connection.GetMore(reqId, this);
-            m_EOF = m_Buffered==null;
+            m_EOF = m_Buffered==null || m_Buffered.Length==0;
           }
           finally
           {

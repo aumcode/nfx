@@ -208,7 +208,8 @@
                            use-nagle-algorithm="true" >
       <policy>
         <default-certificate-validation>
-        <case uri="https://api.mailgun.net/v3" trusted="true"></case>
+          <case uri="https://api.mailgun.net/v3" trusted="true"></case>
+          <case uri="https://api.twilio.com/" trusted="true"></case>
         </default-certificate-validation>
       </policy>
     </service-point-manager>
@@ -272,12 +273,12 @@
             name="Twilio"
             account-sid='ACf6593667b4f06ad797e6d0b5f2ab161c'
             auth-token='9e89ee913671bd735711f21a723dc903'
-            from='+12512199871'>
+            from='+14245677776'>
       </sink>
       <sink type="NFX.Web.Messaging.MailgunMailerSink, NFX.Web"
             name="Mailgun"
-            authorization-key="key-d8745ba952f49f9973a47336cf54229e"
-            domain="sandboxc102342e2f7c4a65aeed218b96286043.mailgun.org"
+            authorization-key="key-d05c1442fef89e7472f148d9243b4321"
+            domain="sandboxc03ccf54df084ebd9400b07d47a01706.mailgun.org"
             default-from-address="service@ttt.com"
             default-from-name="Service">
       </sink>

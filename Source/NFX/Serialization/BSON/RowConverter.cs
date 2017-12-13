@@ -619,12 +619,17 @@ namespace NFX.Serialization.BSON
         public static BSONElement GDID_CLRtoBSON(string name, GDID gdid)
         {
           if (gdid.IsZero) return new BSONNullElement(name);
+          var bin = GDID_CLRtoBSONBinary(gdid);
+          return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement( bin);
+        }
+
+        public static BSONBinary GDID_CLRtoBSONBinary(GDID gdid)
+        {
           //As tested on Feb 27, 2015
           //BinData works faster than string 8% and stores 40%-60% less data in index and data segment
           //Also, SEQUENTIAL keys (big endian) yield 30% smaller indexes (vs non-sequential)
           //ObjectId() is very similar if not identical to BinData(UserDefined)
-          var bin = new BSONBinary(BSONBinaryType.UserDefined, gdid.Bytes);
-          return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement( bin);
+          return new BSONBinary(BSONBinaryType.UserDefined, gdid.Bytes); //be very carefull with byte ordering of GDID for DB key index optimization
         }
 
         public static BSONElement GUID_CLRtoBSON(string name, Guid guid)
@@ -634,8 +639,8 @@ namespace NFX.Serialization.BSON
           //BinData works faster than string 8% and stores 40%-60% less data in index and data segment
           //Also, SEQUENTIAL keys (big endian) yield 30% smaller indexes (vs non-sequential)
           //ObjectId() is very similar if not identical to BinData(UserDefined)
-          var bin = new BSONBinary(BSONBinaryType.UUID, guid.ToByteArray());
-          return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement( bin);
+          var bin = new BSONBinary(BSONBinaryType.UUID, guid.ToNetworkByteOrder());
+          return name != null ?  new BSONBinaryElement(name, bin) : new BSONBinaryElement(bin);
         }
 
         /// <summary>
@@ -719,7 +724,7 @@ namespace NFX.Serialization.BSON
             if (val.Type != BSONBinaryType.UUID && val.Type != BSONBinaryType.UUIDOld)
               throw new BSONException("type != BSONBinaryType.UUID");
             var buf = val.Data;
-            return new Guid(buf);
+            return buf.GuidFromNetworkByteOrder();
           }
           catch(Exception e)
           {

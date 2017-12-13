@@ -70,6 +70,8 @@ var WAVE = (function(){
 //inc/rndk.js
     /***@ inc/rndk.js ***/
 
+    /***@ inc/swipe.js ***/
+
     return published;
 }());//WAVE
 

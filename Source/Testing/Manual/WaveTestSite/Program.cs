@@ -43,6 +43,9 @@ namespace WaveTestSite
              using(var ws = new WaveServer())
              {
                 ws.Configure(null);
+
+                ws.IgnoreClientWriteErrors = false;
+
                 ws.Start();
                 Console.WriteLine("Web server started. Press <ENTER> to terminate...");
                 Console.ReadLine();

@@ -98,7 +98,10 @@ namespace NFX.Wave
       public const string CONFIG_HANDLER_DUPLICATE_MATCH_NAME_ERROR =
         "Match '{0}' is specified more than once in handler config";
 
-     public const string CONFIG_HANDLER_DUPLICATE_FILTER_NAME_ERROR =
+      public const string CONFIG_COMPOSITE_MATCH_DUPLICATE_MATCH_NAME_ERROR =
+        "Match '{0}' is specified more than once in composite match config";
+
+      public const string CONFIG_HANDLER_DUPLICATE_FILTER_NAME_ERROR =
         "Filter '{0}' is specified more than once in handler config";
 
       public const string CONFIG_OTHER_DUPLICATE_MATCH_NAME_ERROR =
@@ -116,13 +119,13 @@ namespace NFX.Wave
       public const string SESSION_NOT_AVAILABLE_ERROR =
         "Session context is not available for '{0}'. No SessionFilter (or derivative) injected in the processing chain";
 
-      public const string MVCCONTROLLER_ACTION_UNKNOWN_ERROR =
+      public const string MVC_CONTROLLER_ACTION_UNKNOWN_ERROR =
          "MVC Controller '{0}' does not have action '{1}'";
 
-      public const string MVCCONTROLLER_ACTION_PARAM_BINDER_ERROR =
+      public const string MVC_CONTROLLER_ACTION_PARAM_BINDER_ERROR =
          "MVC Controller '{0}' {1} action '{2}' parameter '{3}' of type '{4}' could not be assigned a value of '{5}'";
 
-      public const string MVCCONTROLLER_ACTION_UNMATCHED_HANDLER_ERROR =
+      public const string MVC_CONTROLLER_ACTION_UNMATCHED_HANDLER_ERROR =
          "MVC Controller '{0}' could not match any action '{1}' handler";
 
 
@@ -131,6 +134,11 @@ namespace NFX.Wave
 
       public const string MVC_CONTROLLER_REFLECTION_ERROR =
         "Error reflecting on MVC controller type '{0}' action '{1}'. Error: {2}";
+
+
+      public const string MVC_HANDLER_WORK_PROCESSING_ERROR =
+        "MVC handler error in work processing: {0}";
+
 
       public const string CLIENT_VARS_LENGTH_OVER_LIMIT_ERROR =
         "The total length of client vars with cookie name is {0} chars, which is over the limit of {1} chars. Reduce the amount of information stored in client vars";

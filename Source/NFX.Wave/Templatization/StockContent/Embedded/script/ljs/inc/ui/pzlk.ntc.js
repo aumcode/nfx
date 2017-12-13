@@ -15,7 +15,7 @@ published.PuzzleKeypad = function(init) {
   var fDIV = init.DIV;
   var fHelp = WAVE.strEmpty(init.Help) ? PUZZLE_DFLT_HELP : init.Help;
   var fQuestion = WAVE.strEmpty(init.Question) ? "" : init.Question;
-  var fValue = [];
+  var fValue = init.Answer || [];
   var fImage = init.Image;
 
   var fdivHelp = null,
@@ -89,6 +89,16 @@ published.PuzzleKeypad = function(init) {
     fbtnClear = WAVE.id(args.bid);
     fimgKeys = WAVE.id(args.iid);
     fdivPlaceholder = WAVE.id(args.pid);
+
+    if (fValue.length > 0) {
+      for(var i in fValue)
+        fdivInput.appendChild("*** span=?args.symbol { } ***");
+
+      WAVE.addClass(fdivPlaceholder, "hidden");
+      WAVE.removeClass(fdivInput, "hidden");
+
+      keypad.eventInvoke(published.EVT_PUZZLE_KEYPAD_CHANGE, fValue);
+    }
 
     $(fbtnClear).click(function(evt) {//CLEAR
       evt.preventDefault();

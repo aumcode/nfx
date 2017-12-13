@@ -1,4 +1,4 @@
-﻿// Implements inter-window browser commenication
+﻿// Implements inter-window browser communication
 published.WindowConnector = function (cfg) {
   cfg = cfg || {};
 

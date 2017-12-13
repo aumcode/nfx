@@ -102,6 +102,7 @@
     <Compile Include="CodeAnalysis\JSONLexer.cs" />
     <Compile Include="CodeAnalysis\JSONParser.cs" />
     <Compile Include="Collections\BitListTest.cs" />
+    <Compile Include="Collections\CappedSetTests.cs" />
     <Compile Include="Collections\StringMapTests.cs" />
     <Compile Include="Collections\LookAheadEnumerableTest.cs" />
     <Compile Include="Collections\RegistryTests.cs" />

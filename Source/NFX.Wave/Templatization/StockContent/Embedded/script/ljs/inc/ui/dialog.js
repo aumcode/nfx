@@ -116,9 +116,21 @@ published.Dialog = function(init)
   //returns dialog result or DLG_UNDEFINED
   this.result = function(){ return fResult; };
 
+  // turn on/off CloseOnClickOutside option
+  this.closeOnClickOutside = function (val) {
+    if (typeof (val) === WAVE.TUNDEFINED || val === null) return fCloseOnClickOutside;
+    fCloseOnClickOutside = val === true;
+    if (fCloseOnClickOutside)
+      setTimeout(function () { WAVE.addEventHandler(window, "click", outsideClickHandler) }, 1);
+    else {
+      WAVE.removeEventHandler(window, "click", outsideClickHandler);
+    }
+    return fCloseOnClickOutside;
+  }
+
   //closes dialog with the specified result and returns the result
   this.close = function(result){
-    if (typeof(result)===tUNDEFINED) result = published.DLG_CANCEL;
+    if (typeof (result) === tUNDEFINED) result = published.DLG_CANCEL;
     if (fResult!==published.DLG_UNDEFINED) return fResult;
     if (!fOnClose(this, result)) return published.DLG_UNDEFINED;//aka CloseQuery
 

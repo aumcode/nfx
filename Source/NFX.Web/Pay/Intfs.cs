@@ -87,6 +87,22 @@ namespace NFX.Web.Pay
   }
 
   /// <summary>
+  /// Pay system with fee
+  /// </summary>
+  public interface IPaySystemWithFee
+  {
+    /// <summary>
+    /// Get Transaction Flat Fee by CurrencyISO and TransactionType
+    /// </summary>
+    Amount GetTransactionFlatFee(string currencyISO, TransactionType type);
+
+    /// <summary>
+    /// Get Transaction Pct Fee by CurrencyISO and TransactionType
+    /// </summary>
+    decimal GetTransactionPctFee(string currencyISO, TransactionType type);
+  }
+
+  /// <summary>
   /// Describes an entity that can perform pay functions with several usefull interfaces in NFX style
   /// </summary>
   public interface IPaySystemImplementation: IPaySystem, IConfigurable, IInstrumentable

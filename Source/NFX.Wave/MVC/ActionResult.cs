@@ -223,6 +223,24 @@ namespace NFX.Wave.MVC
       Options = options;
     }
 
+    public JSONResult(Exception error, JSONWritingOptions options)
+    {
+      var http = WebConsts.STATUS_500;
+      var descr = WebConsts.STATUS_500_DESCRIPTION;
+      if (error != null)
+      {
+        descr = error.Message;
+        var httpError = error as HTTPStatusException;
+        if (httpError != null)
+        {
+          http = httpError.StatusCode;
+          descr = httpError.StatusDescription;
+        }
+      }
+      Data = new { OK = false, http = http, descr = descr };
+      Options = options;
+    }
+
     public readonly object Data;
     public readonly JSONWritingOptions Options;
 

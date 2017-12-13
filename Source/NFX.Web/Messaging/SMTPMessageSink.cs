@@ -62,25 +62,25 @@ namespace NFX.Web.Messaging
 
       [Config]
       public string SmtpHost { get; set; }
-      
+
       [Config(Default=DEFAULT_SMTP_PORT)]
       public int SmtpPort { get; set; }
-      
+
       [Config]
       public bool SmtpSSL { get; set; }
-      
+
       [Config]
       public string CredentialsID { get; set; }
-      
+
       [Config]
       public string CredentialsPassword { get; set; }
-      
+
       [Config]
       public string DefaultFromAddress { get; set; }
-      
+
       [Config]
       public string DefaultFromName { get; set; }
-      
+
       [Config]
       public string DropFolder { get; set; }
 
@@ -130,30 +130,47 @@ namespace NFX.Web.Messaging
 
     protected override bool DoSendMsg(Message msg)
     {
-      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace()) return false;
+      // If msg is null or msg hasn't any "To" addressee - we can't send it, so return 
+      if (msg == null || !msg.AddressToBuilder.All.Any()) return false;
+      
+      var addressFrom = msg.AddressFromBuilder.GetFirstOrDefaultMatchForChannels(SupportedChannelNames);
 
-      var fa = msg.FROMAddress;
-      var fn = msg.FROMName;
+      var addressTo = msg.AddressToBuilder.GetMatchesForChannels(SupportedChannelNames).ToList();
+
+      var addressReplyTo = msg.AddressReplyToBuilder.GetMatchesForChannels(SupportedChannelNames);
+      var arto = addressReplyTo.Select(fmtEmail).ToList();
+
+      var addressCC = msg.AddressCCBuilder.GetMatchesForChannels(SupportedChannelNames);
+      var acc = addressCC.Select(fmtEmail).ToList();
+
+      var addressBCC = msg.AddressBCCBuilder.GetMatchesForChannels(SupportedChannelNames);
+      var abcc = addressBCC.Select(fmtEmail).ToList();
+
+      var fa = addressFrom.ChannelAddress;
+      var fn = addressFrom.ChannelName;
 
       if (fa.IsNullOrWhiteSpace()) fa = DefaultFromAddress;
       if (fn.IsNullOrWhiteSpace()) fn = DefaultFromName;
-
-      var addressees =
-        msg.MessageAddress.All.Where(a => SupportedChannelNames.Any(n => n.EqualsOrdIgnoreCase(a.ChannelName)));
-
-      var from = new MailAddress(fa, fn);
+      
+      var from = fmtEmail(fa, fn);
       var wasSent = false;
-      foreach (var addressee in addressees)
+      // todo поддерживает ли MailMessageTo многих адресатов через запятую в однйо строке, если да - убрать цикл foreach
+      foreach (var addressee in addressTo)
       {
-        var to = new MailAddress(addressee.ChannelAddress, addressee.Name);
+        var to = fmtEmail(addressee.ChannelAddress, addressee.Name);
 
         using (var email = new MailMessage(from, to))
         {
+          foreach (var adr in arto)
+            email.ReplyToList.Add(adr);
+
+          foreach (var adr in acc)
+            email.CC.Add(adr);
+
+          foreach (var adr in abcc)
+            email.Bcc.Add(adr);
+
           email.Subject = msg.Subject;
-
-          if (msg.CC.IsNotNullOrWhiteSpace()) email.CC.Add(msg.CC);
-
-          if (msg.BCC.IsNotNullOrWhiteSpace()) email.Bcc.Add(msg.BCC);
 
           if (msg.RichBody.IsNullOrWhiteSpace())
           {
@@ -174,15 +191,15 @@ namespace NFX.Web.Messaging
             }
           }
 
-          if (msg.Attachments!=null)
-            foreach(var att in msg.Attachments.Where(a => a.Content != null))
+          if (msg.Attachments != null)
+            foreach (var att in msg.Attachments.Where(a => a.Content != null))
             {
-              var ema = new Attachment(new System.IO.MemoryStream(att.Content), new System.Net.Mime.ContentType( att.ContentType ));
+              var ema = new Attachment(new System.IO.MemoryStream(att.Content), new System.Net.Mime.ContentType(att.ContentType));
 
               if (att.Name.IsNotNullOrWhiteSpace())
                 ema.ContentDisposition.FileName = att.Name;
 
-              email.Attachments.Add( ema );
+              email.Attachments.Add(ema);
             }
 
           try
@@ -202,5 +219,15 @@ namespace NFX.Web.Messaging
     }
 
     #endregion
+
+    private MailAddress fmtEmail(MessageAddressBuilder.Addressee addressee)
+    {
+      return fmtEmail(addressee.ChannelAddress, addressee.Name);
+    }
+
+    private MailAddress fmtEmail(string address, string name)
+    {
+      return new MailAddress(address, name);
+    }
   }
 }

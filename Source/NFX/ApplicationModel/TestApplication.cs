@@ -65,6 +65,8 @@ namespace NFX.ApplicationModel
 
         public virtual bool IsUnitTest { get; set; }
 
+        public virtual string EnvironmentName { get; set; }
+
         public virtual Guid InstanceID { get { return m_InstanceID;}}
 
         public virtual DateTime StartTime { get; set;}

@@ -212,6 +212,7 @@ namespace NFX.Wave
       private int?  m_ApiMinVer;
       private int?  m_ApiMaxVer;
       private IEnumerable<Permission> m_Permissions;
+      private bool m_CompositeCapture;
 
       private Registry<Variable> m_Variables = new Registry<Variable>();
 
@@ -387,6 +388,16 @@ namespace NFX.Wave
       {
         get { return m_ApiMaxVer; }
         set { m_ApiMaxVer = value; }
+      }
+
+      /// <summary>
+      /// Used by the CompositeMatch: if true, merges the result of Make() into composite capture context
+      /// </summary>
+      [Config]
+      public bool CompositeCapture
+      {
+        get { return m_CompositeCapture;}
+        set { m_CompositeCapture = value;}
       }
 
       public IEnumerable<Permission> Permissions

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using NFX.Environment;
 using NFX.Log;
@@ -15,11 +14,7 @@ namespace NFX.Web.Messaging
   {
     #region CONSTS
 
-    private const string URI_MESSAGES= "https://api.twilio.com/2010-04-01/Accounts/{0}/Messages.json";
-
-    private const string HDR_AUTHORIZATION = "Authorization";
-    private const string HDR_AUTHORIZATION_TOKEN = "Basic {0}";
-
+    private const string URI_MESSAGES = "https://api.twilio.com/2010-04-01/Accounts/{0}/Messages.json";
     private const string ERROR_MESSAGE = "error_message";
 
     #endregion
@@ -49,14 +44,12 @@ namespace NFX.Web.Messaging
 
     #region Properties
 
-    [Config] public string AccountSid { get; set; }
-    [Config] public string AuthToken { get; set; }
-    [Config] public string From { get; set; }
-
-    public string AuthorizationKey
-    {
-      get { return Convert.ToBase64String(Encoding.UTF8.GetBytes("{0}:{1}".Args(AccountSid, AuthToken))); }
-    }
+    [Config]
+    public string AccountSid { get; set; }
+    [Config]
+    public string AuthToken { get; set; }
+    [Config]
+    public string From { get; set; }
 
     public override MsgChannels SupportedChannels
     {
@@ -65,25 +58,24 @@ namespace NFX.Web.Messaging
 
     #endregion
 
+    #region Protected
+
     protected override bool DoSendMsg(Message msg)
     {
-      if (msg == null || msg.TOAddress.IsNullOrWhiteSpace())
+      if (msg == null || !msg.AddressToBuilder.All.Any())
         throw new WebException("TwilioSink.DoSendMsg(msg==null)");
-
-      if (msg.TOAddress.IsNullOrWhiteSpace())
-        throw new WebException("TwilioSink.DoSendMsg(msg.TOAddress==null)");
-
+      
       if (msg.Body.IsNullOrEmpty())
         throw new WebException("TwilioSink.DoSendMsg(msg.body==null");
 
-      var addressees =
-        msg.MessageAddress.All.Where(a => SupportedChannelNames.Any(n => n.EqualsOrdIgnoreCase(a.ChannelName)));
+      var addressTo = msg.AddressToBuilder.GetMatchesForChannels(SupportedChannelNames).ToList();
 
       var from = Uri.EscapeDataString(From);
       var body = Uri.EscapeDataString(msg.Body);
-      var auth = HDR_AUTHORIZATION_TOKEN.Args(AuthorizationKey);
+      var auth = new HttpBasicAuthenticationHelper(AccountSid, AuthToken);
+
       var wasSent = false;
-      foreach (var addressee in addressees)
+      foreach (var addressee in addressTo)
       {
         var to = Uri.EscapeDataString(addressee.ChannelAddress);
         try
@@ -100,17 +92,16 @@ namespace NFX.Web.Messaging
       return wasSent;
     }
 
+    #endregion
 
-    private bool doCall(string from, string to, string body, string auth)
+    #region .pvt
+
+    private bool doCall(string from, string to, string body, HttpBasicAuthenticationHelper auth)
     {
       var request = new WebClient.RequestParams(this)
       {
         Method = HTTPRequestMethod.POST,
         ContentType = ContentType.FORM_URL_ENCODED,
-        Headers = new Dictionary<string, string>
-        {
-          { HDR_AUTHORIZATION, auth }
-        },
         BodyParameters = new Dictionary<string, string>
         {
           { "From", from },
@@ -118,10 +109,15 @@ namespace NFX.Web.Messaging
           { "Body", body }
         }
       };
+
+      auth.AddAuthHeader(ref request);
+
       var response = WebClient.GetJson(new Uri(URI_MESSAGES.Args(AccountSid)), request);
 
       if (response[ERROR_MESSAGE].AsString().IsNotNullOrEmpty()) return false;
       return true;
     }
+
+    #endregion
   }
 }

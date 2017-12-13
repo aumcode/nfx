@@ -451,7 +451,7 @@ namespace NFX.DataAccess.MySQL
 
         if(store.FullGDIDS)
         {
-          value = (object)((GDID)value).Bytes;
+          value = (object)((GDID)value).Bytes;//be very careful with byte ordering of GDID for index optimization
           convertedDbType = MySqlDbType.Binary;
         }
         else

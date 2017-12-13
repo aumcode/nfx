@@ -308,7 +308,7 @@ namespace NFX.ApplicationModel
           var configFile = m_CommandArgs[CONFIG_SWITCH].AttrByIndex(0).Value;
 
           if (string.IsNullOrEmpty(configFile))
-              configFile = GetDefaultConfigFileName();
+              configFile = GetDefaultEntryPointConfigFileName();
 
 
           Configuration conf;

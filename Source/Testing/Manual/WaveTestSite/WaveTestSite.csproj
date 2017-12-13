@@ -56,6 +56,7 @@
     <Compile Include="Controllers\Tester.cs" />
     <Compile Include="Controllers\IntegrationTester.cs" />
     <Compile Include="Embedded\EmbeddedTestSiteHandler.cs" />
+    <Compile Include="Handlers\PushHandler.cs" />
     <Compile Include="Handlers\SimpleHandler.cs" />
     <Compile Include="Pages\AboutUs.htm.auto.cs">
       <DependentUpon>AboutUs.htm</DependentUpon>

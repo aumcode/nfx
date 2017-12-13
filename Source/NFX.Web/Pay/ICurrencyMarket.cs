@@ -19,7 +19,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.ApplicationModel;
+using NFX.Instrumentation;
 using NFX.Financial;
+using NFX.Environment;
+
+
 
 namespace NFX.Web.Pay
 {
@@ -34,4 +39,10 @@ namespace NFX.Web.Pay
      /// </summary>
      Amount ConvertCurrency(string rateTable, Amount from, string targetCurrencyISO);
   }
+
+  public interface ICurrencyMarketImplementation : ICurrencyMarket, IApplicationComponent, IConfigurable
+  {
+
+  }
+
 }

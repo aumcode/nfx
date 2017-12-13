@@ -542,6 +542,7 @@ namespace NFX.Web.Shipping.Shippo
         result.Country    = NFX.Standards.Countries_ISO3166_1.Normalize3(map["country"].AsString());
         result.Phone      = map["phone"].AsString();
         result.EMail      = map["email"].AsString();
+        result.Company    = map["company"].AsString();
 
         return result;
       }
@@ -601,6 +602,7 @@ namespace NFX.Web.Shipping.Shippo
         result["zip"] = addr.Postal;
         result["phone"] = addr.Phone;
         result["email"] = addr.EMail;
+        result["company"] = addr.Company;
 
         return result;
       }

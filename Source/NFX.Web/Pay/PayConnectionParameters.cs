@@ -31,6 +31,7 @@ namespace NFX.Web.Pay
   {
     #region Static
 
+ /*   // 20170922  Eibr + DKH  Remove old unused code
       private static Registry<IPaySystemHost> s_PaySystemHosts = new Registry<IPaySystemHost>();
 
       public static IRegistry<IPaySystemHost> PaySystemHosts { get { return s_PaySystemHosts;} }
@@ -41,7 +42,7 @@ namespace NFX.Web.Pay
 
         throw new NotImplementedException();
       }
-
+*/
 
       public static TParams Make<TParams>(IConfigSectionNode node) where TParams: ConnectionParameters
       {

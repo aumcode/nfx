@@ -108,7 +108,9 @@ namespace NFX.DataAccess.Distributed
         public byte[] Bytes
         {
           get
-          {
+          {  //WARNING!!! NEVER EVER CHANGE this method without considering the effect:
+             // Database keys RELY on the specific byte ordering for proper tree balancing
+             // MUST use BIG ENDIAN encoding  ERA, COUNTER not vice-versa
             var result = new byte[sizeof(uint)+sizeof(ulong)];
             result.WriteBEUInt32(0, Era);
             result.WriteBEUInt64(4, ID);

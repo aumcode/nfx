@@ -1,4 +1,4 @@
-///*<FILE_LICENSE>
+//*<FILE_LICENSE>
 //* NFX (.NET Framework Extension) Unistack Library
 //* Copyright 2003-2017 ITAdapter Corp. Inc.
 //*
@@ -14,7 +14,7 @@
 //* See the License for the specific language governing permissions and
 //* limitations under the License.
 //</FILE_LICENSE>*/
-///*
+//*
 // * Author: Dmitriy Khmaladze, Spring 2015  dmitriy@itadapter.com
 // */
 //using System;

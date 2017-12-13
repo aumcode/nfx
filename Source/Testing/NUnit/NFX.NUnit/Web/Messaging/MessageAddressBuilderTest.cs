@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -17,19 +14,19 @@ namespace NFX.NUnit.Web.Messaging
     public void BuildMessageAddress()
     {
       var config =
-      @"nfx
+      @"as
         {
           a
           {
-            name=Peter
-            channel-name=Twilio
-            channel-address='+15005550005'
+            nm=Peter
+            cn=Twilio
+            ca='+15005550005'
           }
           a
           {
-            name=Nick
-            channel-name=Mailgun
-            channel-address='nick@example.com'
+            nm=Nick
+            cn=Mailgun
+            ca='nick@example.com'
           }
         }";
 
@@ -38,7 +35,7 @@ namespace NFX.NUnit.Web.Messaging
 
       Aver.AreEqual(addressees.Count(), 2);
       Aver.AreEqual(builder.ToString(),
-                    "nfx{a{name=Peter channel-name=Twilio channel-address=+15005550005}a{name=Nick channel-name=Mailgun channel-address=nick@example.com}}");
+                    "as{a{nm=Peter cn=Twilio ca=+15005550005}a{nm=Nick cn=Mailgun ca=nick@example.com}}");
 
       Aver.AreEqual(addressees[0].Name, "Peter");
       Aver.AreEqual(addressees[0].ChannelName, "Twilio");
@@ -49,18 +46,18 @@ namespace NFX.NUnit.Web.Messaging
       Aver.AreEqual(addressees[1].ChannelAddress, "nick@example.com");
 
       var ann = new MessageAddressBuilder.Addressee
-      {
-        Name = "Ann",
-        ChannelName = "SMTP",
-        ChannelAddress = "ann@example.com"
-      };
+      (
+        "Ann",
+        "SMTP",
+        "ann@example.com"
+      );
       builder.AddAddressee(ann);
 
       addressees = builder.All.ToArray();
       Aver.AreEqual(addressees.Count(), 3);
       var str = builder.ToString();
       Aver.AreEqual(builder.ToString(),
-                    "nfx{a{name=Peter channel-name=Twilio channel-address=+15005550005}a{name=Nick channel-name=Mailgun channel-address=nick@example.com}a{name=Ann channel-name=SMTP channel-address=ann@example.com}}");
+                    "as{a{nm=Peter cn=Twilio ca=+15005550005}a{nm=Nick cn=Mailgun ca=nick@example.com}a{nm=Ann cn=SMTP ca=ann@example.com}}");
 
       Aver.AreEqual(addressees[2].Name, "Ann");
       Aver.AreEqual(addressees[2].ChannelName, "SMTP");
@@ -68,49 +65,66 @@ namespace NFX.NUnit.Web.Messaging
 
       builder = new MessageAddressBuilder(null);
       builder.AddAddressee(ann);
-      Aver.AreEqual(builder.ToString(), "nfx{a{name=Ann channel-name=SMTP channel-address=ann@example.com}}");
+      Aver.AreEqual(builder.ToString(), "as{a{nm=Ann cn=SMTP ca=ann@example.com}}");
       Aver.AreEqual(builder.All.Count(), 1);
 
-      builder = new MessageAddressBuilder("nfx{}");
+      builder = new MessageAddressBuilder("as{}");
       Aver.AreEqual(builder.All.Count(), 0);
-      Aver.AreEqual(builder.ToString(), "nfx{}");
+      Aver.AreEqual(builder.ToString(), "as{}");
     }
 
     [Test]
     public void MatchNames()
     {
       var config =
-      @"nfx
+      @"as
         {
           a
           {
-            name=Peter
-            channel-name=Twilio
-            channel-address=+15005550005
+            nm=Peter
+            cn=Twilio
+            ca=+15005550005
           }
           a
           {
-            name=Nick
-            channel-name=Mailgun
-            channel-address=nick@example.com
+            nm=Nick
+            cn=Mailgun
+            ca=nick@example.com
           }
           a
           {
-            name=Ann
-            channel-name=SMTP
-            channel-address=ann@example.com
+            nm=Ann
+            cn=SMTP
+            ca=ann@example.com
           }
         }";
       var builder = new MessageAddressBuilder(config);
 
       var names = new string[] {"smtp"};
       Aver.IsTrue(builder.MatchNamedChannel(names));
+      var matches = builder.GetMatchesForChannels(names).ToArray();
+      Aver.AreEqual(matches.Length, 1);
+      Aver.AreEqual(matches[0].Name, "Ann");
 
       names = new string[] {"Twilio", "MailGun"};
       Aver.IsTrue(builder.MatchNamedChannel(names));
 
+      matches = builder.GetMatchesForChannels(names).ToArray();
+      Aver.AreEqual(matches.Length, 2);
+      Aver.AreEqual(matches[0].Name, "Peter");
+      Aver.AreEqual(matches[1].Name, "Nick");
+      var first = builder.GetFirstOrDefaultMatchForChannels(names);
+      Aver.IsNotNull(first);
+      Aver.IsTrue(first.Assigned);
+      Aver.AreEqual(first.Name, "Peter");
+
       names = new string[] {"Skype"};
       Aver.IsFalse(builder.MatchNamedChannel(names));
+      matches = builder.GetMatchesForChannels(names).ToArray();
+      Aver.AreEqual(matches.Length, 0);
+      first = builder.GetFirstOrDefaultMatchForChannels(names);
+      Aver.IsNotNull(first);
+      Aver.IsFalse(first.Assigned);
     }
   }
 }

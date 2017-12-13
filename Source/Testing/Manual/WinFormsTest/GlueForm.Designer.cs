@@ -134,16 +134,15 @@ namespace WinFormsTest
       this.cbo.FormattingEnabled = true;
       this.cbo.Items.AddRange(new object[] {
             "mpx://sextod:5701",
+            "mpx://octod:5701",
+            "mpx://cube:5701",
             "mpx://127.0.0.1:5701",
-            "mpx://69.175.12.90:5701",
-            "mpx://10.0.0.1:5701",
-            "mpx://dxwpc:5701",
             "-------------------------",
             "sync://sextod:8000",
+            "sync://octod:8000",
+            "sync://cube:8000",
             "sync://127.0.0.1:8000",
-            "sync://69.175.12.90:8000",
-            "sync://10.0.0.1:8000",
-            "sync://dxwpc:8000"});
+            ""});
       this.cbo.Location = new System.Drawing.Point(12, 12);
       this.cbo.Name = "cbo";
       this.cbo.Size = new System.Drawing.Size(368, 21);

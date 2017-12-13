@@ -56,7 +56,7 @@ namespace NFX.NUnit.Integration.Web.Messaging
     {
       var sms = new Message(null)
       {
-        TOAddress = "nfx { a { name=Nick channel-name=Twilio channel-address=+15005550005 } }",
+        AddressTo = "as { a { nm=Nick cn=Twilio ca=+15005550005 } }",
         Body = "Test SMS. Тестирование SMS"
       };
       var sent = m_Sink.SendMsg(sms);
@@ -70,14 +70,14 @@ namespace NFX.NUnit.Integration.Web.Messaging
       {
         var sms = new Message(null)
         {
-          TOAddress = "nfx { a { name=Nick channel-name=Twilio channel-address=+15005550009 } }",
+          AddressTo = "as { a { nm=Nick cn=Twilio ca=+15005550009 } }",
           Body = "Test SMS"
         };
         var sent = m_Sink.SendMsg(sms);
       }
       catch (Exception error)
       {
-        Aver.IsTrue(error.Message.Contains("operation is not succeeded"));
+        Aver.IsTrue(error.Message.EqualsOrdIgnoreCase("Sending message on sink 'Twilio' has not succeeded"));
       }
     }
 
@@ -89,7 +89,7 @@ namespace NFX.NUnit.Integration.Web.Messaging
 
       var sms = new Message(null)
       {
-        TOAddress = "nfx { a { name=Nick channel-name=Twilio channel-address=+15005550009 } }",
+        AddressTo = "as { a { nm=Nick cn=Twilio ca=+15005550009 } }",
         Body = "Test SMS"
       };
       var sent = m_Sink.SendMsg(sms);

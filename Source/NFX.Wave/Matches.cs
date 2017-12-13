@@ -33,12 +33,49 @@ namespace NFX.Wave
   /// </summary>
   public sealed class NotAuthorizationExceptionMatch : WorkMatch
   {
+    public NotAuthorizationExceptionMatch(string name, int order) : base(name, order) { }
     public NotAuthorizationExceptionMatch(IConfigSectionNode confNode) : base(confNode) { }
 
     public override JSONDataMap Make(WorkContext work, object context = null)
     {
       if (context is NFX.Security.AuthorizationException) return null;
+      if (context is FilterPipelineException && ((FilterPipelineException)context).RootException is NFX.Security.AuthorizationException) return null;
       if (context is Exception && ((Exception)context).InnerException is NFX.Security.AuthorizationException) return null;
+      return base.Make(work, context);
+    }
+  }
+
+
+  /// <summary>
+  /// Matches by Work.Response.StatusCode. The match makes sense in the After processing - when status is already set
+  /// </summary>
+  public sealed class HttpResponseStatusCodeMatch : WorkMatch
+  {
+    public HttpResponseStatusCodeMatch(string name, int order) : base(name, order) { }
+    public HttpResponseStatusCodeMatch(IConfigSectionNode confNode) : base(confNode) { }
+
+    private int m_Code;
+    private bool m_IsNot;
+
+    [Config]
+    public int Code
+    {
+      get { return m_Code; }
+      set { m_Code = value; }
+    }
+
+    [Config]
+    public bool IsNot
+    {
+      get { return m_IsNot; }
+      set { m_IsNot = value; }
+    }
+
+    public override JSONDataMap Make(WorkContext work, object context = null)
+    {
+      var eq = work.Response.StatusCode == m_Code;
+      if (m_IsNot == eq) return null;
+
       return base.Make(work, context);
     }
   }
@@ -70,16 +107,28 @@ namespace NFX.Wave
 
     public override JSONDataMap Make(WorkContext work, object context = null)
     {
-      var error = context as Exception;
-      while (error != null && m_ExceptionType != null)
+      if (m_ExceptionType!=null)
       {
-        var got = error.GetType();
+        var error = context as Exception;
 
-        if (m_IsNot && got == m_ExceptionType) return null;
-        if (!m_IsNot && got != m_ExceptionType) return null;
+        var eq = false;
 
-        error = error.InnerException;
+        while (error != null)
+        {
+          var got = error.GetType();
+
+          if (got == m_ExceptionType)
+          {
+            eq = true;
+            break;
+          }
+
+          error = error.InnerException;
+        }
+
+        if (m_IsNot == eq) return null;
       }
+
       return base.Make(work, context);
     }
   }

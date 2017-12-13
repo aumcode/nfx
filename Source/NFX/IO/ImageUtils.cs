@@ -253,6 +253,40 @@ namespace NFX.IO
       return result;
     }
 
+    /// <summary>
+    /// Scales source image so it uniformly (without cropping) fits in the desired image size preserving aspect ratio.
+    /// This function is usable for profile picture size/aspect normalization
+    /// </summary>
+    public static Image FitCenteredImage(this Image srcImage,
+                                         int targetWidth = 128, int targetHeight = 128, int xDpi = 96, int yDpi = 96,
+                                         Color? bColor = null)
+    {
+      if (srcImage==null || targetWidth<1 ||targetHeight<1 || xDpi<1 || yDpi<1)
+       throw new NFXException(StringConsts.ARGUMENT_ERROR + "FitCenteredImage(...)");
+
+      var result = new Bitmap(targetWidth, targetHeight);
+      result.SetResolution(xDpi, yDpi);
+      result.MakeTransparent();
+
+      using (var gr = Graphics.FromImage(result))
+      {
+        var xAspect = targetWidth/(float)srcImage.Width;
+        var yAspect = targetHeight/(float)srcImage.Height;
+        var ar = Math.Min(xAspect, yAspect);
+
+        var newWidth  = (int)(srcImage.Width * ar);
+        var newHeight = (int)(srcImage.Height * ar);
+        var newX = (targetWidth - newWidth)/2;
+        var newY = (targetHeight - newHeight)/2;
+
+        gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        gr.Clear(bColor ?? Color.White);
+        gr.DrawImage(srcImage, newX, newY, newWidth, newHeight);
+      }
+
+      return result;
+    }
+
     public static Bitmap ModifyBitsPerBixel(Image img, PixelFormat format)
     {
       var bmp = new Bitmap(img.Width, img.Height, format);

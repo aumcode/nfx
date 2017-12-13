@@ -47,6 +47,11 @@ namespace NFX.ApplicationModel
      bool IsUnitTest{ get;}
 
      /// <summary>
+     /// Provides access to "environment-name" attribute
+     /// </summary>
+     string EnvironmentName { get; }
+
+     /// <summary>
      /// Returns unique identifier of this running instance
      /// </summary>
      Guid InstanceID { get; }

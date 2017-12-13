@@ -58,6 +58,7 @@ namespace NFX.Web.GeoLookup
         get
         {
           if (s_Instance!=null) return s_Instance;
+          var isNew = false;
           lock(s_InstanceLock)
           {
             if (s_Instance==null)
@@ -69,15 +70,16 @@ namespace NFX.Web.GeoLookup
               }
               catch
               {
+                #warning TODO: Finish throwing detailed exception
                 throw;
               }
-
-              Task.Factory.StartNew(() => start(), TaskCreationOptions.LongRunning);
-
               s_Instance = result;
+              isNew = true;
             }
-            return s_Instance;
           }
+          if (isNew)
+            Task.Factory.StartNew(() => start(), TaskCreationOptions.LongRunning);
+          return s_Instance;
         }
       }
 

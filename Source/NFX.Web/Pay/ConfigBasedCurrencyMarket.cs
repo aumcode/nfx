@@ -19,30 +19,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NFX.ApplicationModel;
 using NFX.Financial;
 using NFX.Environment;
+using NFX.Instrumentation;
 
 namespace NFX.Web.Pay
 {
   /// <summary>
   /// Provides rate conversion services based on an APP config file
   /// </summary>
-  public class ConfigBasedCurrencyMarket : ICurrencyMarket, IConfigurable
+  public class ConfigBasedCurrencyMarket : ApplicationComponent, ICurrencyMarketImplementation
   {
     public const string CONFIG_TABLES_SECTION = "tables";
     public const string CONFIG_RATE_ATTR = "rate";
 
     protected IConfigSectionNode m_Node;
 
-    public ConfigBasedCurrencyMarket()
+    public ConfigBasedCurrencyMarket() : base()
     {
       m_Node = findDefaultNode();
     }
 
-    public ConfigBasedCurrencyMarket(IConfigSectionNode node)
+    public ConfigBasedCurrencyMarket(object director) : base(director)
+    {
+      m_Node = findDefaultNode();
+    }
+
+    public ConfigBasedCurrencyMarket(IConfigSectionNode node): base()
     {
       m_Node = node ?? findDefaultNode();
     }
+
+    public ConfigBasedCurrencyMarket(object director, IConfigSectionNode node): base(director)
+    {
+      m_Node = node ?? findDefaultNode();
+    }
+
+
 
     public void Configure(IConfigSectionNode node)
     {
@@ -51,6 +65,8 @@ namespace NFX.Web.Pay
 
     public virtual Amount ConvertCurrency(string rateTable, Amount from, string targetCurrencyISO)
     {
+       if(targetCurrencyISO.EqualsOrdIgnoreCase(from.CurrencyISO)) return from;
+
        IConfigSectionNode node = null;
 
        if (rateTable.IsNotNullOrWhiteSpace())

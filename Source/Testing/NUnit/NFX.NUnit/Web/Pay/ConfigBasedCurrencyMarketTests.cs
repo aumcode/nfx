@@ -36,7 +36,7 @@ namespace NFX.NUnit.Web.Pay
       private const int RATE_USD_TO_RUB = 70;
       private readonly Amount USD1 = new Amount(CURRENCY_USD, 1M);
 
-    #endregion    
+    #endregion
 
     #region Public
 

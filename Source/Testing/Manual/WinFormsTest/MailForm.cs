@@ -23,7 +23,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NFX;
 using NFX.Web.Messaging;
+using WinFormsTest.Properties;
 
 namespace WinFormsTest
 {
@@ -39,14 +41,21 @@ namespace WinFormsTest
           // note that ToAddress has complex structure - laconic config, look MessageBuilder.Addressee
           var message = new NFX.Web.Messaging.Message(null)
           {
-            FROMName = tbFROMName.Text,
-            FROMAddress = tbFROMAddress.Text,
-            TOName = tbTOName.Text,
-            TOAddress = tbTOAddress.Text,
+            AddressFrom = tbFROMAddress.Text,
+            AddressTo = tbTOAddress.Text,
             Subject = tbSubject.Text,
             Body = tbBody.Text,
             RichBody = tbHTML.Text
           };
+
+          if (includeAttachments.Checked)
+          {
+            ImageConverter converter = new ImageConverter();
+            var imageBytes = (byte[])converter.ConvertTo(Resources._20140601_204233, typeof(byte[]));
+
+            message.Attachments = new NFX.Web.Messaging.Message.Attachment[]
+                          {new NFX.Web.Messaging.Message.Attachment("photo1", imageBytes, NFX.Web.ContentType.JPEG), new NFX.Web.Messaging.Message.Attachment("photo2", imageBytes, NFX.Web.ContentType.JPEG)};
+          }
 
           MessageService.Instance.SendMsg(message);
         }

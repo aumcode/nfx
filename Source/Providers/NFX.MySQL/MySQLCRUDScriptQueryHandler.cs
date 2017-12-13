@@ -347,9 +347,12 @@ namespace NFX.DataAccess.MySQL
               {
                 var name = reader.GetName(i);
                 var fdef = schema[name];
+                // 2017-09-08 EIbr + DKh fixed binding by backend name bug 
+                //var fdef = schema.GetFieldDefByBackendName(target, name);
 
-      //todo A gde GetBackendNameFor target?
+                //todo A gde GetBackendNameFor target?
                 if (fdef==null) continue;
+                
                 var attr =  fdef[target];
                 if (attr!=null)
                 {

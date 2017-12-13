@@ -34,51 +34,74 @@ namespace NFX.Wave.Handlers
   public abstract class EmbeddedSiteHandler : WorkHandler
   {
     #region CONSTS
-    public const string CONFIG_CACHE_CONTROL_SECTION = "cache-control";
+      public const string CONFIG_CACHE_CONTROL_SECTION = "cache-control";
 
-    public const string SITE_ACTION = "site";
-    public const string DEFAULT_SITE_PATH = "Home.htm";
+      public const string SITE_ACTION = "site";
+      public const string DEFAULT_SITE_PATH = "Home.htm";
 
-    public const string VAR_PATH = "path";
+      public const string VAR_PATH = "path";
     #endregion
 
     #region Inner Classes
-    /// <summary>
-    /// Represents an action that can be dispatched by a EmbeddedSiteHandler.
-    /// The instance of this interface implementor is shared between requests (must be thread-safe)
-    /// </summary>
-    public interface IAction : INamed
-    {
       /// <summary>
-      /// Performs the action - by performing action work
+      /// Represents an action that can be dispatched by a EmbeddedSiteHandler.
+      /// The instance of this interface implementor is shared between requests (must be thread-safe)
       /// </summary>
-      void Perform(WorkContext context);
-    }
+      public interface IAction : INamed
+      {
+        /// <summary>
+        /// Performs the action - by performing action work
+        /// </summary>
+        void Perform(WorkContext context);
+      }
     #endregion
 
 
     #region .ctor
 
-    protected EmbeddedSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
-                        : base(dispatcher, name, order, match)
-    {
-        foreach(var action in GetActions()) m_Actions.Register(action);
-    }
+      protected EmbeddedSiteHandler(WorkDispatcher dispatcher, string name, int order, WorkMatch match)
+                          : base(dispatcher, name, order, match)
+      {
+        ctor();
+      }
 
-    protected EmbeddedSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher, confNode)
-    {
+      protected EmbeddedSiteHandler(WorkDispatcher dispatcher, IConfigSectionNode confNode) : base(dispatcher, confNode)
+      {
         ConfigAttribute.Apply(this, confNode);
         if (confNode != null && confNode.Exists)
           m_CacheControl = ConfigAttribute.Apply(new CacheControl(), confNode[CONFIG_CACHE_CONTROL_SECTION]);
-        foreach(var action in GetActions()) m_Actions.Register(action);
-    }
+
+        ctor();
+      }
+
+      private void ctor()
+      {
+        foreach(var action in GetActions())
+          m_Actions.Register(action);
+
+        var assembly = this.GetType().Assembly;
+
+        try
+        {
+          var bi = new BuildInformation(assembly);
+          m_LastModifiedDate = bi.DateStampUTC.DateTimeToHTTPCookieDateTime();
+        }
+        catch(Exception err)
+        {
+          //no build info
+          Server.Log(Log.MessageType.Warning, "Assembly '{0}' has no BUILD_INFO".Args(assembly.FullName), from: "{0}.ctor()".Args(typeof(EmbeddedSiteHandler).Name), error:  err);
+          m_LastModifiedDate = App.TimeSource.UTCNow.DateTimeToHTTPCookieDateTime();
+        }
+      }
 
     #endregion
 
     #region Fields
-    private Registry<IAction> m_Actions = new Registry<IAction>();
-    [Config] private string m_VersionSegmentPrefix;
-    private CacheControl m_CacheControl = CacheControl.PublicMaxAgeSec();
+      private Registry<IAction> m_Actions = new Registry<IAction>();
+      [Config] private string m_VersionSegmentPrefix;
+      private CacheControl m_CacheControl = CacheControl.PublicMaxAgeSec();
+
+      private string m_LastModifiedDate;
     #endregion
 
     #region Properties
@@ -209,97 +232,94 @@ namespace NFX.Wave.Handlers
             }
      #endregion
 
-     #region .pvt
-            private char[] DELIMS = new char[]{'/','\\'};
+    #region .pvt
+      private char[] DELIMS = new char[]{'/','\\'};
 
-            private void serveSite(WorkContext work, string sitePath)
-            {
-              if (sitePath.IsNullOrWhiteSpace())
-                sitePath = DefaultSitePath;
+      private void serveSite(WorkContext work, string sitePath)
+      {
+        if (sitePath.IsNullOrWhiteSpace())
+          sitePath = DefaultSitePath;
 
-              var assembly = this.GetType().Assembly;
+        var assembly = this.GetType().Assembly;
 
-              //Cut the surrogate out of path, i.e. '/static/img/@@767868768768/picture.png' -> '/static/img/picture.png'
-              sitePath = FileDownloadHandler.CutVersionSegment(sitePath, m_VersionSegmentPrefix);
+        //Cut the surrogate out of path, i.e. '/static/img/@@767868768768/picture.png' -> '/static/img/picture.png'
+        sitePath = FileDownloadHandler.CutVersionSegment(sitePath, m_VersionSegmentPrefix);
 
-              var resName = getResourcePath(sitePath);
+        var resName = getResourcePath(sitePath);
 
-              var bi = new BuildInformation(assembly);
-              var lastModified = bi.DateStampUTC.DateTimeToHTTPCookieDateTime();
+        var ifModifiedSince = work.Request.Headers[SysConsts.HEADER_IF_MODIFIED_SINCE];
+        if (ifModifiedSince.IsNotNullOrWhiteSpace() && m_LastModifiedDate.EqualsOrdIgnoreCase(ifModifiedSince))
+        {
+          SetResourceCacheHeader(work, sitePath, resName);
+          work.Response.Redirect(null, WebConsts.RedirectCode.NotModified_304);
+          return;
+        }
+        using(var stream = assembly.GetManifestResourceStream(resName))
+        if (stream != null)
+        {
+          work.Response.Headers.Set(HttpResponseHeader.LastModified, m_LastModifiedDate);
+          SetResourceCacheHeader(work, sitePath, resName);
+          work.Response.ContentType = mapContentType(resName);
 
-              var ifModifiedSince = work.Request.Headers[SysConsts.HEADER_IF_MODIFIED_SINCE];
-              if (ifModifiedSince.IsNotNullOrWhiteSpace() && lastModified.EqualsOrdIgnoreCase(ifModifiedSince))
-              {
-                SetResourceCacheHeader(work, sitePath, resName);
-                work.Response.Redirect(null, WebConsts.RedirectCode.NotModified_304);
-                return;
-              }
-              using(var stream = assembly.GetManifestResourceStream(resName))
-              if (stream != null)
-              {
-                work.Response.Headers.Set(HttpResponseHeader.LastModified, lastModified);
-                SetResourceCacheHeader(work, sitePath, resName);
-                work.Response.ContentType = mapContentType(resName);
+          stream.Seek(0, SeekOrigin.Begin);
+          work.Response.WriteStream(stream);
+        }
+        else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);
+      }
 
-                stream.Seek(0, SeekOrigin.Begin);
-                work.Response.WriteStream(stream);
-              }
-              else throw new HTTPStatusException(WebConsts.STATUS_404, WebConsts.STATUS_404_DESCRIPTION, StringConsts.NOT_FOUND_ERROR + resName);
-            }
+      private string getResourcePath(string sitePath)
+      {
+        var root = RootResourcePath;
+        if (!root.EndsWith("."))
+          root += '.';
 
-            private string getResourcePath(string sitePath)
-            {
-              var root = RootResourcePath;
-              if (!root.EndsWith("."))
-                root += '.';
+        if (SupportsEnvironmentBranching)
+        {
+          var envp = this.Dispatcher.ComponentDirector.EnvironmentName;
 
-              if (SupportsEnvironmentBranching)
-              {
-                var envp = this.Dispatcher.ComponentDirector.EnvironmentName;
+          if (envp.IsNotNullOrWhiteSpace())
+          {
+            root += envp;
+            if (!root.EndsWith("."))
+            root += '.';
+          }
+        }
 
-                if (envp.IsNotNullOrWhiteSpace())
-                {
-                  root += envp;
-                  if (!root.EndsWith("."))
-                  root += '.';
-                }
-              }
-
-              //adjust namespace names
-              string[] segments = sitePath.Split(DELIMS);
-              for(var i=0; i<segments.Length-1; i++) //not the resource name
-                segments[i] = segments[i].Replace('-','_').Replace(' ','_');
+        //adjust namespace names
+        string[] segments = sitePath.Split(DELIMS);
+        for(var i=0; i<segments.Length-1; i++) //not the resource name
+          segments[i] = segments[i].Replace('-','_').Replace(' ','_');
 
 
-              var result = new StringBuilder();
-              var first = true;
-              foreach(var seg in segments)
-              {
-                if (!first)
-                  result.Append('.');
-                else
-                  first = false;
-                result.Append(seg);
-              }
+        var result = new StringBuilder();
+        var first = true;
+        foreach(var seg in segments)
+        {
+          if (!first)
+            result.Append('.');
+          else
+            first = false;
+          result.Append(seg);
+        }
 
-              return root + result;
-            }
+        return root + result;
+      }
 
-            private string mapContentType(string res)
-            {
-              if (res==null)
-                 return ContentType.HTML;
+      private string mapContentType(string res)
+      {
+        if (res==null)
+            return ContentType.HTML;
 
-              var i = res.LastIndexOf('.');
+        var i = res.LastIndexOf('.');
 
-              if (i<0 || i>res.Length-1)
-                 return ContentType.HTML;
+        if (i<0 || i>res.Length-1)
+            return ContentType.HTML;
 
-              var ext = res.Substring(i+1);
+        var ext = res.Substring(i+1);
 
-              return ContentType.ExtensionToContentType(ext);
-            }
-     #endregion
+        return ContentType.ExtensionToContentType(ext);
+      }
+    #endregion
 
   }
 }

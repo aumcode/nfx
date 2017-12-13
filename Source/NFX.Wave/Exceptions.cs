@@ -40,11 +40,26 @@ namespace NFX.Wave
     protected WaveException(SerializationInfo info, StreamingContext context): base(info, context) { }
   }
 
+
+
+  /// <summary>
+  /// Base exception thrown by the MVC-related framework
+  /// </summary>
+  [Serializable]
+  public class MVCException : WaveException
+  {
+    public MVCException() { }
+    public MVCException(string message) : base(message) { }
+    public MVCException(string message, Exception inner) : base(message, inner) { }
+    protected MVCException(SerializationInfo info, StreamingContext context): base(info, context) { }
+  }
+
+
   /// <summary>
   /// Wraps inner exceptions capturing stack trace in inner implementing blocks
   /// </summary>
   [Serializable]
-  public class MVCActionException : WaveException
+  public class MVCActionException : MVCException
   {
     public const string CONTROLLER_FLD_NAME = "MVCAE-C";
     public const string ACTION_FLD_NAME = "MVCAE-A";

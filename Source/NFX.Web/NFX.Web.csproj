@@ -85,6 +85,7 @@
     <Compile Include="ContentType.cs" />
     <Compile Include="Crawlers.cs" />
     <Compile Include="Messaging\CompositeMessageSink.cs" />
+    <Compile Include="Messaging\HttpBasicAuthenticationHelper.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Messaging\MessageAddressBuilder.cs" />
     <Compile Include="Messaging\Enums.cs" />

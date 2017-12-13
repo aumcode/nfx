@@ -105,7 +105,7 @@ namespace WinFormsTest
 
         using (var bitmap = loadImage(path, data))
         {
-          var normBitmap = (Bitmap)NFX.IO.ImageUtils.NormalizeCenteredImage(bitmap, 32, 32);
+          var normBitmap = (Bitmap)NFX.IO.ImageUtils.FitCenteredImage(bitmap, 32, 32);
 
           var topColors = NFX.IO.ImageUtils.ExtractMainColors2Iter(normBitmap, 128, 24, 0.9F);
           var start = sw.ElapsedMilliseconds;

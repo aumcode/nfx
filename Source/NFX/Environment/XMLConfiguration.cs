@@ -56,9 +56,10 @@ namespace NFX.Environment
         /// <summary>
         /// Creates an instance of configuration initialized from XML content passed as string
         /// </summary>
-        public static XMLConfiguration CreateFromXML(string content)
+        public static XMLConfiguration CreateFromXML(string content, bool strictNames=true)
         {
           var result = new XMLConfiguration();
+          result.StrictNames = strictNames;
           result.readFromString(content);
 
           return result;
@@ -101,7 +102,7 @@ namespace NFX.Environment
               /// <summary>
               /// Saves XML configuration with optional link to XSL file, into string and returns it
               /// </summary>
-              public string SaveToString(string xsl =null)
+              public string SaveToString(string xsl = null)
               {
                 var doc = buildXmlDoc(xsl);
                 using(var writer = new StringWriter())
@@ -109,6 +110,15 @@ namespace NFX.Environment
                   doc.Save(writer);
                   return writer.ToString();
                 }
+              }
+
+
+              /// <summary>
+              /// Saves XML configuration into stream
+              /// </summary>
+              public XmlDocument SaveToXmlDoc(string xsl = null, string encoding = null)
+              {
+                return buildXmlDoc(xsl, encoding);
               }
 
 
@@ -213,19 +223,25 @@ namespace NFX.Environment
 
 
 
-        private XmlDocument buildXmlDoc(string xsl)
+        private XmlDocument buildXmlDoc(string xsl, string encoding = null)
         {
           var doc = new XmlDocument();
 
           //insert XSL link
           if (!string.IsNullOrEmpty(xsl))
           {
-            var decl = doc.CreateXmlDeclaration("1.0", null, null);
+            var decl = doc.CreateXmlDeclaration("1.0", encoding, null);
             doc.AppendChild(decl);
             var link = doc.CreateProcessingInstruction(
                                "xml-stylesheet",
                                "type=\"text/xsl\" href=\"" + xsl + "\"");
             doc.AppendChild(link);
+          }
+
+          if (encoding.IsNotNullOrWhiteSpace())
+          {
+            var decl = doc.CreateXmlDeclaration("1.0", encoding, null);
+            doc.AppendChild(decl);
           }
 
           buildDocNode(doc, null, m_Root);

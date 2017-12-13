@@ -200,6 +200,15 @@
  // }
 //}
 
+            handler
+            {
+              name="Push SSE"
+              order=0
+              type="WaveTestSite.Handlers.PushHandler, WaveTestSite"
+              match{path="push" }
+            }
+
+
             // handler
             // {
                 // name="H"
@@ -219,12 +228,25 @@
              // security-redirect-url="http://lenta.ru"
              // custom-error-page-type="WaveTestSite.Pages.AboutUs, WaveTestSite"
 
-              // log
-              // {
-                // match{name="all" var{name="aaa" default="1223"} }
-              // }
+               log
+               {
+                 //match{name="all" var{name="aaa" default="1223"} }
+                 //match{name="allButSecurity" type="NFX.Wave.NotAuthorizationExceptionMatch, NFX.Wave"}
+                 match
+                 {
+                   name="composite"
+                   type="NFX.Wave.CompositeWorkMatch, NFX.Wave"
+                   and
+                   {
+                     match{name="butSecurity" type="NFX.Wave.NotAuthorizationExceptionMatch, NFX.Wave"}
+                   //  match{name="but404" type="NFX.Wave.HttpResponseStatusCodeMatch, NFX.Wave" code=404 is-not=true}
+                   }
+                   or{}
+                 }
+               }//log
             }
 
+            /*
             filter
             {
               name="BlockNonDevs" order=1 type="NFX.Wave.Filters.RedirectFilter, NFX.Wave"
@@ -235,6 +257,7 @@
                 var{name="redirect-url" default="/mvc/tester/zekret"}
               }
             }
+            */
 
 
             filter

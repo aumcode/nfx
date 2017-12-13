@@ -51,6 +51,25 @@ namespace NFX.Web
     }
 
     /// <summary>
+    /// Returns true if the user agent represents a robot from any known messenger
+    /// </summary>
+    public static bool IsAnyMessengerBotUserAgent(string userAgent)
+    {
+      if (userAgent.IsNullOrWhiteSpace()) return false;
+
+      userAgent = userAgent.TrimStart();
+
+      if (userAgent.IndexOf("WhatsApp", StringComparison.OrdinalIgnoreCase) > -1) return true;
+      if (userAgent.IndexOf("TelegramBot", StringComparison.OrdinalIgnoreCase) > -1) return true;
+      if (userAgent.IndexOf("Viber", StringComparison.OrdinalIgnoreCase) > -1) return true;
+      if (userAgent.IndexOf("Skype", StringComparison.OrdinalIgnoreCase) > -1) return true;
+      if (userAgent.IndexOf("Snapchat", StringComparison.OrdinalIgnoreCase) > -1) return true;
+      if (userAgent.IndexOf("Slackbot", StringComparison.OrdinalIgnoreCase) > -1) return true;
+
+      return false;
+    }
+
+    /// <summary>
     /// Returns true if the user agent represents a robot from the specified social net
     /// </summary>
     public static bool IsSpecificSocialNetBotUserAgent(SocialNetID net, string userAgent)

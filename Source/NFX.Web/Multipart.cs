@@ -83,12 +83,27 @@ namespace NFX.Web
             throw new NFXException(StringConsts.MULTIPART_PART_EMPTY_NAME_ERROR);
 
           m_Name = name;
+          m_PartName = name;
         }
 
         private string m_Name;
+        private string m_PartName;
 
         public string Name { get { return m_Name; } }
-            internal void ____SetName(string name) { m_Name = name; }
+
+        internal void ____SetName(string name) { m_Name = name; }
+
+        /// <summary>
+        /// Represents the name that gets written to / read from stream.
+        /// According to Section 4.3 of https://tools.ietf.org/html/rfc7578
+        /// part names may not be unique (multiple files for one form field).
+        /// The Name property must be unqiue, whereas PartName may repeat.
+        /// </summary>
+        public string PartName
+        {
+          get { return m_PartName ?? m_Name; }
+          set { m_PartName = value; }
+        }
 
         public string FileName { get; set; }
         public string ContentType { get; set; }
@@ -138,7 +153,7 @@ namespace NFX.Web
         foreach (var segment in streamSplitNew(stream, boundaryBytes))
         {
           var part = partParse(segment.Array, segment.Count, encoding);
-          var success = result.Parts.Register(part);
+          var success = registerPart(result.Parts, part);
           if (!success)
             throw new NFXException(StringConsts.MULTIPART_PART_IS_ALREADY_REGISTERED_ERROR.Args(part.Name));
         }
@@ -177,7 +192,7 @@ namespace NFX.Web
         m_Parts = new Registry<Part>(caseSensitive: true);
         foreach (var part in parts)
         {
-          var success = m_Parts.Register(part);
+          var success = registerPart(m_Parts, part);
           if (!success)
             throw new NFXException(StringConsts.MULTIPART_PART_IS_ALREADY_REGISTERED_ERROR.Args(part.Name));
         }
@@ -260,6 +275,20 @@ namespace NFX.Web
     #endregion
 
     #region .pvt
+
+      private static bool registerPart(Registry<Part> parts, Part part)
+      {
+        if (part.FileName.IsNotNullOrEmpty())
+        {
+          var count = parts.Count(p => p.PartName.EqualsOrdIgnoreCase(part.Name));
+          if (count > 0)
+          {
+            part.PartName = part.Name;
+            part.____SetName(part.Name + count.ToString());
+          }
+        }
+        return parts.Register(part);
+      }
 
       private static byte[] locateBoundary(Stream stream, Encoding encoding, string boundary)
       {
@@ -454,7 +483,7 @@ namespace NFX.Web
 
       private void partWriteParameters(Part part, Stream stream, Encoding encoding)
       {
-        byte[] buf = encoding.GetBytes(PARAMS_NAME_PART.Args(part.Name));
+        byte[] buf = encoding.GetBytes(PARAMS_NAME_PART.Args(part.PartName));
         stream.Write(buf, 0, buf.Length);
 
         if (part.FileName.IsNotNullOrWhiteSpace())

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 using NFX.Environment;
 
@@ -14,11 +13,13 @@ namespace NFX.Templatization
     public const string CONFIG_EVENT_PREFIX_ATTR = "on-";
     public const string CONFIG_ESCAPE_ATTR = "__";
     public const string CONFIG_PRETTIFY_ATTR = "pretty";
+    public const string CONFIG_WAVE_JS_ATTR = "wave-js";
     public const string CONFIG_JS_PREFIX_ATTR = "?";
     public const string CONFIG_LJS_ID_ATTR = "ljsid";
     public const string CONFIG_SECT_NAME_TEXT_NODE = "ljstext";
-    private readonly string[] CONFIG_BOOL_ATTRS = new string[] {"readOnly", "disabled", "checked", "required", "selected"};
+    private readonly string[] CONFIG_BOOL_ATTRS = new string[] {"readOnly", "disabled", "checked", "required", "selected", "hidden"};
 
+    public const string DEFAULT_WAVE_JS_NAME = "WAVE";
     public const string JS_ROOT_VAR = "Ør";
     public const string JS_CURRENT_ELEMENT = "?this";
     private readonly string[] JS_CODE_BLOCK_STARTS_WTIH = new string[] {"?for(", "?while(", "?do{", "?if("};
@@ -42,6 +43,7 @@ namespace NFX.Templatization
     private int m_IndexInSource;
     private string m_JsRootVar;
     private bool m_Pretty;
+    private string m_WaveJS;
     private Dictionary<string, string> m_MapLjsIdsToJsIds;
     #endregion
 
@@ -55,6 +57,16 @@ namespace NFX.Templatization
     {
       get { return m_Pretty ? " " : string.Empty; }
     }
+
+    public string WaveJS
+    {
+      get
+      {
+        if (m_WaveJS.IsNullOrWhiteSpace())
+          m_WaveJS = DEFAULT_WAVE_JS_NAME;
+        return m_WaveJS;
+      }
+    }
     #endregion
 
     #region Public
@@ -65,6 +77,9 @@ namespace NFX.Templatization
 
       var attr = node.AttrByName(CONFIG_PRETTIFY_ATTR);
       m_Pretty = attr != null && attr.Exists && attr.ValueAsBool(false);
+
+      attr = node.AttrByName(CONFIG_WAVE_JS_ATTR);
+      m_WaveJS = attr != null && attr.Exists ? attr.ValueAsString(DEFAULT_WAVE_JS_NAME) : DEFAULT_WAVE_JS_NAME;
     }
 
     public string Generate(IConfigSectionNode node, int indent, ref int indexInSource, ref Dictionary<string, string> dictIds)
@@ -108,30 +123,32 @@ namespace NFX.Templatization
       if (isRootNode)
       {
         sb.AppendFormat("var {0}{2}={2}arguments[0];{1}", m_JsRootVar, LineEnding, Space);
-        sb.AppendFormat("{2}if{3}(WAVE.isString({0})){1}", m_JsRootVar, LineEnding, getIndent(extraSpaces), Space);
-        sb.AppendFormat("{2}{0}{3}={3}WAVE.id({0});{1}", m_JsRootVar, LineEnding, getIndent(2 + extraSpaces), Space);
+        sb.AppendFormat("{2}if{3}({4}.isString({0})){1}", m_JsRootVar, LineEnding, getIndent(extraSpaces), Space, WaveJS);
+        sb.AppendFormat("{2}{0}{3}={3}{4}.id({0});{1}", m_JsRootVar, LineEnding, getIndent(2 + extraSpaces), Space, WaveJS);
       }
 
       if (isJsNode)
         sb.AppendFormat("{0}{1}{4}{2}{3}", getIndent(extraSpaces), jsWrap(node.Name, elemId), hasChildren ? "{" : string.Empty, LineEnding, Space);
       else if (isTextNode)
-        sb.AppendFormat("{0}var {1}{4}={4}WAVE.ctn({2});{3}",
+        sb.AppendFormat("{0}var {1}{4}={4}{5}.ctn({2});{3}",
                         getIndent(extraSpaces),
                         elemId,
                         wrapValue(node.Value, elemId),
                         LineEnding,
-                        Space);
+                        Space,
+                        WaveJS);
       else
       {
-        sb.AppendFormat("{0}var {1}{4}={4}WAVE.ce('{2}');{3}",
+        sb.AppendFormat("{0}var {1}{4}={4}{5}.ce('{2}');{3}",
                         getIndent(extraSpaces),
                         elemId,
                         MiscUtils.EscapeJSLiteral(nName),
                         LineEnding,
-                        Space);
+                        Space,
+                        WaveJS);
 
         if (node.Value.IsNotNullOrWhiteSpace())
-          sb.AppendFormat("{3}{0}.innerText{4}={4}{1};{2}", elemId, wrapValue(node.Value, elemId), LineEnding, getIndent(extraSpaces), Space);
+          sb.AppendFormat("{3}{5}.txt({0},{4}{1});{2}", elemId, wrapValue(node.Value, elemId), LineEnding, getIndent(extraSpaces), Space, WaveJS);
 
         foreach(var attr in node.Attributes)
         {
@@ -140,7 +157,14 @@ namespace NFX.Templatization
 
           var name = MiscUtils.EscapeJSLiteral(attr.Name);
           if (name.StartsWith(CONFIG_EVENT_PREFIX_ATTR, StringComparison.Ordinal))
-            sb.AppendFormat("{4}{0}.addEventListener('{1}',{5}{2},{5}false);{3}", elemId, name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""), value, LineEnding, getIndent(extraSpaces), Space);
+            sb.AppendFormat("{4}{6}.aeh({0},{5}'{1}',{5}{2},{5}false);{3}",
+                            elemId,
+                            name.Replace(CONFIG_EVENT_PREFIX_ATTR, ""),
+                            value,
+                            LineEnding,
+                            getIndent(extraSpaces),
+                            Space,
+                            WaveJS);
 
           else if (name.EqualsOrdSenseCase(CONFIG_LJS_ID_ATTR))
           {
@@ -159,7 +183,7 @@ namespace NFX.Templatization
             if (attrName != null)
               sb.AppendFormat("{0}{1}.{2}{5}={5}{3};{4}".Args(getIndent(extraSpaces), elemId, attrName, wrapValue(value, elemId), LineEnding, Space));
             else
-              sb.AppendFormat("{4}{0}.setAttribute('{1}',{5}{2});{3}", elemId, name, wrapValue(value, elemId), LineEnding, getIndent(extraSpaces), Space);
+              sb.AppendFormat("{4}{6}.sa({0},{5}'{1}',{5}{2});{3}", elemId, name, wrapValue(value, elemId), LineEnding, getIndent(extraSpaces), Space, WaveJS);
           }
         }
       }
@@ -175,9 +199,9 @@ namespace NFX.Templatization
       if (!isJsNode)
       {
         if (container.IsNullOrWhiteSpace())
-          sb.AppendFormat("{0}if{4}(WAVE.isObject({1})){4}{1}.appendChild({2});{3}", getIndent(extraSpaces), m_JsRootVar, elemId, LineEnding, Space);
+          sb.AppendFormat("{0}if{4}({5}.isObject({1})){4}{5}.ac({1},{4}{2});{3}", getIndent(extraSpaces), m_JsRootVar, elemId, LineEnding, Space, WaveJS);
         else
-          sb.AppendFormat("{0}{1}.appendChild({2});{3}", getIndent(extraSpaces), container, elemId, LineEnding);
+          sb.AppendFormat("{0}{4}.ac({1},{2});{3}", getIndent(extraSpaces), container, elemId, LineEnding, WaveJS);
       }
       if (isJsNode && hasChildren)
         sb.AppendFormat("{0}}}{1}", getIndent(extraSpaces), LineEnding);

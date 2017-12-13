@@ -17,45 +17,87 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using NFX.ApplicationModel;
-using NFX.DataAccess.CRUD;
 using NFX.Environment;
-using NFX.Serialization.Arow;
-using NFX.ServiceModel;
 
 namespace NFX.Web.Messaging
 {
+  /// <summary>
+  /// Represents events fired on MessageBuilder change
+  /// </summary>
+  public delegate void MessageBuilderChangeEventHandler(MessageAddressBuilder builder);
+
   /// <summary>
   /// Facilitates the conversion of config into stream of Addressee entries
   /// </summary>
   public sealed class MessageAddressBuilder
   {
     #region CONSTS
-      public const string CONFIG_A_SECT = "a";
-      public const string ATTR_NAME = "name";
-      public const string ATTR_CHANNEL_NAME = "channel-name";
-      public const string ATTR_CHANNEL_ADDRESS = "channel-address";
+      public const string CONFIG_ROOT_SECT     = "as";
+      public const string CONFIG_A_SECT        = "a";
+      public const string ATTR_NAME            = "nm";
+      public const string ATTR_CHANNEL_NAME    = "cn";
+      public const string ATTR_CHANNEL_ADDRESS = "ca";
     #endregion
 
     /// <summary>
-    /// Holds data about an adressee: {Name, Channel, Address (per channel)}, example {"Frank Borland", "UrgentSMTP", "frankb@xyz.com"}
+    /// Holds data about an addressee: {Name, Channel, Address (per channel)}, example {"Frank Borland", "UrgentSMTP", "frankb@xyz.com"}
     /// </summary>
     public struct Addressee
     {
-      public string Name { get; set; }
-      public string ChannelName { get; set; }
-      public string ChannelAddress { get; set; }
+      public Addressee(string name, string channelName, string channelAddress)
+      {
+        Name = name;
+        ChannelName = channelName;
+        ChannelAddress = channelAddress;
+      }
+
+      public readonly string Name;
+      public readonly string ChannelName;
+      public readonly string ChannelAddress;
+
+      public bool Assigned{ get{ return this.ChannelAddress.IsNotNullOrWhiteSpace();} }
     }
 
-    public MessageAddressBuilder(string config)
+    public static string OneAddressee(string name, string channelName, string channelAddress)
     {
-      m_Config = (config ?? string.Empty).AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+      var b = new MessageAddressBuilder(name, channelName, channelAddress);
+      return b.ToString();
     }
+
+    public MessageAddressBuilder(string name, string channelName, string channelAddress)
+      : this(new Addressee(name, channelName, channelAddress))
+    {
+    }
+
+    public MessageAddressBuilder(Addressee addressee) : this(null)
+    {
+      AddAddressee(addressee);
+    }
+
+    public MessageAddressBuilder(string config, MessageBuilderChangeEventHandler onChange = null)
+    {
+      if (config.IsNullOrWhiteSpace())
+      {
+        var c = new MemoryConfiguration();
+        c.Create(CONFIG_ROOT_SECT);
+        m_Config = c.Root;
+      }
+      else
+       m_Config = config.AsLaconicConfig(handling: ConvertErrorHandling.Throw);
+
+      if (onChange!=null)
+       MessageBuilderChange+=onChange;
+    }
+
 
     private ConfigSectionNode m_Config;
+
+
+    /// <summary>
+    /// Subscribe to get change notifications
+    /// </summary>
+    public event MessageBuilderChangeEventHandler MessageBuilderChange;
 
     /// <summary>
     /// Enumerates all Addressee instances
@@ -66,12 +108,12 @@ namespace NFX.Web.Messaging
       {
         return  m_Config.Children
                         .Where(c => c.IsSameName(CONFIG_A_SECT))
-                        .Select(c => new Addressee
-                                     {
-                                       Name = c.AttrByName(ATTR_NAME).ValueAsString(),
-                                       ChannelName = c.AttrByName(ATTR_CHANNEL_NAME).ValueAsString(),
-                                       ChannelAddress = c.AttrByName(ATTR_CHANNEL_ADDRESS).ValueAsString()
-                                     });
+                        .Select(c => new Addressee(
+                                         c.AttrByName(ATTR_NAME).ValueAsString(),
+                                         c.AttrByName(ATTR_CHANNEL_NAME).ValueAsString(),
+                                         c.AttrByName(ATTR_CHANNEL_ADDRESS).ValueAsString()
+                                       )
+                               );
       }
     }
 
@@ -82,11 +124,27 @@ namespace NFX.Web.Messaging
         return m_Config.ToLaconicString(CodeAnalysis.Laconfig.LaconfigWritingOptions.Compact);
       }
 
-      public bool MatchNamedChannel(IEnumerable<string> names)
+      public bool MatchNamedChannel(IEnumerable<string> channelNames)
       {
-        if (names == null || !names.Any()) return false;
-        var channelNames = All.Select(a => a.ChannelName);
-        return channelNames.Any(c => names.Any(n => n.EqualsOrdIgnoreCase(c)));
+        if (channelNames == null || !channelNames.Any()) return false;
+        var adrChannelNames = All.Select(a => a.ChannelName);
+        return adrChannelNames.Any(c => channelNames.Any(n => n.EqualsOrdIgnoreCase(c)));
+      }
+
+      public IEnumerable<Addressee> GetMatchesForChannels(IEnumerable<string> channelNames)
+      {
+        if (channelNames == null || !channelNames.Any()) return Enumerable.Empty<Addressee>();
+        return All.Where(a => channelNames.Any(n => n.EqualsOrdIgnoreCase(a.ChannelName)));
+      }
+
+      public Addressee GetFirstOrDefaultMatchForChannels(IEnumerable<string> channelNames)
+      {
+        return GetMatchesForChannels(channelNames).FirstOrDefault();
+      }
+
+      public void AddAddressee(string name, string channelName, string channelAddress)
+      {
+        AddAddressee(new Addressee(name, channelName, channelAddress));
       }
 
       public void AddAddressee(Addressee addressee)
@@ -95,6 +153,8 @@ namespace NFX.Web.Messaging
         aSection.AddAttributeNode(ATTR_NAME, addressee.Name);
         aSection.AddAttributeNode(ATTR_CHANNEL_NAME, addressee.ChannelName);
         aSection.AddAttributeNode(ATTR_CHANNEL_ADDRESS, addressee.ChannelAddress);
+
+        if (MessageBuilderChange!=null) MessageBuilderChange(this);
       }
 
     #endregion

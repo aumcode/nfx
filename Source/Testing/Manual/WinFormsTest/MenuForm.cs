@@ -223,5 +223,10 @@ Performance
         {
             new PileForm(true).Show();
         }
+
+        private void btnGlueStress_Click(object sender, EventArgs e)
+        {
+            new GlueStressForm().Show();
+        }
     }
 }

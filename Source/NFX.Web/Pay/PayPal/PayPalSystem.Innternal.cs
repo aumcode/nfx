@@ -27,7 +27,7 @@ using System.IO;
 
 namespace NFX.Web.Pay.PayPal
 {
-  public partial class PayPalSystem : PaySystem
+  public partial class PayPalSystem
   {
     #region CONSTS
     private const string URI_OAUTH_TOKEN_GENERATE = "/v1/oauth2/token";

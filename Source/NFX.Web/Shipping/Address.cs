@@ -57,7 +57,7 @@ namespace NFX.Web.Shipping
       if (first!=null && second==null) return false;
 
       if (!string.Equals(first.PersonName, second.PersonName, StringComparison.InvariantCultureIgnoreCase)) return false;
-      if (!string.Equals(first.Company, second.Company, StringComparison.InvariantCultureIgnoreCase)) return false;
+      if (!string.Equals(first.Company ?? string.Empty, second.Company ?? string.Empty, StringComparison.InvariantCultureIgnoreCase)) return false;
       if (!string.Equals(DataEntryUtils.NormalizeUSPhone(first.Phone ?? string.Empty),
                          DataEntryUtils.NormalizeUSPhone(second.Phone ?? string.Empty),
                          StringComparison.InvariantCultureIgnoreCase))
@@ -74,6 +74,22 @@ namespace NFX.Web.Shipping
 
       if (!AddressLinesAreSimilar(first.Line1, second.Line1)) return false;
       if (!AddressLinesAreSimilar(first.Line2, second.Line2)) return false;
+
+      return true;
+    }
+
+    public static bool RegionAndPostalAreSimilar(Address first, Address second)
+    {
+      if (first==null && second==null) return true;
+      if (first==null && second!=null) return false;
+      if (first!=null && second==null) return false;
+
+      if (!string.Equals(GetPostalMainPart(first.Postal), GetPostalMainPart(second.Postal), StringComparison.InvariantCultureIgnoreCase)) return false;
+      if (!string.Equals(first.Region, second.Region, StringComparison.InvariantCultureIgnoreCase)) return false;
+      if (!string.Equals(Standards.Countries_ISO3166_1.Normalize3(first.Country ?? string.Empty),
+                         Standards.Countries_ISO3166_1.Normalize3(second.Country ?? string.Empty),
+                         StringComparison.InvariantCultureIgnoreCase))
+        return false;
 
       return true;
     }

@@ -577,7 +577,7 @@ namespace NFX.Web.Pay
     #endregion
   }
 
-  public abstract class PaySystemWithStaticFees : PaySystem
+  public abstract class PaySystemWithStaticFees : PaySystem, IPaySystemWithFee
   {
     private struct Fee
     {
@@ -590,16 +590,16 @@ namespace NFX.Web.Pay
 
     private Dictionary<string, Fee> m_Fees = new Dictionary<string, Fee>(StringComparer.OrdinalIgnoreCase);
 
-    protected Amount GetTransactionFee(string currencyISO, TransactionType type)
+    public Amount GetTransactionFlatFee(string currencyISO, TransactionType type)
     {
       var fee = getCurrencyFee(currencyISO, type);
       return new Amount(currencyISO, fee.Flat);
     }
 
-    protected int GetTransactionPct(string currencyISO, TransactionType type)
+    public decimal GetTransactionPctFee(string currencyISO, TransactionType type)
     {
       var fee = getCurrencyFee(currencyISO, type);
-      return (fee.Pct * 10000).AsInt();
+      return fee.Pct / 100m;
     }
 
     protected override void DoConfigure(IConfigSectionNode node)

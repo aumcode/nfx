@@ -49,12 +49,12 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
 
-        var row = new TestRow() 
+        var row = new TestRow()
         {
           _id = 1,
 
@@ -126,7 +126,7 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
@@ -140,7 +140,7 @@ namespace NFX.NUnit.Integration.MongoDB
         sw.Start();
         Parallel.For(0, CNT, i =>
         {
-          var row = new TestRow() 
+          var row = new TestRow()
           {
             _id = i,
 
@@ -223,12 +223,12 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
 
-        var row = new TestRow() 
+        var row = new TestRow()
         {
           _id = 1,
 
@@ -311,7 +311,7 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
@@ -324,9 +324,9 @@ namespace NFX.NUnit.Integration.MongoDB
 
         sw.Start();
 
-        Parallel.For(0, CNT, i => 
+        Parallel.For(0, CNT, i =>
         {
-          var row = new TestRow() 
+          var row = new TestRow()
           {
             _id = i,
 
@@ -425,12 +425,12 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
 
-        var row = new TestRow() 
+        var row = new TestRow()
         {
           _id = 1,
 
@@ -445,13 +445,13 @@ namespace NFX.NUnit.Integration.MongoDB
         (
           new NFX.DataAccess.MongoDB.Connector.UpdateEntry
           (
-            Query.ID_EQ_Int32(1), 
+            Query.ID_EQ_Int32(1),
             new Update("{'String1': '$$VAL'}", true, new TemplateArg("VAL", BSONElementType.String, "makaka")),
             false,
             false
           )
         );
-        
+
         var got = db["t1"].FindOne(Query.ID_EQ_Int32(1));
         Assert.IsNotNull( got );
 
@@ -469,7 +469,7 @@ namespace NFX.NUnit.Integration.MongoDB
       using(var client= new MongoClient("My Test"))
       {
         var db = client.DefaultLocalServer["db1"];
-        
+
         db["t1"].Drop();
 
         var t1 = db["t1"];
@@ -524,11 +524,11 @@ namespace NFX.NUnit.Integration.MongoDB
       [NFX.DataAccess.CRUD.Field] public int _id {get; set;}
 
       [NFX.DataAccess.CRUD.Field] public string String1{get; set;}
-           
-      [NFX.DataAccess.CRUD.Field(targetName: "A", backendName: "s2")] 
-      [NFX.DataAccess.CRUD.Field(targetName: "B", backendName: "STRING-2")] 
+
+      [NFX.DataAccess.CRUD.Field(targetName: "A", backendName: "s2")]
+      [NFX.DataAccess.CRUD.Field(targetName: "B", backendName: "STRING-2")]
       public string String2{get; set;}
-           
+
       [NFX.DataAccess.CRUD.Field] public byte Byte1{get; set;}
       [NFX.DataAccess.CRUD.Field] public sbyte SByte1{get; set;}
       [NFX.DataAccess.CRUD.Field] public short Short1{get; set;}
@@ -600,7 +600,7 @@ namespace NFX.NUnit.Integration.MongoDB
 
           if (!v1.Equals( v2 )) return false;
         }
-             
+
         return true;
       }
     }

@@ -102,7 +102,9 @@ published.mapCurrencyISOToSymbol = function(ciso, dflt) {
   ciso = published.strDefault(ciso, "");
   ciso = ciso.toUpperCase();
   switch (ciso) {
+    case "CAD":
     case "USD":
+    case "MXN":
       return "$";
     case "RUB":
       return "₽";
@@ -111,7 +113,7 @@ published.mapCurrencyISOToSymbol = function(ciso, dflt) {
     case "GBP":
       return "£";
     default:
-      return published.strDefault("?", dflt);
+      return published.strDefault(dflt, "?");
   }
 };
 
@@ -392,7 +394,9 @@ published.DATE_TIME_FORMATS = {
   LONG_DATE_TIME: "LongDateTime",
   SHORT_DATE_TIME: "ShortDateTime",
   TRAN_DATE_TIME: "TranDateTime",
-  SHORT_DAY_MONTH: "ShortDayMonth"
+  SHORT_DAY_MONTH: "ShortDayMonth",
+  SHORT_TIME: "ShortTime",
+  HOURS: "Hours",
 };
 
 var monthNames = ["January",
@@ -444,6 +448,10 @@ published.dateTimeToString = function(date, format, langIso) {
       return gM() + "/" + gD() + "/" + gY() + " " + gH() + ":" + gMin() + ":" + gS();
     case published.DATE_TIME_FORMATS.SHORT_DAY_MONTH:
       return gM() + "/" + gD();
+    case published.DATE_TIME_FORMATS.SHORT_TIME:
+      return gH() + ":" + gMin();
+    case published.DATE_TIME_FORMATS.HOURS:
+      return gH();
   }
 };
 

@@ -931,5 +931,44 @@ namespace NFX
           return new string(buf);
         }
 
+        public static byte[] ToNetworkByteOrder(this Guid guid)
+        {
+          var result = guid.ToByteArray();
+
+          var t = result[3];
+          result[3] = result[0];
+          result[0] = t;
+
+          t = result[2];
+          result[2] = result[1];
+          result[1] = t;
+
+          t = result[5];
+          result[5] = result[4];
+          result[4] = t;
+
+          t = result[7];
+          result[7] = result[6];
+          result[6] = t;
+
+          return result;
+        }
+
+        public static Guid GuidFromNetworkByteOrder(this byte[] buf, int offset=0)
+        {
+          var a = ReadBEInt32(buf, ref offset);
+          var b = ReadBEShort(buf, ref offset);
+          var c = ReadBEShort(buf, ref offset);
+
+          return new Guid(a, b, c, 
+                          buf[offset++], 
+                          buf[offset++], 
+                          buf[offset++], 
+                          buf[offset++], 
+                          buf[offset++], 
+                          buf[offset++], 
+                          buf[offset++], 
+                          buf[offset]);
+        }
     }
 }

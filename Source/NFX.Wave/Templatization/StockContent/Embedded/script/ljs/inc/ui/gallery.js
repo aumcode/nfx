@@ -307,13 +307,15 @@ published.Gallery = function (init) {
     var item = this;
     WAVE.extend(item, WAVE.EventManager);
 
-    var fGallery = gallery, fView = view;
-    var fImage, fThumbImage;
+    var fGallery = gallery,
+        fView = view,
+        fImage,
+        fThumbImage;
 
-    var
-      fElem = document.createElement('li'),
-      fThumb = document.createElement('div'),
-      fContent = document.createElement('div');
+    var fElem = document.createElement('li'),
+        fThumb = document.createElement('div'),
+        fContent = document.createElement('div');
+
     fElem.className = published.CLS_GALLERY_ITEM;
     fContent.className = published.CLS_GALLERY_CONTENT;
     fThumb.className = published.CLS_GALLERY_THUMBNAIL;
@@ -323,48 +325,62 @@ published.Gallery = function (init) {
       gallery.current(fId);
     };
 
-    item.id        = function () { return fId; };
-    item.title     = function (title) {
+    item.id = function () { return fId; };
+
+    item.title = function (title) {
       if (typeof(title) !== tUNDEFINED
         && fInit.title !== title)
         updateTitle(fInit.title = title);
       return WAVE.strDefault(fInit.title, fId);
     };
-    item.content   = function (content, isText) {
+
+    item.content = function (content, isText) {
       if (typeof(content) !== tUNDEFINED
         && (fInit.content !== content
           || !!fInit.isText !== !!isText))
         updateContent(fInit.content = content, fInit.isText = !!isText);
       return WAVE.strDefault(fInit.content);
     };
-    item.isText    = function () { return !!fInit.isText; };
-    item.image     = function (image) {
+
+    item.isText = function () { return !!fInit.isText; };
+
+    item.image = function (image) {
       if (typeof(image) !== tUNDEFINED
         && !equalsImage(fInit.image, image))
         updateImage(fInit.image = image);
       return fImage;
     };
-    item.thumb     = function (image) {
+
+    item.thumb = function (image) {
       if (typeof(image) !== tUNDEFINED
         && !equalsImage(fInit.thumb, image))
         updateThumbnail(fInit.thumb = image);
       return fThumbImage;
     };
-    item.data      = function (data) {
+
+    item.data = function (data) {
       if (typeof(data) !== tUNDEFINED) {
         fInit.data = data;
       }
       return fInit.data;
     };
-    item.show      = function () { fImage = fView.image(fImage); };
-    item.update    = update;
-    item.free      = function () {
+
+    item.show = function () {
+      fImage = fView.image(fImage);
+    };
+
+    item.update = update;
+
+    item.free = function () {
       if (fElem.parentNode)
         fElem.parentNode.removeChild(fElem);
       if (fView.image() === fImage && fImage.element.parentNode)
         fImage.element.parentNode.removeChild(fImage.element);
     };
-    item.element   = function () { return fElem; };
+
+    item.element  = function () {
+      return fElem;
+    };
 
     item.update(init);
 
