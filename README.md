@@ -1,12 +1,13 @@
 # NFX - .NET Unified Software Stack + Big Memory
 
 ## NFXv5 ANNOUNCEMENT
-We are releasing NFXv5 within days.
-It will be released in a different repository *(name/URI TBA)*. **NFXv5 is based on .Net Standard 2**,
-having all cli tools targeting both .NET FX 4.7.1+ and .NEt Core 2+.
+
+### NEW PROJECT LOCATION
+This project is moving to a new repository: https://github.com/agnicore/nfx
+**NFXv5 is based on .Net Standard 2**, having all cli tools targeting both .NET FX 4.7.1+ and .NEt Core 2+.
 NFXv5 will not support fx < 4.7.1 (though possible).
 
-NFXv3* (this repository) will continue to target .NET 4.5/Mono and will be supported for major bug fixes however all new feature development is going to happen in NFXv5.
+NFXv3* (this repository) will continue to target .NET 4.5/Mono and will be supported for major bug fixes however **all new feature development is going to happen in NFXv5.**
 
 <img src="https://github.com/aumcode/nfx/blob/master/Elements/NFXLogo/New.NFX.Logo.50.png" alt="Logo">
 
@@ -16,7 +17,7 @@ License: **Apache 2.0**
 
 
 
-Runs/Builds:  **.NET 4.5+**, **Mono 3.x+** as of 2017/06; .NET **Core 2** planned Aug 2017
+Runs/Builds:  **.NET 4.5+**, **Mono 3.x+** as of 2017/06; See https://github.com/agnicore/nfx for NFX5 which supports .NET Standard 2, Net Core 2 and Net 4.7*
 
 
 
@@ -50,22 +51,7 @@ promoting:
   
 good for:
 
-* Linux-style prоgramming in .NET. Minima// Node capability flags
-    [Flags]
-    internal enum NodeCompatibility
-    {
-      Published           = 1,
-      AtomCache           = 2,
-      ExtendedReferences  = 4,
-      DistMonitor         = 8,
-      FunTags             = 16,
-      ExtendedPidsPorts   = 256, // pshaffer
-      BitBinaries         = 1024,
-      NewFloats           = 2048,
-      UTF8Atom            = 65536,
-      Flags               = ExtendedReferences | ExtendedPidsPorts
-                          | BitBinaries | NewFloats | DistMonitor | UTF8Atom,  // pshaffer
-    }listic, elegant.
+* Linux-style prоgramming in .NET. Minimalistic, elegant.
 * Vendor de-coupling 
 * General Scalability (i.e. hybrid DataStores with virtual queries and CQRS)
 * Distributed Macro/micro/nano services, REST or RPC
