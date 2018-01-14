@@ -1,7 +1,4 @@
 configuration: Release
 
-before_build:
-  - nuget restore
-
 ##for now disable tests
 test: off 
