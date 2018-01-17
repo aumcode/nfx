@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ namespace WinFormsTest
         private void write(MessageType t)
         {
           for(var i=0; i<CNT; i++)
-             App.Log.Write( new NFX.Log.Message{Type = t, From = tbFrom.Text, Text = tbText.Text + i.ToString()}); 
+             App.Log.Write( new NFX.Log.Message{Type = t, From = tbFrom.Text, Text = tbText.Text + i.ToString()});
         }
 
         private void btnTrace_Click(object sender, EventArgs e)
@@ -74,6 +74,42 @@ namespace WinFormsTest
         private void btnDebug_Click(object sender, EventArgs e)
         {
               write(MessageType.Debug);
+        }
+
+        private void btnThrow_Click(object sender, EventArgs e)
+        {
+          try
+          {
+            srow1();
+          }
+          catch(Exception error)
+          {
+            App.Log.Write( new NFX.Log.Message{
+                     Type =  MessageType.Error,
+                     Topic = "Tezt Errors",
+                     Source = 89,
+                     From = tbFrom.Text,
+                     Text = error.ToMessageWithType(),
+                     Exception = error
+                   });
+          }
+        }
+
+        private void srow1()
+        {
+          try
+          {
+            srow2();
+          }
+          catch(Exception error)
+          {
+            throw new NFXException("This is a test caught: "+error.ToMessageWithType(), error);
+          }
+        }
+
+        private void srow2()
+        {
+          throw new ArgumentException("Zis is a test argument exception", "teztArg");
         }
     }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -72,51 +72,46 @@ namespace NFX.NUnit.Integration.Web.Shipping
               carrier
               {
                 carrier-type='USPS'
-                inner-id=USPS
-                outer-id=$(~SHIPPO_USPS_CARRIER_ID)
+                name=$(~SHIPPO_USPS_CARRIER_ID)
                 nls-name { eng{n='USPS' d='United States Postal Service'} }
 
-                methods
+                services
                 {
-                  method
+                  service
                   {
-                    inner-id=USPS_PRIORITY
-                    outer-id=usps_priority
+                    name=usps_priority
                     nls-name { eng{n='Priority Mail' d='USPS Priority Mail'} }
                     price-category=Standard
                   }
 
-                  method
+                  service
                   {
-                    inner-id=USPS_PRIORITY_EXPRESS
-                    outer-id=usps_priority_express
+                    name=usps_priority_express
                     nls-name { eng{n='Priority Mail Express' d='USPS Priority Mail Express'} }
                     price-category=Expedited
                   }
                   
-                  method
+                  service
                   {
-                    inner-id=USPS_PARCEL_SELECT
-                    outer-id=usps_parcel_select
+                    name=usps_parcel_select
                     nls-name { eng{n='Parcel Select' d='USPS Parcel Select'} }
                     price-category=Standard
                   }
                   
-                  method
+                  service
                   {
-                    inner-id=USPS_FIRST
-                    outer-id=usps_first
+                    name=usps_first
                     nls-name { eng{n='First-Class Package/Mail Parcel' d='USPS First-Class Package/Mail Parcel'} }
                     price-category=Saver
                   }
                 }
 
-                templates
+                packages
                 {
-                  template
+                  package
                   {
-                    inner-id=USPS_FLAT_RATE_ENVELOPE_TEMPLATE
-                    outer-id=USPS_FlatRateEnvelope
+                    name=USPS_FlatRateEnvelope
+                    package-type=Envelope
                     nls-name { eng{n='Flat Rate Envelope' d='USPS Flat Rate Envelope'} }
                   }
                 }
@@ -125,16 +120,14 @@ namespace NFX.NUnit.Integration.Web.Shipping
               carrier
               {
                 carrier-type='DHLExpress'
-                inner-id=DHL_EXPRESS
-                outer-id=$(~SHIPPO_DHL_EXPRESS_CARRIER_ID)
+                name=$(~SHIPPO_DHL_EXPRESS_CARRIER_ID)
                 nls-name { eng{n='DHL Express' d='DHL Express'} }
 
-                methods
+                services
                 {
-                  method
+                  service
                   {
-                    inner-id=DHL_EXPRESS_DOMESTIC_EXPRESS_DOC
-                    outer-id=dhl_express_domestic_express_doc
+                    name=dhl_express_domestic_express_doc
                     nls-name { eng{n='Domestic Express Doc' d='DHL Express Domestic Express Doc'} }
                     price-category=Standard
                   }
@@ -183,34 +176,14 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var usps = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.USPS);
-        var method = usps.Services["USPS_PRIORITY"];
-        var template = usps.Packages["USPS_FLAT_RATE_ENVELOPE_TEMPLATE"];
+        var method = usps.Services["usps_priority"];
+        var template = usps.Packages["USPS_FlatRateEnvelope"];
 
         var shipment = getDefaultShipment(usps, method, template);
         var label = session.CreateLabel(null, shipment);
 
         Assert.IsNotNull(label);
         Assert.AreEqual(CarrierType.USPS, label.Carrier);
-        Assert.AreEqual(LabelFormat.PDF, label.Format);
-        Assert.AreEqual("USD", label.Rate.CurrencyISO);
-        Assert.IsNotNullOrEmpty(label.TrackingNumber);
-        Assert.IsNotNullOrEmpty(label.URL);
-      }
-    }
-
-    [Test]
-    public void CreateLabel_DHLExpress()
-    {
-      using (var session = ShippingSystem.StartSession())
-      {
-        var dhl = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.DHLExpress);
-        var method = dhl.Services["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
-
-        var shipment = getDefaultShipment(dhl, method);
-        var label = session.CreateLabel(null, shipment);
-
-        Assert.IsNotNull(label);
-        Assert.AreEqual(CarrierType.DHLExpress, label.Carrier);
         Assert.AreEqual(LabelFormat.PDF, label.Format);
         Assert.AreEqual("USD", label.Rate.CurrencyISO);
         Assert.IsNotNullOrEmpty(label.TrackingNumber);
@@ -244,30 +217,6 @@ namespace NFX.NUnit.Integration.Web.Shipping
     }
 
     [Test]
-    public void CreateReturnLabel_DHLExpress()
-    {
-      using (var session = ShippingSystem.StartSession())
-      {
-        var dhl = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.DHLExpress);
-        var method = dhl.Services["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
-
-        var shipment = getDefaultShipment(dhl, method);
-        shipment.ReturnAddress = getDefaultAddress();
-        var label = session.CreateLabel(null, shipment);
-
-        shipment.LabelIDForReturn = label.ID;
-        var retLabel = session.CreateLabel(null, shipment);
-
-        Assert.IsNotNull(retLabel);
-        Assert.AreEqual(CarrierType.DHLExpress, retLabel.Carrier);
-        Assert.AreEqual(LabelFormat.PDF, retLabel.Format);
-        Assert.AreEqual("USD", retLabel.Rate.CurrencyISO);
-        Assert.IsNotNullOrEmpty(retLabel.URL);
-        Assert.IsNotNullOrEmpty(retLabel.TrackingNumber);
-      }
-    }
-
-    [Test]
     public void EstimateShippingCost_USPS_FlatRateTemplate()
     {
       using (var session = ShippingSystem.StartSession())
@@ -281,7 +230,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         Assert.IsNotNull(estShipment);
         Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
-        Assert.AreEqual(estShipment.Cost.Value.Value, 5.60M);
+        Assert.IsTrue(estShipment.Cost.Value.Value > 0);
       }
     }
 
@@ -298,7 +247,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         Assert.IsNotNull(estShipment.Cost);
         Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
-        Assert.AreEqual(estShipment.Cost.Value.Value, 6.95M);
+        Assert.IsTrue(estShipment.Cost.Value.Value>0);
 
         method = usps.Services["USPS_PRIORITY_EXPRESS"];
         shipment = getDefaultShipment(usps, method);
@@ -306,7 +255,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         Assert.IsNotNull(estShipment.Cost);
         Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
-        Assert.AreEqual(estShipment.Cost.Value.Value, 28.08M);
+        Assert.IsTrue(estShipment.Cost.Value.Value>0);
 
         method = usps.Services["USPS_PARCEL_SELECT"];
         shipment = getDefaultShipment(usps, method);
@@ -314,7 +263,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         Assert.IsNotNull(estShipment.Cost);
         Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
-        Assert.AreEqual(estShipment.Cost.Value.Value, 7.11M);
+        Assert.IsTrue(estShipment.Cost.Value.Value>0);
 
         method = usps.Services["USPS_FIRST"];
         shipment = getDefaultShipment(usps, method);
@@ -322,7 +271,7 @@ namespace NFX.NUnit.Integration.Web.Shipping
 
         Assert.IsNotNull(estShipment.Cost);
         Assert.AreEqual(estShipment.Cost.Value.CurrencyISO, "USD");
-        Assert.AreEqual(estShipment.Cost.Value.Value, 2.60M);
+        Assert.IsTrue(estShipment.Cost.Value.Value>0);
       }
     }
 
@@ -332,12 +281,13 @@ namespace NFX.NUnit.Integration.Web.Shipping
       using (var session = ShippingSystem.StartSession())
       {
         var dhl = session.GetShippingCarriers(null).First(c => c.Type==CarrierType.DHLExpress);
-        var method = dhl.Services["DHL_EXPRESS_DOMESTIC_EXPRESS_DOC"];
+        var method = dhl.Services["dhl_express_domestic_express_doc"];
 
         var shipment = getDefaultShipment(dhl, method);
         var amount = session.EstimateShippingCost(null, shipment);
 
-        Assert.IsNull(amount);
+        Assert.IsNotNull(amount);
+        Assert.IsTrue(amount.IsAlternative);
       }
     }
 
@@ -483,7 +433,6 @@ namespace NFX.NUnit.Integration.Web.Shipping
     }
 
     [Test]
-    [ExpectedException(typeof(ShippingException), ExpectedMessage ="Operation failed", MatchType = MessageMatch.Contains)]
     public void Test_TrackingNumber()
     {
       // just a stub

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -38,9 +38,7 @@ namespace NFX.Wave
 
     public override JSONDataMap Make(WorkContext work, object context = null)
     {
-      if (context is NFX.Security.AuthorizationException) return null;
-      if (context is FilterPipelineException && ((FilterPipelineException)context).RootException is NFX.Security.AuthorizationException) return null;
-      if (context is Exception && ((Exception)context).InnerException is NFX.Security.AuthorizationException) return null;
+      if (NFX.Security.AuthorizationException.IsDenotedBy(context as Exception)) return null;
       return base.Make(work, context);
     }
   }

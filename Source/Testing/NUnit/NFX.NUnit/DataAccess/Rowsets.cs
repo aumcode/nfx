@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -298,9 +298,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var idx = tbl.Update(update);//<-------------!!!!!!
+            var res = tbl.Update(update);//<-------------!!!!!!
 
-            Assert.IsTrue( idx>=0 );
+            Assert.IsTrue( res.Index>=0 );
 
             var match = tbl.FindByKey("POP17") as Person;
             Assert.IsNotNull( match );
@@ -332,9 +332,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var idx = tbl.Update(update);//<-------------!!!!!!
+            var res = tbl.Update(update);//<-------------!!!!!!
 
-            Assert.IsTrue( idx==-1 );
+            Assert.IsTrue( res.Index==-1 );
 
             var match = tbl.FindByKey("NONE17") as Person;
             Assert.IsNull( match );
@@ -363,9 +363,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var existed = tbl.Upsert(update);//<-------------!!!!!!
+            var res = tbl.Upsert(update);//<-------------!!!!!!
 
-            Assert.IsTrue( existed );
+            Assert.IsTrue( res.Updated );
 
             var match = tbl.FindByKey("POP17") as Person;
             Assert.IsNotNull( match );
@@ -396,9 +396,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var existed = tbl.Upsert(update);//<-------------!!!!!!
+            var res = tbl.Upsert(update);//<-------------!!!!!!
 
-            Assert.IsFalse( existed );
+            Assert.IsFalse( res.Updated );
 
             Assert.AreEqual(1001, tbl.Count);
 

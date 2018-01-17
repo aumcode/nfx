@@ -3,6 +3,7 @@
        log-root="$(~NFX_TEST_ROOT)\"
        log-csv="NFX.Log.Destinations.CSVFileDestination, NFX"
        log-debug="NFX.Log.Destinations.DebugDestination, NFX"
+       log-json="NFX.Log.Destinations.JSONDestination, NFX"
        log-mongo="NFX.Log.Destinations.MongoDBDestination, NFX.MongoDB"
        application-name="Manual Win Forms Test App(WinFormsTest.exe)"
        log-name="test-client"
@@ -40,7 +41,7 @@
            name="$(/$log-name)"
            path="$(/$log-root)"
            file-name="{0:yyyyMMdd}-$($name).csv.log"
-        />
+       />
 
       <destination  type="$(/$log-csv)"
            name="$(/$log-name)-perf"
@@ -48,14 +49,23 @@
            file-name="{0:yyyyMMdd}-$($name).csv.log"
            min-level="PerformanceInstrumentation"
            max-level="PerformanceInstrumentation"
-        />
+       />
 
       <destination type="$(/$log-debug)"
            name="$(/$log-name)-debug"
            path="$(/$log-root)"
            file-name="{0:yyyyMMdd}-$($name).dbg.log"
-           max-level="Trace"
-        />
+           Xmax-level="Trace"
+       />
+
+      <destination type="$(/$log-json)"
+      name="$(/$log-name)-json"
+      path="$(/$log-root)"
+      file-name="{0:yyyyMMdd}-$($name).json">
+
+        <Xjson-options indent-width="4" space-symbols="true" object-line-break="true" member-line-break="true"/>
+
+      </destination>
 
       <destination type="$(/$log-mongo)"
        name="$(/$log-name)-mongo"

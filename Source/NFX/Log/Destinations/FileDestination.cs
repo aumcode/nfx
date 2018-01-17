@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ namespace NFX.Log.Destinations
         }
 
         /// <summary>
-        /// Directory where file should be created. Will create the directory chane if it doesn't exist
+        /// Directory where file should be created. Will create the directory chain if it doesn't exist
         /// </summary>
         [Config]
         public virtual string Path

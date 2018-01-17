@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,6 +29,16 @@ namespace NFX.NUnit.DataAccess
     [TestFixture]
     public class Tables
     {
+
+        [TestCase]
+        public void CreateTable_TypedRow()
+        {
+            var tbl1 = new Table(Schema.GetForTypedRow(typeof(Person)));
+            var tbl2 = Table.Create<Person>();
+
+            Assert.AreEqual(tbl1.Schema, tbl2.Schema);
+        }
+
         [TestCase]
         public void PopulateAndFindKey_TypedRows()
         {
@@ -129,6 +139,65 @@ namespace NFX.NUnit.DataAccess
 
             var match3 = tbl.FindByKey("DoesNotExist");
             Assert.IsNull( match3 );
+        }
+
+
+        [TestCase]
+        public void FindIndexByKey_DynamicRows()
+        {
+          var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
+
+          for (var i = 0; i < 10; i++)
+          {
+            var row = new DynamicRow(tbl.Schema);
+
+            row["ID"] = "POP{0}".Args(i);
+            row["FirstName"] = "Oleg";
+            row["LastName"] = "DynamicPopov-{0}".Args(i);
+            row["DOB"] = new DateTime(1953, 12, 10);
+            row["YearsInSpace"] = 12;
+
+            tbl.Insert(row);
+          }
+
+          Assert.AreEqual(10, tbl.Count);
+
+          var idx1 = tbl.FindIndexByKey("POP5");
+          Assert.AreEqual(5, idx1);
+
+          var idx2 = tbl.FindIndexByKey("POP6");
+          Assert.AreEqual(6, idx2);
+
+          var idx3 = tbl.FindIndexByKey("DoesNotExist");
+          Assert.AreEqual(-1, idx3);
+        }
+
+
+        [TestCase]
+        public void FindIndexByKey_TypedRows()
+        {
+          var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
+
+          for (var i = 0; i < 10; i++)
+            tbl.Insert(new Person
+            {
+              ID = "POP{0}".Args(i),
+              FirstName = "Oleg",
+              LastName = "Popov-{0}".Args(i),
+              DOB = new DateTime(1953, 12, 10),
+              YearsInSpace = 12
+            });
+
+          Assert.AreEqual(10, tbl.Count);
+
+          var idx1 = tbl.FindIndexByKey("POP5");
+          Assert.AreEqual(5, idx1);
+
+          var idx2 = tbl.FindIndexByKey("POP6");
+          Assert.AreEqual(6, idx2);
+
+          var idx3 = tbl.FindIndexByKey("DoesNotExist");
+          Assert.AreEqual(-1, idx3);
         }
 
 
@@ -240,9 +309,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var idx = tbl.Update(update);//<-------------!!!!!!
+            var res = tbl.Update(update);//<-------------!!!!!!
 
-            Assert.IsTrue( idx>=0 );
+            Assert.IsTrue( res.Index>=0 );
 
             var match = tbl.FindByKey("POP17") as Person;
             Assert.IsNotNull( match );
@@ -273,9 +342,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var idx = tbl.Update(update);//<-------------!!!!!!
+            var res = tbl.Update(update);//<-------------!!!!!!
 
-            Assert.IsTrue( idx==-1 );
+            Assert.IsTrue( res.Index==-1 );
 
             var match = tbl.FindByKey("NONE17") as Person;
             Assert.IsNull( match );
@@ -305,15 +374,69 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var existed = tbl.Upsert(update);//<-------------!!!!!!
+            var res = tbl.Upsert(update);//<-------------!!!!!!
 
-            Assert.IsTrue( existed );
+            Assert.IsTrue( res.Updated );
 
             var match = tbl.FindByKey("POP17") as Person;
             Assert.IsNotNull( match );
             Assert.AreEqual("Yaroslav", match.FirstName);
             Assert.AreEqual("Suzkever", match.LastName);
 
+        }
+
+        [TestCase]
+        public void PopulateAndUpsertExistingWithMigration()
+        {
+            var tbl = new Table(Schema.GetForTypedRow(typeof(Person)));
+
+            for(var i=0; i<20; i++)
+             tbl.Insert( new Person{
+                                    ID = "POP{0}".Args(i),
+                                    FirstName = "Oleg",
+                                    LastName = "Popov-{0}".Args(i),
+                                    DOB = new DateTime(1953, 12, 10),
+                                    YearsInSpace = 12
+                                   });
+
+            var updates = new[] {
+                           new Person{
+                                    ID = "POP17",
+                                    FirstName = "Yaroslav",
+                                    LastName = "Suzkever",
+                                    DOB = new DateTime(1952, 12, 10),
+                                    YearsInSpace = 14
+                                   },
+
+                           new Person{
+                                    ID = "POP15",
+                                    FirstName = "Yaroslav",
+                                    LastName = "Suzkever",
+                                    DOB = new DateTime(1952, 12, 10),
+                                    YearsInSpace = 16
+                                   }
+                          };
+
+            foreach (var r in updates)
+            {
+              var res = tbl.Upsert(r, rowUpgrade:(old,row) =>
+              {
+                ((Person)row).YearsInSpace = ((Person)row).YearsInSpace == 14 ? ((Person)old).YearsInSpace : ((Person)row).YearsInSpace;
+                return row;
+              });
+              
+              Assert.IsTrue( res.Updated );
+            }
+
+            var match = (Person)tbl.FindByKey("POP17");
+            Assert.IsNotNull( match );
+            Assert.AreEqual("Yaroslav", match.FirstName);
+            Assert.AreEqual(12,         match.YearsInSpace);
+
+            match = (Person)tbl.FindByKey("POP15");
+            Assert.IsNotNull( match );
+            Assert.AreEqual("Yaroslav", match.FirstName);
+            Assert.AreEqual(16,         match.YearsInSpace);
         }
 
         [TestCase]
@@ -338,9 +461,9 @@ namespace NFX.NUnit.DataAccess
                                     YearsInSpace = 14
                                    };
 
-            var existed = tbl.Upsert(update);//<-------------!!!!!!
+            var res = tbl.Upsert(update);//<-------------!!!!!!
 
-            Assert.IsFalse( existed );
+            Assert.IsFalse( res.Updated );
 
             Assert.AreEqual(1001, tbl.Count);
 

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -19,51 +19,84 @@
 // Author: Serge Aleynikov
 // Date: 2013-07-01
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.IO;
 
 using NFX.Environment;
-using System.Text.RegularExpressions;
 
 namespace NFX.Log.Destinations
 {
     /// <summary>
     /// Provides a file storage destination implementation for debug and trace logging
     /// </summary>
-    public class DebugDestination : TextFileDestination
+    public sealed class DebugDestination : TextFileDestination
     {
-      private const char SEPARATOR = '|';
+      private const char   SEPARATOR = '|';
+      private const string LOG_TIME_FORMAT_DFLT = "yyyyMMdd-HHmmss";
 
       public DebugDestination() : this(null) { }
       public DebugDestination(string name = null) : base(name)
       {
       }
 
+      /// <summary>
+      /// Specifies time format to be used for message logging
+      /// </summary>
+      [Config]
+      public string LogTimeFormat { get; set; }
+
       protected override string DoFormatMessage(Message msg)
       {
-        StringBuilder line = new StringBuilder();
+        var output = new StringBuilder();
+        var fmt  = LogTimeFormat;
 
-        DateTime now = msg.TimeStamp;
-        line.Append(now.ToString("yyyyMMdd-HHmmss")); line.Append(SEPARATOR);
-        line.Append(msg.RelatedTo == Guid.Empty ? string.Empty : msg.RelatedTo.ToString());
-        line.Append(SEPARATOR);
-        line.Append(msg.Type.ToString()); line.Append(SEPARATOR);
-        line.Append(msg.Text); line.Append(SEPARATOR);
-        if (!msg.Topic.Equals(msg.Type)) line.Append(msg.Topic);
-        line.Append(SEPARATOR);
-        line.Append(msg.Source.ToString()); line.Append(SEPARATOR);
-        line.Append(msg.From);
+        if (fmt.IsNullOrWhiteSpace())
+          fmt = LOG_TIME_FORMAT_DFLT;
 
-        if (msg.Exception != null)
+        string time;
+
+        var now = msg.TimeStamp;
+        try { time = now.ToString(fmt); }
+        catch (Exception e)
         {
-            line.Append(SEPARATOR);
-            line.AppendFormat("\n  --- Exception in {0} ---\n", msg.Exception.TargetSite);
-            line.Append(msg.Exception.StackTrace);
+          time = now.ToString(LOG_TIME_FORMAT_DFLT) + " " + e.ToMessageWithType();
         }
 
-        return line.ToString();
+        output.Append('@');
+        output.Append(time);        output.Append(SEPARATOR);
+        output.Append(msg.Guid);    output.Append(SEPARATOR);
+        output.Append(msg.Host);    output.Append(SEPARATOR);
+        output.Append(msg.Channel); output.Append(SEPARATOR);
+        output.AppendLine(msg.RelatedTo == Guid.Empty ? string.Empty : msg.RelatedTo.ToString());
+
+        output.Append(msg.Type); output.Append(SEPARATOR); output.Append(msg.Topic); output.Append(SEPARATOR); output.Append(msg.From); output.Append(SEPARATOR); output.AppendLine(msg.Source.ToString());
+        output.Append(msg.Text); output.AppendLine();
+
+        if (msg.Parameters.IsNotNullOrWhiteSpace()) output.AppendLine(msg.Parameters);
+
+        dumpException(output, msg.Exception, 1);
+
+        output.AppendLine();
+        output.AppendLine();
+
+        return output.ToString();
       }
+
+      private void dumpException(StringBuilder output, Exception error, int level)
+      {
+        if (error==null) return;
+        output.AppendLine();
+
+        var sp = new string(' ', level * 2);
+        output.Append(sp); output.AppendLine("+-Exception ");
+        output.Append(sp); output.Append    ("| Type      "); output.AppendLine(error.GetType().FullName);
+        output.Append(sp); output.Append    ("| Source    "); output.AppendLine(error.Source);
+        output.Append(sp); output.Append    ("| Target    "); output.AppendLine(error.TargetSite.Name);
+        output.Append(sp); output.Append    ("| Message   "); output.AppendLine(error.Message.Replace("\n", "\n       .    "+sp));
+        output.Append(sp); output.AppendLine("| Stack     ");
+                           output.AppendLine(sp+error.StackTrace.Replace("\n", "\n"+sp));
+
+        dumpException(output, error.InnerException, level+1);
+      }
+
     }
 }

@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -835,6 +835,8 @@ namespace NFX
     public const string CRUD_TYPE_IS_NOT_DERIVED_FROM_TYPED_ROW_ERROR = "CRUD supplied type of '{0}' is not a TypedRow-derivative";
 
     public const string CRUD_FIND_BY_KEY_LENGTH_ERROR = "CRUD table FindByKey/KeyRowFromValues was supplied wrong number of key field values";
+
+    public const string CRUD_ROW_UPGRADE_KEY_MUTATION_ERROR = "Upgraded row key has changed";
 
     public const string CRUD_ROWSET_OPERATION_ROW_IS_NULL_OR_SCHEMA_MISMATCH_ERROR = "CRUD rowset was supplied either a null row or a row with a different schema";
 

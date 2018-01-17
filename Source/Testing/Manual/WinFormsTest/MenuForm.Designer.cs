@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -61,6 +61,7 @@ namespace WinFormsTest
       this.btnImages = new System.Windows.Forms.Button();
       this.btnMMFPile = new System.Windows.Forms.Button();
       this.btnGlueStress = new System.Windows.Forms.Button();
+      this.btnLog = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnGlue
@@ -266,9 +267,23 @@ namespace WinFormsTest
       this.btnGlueStress.UseVisualStyleBackColor = true;
       this.btnGlueStress.Click += new System.EventHandler(this.btnGlueStress_Click);
       // 
+      // btnLog
+      // 
+      this.btnLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+      this.btnLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.btnLog.ForeColor = System.Drawing.Color.Black;
+      this.btnLog.Location = new System.Drawing.Point(82, 682);
+      this.btnLog.Name = "btnLog";
+      this.btnLog.Size = new System.Drawing.Size(136, 29);
+      this.btnLog.TabIndex = 14;
+      this.btnLog.Text = "Log";
+      this.btnLog.UseVisualStyleBackColor = false;
+      this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
+      // 
       // MenuForm
       // 
-      this.ClientSize = new System.Drawing.Size(306, 708);
+      this.ClientSize = new System.Drawing.Size(306, 734);
+      this.Controls.Add(this.btnLog);
       this.Controls.Add(this.btnGlueStress);
       this.Controls.Add(this.btnMMFPile);
       this.Controls.Add(this.btnMailSink);
@@ -313,5 +328,6 @@ namespace WinFormsTest
     private System.Windows.Forms.Button btnImages;
     private System.Windows.Forms.Button btnMMFPile;
     private System.Windows.Forms.Button btnGlueStress;
+    private System.Windows.Forms.Button btnLog;
   }
 }

@@ -52,7 +52,7 @@ published.Dialog = function(init)
 
   fdivBody = document.createElement("div");
   fdivBody.className = published.CLS_DIALOG_BODY;
-  appendContent(fdivBody, bodyCtn, "&nbsp;");
+  appendContent(fdivBody, bodyCtn, "");
   fdivContent.appendChild(fdivBody);
 
   fdivFooter = document.createElement("div");
@@ -91,17 +91,25 @@ published.Dialog = function(init)
       dialog.close();
   }
 
-  function buttonPressed(e) {
+  function buttonPressHandler(e) {
     var keyCode = e.keyCode;
-    if (keyCode === 27)
+    if (keyCode === 27) {
+      var dlg = published.currentDialog();
+      if (!dlg || dlg !== dialog) return;
       dialog.close();
+    }
   }
 
   function show() {
-    if (fCloseOnClickOutside)
-      setTimeout(function() {WAVE.addEventHandler(window, "click", outsideClickHandler)}, 1);
+    if (fCloseOnClickOutside) {
+      setTimeout(function() {
+        WAVE.addEventHandler(window, "click", outsideClickHandler);
+      }, 1);
+    }
+
     if (fCloseOnEscape)
-      WAVE.addEventHandler(window, "keyup", buttonPressed);
+      WAVE.addEventHandler(window, "keyup", buttonPressHandler);
+
     fOnShow(dialog);
   }
 
@@ -144,8 +152,9 @@ published.Dialog = function(init)
 
     if (fCloseOnClickOutside)
       WAVE.removeEventHandler(window, "click", outsideClickHandler);
+
     if (fCloseOnEscape)
-      WAVE.removeEventHandler(window, "keyup", buttonPressed);
+      WAVE.removeEventHandler(window, "keyup", buttonPressHandler);
 
     fdivBase.__DIALOG = null;
     fdivBase = null,

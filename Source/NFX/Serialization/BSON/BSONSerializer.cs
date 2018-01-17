@@ -21,7 +21,7 @@ namespace NFX.Serialization.BSON
 
 
   /// <summary>
-  /// Provides a scope of fake BSOnWritable parent which indicates what types are known
+  /// Provides a scope of fake BSONWritable parent which indicates what types are known
   /// this way the serilizer does not have to emit the TypeIDFieldName element.
   /// Used with root serializations i.e. to database, when storing log messages in the table,
   /// it is not necessary to store Log.Message type ID in every record.
@@ -31,13 +31,13 @@ namespace NFX.Serialization.BSON
   public sealed class BSONParentKnownTypes : IBSONSerializable
   {
     /// <summary>
-    /// Specifies the types which are knwon to the parent calling scope, consequently the
+    /// Specifies the types which are known to the parent calling scope, consequently the
     /// TypeIDFieldNamewill not be emitted to doc.
     /// Use in cases like writing to database table, where all root types are known by design
     /// </summary>
     public BSONParentKnownTypes(params Type[] known) {  KnownTypes = known; }
 
-    private IEnumerable<Type> KnownTypes;
+    public readonly IEnumerable<Type> KnownTypes;
 
     public void SerializeToBSON(BSONSerializer serializer, BSONDocument doc, IBSONSerializable parent, ref object context)
     {

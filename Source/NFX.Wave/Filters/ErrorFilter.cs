@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -158,7 +158,7 @@ namespace NFX.Wave.Filters
                                          OrderedRegistry<WorkMatch> showDumpMatches,
                                          OrderedRegistry<WorkMatch> logMatches,
                                          string securityRedirectURL = null,
-                                         string secrurityRedirectTarget = null,
+                                         string securityRedirectTarget = null,
                                          OrderedRegistry<WorkMatch> securityRedirectMatches = null,
                                          Type customPageType = null
                                          )
@@ -184,7 +184,8 @@ namespace NFX.Wave.Filters
             actual = ((MVCException)actual).InnerException;
 
 
-          var securityError = actual is NFX.Security.AuthorizationException || actual.InnerException is NFX.Security.AuthorizationException;
+          var securityError = NFX.Security.AuthorizationException.IsDenotedBy(actual);
+
 
           if (actual is HTTPStatusException)
           {
@@ -230,14 +231,14 @@ namespace NFX.Wave.Filters
                 if (url.IsNotNullOrWhiteSpace())
                   securityRedirectURL = url;
                 if (target.IsNotNullOrWhiteSpace())
-                  secrurityRedirectTarget = target;
+                  securityRedirectTarget = target;
               }
             }
 
             if (securityRedirectURL.IsNotNullOrWhiteSpace() && securityError && !work.IsAuthenticated)
             {
               var url = securityRedirectURL;
-              var target = secrurityRedirectTarget;
+              var target = securityRedirectTarget;
               if (target.IsNotNullOrWhiteSpace())
               {
                 var partsA = url.Split('#');

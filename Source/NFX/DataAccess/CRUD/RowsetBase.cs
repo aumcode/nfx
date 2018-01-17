@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -175,8 +175,8 @@ namespace NFX.DataAccess.CRUD
 
             private Guid m_InstanceGUID;
             protected Schema m_Schema;
-            internal List<Row> m_List;
-            internal List<RowChange> m_Changes;
+            protected internal List<Row> m_List;
+            protected internal List<RowChange> m_Changes;
 
             private JSONDynamicObject m_DataContext;
         #endregion
@@ -283,15 +283,16 @@ namespace NFX.DataAccess.CRUD
                 return idx;
             }
 
+
             /// <summary>
             /// Updates the row, Returns the row index or -1
             /// </summary>
-            public int Update(Row row, IDataStoreKey key = null)
+            public UpdateResult Update(Row row, IDataStoreKey key = null, Func<Row, Row, Row> rowUpgrade = null)
             {
                 Check(row);
-                var idx = DoUpdate(row, key);
+                var idx = DoUpdate(row, key, rowUpgrade);
                 if (idx>=0 && m_Changes!=null) m_Changes.Add( new RowChange(RowChangeType.Update, row, key) );
-                return idx;
+                return new UpdateResult(idx, true);
             }
 
 
@@ -300,10 +301,10 @@ namespace NFX.DataAccess.CRUD
             ///  otherwise inserts the row (if schemas match) and returns false. Optionally pass updateWhere condition
             ///   that may check whether update needs to be performed
             /// </summary>
-            public bool Upsert(Row row, Func<Row, bool> updateWhere = null)
+            public UpdateResult Upsert(Row row, Func<Row, bool> updateWhere = null, Func<Row, Row, Row> rowUpgrade = null)
             {
                Check(row);
-               var update = DoUpsert(row, updateWhere);
+               var update = DoUpsert(row, updateWhere, rowUpgrade);
                if (m_Changes!=null) m_Changes.Add( new RowChange(RowChangeType.Upsert, row, null) );
                return update;
             }
@@ -361,18 +362,8 @@ namespace NFX.DataAccess.CRUD
             /// </summary>
             public Row KeyRowFromValues(params object[] keys)
             {
-               var krow = new DynamicRow(Schema);
-               var idx = 0;
-               foreach(var kdef in Schema.AnyTargetKeyFieldDefs)
-               {
-                    if (idx>keys.Length-1) throw new CRUDException(StringConsts.CRUD_FIND_BY_KEY_LENGTH_ERROR);
-                    krow[kdef.Order] = keys[idx];
-                    idx++;
-               }
-
-               return krow;
+               return DoKeyRowFromValues(new DynamicRow(Schema), keys);
             }
-
 
             /// <summary>
             /// Tries to find a row by specified keyset and returns it or null if not found
@@ -416,13 +407,57 @@ namespace NFX.DataAccess.CRUD
             }
 
             /// <summary>
-            /// Tries to find a row by specified keyset and extra WHERE clause and returns it or null if not found
+            /// Tries to find a row index by specified keyset and extra WHERE clause and returns it or null if not found
             /// </summary>
             public Row FindByKey(Func<Row, bool> extraWhere, params object[] keys)
             {
                return FindByKey(KeyRowFromValues(keys), extraWhere);
             }
 
+
+            /// <summary>
+            /// Tries to find a row index by specified keyset and returns it or null if not found
+            /// </summary>
+            public int FindIndexByKey(Row keyRow)
+            {
+               return FindIndexByKey(keyRow, null);
+            }
+
+            /// <summary>
+            /// Tries to find a row index by specified keyset and returns it or null if not found.
+            /// This method does not perform well on Rowsets instances as a rowset is unordered list which does linear search.
+            /// In contrast, Tables are always ordered and perform binary search instead
+            /// </summary>
+            public int FindIndexByKey(params object[] keys)
+            {
+               return FindIndexByKey(KeyRowFromValues(keys), null);
+            }
+
+
+            /// <summary>
+            /// Tries to find a row index by specified keyset and extra WHERE clause and returns it or null if not found.
+            /// This method does not perform well on Rowsets instances as a rowset is unordered list which does linear search.
+            /// In contrast, Tables are always ordered and perform binary search instead
+            /// </summary>
+            public int FindIndexByKey(Row row, Func<Row, bool> extraWhere)
+            {
+               Check(row);
+
+               int insertIndex;
+               int idx = SearchForRow(row, out insertIndex);
+               if (idx<0)
+                  return idx;
+
+               return extraWhere != null && !extraWhere(m_List[idx]) ? -1 : idx;
+            }
+
+            /// <summary>
+            /// Tries to find a row index by specified keyset and extra WHERE clause and returns it or null if not found
+            /// </summary>
+            public int FindIndexByKey(Func<Row, bool> extraWhere, params object[] keys)
+            {
+               return FindIndexByKey(KeyRowFromValues(keys), extraWhere);
+            }
 
             /// <summary>
             /// Retrievs a change by index or null if index is out of bounds or changes are not logged
@@ -649,42 +684,67 @@ namespace NFX.DataAccess.CRUD
 
             /// <summary>
             /// Tries to find a row with the same set of key fields in this table and if found, replaces it and returns its index,
-            ///  otherwise returns -1
+            /// otherwise returns -1
             /// </summary>
-            protected virtual int DoUpdate(Row row, IDataStoreKey key = null)
+            /// <param name="rowUpgrade">
+            ///   When not null, is called with old and new instance of the row to be updated. It returns
+            ///   the row to be saved. Note that the returned row must have the same key and schema or else the function will throw.
+            /// </param>
+            protected virtual int DoUpdate(Row row, IDataStoreKey key = null, Func<Row, Row, Row> rowUpgrade = null)
             {
                int dummy;
-               int idx = SearchForRow(row, out dummy);
+               var idx = SearchForRow(row, out dummy);
                if (idx<0) return -1;
 
-               m_List[idx] = row;
+               DoUpgrade(dummy, row, rowUpgrade);
 
                return idx;
             }
 
+            /// <summary>
+            /// Apply rowUpgrade function to the row stored at index "idx" and the new "row" passed as second argument,
+            /// and store the returned row back at index "idx".
+            /// </summary>
+            protected virtual void DoUpgrade(int idx, Row newRow, Func<Row, Row, Row> rowUpgrade)
+            {
+               if (rowUpgrade == null)
+               {
+                 m_List[idx] = newRow;
+                 return;
+               }
+
+               var upgradedRow = rowUpgrade(m_List[idx], newRow);
+               // Ensure that the Schema hasn't been changed
+               Check(upgradedRow);
+               // Check that the row's key is unmodified
+               int dummy;
+               int idxUpgraded = SearchForRow(upgradedRow, out dummy);
+               if (idxUpgraded != idx)
+                 throw new CRUDException(StringConsts.CRUD_ROW_UPGRADE_KEY_MUTATION_ERROR);
+
+               m_List[idx] = upgradedRow;
+            }
 
             /// <summary>
             /// Tries to find a row with the same set of key fields in this table and if found, replaces it and returns true,
             ///  otherwise inserts the row (if schemas match) and returns false. Optionally pass updateWhere condition
             ///   that may check whether update needs to be performed
             /// </summary>
-            protected virtual bool DoUpsert(Row row, Func<Row, bool> updateWhere)
+            protected virtual UpdateResult DoUpsert(Row row, Func<Row, bool> updateWhere, Func<Row, Row, Row> rowUpgrade = null)
             {
                int insertIndex;
                int idx = SearchForRow(row, out insertIndex);
                if (idx<0)
                {
                   m_List.Insert(insertIndex, row);
-                  return false;
+                  return new UpdateResult(insertIndex, false);
                }
 
-               if (updateWhere!=null)
-               {
-                 if (!updateWhere(m_List[idx])) return false;//where did not match
-               }
+               if (updateWhere!=null && !updateWhere(m_List[idx]))
+                  return new UpdateResult(-1, false);//where did not match
 
-               m_List[idx] = row;
-               return true;
+               DoUpgrade(idx, row, rowUpgrade);
+               return new UpdateResult(idx, true);
             }
 
             /// <summary>
@@ -701,17 +761,31 @@ namespace NFX.DataAccess.CRUD
             }
 
 
-         #endregion
+            protected T DoKeyRowFromValues<T>(T krow, params object[] keys)
+               where T : Row
+            {
+               Check(krow);
+               var idx = 0;
+               foreach(var kdef in Schema.AnyTargetKeyFieldDefs)
+               {
+                    if (idx>keys.Length-1) throw new CRUDException(StringConsts.CRUD_FIND_BY_KEY_LENGTH_ERROR);
+                    krow[kdef.Order] = keys[idx];
+                    idx++;
+               }
 
+               return krow;
+            }
 
-
-
+        #endregion
 
     }
 
+    public struct UpdateResult
+    {
+          public UpdateResult(int idx, bool updated) { Index=idx; Updated=updated; }
 
-
-
-
+          public readonly int  Index;
+          public readonly bool Updated;
+    }
 
 }

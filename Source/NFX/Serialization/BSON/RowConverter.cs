@@ -1,6 +1,6 @@
 /*<FILE_LICENSE>
 * NFX (.NET Framework Extension) Unistack Library
-* Copyright 2003-2017 ITAdapter Corp. Inc.
+* Copyright 2003-2018 Agnicore Inc. portions ITAdapter Corp. Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -44,9 +44,9 @@ namespace NFX.Serialization.BSON
 
         /// <summary>
         /// Maximum size of a byte[] field.
-        /// Large filed (> 1Mbyte) should not be stored as fields in the database
+        /// Large filed (> 12Mbyte) should not be stored as fields in the database
         /// </summary>
-        public const int MAX_BYTE_BUFFER_SIZE = 1/*mb*/ * 1024 * 1024;
+        public const int MAX_BYTE_BUFFER_SIZE = 12/*mb*/ * 1024 * 1024;
 
         protected static Dictionary<Type, Func<string, object, BSONElement>> s_CLRtoBSON = new Dictionary<Type,Func<string, object, BSONElement>>
         {
