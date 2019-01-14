@@ -1,7 +1,6 @@
-# NFX - .NET Unified Software Stack + Big Memory
+# The NFX project has been [superseded by Azos Project https://github.com/azist/azos](https://github.com/azist/azos)
 
-## The NFX project has been [superseded by Azos Project https://github.com/azist/azos](https://github.com/azist/azos)
-
+## NFX - .NET Unified Software Stack + Big Memory
 
 ### Azos ANNOUNCEMENT
  **Azos is based on .Net Standard 2**,
